@@ -1,0 +1,10 @@
+{
+  "name": "LinguaFlow",
+  "short_name": "LinguaFlow",
+  "description": "Speak fluently — adaptive lessons + on-demand human instructors.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafbff",
+  "theme_color": "#3b6cf6",
+  "icons": []
+}

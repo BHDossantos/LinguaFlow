@@ -1,0 +1,131 @@
+"use client";
+import { useState } from "react";
+import { LANGUAGES, type LanguageCode } from "@/lib/languages";
+
+type Result = {
+  translation: string;
+  alternatives: string[];
+  notes: string;
+  detectedSource?: string;
+};
+
+export default function TranslatePage() {
+  const [source, setSource] = useState<LanguageCode | "auto">("auto");
+  const [target, setTarget] = useState<LanguageCode>("es");
+  const [text, setText] = useState("");
+  const [result, setResult] = useState<Result | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [listening, setListening] = useState(false);
+
+  async function translate() {
+    if (!text.trim()) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/translate", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ text, source, target }),
+      });
+      setResult(await res.json());
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function speak(t: string) {
+    if (typeof window === "undefined") return;
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = target;
+    speechSynthesis.speak(u);
+  }
+
+  function startVoice() {
+    const SR =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) {
+      alert("Voice input not supported in this browser.");
+      return;
+    }
+    const rec = new SR();
+    rec.lang = source === "auto" ? "en-US" : source;
+    rec.interimResults = false;
+    rec.onresult = (e: any) => {
+      setText(e.results[0][0].transcript);
+      setListening(false);
+    };
+    rec.onerror = () => setListening(false);
+    rec.onend = () => setListening(false);
+    setListening(true);
+    rec.start();
+  }
+
+  return (
+    <div className="space-y-4">
+      <h1 className="text-2xl font-bold">Translate</h1>
+      <p className="text-sm text-ink-500">
+        Voice or text. Each translation feeds your learner model — words you look up resurface in lessons.
+      </p>
+
+      <div className="grid grid-cols-2 gap-2">
+        <select
+          value={source}
+          onChange={(e) => setSource(e.target.value as LanguageCode | "auto")}
+          className="rounded-xl border border-black/10 bg-white px-3 py-2"
+        >
+          <option value="auto">Detect</option>
+          {Object.entries(LANGUAGES).map(([c, l]) => (
+            <option key={c} value={c}>{l.flag} {l.label}</option>
+          ))}
+        </select>
+        <select
+          value={target}
+          onChange={(e) => setTarget(e.target.value as LanguageCode)}
+          className="rounded-xl border border-black/10 bg-white px-3 py-2"
+        >
+          {Object.entries(LANGUAGES).map(([c, l]) => (
+            <option key={c} value={c}>{l.flag} {l.label}</option>
+          ))}
+        </select>
+      </div>
+
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={4}
+        placeholder="Type or speak…"
+        className="w-full rounded-xl border border-black/10 bg-white p-3"
+      />
+
+      <div className="flex gap-2">
+        <button onClick={startVoice} className="btn-ghost flex-1">
+          {listening ? "Listening…" : "🎙️ Speak"}
+        </button>
+        <button onClick={translate} disabled={loading} className="btn-primary flex-1">
+          {loading ? "…" : "Translate"}
+        </button>
+      </div>
+
+      {result && (
+        <div className="card space-y-3">
+          <div className="flex items-start justify-between gap-3">
+            <p className="text-lg">{result.translation}</p>
+            <button onClick={() => speak(result.translation)} className="btn-ghost px-3 py-1 text-sm">
+              🔊
+            </button>
+          </div>
+          {result.alternatives?.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold uppercase text-ink-500">Alternatives</p>
+              <ul className="mt-1 space-y-1 text-sm">
+                {result.alternatives.map((a, i) => <li key={i}>• {a}</li>)}
+              </ul>
+            </div>
+          )}
+          {result.notes && (
+            <p className="rounded-lg bg-brand-50 p-2 text-xs text-brand-700">💡 {result.notes}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
