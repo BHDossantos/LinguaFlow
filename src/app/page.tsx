@@ -1,7 +1,25 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { supabaseServer } from "@/lib/supabase/server";
 import { LANGUAGES } from "@/lib/languages";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const supabase = supabaseServer();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const { data: target } = await supabase
+      .from("target_languages")
+      .select("language")
+      .eq("user_id", user.id)
+      .eq("active", true)
+      .limit(1)
+      .maybeSingle();
+    if (!target) redirect("/onboarding");
+    redirect(`/learn?lang=${target.language}`);
+  }
+
   return (
     <div className="space-y-6">
       <header className="space-y-1">
@@ -12,27 +30,31 @@ export default function Home() {
         </p>
       </header>
 
+      <Link href="/sign-in" className="btn-primary block w-full text-center">
+        Get started
+      </Link>
+
       <section className="grid grid-cols-2 gap-3">
-        <Link href="/learn" className="card flex flex-col gap-1">
+        <div className="card">
           <span className="text-2xl">📚</span>
-          <span className="font-semibold">Self-study</span>
-          <span className="text-xs text-ink-500">Lessons + spaced repetition.</span>
-        </Link>
-        <Link href="/tutors" className="card flex flex-col gap-1">
+          <p className="mt-1 font-semibold">Self-study</p>
+          <p className="text-xs text-ink-500">Adaptive lessons + spaced repetition.</p>
+        </div>
+        <div className="card">
           <span className="text-2xl">🧑‍🏫</span>
-          <span className="font-semibold">Live instructor</span>
-          <span className="text-xs text-ink-500">Per-minute, instant connect.</span>
-        </Link>
-        <Link href="/practice" className="card flex flex-col gap-1">
+          <p className="mt-1 font-semibold">Live instructor</p>
+          <p className="text-xs text-ink-500">Per-minute, instant connect.</p>
+        </div>
+        <div className="card">
           <span className="text-2xl">💬</span>
-          <span className="font-semibold">AI roleplay</span>
-          <span className="text-xs text-ink-500">Order coffee, ace the interview.</span>
-        </Link>
-        <Link href="/translate" className="card flex flex-col gap-1">
+          <p className="mt-1 font-semibold">AI roleplay</p>
+          <p className="text-xs text-ink-500">Real conversations, no judgment.</p>
+        </div>
+        <div className="card">
           <span className="text-2xl">🌐</span>
-          <span className="font-semibold">Translate</span>
-          <span className="text-xs text-ink-500">Real-time voice + text.</span>
-        </Link>
+          <p className="mt-1 font-semibold">Real-time translate</p>
+          <p className="text-xs text-ink-500">Voice, text, and on the go.</p>
+        </div>
       </section>
 
       <section>
@@ -41,14 +63,10 @@ export default function Home() {
         </h2>
         <div className="flex flex-wrap gap-2">
           {Object.entries(LANGUAGES).map(([code, l]) => (
-            <Link
-              key={code}
-              href={`/learn?lang=${code}`}
-              className="card flex items-center gap-2 px-3 py-2"
-            >
+            <span key={code} className="card flex items-center gap-2 px-3 py-2">
               <span aria-hidden>{l.flag}</span>
               <span className="text-sm">{l.label}</span>
-            </Link>
+            </span>
           ))}
         </div>
       </section>

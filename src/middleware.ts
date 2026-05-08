@@ -1,9 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
+const PUBLIC_PATHS = new Set<string>(["/", "/sign-in", "/auth/callback"]);
+
+function isPublic(pathname: string) {
+  if (PUBLIC_PATHS.has(pathname)) return true;
+  return (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api/stripe/webhook") ||
+    pathname === "/manifest.json" ||
+    pathname === "/favicon.ico"
+  );
+}
+
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return res;
 
   const supabase = createServerClient(
@@ -22,7 +33,15 @@ export async function middleware(req: NextRequest) {
     },
   );
 
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user && !isPublic(req.nextUrl.pathname)) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/sign-in";
+    url.searchParams.set("redirectTo", req.nextUrl.pathname);
+    return NextResponse.redirect(url);
+  }
+
   return res;
 }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
+import { requireOnboardedUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,7 @@ const KIND_ICON: Record<string, string> = {
 };
 
 export default async function CoursePage({ params }: { params: { courseId: string } }) {
+  await requireOnboardedUser();
   const supabase = supabaseServer();
   const [{ data: course }, { data: lessons }] = await Promise.all([
     supabase.from("courses").select("*").eq("id", params.courseId).single(),

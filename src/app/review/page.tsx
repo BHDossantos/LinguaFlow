@@ -1,21 +1,13 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { ReviewSession } from "./ReviewSession";
+import { requireOnboardedUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function ReviewPage() {
+  const user = await requireOnboardedUser();
   const supabase = supabaseServer();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return (
-      <div className="space-y-3">
-        <h1 className="text-2xl font-bold">Daily review</h1>
-        <p className="text-sm text-ink-500">Sign in to review your spaced-repetition queue.</p>
-        <Link href="/sign-in" className="btn-primary inline-block">Sign in</Link>
-      </div>
-    );
-  }
 
   const { data: dueCards } = await supabase
     .from("srs_cards")

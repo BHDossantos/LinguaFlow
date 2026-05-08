@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { LANGUAGES } from "@/lib/languages";
+import { requireOnboardedUser, getPrimaryTargetLanguage } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function TutorsPage({ searchParams }: { searchParams: { lang?: string } }) {
+  await requireOnboardedUser();
   const supabase = supabaseServer();
-  const lang = searchParams.lang ?? "es";
+  const primary = await getPrimaryTargetLanguage();
+  const lang = searchParams.lang ?? primary?.language ?? "es";
 
   const { data: tutors } = await supabase
     .from("tutors")
