@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
+import { rateCardAction, completeLessonAction } from "@/app/learn/[courseId]/[lessonId]/actions";
 
 type Lesson = {
   id: string;
@@ -13,9 +14,26 @@ type Lesson = {
 
 type VocabItem = { term: string; translation: string; ipa?: string; example?: string };
 
-export function LessonPlayer({ lesson, courseId }: { lesson: Lesson; courseId: string }) {
+export function LessonPlayer({
+  lesson, courseId, language, dialect,
+}: {
+  lesson: Lesson;
+  courseId: string;
+  language: string;
+  dialect: string | null;
+}) {
   if (lesson.kind === "vocab") {
-    return <VocabFlashcards items={lesson.body.items ?? []} title={lesson.title} courseId={courseId} grammar={lesson.grammar_notes_md} />;
+    return (
+      <VocabFlashcards
+        items={lesson.body.items ?? []}
+        title={lesson.title}
+        courseId={courseId}
+        lessonId={lesson.id}
+        language={language}
+        dialect={dialect}
+        grammar={lesson.grammar_notes_md}
+      />
+    );
   }
   if (lesson.kind === "roleplay") {
     return <RoleplayLesson body={lesson.body} title={lesson.title} courseId={courseId} />;
@@ -30,25 +48,56 @@ export function LessonPlayer({ lesson, courseId }: { lesson: Lesson; courseId: s
 }
 
 function VocabFlashcards({
-  items, title, courseId, grammar,
+  items, title, courseId, lessonId, language, dialect, grammar,
 }: {
   items: VocabItem[];
   title: string;
   courseId: string;
+  lessonId: string;
+  language: string;
+  dialect: string | null;
   grammar: string | null;
 }) {
   const [i, setI] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const [done, setDone] = useState(false);
+  const [ratings, setRatings] = useState<number[]>([]);
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+
   const item = items[i];
   const total = items.length;
   const progress = useMemo(() => (i / Math.max(1, total)) * 100, [i, total]);
 
   function rate(rating: number) {
-    // TODO: persist to srs_cards / srs_reviews via server action
-    void rating;
-    if (i + 1 >= total) setDone(true);
-    else { setI(i + 1); setRevealed(false); }
+    if (!item) return;
+    setRatings((r) => [...r, rating]);
+    startTransition(async () => {
+      try {
+        await rateCardAction({
+          language,
+          dialect,
+          term: item.term,
+          translation: item.translation,
+          ipa: item.ipa,
+          example: item.example,
+          rating,
+        });
+      } catch (e: any) {
+        setError(e?.message ?? "Could not save review");
+      }
+    });
+    if (i + 1 >= total) {
+      const avg =
+        ([...ratings, rating].reduce((a, b) => a + b, 0) / total) * 20;
+      startTransition(async () => {
+        try { await completeLessonAction(lessonId, avg); } catch {}
+      });
+      setDone(true);
+    } else {
+      setI(i + 1);
+      setRevealed(false);
+    }
   }
 
   if (done) {
@@ -56,9 +105,13 @@ function VocabFlashcards({
       <div className="space-y-3">
         <h1 className="text-xl font-bold">Lesson complete 🎉</h1>
         <p className="text-sm text-ink-500">
-          Cards added to your spaced-repetition queue. We'll surface the weakest ones in your next session.
+          {pending ? "Saving your reviews…" : `${total} cards saved to your spaced-repetition queue.`}
         </p>
-        <Link href={`/learn/${courseId}`} className="btn-primary">Continue</Link>
+        <div className="flex gap-2">
+          <Link href="/review" className="btn-primary flex-1 text-center">Start a review</Link>
+          <Link href={`/learn/${courseId}`} className="btn-ghost flex-1 text-center">Back to course</Link>
+        </div>
+        {error && <p className="text-xs text-red-600">{error}</p>}
       </div>
     );
   }

@@ -109,9 +109,27 @@ export default function TranslatePage() {
         <div className="card space-y-3">
           <div className="flex items-start justify-between gap-3">
             <p className="text-lg">{result.translation}</p>
-            <button onClick={() => speak(result.translation)} className="btn-ghost px-3 py-1 text-sm">
-              🔊
-            </button>
+            <div className="flex gap-1">
+              <button onClick={() => speak(result.translation)} className="btn-ghost px-3 py-1 text-sm">
+                🔊
+              </button>
+              <button
+                onClick={() => {
+                  fetch("/api/vocab/capture", {
+                    method: "POST",
+                    headers: { "content-type": "application/json" },
+                    body: JSON.stringify({
+                      language: target,
+                      items: [{ term: result.translation, translation: text, example: null }],
+                    }),
+                  }).catch(() => {});
+                }}
+                className="btn-ghost px-3 py-1 text-sm"
+                title="Save to my SRS"
+              >
+                ＋
+              </button>
+            </div>
           </div>
           {result.alternatives?.length > 0 && (
             <div>

@@ -3,8 +3,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const items = [
-  { href: "/", label: "Home", icon: "🏠" },
   { href: "/learn", label: "Learn", icon: "📚" },
+  { href: "/review", label: "Review", icon: "🔁" },
   { href: "/practice", label: "Practice", icon: "💬" },
   { href: "/translate", label: "Translate", icon: "🌐" },
   { href: "/tutors", label: "Tutors", icon: "🧑‍🏫" },

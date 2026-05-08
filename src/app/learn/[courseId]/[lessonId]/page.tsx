@@ -9,13 +9,23 @@ export default async function LessonPage({
   params: { courseId: string; lessonId: string };
 }) {
   const supabase = supabaseServer();
-  const { data: lesson } = await supabase
-    .from("lessons")
-    .select("*")
-    .eq("id", params.lessonId)
-    .single();
+  const [{ data: lesson }, { data: course }] = await Promise.all([
+    supabase.from("lessons").select("*").eq("id", params.lessonId).single(),
+    supabase
+      .from("courses")
+      .select("language,dialect")
+      .eq("id", params.courseId)
+      .single(),
+  ]);
 
-  if (!lesson) return <p>Lesson not found.</p>;
+  if (!lesson || !course) return <p>Lesson not found.</p>;
 
-  return <LessonPlayer lesson={lesson} courseId={params.courseId} />;
+  return (
+    <LessonPlayer
+      lesson={lesson}
+      courseId={params.courseId}
+      language={course.language}
+      dialect={course.dialect}
+    />
+  );
 }

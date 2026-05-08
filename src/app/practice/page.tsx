@@ -46,6 +46,13 @@ export default function PracticePage() {
       const data = await res.json();
       setHistory([...next, { role: "assistant", content: data.reply }]);
       setMeta(data.meta);
+      if (data.meta?.newWords?.length) {
+        fetch("/api/vocab/capture", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ language, items: data.meta.newWords }),
+        }).catch(() => {});
+      }
     } finally {
       setBusy(false);
     }
