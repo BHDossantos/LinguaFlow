@@ -1,6 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  LiveKitRoom,
+  VideoConference,
+  RoomAudioRenderer,
+} from "@livekit/components-react";
+import "@livekit/components-styles";
 
 export function SessionRoom({
   sessionId, room, livekitUrl, token, ratePerMinute, maxBudgetCents, tutorName, initialStatus,
@@ -88,21 +94,29 @@ export function SessionRoom({
         </p>
       </div>
 
-      <div className="card text-sm">
-        {token && livekitUrl && room ? (
-          <>
-            <p className="font-semibold">Video room ready</p>
-            <p className="text-xs text-ink-500 break-all">Room: {room}</p>
-            <p className="mt-2 text-xs text-ink-500">
-              Wire <code>@livekit/components-react</code> &lt;LiveKitRoom&gt; with the token + URL below to render audio/video.
-              Token is one-time, in memory only.
-            </p>
-            {/* The LiveKitRoom component will be added once @livekit/components-react is installed. */}
-          </>
-        ) : (
-          <p className="text-ink-500">LiveKit not configured. Set LIVEKIT_* env vars to enable video.</p>
-        )}
-      </div>
+      {token && livekitUrl && room && status === "live" ? (
+        <div className="overflow-hidden rounded-2xl border border-black/5" style={{ height: "60vh" }}>
+          <LiveKitRoom
+            token={token}
+            serverUrl={livekitUrl}
+            connect={true}
+            audio={true}
+            video={true}
+            onDisconnected={() => setStatus("ended")}
+            data-lk-theme="default"
+            style={{ height: "100%" }}
+          >
+            <VideoConference />
+            <RoomAudioRenderer />
+          </LiveKitRoom>
+        </div>
+      ) : (
+        <div className="card text-sm text-ink-500">
+          {status === "ended"
+            ? "Session ended."
+            : "Video unavailable — set LIVEKIT_* env vars."}
+        </div>
+      )}
 
       {status === "live" ? (
         <button onClick={end} disabled={ending} className="btn-primary w-full">
