@@ -8,16 +8,25 @@ export default async function AssignmentsPage() {
   const user = await requireOnboardedUser();
   const supabase = supabaseServer();
 
-  const { data: assignments } = await supabase
-    .from("assignments")
-    .select(`
-      id,title,kind,due_at,max_score,course_id,
-      course:courses(title,language),
-      submissions!left(id,status,student_id)
-    `)
-    .eq("published", true)
-    .order("due_at", { ascending: true, nullsFirst: false })
-    .limit(50);
+  const { data: enrollments } = await supabase
+    .from("enrollments")
+    .select("course_id")
+    .eq("user_id", user.id);
+  const courseIds = (enrollments ?? []).map((e) => e.course_id);
+
+  const { data: assignments } = courseIds.length === 0
+    ? { data: [] as any[] }
+    : await supabase
+        .from("assignments")
+        .select(`
+          id,title,kind,due_at,max_score,course_id,
+          course:courses(title,language),
+          submissions!left(id,status,student_id)
+        `)
+        .in("course_id", courseIds)
+        .eq("published", true)
+        .order("due_at", { ascending: true, nullsFirst: false })
+        .limit(50);
 
   const rows = (assignments ?? []).map((a: any) => {
     const mine = (a.submissions ?? []).find((s: any) => s.student_id === user.id);
@@ -29,13 +38,18 @@ export default async function AssignmentsPage() {
       <header>
         <h1 className="text-2xl font-bold">Assignments</h1>
         <p className="text-sm text-ink-500">
-          Submit any time — AI grades in seconds, your teacher reviews and returns.
+          AI grades in seconds — your teacher reviews and returns.
         </p>
       </header>
 
-      {rows.length === 0 ? (
+      {courseIds.length === 0 ? (
         <p className="card text-sm text-ink-500">
-          No assignments yet. Teachers can create them in <Link href="/teach" className="text-brand-500">Teach</Link>.
+          You're not enrolled in any courses yet.{" "}
+          <Link href="/learn" className="text-brand-500">Browse courses →</Link>
+        </p>
+      ) : rows.length === 0 ? (
+        <p className="card text-sm text-ink-500">
+          No assignments yet in your enrolled courses.
         </p>
       ) : (
         <ul className="space-y-2">

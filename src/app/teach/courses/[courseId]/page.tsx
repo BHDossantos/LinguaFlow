@@ -21,11 +21,18 @@ export default async function TeacherCoursePage({
   if (!course) notFound();
   if (course.teacher_id !== user.id) redirect("/teach");
 
-  const { data: assignments } = await supabase
-    .from("assignments")
-    .select("id,title,kind,due_at,published,max_score")
-    .eq("course_id", params.courseId)
-    .order("created_at", { ascending: false });
+  const [{ data: assignments }, { data: roster }] = await Promise.all([
+    supabase
+      .from("assignments")
+      .select("id,title,kind,due_at,published,max_score")
+      .eq("course_id", params.courseId)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("enrollments")
+      .select("user_id,enrolled_at,profile:profiles(display_name,cefr_level)")
+      .eq("course_id", params.courseId)
+      .order("enrolled_at", { ascending: false }),
+  ]);
 
   return (
     <div className="space-y-4">
@@ -44,6 +51,24 @@ export default async function TeacherCoursePage({
           + Assignment
         </Link>
       </div>
+
+      <section className="space-y-2">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
+          Students ({roster?.length ?? 0})
+        </h2>
+        {(roster ?? []).length === 0 ? (
+          <p className="card text-sm text-ink-500">No students enrolled yet.</p>
+        ) : (
+          <ul className="space-y-1">
+            {(roster ?? []).map((r: any) => (
+              <li key={r.user_id} className="card flex items-center justify-between py-2">
+                <span className="text-sm">{r.profile?.display_name ?? r.user_id.slice(0,8)}</span>
+                <span className="text-xs text-ink-500">{r.profile?.cefr_level ?? ""}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <section className="space-y-2">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">

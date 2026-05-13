@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { requireOnboardedUser } from "@/lib/auth";
+import { EnrollButton } from "@/components/EnrollButton";
 
 export const dynamic = "force-dynamic";
 
@@ -15,25 +16,35 @@ const KIND_ICON: Record<string, string> = {
 };
 
 export default async function CoursePage({ params }: { params: { courseId: string } }) {
-  await requireOnboardedUser();
+  const user = await requireOnboardedUser();
   const supabase = supabaseServer();
-  const [{ data: course }, { data: lessons }] = await Promise.all([
+  const [{ data: course }, { data: lessons }, { data: enrollment }] = await Promise.all([
     supabase.from("courses").select("*").eq("id", params.courseId).single(),
     supabase
       .from("lessons")
       .select("id,position,title,kind,estimated_minutes")
       .eq("course_id", params.courseId)
       .order("position"),
+    supabase
+      .from("enrollments")
+      .select("course_id")
+      .eq("user_id", user.id)
+      .eq("course_id", params.courseId)
+      .maybeSingle(),
   ]);
 
   if (!course) return <p>Course not found.</p>;
+  const enrolled = !!enrollment;
 
   return (
     <div className="space-y-4">
-      <header>
-        <Link href="/learn" className="text-sm text-brand-500">← All courses</Link>
-        <h1 className="mt-2 text-2xl font-bold">{course.title}</h1>
-        <p className="text-sm text-ink-500">{course.description}</p>
+      <header className="flex items-start justify-between gap-3">
+        <div>
+          <Link href="/learn" className="text-sm text-brand-500">← All courses</Link>
+          <h1 className="mt-2 text-2xl font-bold">{course.title}</h1>
+          <p className="text-sm text-ink-500">{course.description}</p>
+        </div>
+        <EnrollButton courseId={course.id} enrolled={enrolled} />
       </header>
 
       <ol className="space-y-2">
