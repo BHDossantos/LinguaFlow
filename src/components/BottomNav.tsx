@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 const items = [
   { href: "/learn", label: "Learn", icon: "📚" },
   { href: "/review", label: "Review", icon: "🔁" },
+  { href: "/assignments", label: "Tasks", icon: "📝" },
   { href: "/practice", label: "Practice", icon: "💬" },
-  { href: "/translate", label: "Translate", icon: "🌐" },
   { href: "/tutors", label: "Tutors", icon: "🧑‍🏫" },
 ];
 

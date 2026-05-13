@@ -20,6 +20,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="font-sans">
         <main className="mx-auto max-w-screen-sm min-h-screen pb-24 px-4 pt-6">
+          <div className="mb-4 flex items-center justify-between">
+            <a href="/" className="text-sm font-semibold tracking-tight">
+              LinguaFlow
+            </a>
+            <a href="/teach" className="text-xs text-ink-500 hover:text-brand-500">
+              Teach →
+            </a>
+          </div>
           {children}
         </main>
         <BottomNav />
