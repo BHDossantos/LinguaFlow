@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireOnboardedUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
-import { submitAssignment } from "@/app/assignments/actions";
+import { SubmitForm } from "@/components/SubmitForm";
 
 export const dynamic = "force-dynamic";
 
@@ -44,30 +44,12 @@ export default async function AssignmentPage({
         <p className="whitespace-pre-wrap text-sm">{a.instructions_md}</p>
       </div>
 
-      <form action={submitAssignment} className="space-y-2">
-        <input type="hidden" name="assignmentId" value={a.id} />
-        <label className="block">
-          <span className="text-sm font-medium">Your submission</span>
-          <textarea
-            name="text"
-            rows={10}
-            required
-            minLength={1}
-            defaultValue={mine?.text ?? ""}
-            placeholder={
-              a.kind === "math"
-                ? "Show your work step by step…"
-                : a.kind === "speaking"
-                ? "Paste a transcript of what you said (audio upload coming soon)…"
-                : "Write your response here…"
-            }
-            className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2"
-          />
-        </label>
-        <button type="submit" className="btn-primary w-full">
-          {mine ? "Resubmit" : "Submit for AI grading"}
-        </button>
-      </form>
+      <SubmitForm
+        assignmentId={a.id}
+        kind={a.kind}
+        defaultText={mine?.text ?? null}
+        hasExisting={!!mine}
+      />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
 import { submitTeacherReview } from "@/app/teach/actions";
 import { GradeRunner } from "@/components/GradeRunner";
+import { AttachmentViewer } from "@/components/AttachmentViewer";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export default async function TeacherSubmissionPage({
   const { data: s } = await supabase
     .from("submissions")
     .select(`
-      id,text,status,student_id,submitted_at,
+      id,text,file_url,status,student_id,submitted_at,
       assignment:assignments(id,title,max_score,teacher_id,instructions_md)
     `)
     .eq("id", params.submissionId)
@@ -55,9 +56,13 @@ export default async function TeacherSubmissionPage({
         </p>
       </header>
 
-      <details open className="card">
+      <details open className="card space-y-2">
         <summary className="cursor-pointer text-sm font-semibold">Student's submission</summary>
-        <p className="mt-2 whitespace-pre-wrap text-sm text-ink-700">{s.text ?? "(empty)"}</p>
+        {s.text && (
+          <p className="mt-2 whitespace-pre-wrap text-sm text-ink-700">{s.text}</p>
+        )}
+        {s.file_url && <AttachmentViewer submissionId={s.id} hint={s.file_url} />}
+        {!s.text && !s.file_url && <p className="text-sm text-ink-500">(empty)</p>}
       </details>
 
       <section className="card space-y-2">
