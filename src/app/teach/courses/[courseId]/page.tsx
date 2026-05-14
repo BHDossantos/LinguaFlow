@@ -47,6 +47,9 @@ export default async function TeacherCoursePage({
       </header>
 
       <div className="flex gap-2">
+        <Link href={`/teach/courses/${course.id}/lessons/new`} className="btn-primary flex-1 text-center">
+          + Lesson
+        </Link>
         <Link href={`/teach/courses/${course.id}/assignments/new`} className="btn-primary flex-1 text-center">
           + Assignment
         </Link>

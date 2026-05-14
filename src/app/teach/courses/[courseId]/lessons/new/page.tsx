@@ -2,11 +2,11 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
-import { AssignmentComposer } from "./AssignmentComposer";
+import { LessonComposer } from "./LessonComposer";
 
 export const dynamic = "force-dynamic";
 
-export default async function NewAssignmentPage({
+export default async function NewLessonPage({
   params,
 }: {
   params: { courseId: string };
@@ -23,8 +23,8 @@ export default async function NewAssignmentPage({
       <Link href={`/teach/courses/${course.id}`} className="text-sm text-brand-500">
         ← {course.title}
       </Link>
-      <h1 className="text-2xl font-bold">New assignment</h1>
-      <AssignmentComposer courseId={course.id} />
+      <h1 className="text-2xl font-bold">New lesson</h1>
+      <LessonComposer courseId={course.id} />
     </div>
   );
 }

@@ -50,6 +50,63 @@ export async function createCourse(formData: FormData) {
   redirect(`/teach/courses/${course.id}`);
 }
 
+const LessonInput = z.object({
+  courseId: z.string().uuid(),
+  title: z.string().min(2).max(160),
+  kind: z.enum(["reading", "grammar", "listening", "writing"]),
+  content: z.string().min(1).max(12000),
+  keyTermsRaw: z.string().max(4000).optional(),
+  notes: z.string().max(4000).optional(),
+  estimatedMinutes: z.coerce.number().int().min(1).max(180).default(10),
+});
+
+function parseKeyTerms(raw?: string) {
+  if (!raw) return [];
+  return raw
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const idx = line.indexOf(":");
+      if (idx === -1) return { term: line, definition: "" };
+      return { term: line.slice(0, idx).trim(), definition: line.slice(idx + 1).trim() };
+    });
+}
+
+export async function createLesson(input: z.input<typeof LessonInput>) {
+  const data = LessonInput.parse(input);
+  const supabase = supabaseServer();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/sign-in");
+
+  const { data: course } = await supabase
+    .from("courses").select("teacher_id").eq("id", data.courseId).single();
+  if (!course || course.teacher_id !== user.id) throw new Error("not your course");
+
+  const { data: last } = await supabase
+    .from("lessons")
+    .select("position")
+    .eq("course_id", data.courseId)
+    .order("position", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const position = (last?.position ?? 0) + 1;
+
+  const { error } = await supabase.from("lessons").insert({
+    course_id: data.courseId,
+    position,
+    title: data.title,
+    kind: data.kind,
+    body: { content: data.content, key_terms: parseKeyTerms(data.keyTermsRaw) },
+    grammar_notes_md: data.notes || null,
+    estimated_minutes: data.estimatedMinutes,
+  });
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/teach/courses/${data.courseId}`);
+  redirect(`/teach/courses/${data.courseId}`);
+}
+
 const AssignmentInput = z.object({
   courseId: z.string().uuid(),
   title: z.string().min(2).max(160),
