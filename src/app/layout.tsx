@@ -24,9 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <a href="/" className="text-sm font-semibold tracking-tight">
               LinguaFlow
             </a>
-            <a href="/teach" className="text-xs text-ink-500 hover:text-brand-500">
-              Teach →
-            </a>
+            <div className="flex gap-3 text-xs text-ink-500">
+              <a href="/family" className="hover:text-brand-500">Family →</a>
+              <a href="/teach" className="hover:text-brand-500">Teach →</a>
+            </div>
           </div>
           {children}
         </main>
