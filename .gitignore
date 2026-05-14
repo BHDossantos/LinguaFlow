@@ -10,3 +10,5 @@ dist
 .vercel
 .turbo
 coverage
+*.tsbuildinfo
+next-env.d.ts
