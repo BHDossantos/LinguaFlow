@@ -50,6 +50,9 @@ export default async function TeacherCoursePage({
         <Link href={`/teach/courses/${course.id}/assignments/new`} className="btn-primary flex-1 text-center">
           + Assignment
         </Link>
+        <Link href={`/teach/courses/${course.id}/analytics`} className="btn-ghost flex-1 text-center">
+          Analytics
+        </Link>
       </div>
 
       <section className="space-y-2">
