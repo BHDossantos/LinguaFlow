@@ -5,6 +5,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { submitTeacherReview } from "@/app/teach/actions";
 import { GradeRunner } from "@/components/GradeRunner";
 import { AttachmentViewer } from "@/components/AttachmentViewer";
+import { IntegrityPanel } from "@/components/IntegrityPanel";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,14 @@ export default async function TeacherSubmissionPage({
     .select("*")
     .eq("submission_id", s.id)
     .order("reviewed_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const { data: integrity } = await supabase
+    .from("integrity_checks")
+    .select("ai_likelihood,ai_reasoning,similarity_max,similar_submission_id")
+    .eq("submission_id", s.id)
+    .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();
 
@@ -98,6 +107,8 @@ export default async function TeacherSubmissionPage({
           <p className="text-sm text-ink-500">Not graded yet — click Run AI grading.</p>
         )}
       </section>
+
+      <IntegrityPanel submissionId={s.id} existing={integrity ?? null} />
 
       <form action={submitTeacherReview} className="card space-y-2">
         <h2 className="font-semibold">Your review</h2>
