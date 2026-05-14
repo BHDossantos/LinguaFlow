@@ -27,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="flex gap-3 text-xs text-ink-500">
               <a href="/family" className="hover:text-brand-500">Family →</a>
               <a href="/teach" className="hover:text-brand-500">Teach →</a>
+              <a href="/school" className="hover:text-brand-500">School →</a>
             </div>
           </div>
           {children}
