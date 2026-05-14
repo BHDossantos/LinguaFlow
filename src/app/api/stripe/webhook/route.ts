@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import type Stripe from "stripe";
 
 export const runtime = "nodejs";
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(raw, sig, secret);
+    event = getStripe().webhooks.constructEvent(raw, sig, secret);
   } catch (e: any) {
     return NextResponse.json({ error: `bad signature: ${e?.message}` }, { status: 400 });
   }

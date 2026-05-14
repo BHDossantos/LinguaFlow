@@ -7,8 +7,13 @@ export const runtime = "nodejs";
 
 const Body = z.object({
   text: z.string().min(1).max(4000),
-  source: z.enum([...LANGUAGE_CODES, "auto"] as [string, ...string[]]).default("auto"),
-  target: z.enum(LANGUAGE_CODES as unknown as [string, ...string[]]),
+  source: z
+    .string()
+    .refine((v) => v === "auto" || (LANGUAGE_CODES as string[]).includes(v), "bad source")
+    .default("auto"),
+  target: z
+    .string()
+    .refine((v) => (LANGUAGE_CODES as string[]).includes(v), "bad target"),
   formality: z.enum(["neutral", "formal", "casual"]).default("neutral"),
 });
 

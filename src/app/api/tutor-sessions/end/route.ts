@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseServer } from "@/lib/supabase/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { livekitRoomService } from "@/lib/livekit";
 
 export const runtime = "nodejs";
@@ -42,13 +42,13 @@ export async function POST(req: Request) {
   // Capture only the amount actually used; Stripe refunds the rest.
   if (s.stripe_payment_intent && cents > 0) {
     try {
-      await stripe.paymentIntents.capture(s.stripe_payment_intent, { amount_to_capture: cents });
+      await getStripe().paymentIntents.capture(s.stripe_payment_intent, { amount_to_capture: cents });
     } catch (e: any) {
       // If already captured or canceled, log and continue.
       console.error("stripe capture failed", e?.message);
     }
   } else if (s.stripe_payment_intent) {
-    try { await stripe.paymentIntents.cancel(s.stripe_payment_intent); } catch {}
+    try { await getStripe().paymentIntents.cancel(s.stripe_payment_intent); } catch {}
   }
 
   if (s.livekit_room) {

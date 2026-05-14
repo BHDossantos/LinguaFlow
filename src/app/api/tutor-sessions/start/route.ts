@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseServer } from "@/lib/supabase/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 import { livekitRoomService, mintLivekitToken } from "@/lib/livekit";
 
 export const runtime = "nodejs";
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
   }
 
   // Reserve funds: PaymentIntent with manual capture for max budget.
-  const intent = await stripe.paymentIntents.create({
+  const intent = await getStripe().paymentIntents.create({
     amount: maxBudgetCents,
     currency: "usd",
     capture_method: "manual",
