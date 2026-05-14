@@ -39,10 +39,92 @@ export function LessonPlayer({
     return <RoleplayLesson body={lesson.body} title={lesson.title} courseId={courseId} />;
   }
   return (
-    <div className="space-y-3">
-      <h1 className="text-xl font-bold">{lesson.title}</h1>
-      <pre className="card overflow-auto text-xs">{JSON.stringify(lesson.body, null, 2)}</pre>
-      <Link href={`/learn/${courseId}`} className="btn-ghost">Back</Link>
+    <ContentLesson
+      body={lesson.body}
+      title={lesson.title}
+      courseId={courseId}
+      lessonId={lesson.id}
+      grammar={lesson.grammar_notes_md}
+    />
+  );
+}
+
+function ContentLesson({
+  body, title, courseId, lessonId, grammar,
+}: {
+  body: any;
+  title: string;
+  courseId: string;
+  lessonId: string;
+  grammar: string | null;
+}) {
+  const [done, setDone] = useState(false);
+  const [pending, startTransition] = useTransition();
+
+  // Supported shapes:
+  //   { content: "markdown-ish text" }
+  //   { sections: [{ heading, text }] }
+  //   { content, sections }
+  const sections: Array<{ heading?: string; text: string }> = body?.sections ?? [];
+
+  function complete() {
+    startTransition(async () => {
+      try { await completeLessonAction(lessonId, 100); } catch {}
+    });
+    setDone(true);
+  }
+
+  if (done) {
+    return (
+      <div className="space-y-3">
+        <h1 className="text-xl font-bold">Lesson complete 🎉</h1>
+        <p className="text-sm text-ink-500">
+          {pending ? "Saving your progress…" : "Progress saved."}
+        </p>
+        <Link href={`/learn/${courseId}`} className="btn-primary inline-block">Continue</Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <h1 className="text-xl font-bold">{title}</h1>
+
+      {body?.content && (
+        <article className="card whitespace-pre-wrap text-sm leading-relaxed text-ink-700">
+          {body.content}
+        </article>
+      )}
+
+      {sections.map((s, i) => (
+        <section key={i} className="card space-y-1">
+          {s.heading && <h2 className="font-semibold">{s.heading}</h2>}
+          <p className="whitespace-pre-wrap text-sm leading-relaxed text-ink-700">{s.text}</p>
+        </section>
+      ))}
+
+      {body?.key_terms && Array.isArray(body.key_terms) && (
+        <div className="card">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Key terms</p>
+          <ul className="mt-1 space-y-1 text-sm">
+            {body.key_terms.map((t: any, i: number) => (
+              <li key={i}><strong>{t.term}:</strong> {t.definition}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {grammar && (
+        <details className="card">
+          <summary className="cursor-pointer font-medium">Notes</summary>
+          <p className="mt-2 whitespace-pre-wrap text-sm text-ink-700">{grammar}</p>
+        </details>
+      )}
+
+      <button onClick={complete} className="btn-primary w-full">Mark complete</button>
+      <Link href={`/learn/${courseId}`} className="block text-center text-sm text-ink-500">
+        Back to course
+      </Link>
     </div>
   );
 }
