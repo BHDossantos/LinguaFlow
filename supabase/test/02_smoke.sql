@@ -60,4 +60,27 @@ set role lf_rls_test;
 select count(*) as visible_submissions from public.submissions;
 reset role;
 
+\echo '== 10. classroom-course wiring auto-enrolls students =='
+-- Take any seeded course; attach it to the classroom from step 6; the
+-- student we put in that classroom must now be enrolled in the course.
+select id as course_id from public.courses limit 1 \gset
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000001';
+insert into public.classroom_courses (classroom_id, course_id, assigned_by)
+values (:'classroom_id', :'course_id', auth.uid());
+select public.sync_classroom_course_enrollments(:'classroom_id', :'course_id') as added_by_course_assign;
+select count(*) as student_enrolled
+from public.enrollments
+where user_id = '11111111-0000-0000-0000-000000000002' and course_id = :'course_id';
+
+-- Now add a brand-new student to the classroom and confirm the symmetric
+-- sync auto-enrolls them in the already-attached course.
+insert into auth.users (id, email, raw_user_meta_data)
+values ('11111111-0000-0000-0000-000000000099', 'newstu@test.com', '{"display_name":"New Stu"}');
+insert into public.classroom_members (classroom_id, user_id, role)
+values (:'classroom_id', '11111111-0000-0000-0000-000000000099', 'student');
+select public.sync_classroom_member_enrollments(:'classroom_id', '11111111-0000-0000-0000-000000000099') as added_by_member_join;
+select count(*) as new_student_enrolled
+from public.enrollments
+where user_id = '11111111-0000-0000-0000-000000000099' and course_id = :'course_id';
+
 \echo '== SMOKE TESTS PASSED =='

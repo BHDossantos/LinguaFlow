@@ -89,6 +89,12 @@ export async function addClassroomMember(input: z.input<typeof ClassroomMemberIn
     { onConflict: "classroom_id,user_id" },
   );
   if (error) throw new Error(error.message);
+  if (data.role === "student") {
+    await supabase.rpc("sync_classroom_member_enrollments", {
+      p_classroom: data.classroomId,
+      p_user: data.userId,
+    });
+  }
   revalidatePath(`/school/${data.orgId}/classrooms/${data.classroomId}`);
 }
 
@@ -100,6 +106,40 @@ export async function removeClassroomMember(input: z.input<typeof ClassroomMembe
     .delete()
     .eq("classroom_id", data.classroomId)
     .eq("user_id", data.userId);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/school/${data.orgId}/classrooms/${data.classroomId}`);
+}
+
+const ClassroomCourseInput = z.object({
+  orgId: z.string().uuid(),
+  classroomId: z.string().uuid(),
+  courseId: z.string().uuid(),
+});
+
+export async function assignCourseToClassroom(input: z.input<typeof ClassroomCourseInput>) {
+  const data = ClassroomCourseInput.parse(input);
+  const { supabase, userId } = await requireUserId();
+  const { error } = await supabase.from("classroom_courses").upsert(
+    { classroom_id: data.classroomId, course_id: data.courseId, assigned_by: userId },
+    { onConflict: "classroom_id,course_id" },
+  );
+  if (error) throw new Error(error.message);
+  // Auto-enroll every current student in the classroom.
+  await supabase.rpc("sync_classroom_course_enrollments", {
+    p_classroom: data.classroomId,
+    p_course: data.courseId,
+  });
+  revalidatePath(`/school/${data.orgId}/classrooms/${data.classroomId}`);
+}
+
+export async function unassignCourseFromClassroom(input: z.input<typeof ClassroomCourseInput>) {
+  const data = ClassroomCourseInput.parse(input);
+  const { supabase } = await requireUserId();
+  const { error } = await supabase
+    .from("classroom_courses")
+    .delete()
+    .eq("classroom_id", data.classroomId)
+    .eq("course_id", data.courseId);
   if (error) throw new Error(error.message);
   revalidatePath(`/school/${data.orgId}/classrooms/${data.classroomId}`);
 }
