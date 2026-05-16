@@ -38,6 +38,11 @@ export async function middleware(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user && !isPublic(req.nextUrl.pathname)) {
+    if (req.nextUrl.pathname.startsWith("/api/")) {
+      // APIs return JSON, not an HTML redirect — so non-browser callers
+      // (future mobile clients, external integrations) get a useful response.
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    }
     const url = req.nextUrl.clone();
     url.pathname = "/sign-in";
     url.searchParams.set("redirectTo", req.nextUrl.pathname);
