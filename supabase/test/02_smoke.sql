@@ -83,4 +83,29 @@ select count(*) as new_student_enrolled
 from public.enrollments
 where user_id = '11111111-0000-0000-0000-000000000099' and course_id = :'course_id';
 
+\echo '== 11. scheduling + attendance =='
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000001';
+insert into public.class_meetings (classroom_id, title, scheduled_at, duration_minutes, created_by)
+values (:'classroom_id', 'Test meeting', now(), 45, auth.uid())
+returning id as meeting_id \gset
+
+-- Owner marks attendance for the original student.
+insert into public.attendance (meeting_id, user_id, status, marked_by)
+values (:'meeting_id', '11111111-0000-0000-0000-000000000002', 'present', auth.uid());
+
+-- Parent (guardian) can read their student's attendance under RLS.
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000003';
+set role lf_rls_test;
+select count(*) as parent_can_see from public.attendance
+  where user_id = '11111111-0000-0000-0000-000000000002';
+reset role;
+
+-- A random unrelated user cannot.
+insert into auth.users (id, email) values ('11111111-0000-0000-0000-000000000088', 'rando@test.com');
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000088';
+set role lf_rls_test;
+select count(*) as stranger_can_see from public.attendance
+  where user_id = '11111111-0000-0000-0000-000000000002';
+reset role;
+
 \echo '== SMOKE TESTS PASSED =='

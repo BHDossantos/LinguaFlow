@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
 import { ClassroomRoster } from "./ClassroomRoster";
 import { ClassroomCourses } from "./ClassroomCourses";
+import { ClassroomSchedule } from "./ClassroomSchedule";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export default async function ClassroomPage({
     { data: myOrgMembership },
     { data: assignedCourses },
     { data: myCourses },
+    { data: meetings },
   ] = await Promise.all([
     supabase
       .from("org_members")
@@ -57,6 +59,12 @@ export default async function ClassroomPage({
       .select("id,title,kind")
       .eq("teacher_id", user.id)
       .order("created_at", { ascending: false }),
+    supabase
+      .from("class_meetings")
+      .select("id,title,location,scheduled_at,duration_minutes,attendance(user_id)")
+      .eq("classroom_id", params.classroomId)
+      .order("scheduled_at", { ascending: true })
+      .limit(20),
   ]);
 
   const isOrgAdmin =
@@ -94,6 +102,17 @@ export default async function ClassroomPage({
     .filter((c: any) => !assignedIds.has(c.id))
     .map((c: any) => ({ id: c.id, title: c.title, kind: c.kind }));
 
+  const studentCount = inClassroom.filter((p) => p.role === "student").length;
+  const meetingRows = (meetings ?? []).map((m: any) => ({
+    id: m.id,
+    title: m.title,
+    location: m.location,
+    scheduled_at: m.scheduled_at,
+    duration_minutes: m.duration_minutes,
+    attendance_taken: (m.attendance ?? []).length,
+    attendance_total: studentCount,
+  }));
+
   // Recent assignments across all assigned courses, for a quick at-a-glance view.
   const assignedCourseIds = assigned.map((c) => c.id);
   const { data: recentAssignments } =
@@ -125,6 +144,13 @@ export default async function ClassroomPage({
         canManage={canManage}
         assigned={assigned}
         assignable={assignable}
+      />
+
+      <ClassroomSchedule
+        orgId={params.orgId}
+        classroomId={classroom.id}
+        canManage={canManage}
+        meetings={meetingRows}
       />
 
       {(recentAssignments ?? []).length > 0 && (

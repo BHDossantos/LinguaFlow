@@ -22,8 +22,14 @@ export default async function ParentStudentPage({
     .maybeSingle();
   if (!link) notFound();
 
-  const [{ data: student }, { data: enrollments }, { data: recentLessons }, { data: graded }] =
-    await Promise.all([
+  const since30 = new Date(Date.now() - 30 * 86_400_000).toISOString();
+  const [
+    { data: student },
+    { data: enrollments },
+    { data: recentLessons },
+    { data: graded },
+    { data: attendance },
+  ] = await Promise.all([
       supabase
         .from("profiles")
         .select("display_name,cefr_level,goals")
@@ -50,7 +56,16 @@ export default async function ParentStudentPage({
         .eq("student_id", params.studentId)
         .order("submitted_at", { ascending: false })
         .limit(10),
+      supabase
+        .from("attendance")
+        .select("status,marked_at")
+        .eq("user_id", params.studentId)
+        .gte("marked_at", since30),
     ]);
+
+  const attTotals = { present: 0, absent: 0, late: 0, excused: 0 } as Record<string, number>;
+  for (const a of attendance ?? []) attTotals[(a as any).status] = (attTotals[(a as any).status] ?? 0) + 1;
+  const attCount = (attendance ?? []).length;
 
   return (
     <div className="space-y-5">
@@ -62,6 +77,29 @@ export default async function ParentStudentPage({
           {student?.goals?.length ? ` · goals: ${student.goals.join(", ")}` : ""}
         </p>
       </header>
+
+      {attCount > 0 && (
+        <section className="space-y-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
+            Attendance (last 30 days)
+          </h2>
+          <div className="card grid grid-cols-4 gap-2 text-center">
+            {(["present", "absent", "late", "excused"] as const).map((s) => (
+              <div key={s}>
+                <p className={
+                  "text-2xl font-bold " +
+                  (s === "present" ? "text-green-600" :
+                   s === "absent"  ? "text-red-600" :
+                   s === "late"    ? "text-amber-600" : "text-brand-700")
+                }>
+                  {attTotals[s] ?? 0}
+                </p>
+                <p className="text-xs capitalize text-ink-500">{s}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="space-y-2">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
