@@ -29,12 +29,19 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
   const nowIso = new Date().toISOString();
   const since14 = new Date(Date.now() - 14 * 86_400_000).toISOString();
 
-  // 1. Due SRS reviews.
-  const { count: dueReviews } = await supabase
-    .from("srs_cards")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", userId)
-    .lte("due_at", nowIso);
+  // 1. Due SRS reviews + unread notifications.
+  const [{ count: dueReviews }, { count: unreadNotifs }] = await Promise.all([
+    supabase
+      .from("srs_cards")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .lte("due_at", nowIso),
+    supabase
+      .from("notifications")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .is("read_at", null),
+  ]);
 
   // 2. Classrooms I'm in → upcoming meetings + recent announcements.
   const { data: classroomLinks } = await supabase
@@ -118,20 +125,20 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
         </h1>
       </header>
 
-      <section className="grid grid-cols-2 gap-2">
-        <Link href="/review" className="card flex items-center justify-between">
-          <div>
-            <p className="text-2xl font-bold">{dueReviews ?? 0}</p>
-            <p className="text-xs text-ink-500">Reviews due</p>
-          </div>
-          <span className="text-2xl">🔁</span>
+      <section className="grid grid-cols-3 gap-2">
+        <Link href="/review" className="card flex flex-col items-start">
+          <p className="text-2xl font-bold">{dueReviews ?? 0}</p>
+          <p className="text-xs text-ink-500">Reviews due</p>
         </Link>
-        <Link href="/assignments" className="card flex items-center justify-between">
-          <div>
-            <p className="text-2xl font-bold">{openRows.length}</p>
-            <p className="text-xs text-ink-500">Open assignments</p>
-          </div>
-          <span className="text-2xl">📝</span>
+        <Link href="/assignments" className="card flex flex-col items-start">
+          <p className="text-2xl font-bold">{openRows.length}</p>
+          <p className="text-xs text-ink-500">Open tasks</p>
+        </Link>
+        <Link href="/inbox" className="card flex flex-col items-start">
+          <p className={"text-2xl font-bold " + ((unreadNotifs ?? 0) > 0 ? "text-brand-600" : "")}>
+            {unreadNotifs ?? 0}
+          </p>
+          <p className="text-xs text-ink-500">Unread</p>
         </Link>
       </section>
 

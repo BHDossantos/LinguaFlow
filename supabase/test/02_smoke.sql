@@ -127,4 +127,32 @@ select count(*) as stranger_sees_announcement
   from public.announcements where classroom_id = :'classroom_id';
 reset role;
 
+\echo '== 13. notification triggers fan out =='
+-- grade_returned: teacher returns a grade on the student's submission.
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000001';
+insert into public.teacher_reviews (submission_id, teacher_id, final_score, comments_md, approved_ai)
+values (:'sub_id', auth.uid(), 88, 'Solid effort', true);
+select count(*) as grade_notifications
+  from public.notifications
+  where user_id = '11111111-0000-0000-0000-000000000002' and kind = 'grade_returned';
+
+-- announcement: should NOT notify the poster, should notify other classroom members.
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000001';
+insert into public.announcements (classroom_id, body, posted_by)
+values (:'classroom_id', 'Pop quiz Monday', auth.uid());
+select count(*) as student_announcement_notifs
+  from public.notifications
+  where user_id = '11111111-0000-0000-0000-000000000002' and kind = 'announcement';
+select count(*) as poster_announcement_notifs
+  from public.notifications
+  where user_id = '11111111-0000-0000-0000-000000000001' and kind = 'announcement';
+
+-- attendance_alert: marking a student absent notifies their guardian.
+insert into public.attendance (meeting_id, user_id, status, marked_by)
+values (:'meeting_id', '11111111-0000-0000-0000-000000000002', 'absent', auth.uid())
+on conflict (meeting_id, user_id) do update set status = excluded.status, marked_at = now();
+select count(*) as guardian_attendance_notifs
+  from public.notifications
+  where user_id = '11111111-0000-0000-0000-000000000003' and kind = 'attendance_alert';
+
 \echo '== SMOKE TESTS PASSED =='
