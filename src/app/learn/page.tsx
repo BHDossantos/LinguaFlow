@@ -5,22 +5,42 @@ import { requireOnboardedUser, getPrimaryTargetLanguage } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
+type Scope = "mine" | "all";
+
 export default async function LearnPage({
   searchParams,
 }: {
-  searchParams: { lang?: string };
+  searchParams: { lang?: string; scope?: string };
 }) {
-  await requireOnboardedUser();
+  const user = await requireOnboardedUser();
   const supabase = supabaseServer();
   const primary = await getPrimaryTargetLanguage();
   const lang = (searchParams.lang ?? primary?.language ?? "es") as LanguageCode;
+  const scope: Scope = searchParams.scope === "all" ? "all" : "mine";
 
-  const { data: courses } = await supabase
+  let query = supabase
     .from("courses")
-    .select("id,title,description,cefr_level,goal_tag,language,dialect")
+    .select("id,title,description,cefr_level,goal_tag,language,dialect,org_id,teacher_id")
     .eq("language", lang)
     .eq("published", true)
     .order("position");
+
+  if (scope === "mine") {
+    const [{ data: enrollments }, { data: orgs }] = await Promise.all([
+      supabase.from("enrollments").select("course_id").eq("user_id", user.id),
+      supabase.from("org_members").select("org_id").eq("user_id", user.id),
+    ]);
+    const enrolledIds = (enrollments ?? []).map((e) => e.course_id);
+    const orgIds = (orgs ?? []).map((o) => o.org_id);
+
+    // "Mine" = enrolled OR in one of my orgs OR platform content (teacher_id null).
+    const clauses: string[] = ["teacher_id.is.null"];
+    if (enrolledIds.length > 0) clauses.push(`id.in.(${enrolledIds.join(",")})`);
+    if (orgIds.length > 0) clauses.push(`org_id.in.(${orgIds.join(",")})`);
+    query = query.or(clauses.join(","));
+  }
+
+  const { data: courses } = await query;
 
   return (
     <div className="space-y-5">
@@ -29,7 +49,9 @@ export default async function LearnPage({
           Learn {LANGUAGES[lang]?.label ?? lang}
         </h1>
         <p className="text-sm text-ink-500">
-          Pick a course aligned with your goal. CEFR levels show what you'll be able to do.
+          {scope === "mine"
+            ? "Your courses plus platform-authored content."
+            : "Every published course on the platform."}
         </p>
       </header>
 
@@ -37,7 +59,7 @@ export default async function LearnPage({
         {Object.entries(LANGUAGES).map(([code, l]) => (
           <Link
             key={code}
-            href={`/learn?lang=${code}`}
+            href={`/learn?lang=${code}${scope === "all" ? "&scope=all" : ""}`}
             className={`shrink-0 rounded-full border px-3 py-1.5 text-sm ${
               code === lang
                 ? "border-brand-500 bg-brand-50 text-brand-700"
@@ -50,15 +72,38 @@ export default async function LearnPage({
         ))}
       </div>
 
+      <div className="flex gap-2 text-sm">
+        <Link
+          href={`/learn?lang=${lang}`}
+          className={
+            "rounded-full px-3 py-1 " +
+            (scope === "mine" ? "bg-brand-500 text-white" : "bg-black/5 text-ink-700")
+          }
+        >
+          My courses
+        </Link>
+        <Link
+          href={`/learn?lang=${lang}&scope=all`}
+          className={
+            "rounded-full px-3 py-1 " +
+            (scope === "all" ? "bg-brand-500 text-white" : "bg-black/5 text-ink-700")
+          }
+        >
+          Browse all
+        </Link>
+      </div>
+
       <ul className="space-y-3">
         {(courses ?? []).map((c) => (
           <li key={c.id}>
             <Link href={`/learn/${c.id}`} className="card block">
               <div className="flex items-center justify-between">
                 <h2 className="font-semibold">{c.title}</h2>
-                <span className="rounded-md bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700">
-                  {c.cefr_level}
-                </span>
+                {c.cefr_level && (
+                  <span className="rounded-md bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700">
+                    {c.cefr_level}
+                  </span>
+                )}
               </div>
               <p className="mt-1 text-sm text-ink-500">{c.description}</p>
               {c.goal_tag && (
@@ -71,7 +116,9 @@ export default async function LearnPage({
         ))}
         {(!courses || courses.length === 0) && (
           <li className="card text-sm text-ink-500">
-            No courses yet for this language. Apply <code>supabase/migrations/0001_init.sql</code> and seed.
+            {scope === "mine"
+              ? "Nothing here yet. Browse all courses to enroll, or ask your teacher to attach a course to your classroom."
+              : "No published courses yet for this language."}
           </li>
         )}
       </ul>
