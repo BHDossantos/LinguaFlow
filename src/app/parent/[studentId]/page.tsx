@@ -67,6 +67,24 @@ export default async function ParentStudentPage({
   for (const a of attendance ?? []) attTotals[(a as any).status] = (attTotals[(a as any).status] ?? 0) + 1;
   const attCount = (attendance ?? []).length;
 
+  // Recent announcements across every classroom the student is in.
+  const { data: classroomLinks } = await supabase
+    .from("classroom_members")
+    .select("classroom_id,classroom:classrooms(name)")
+    .eq("user_id", params.studentId);
+  const classroomIds = (classroomLinks ?? []).map((c: any) => c.classroom_id);
+  const classroomNames = new Map(
+    (classroomLinks ?? []).map((c: any) => [c.classroom_id, c.classroom?.name as string]),
+  );
+  const { data: announcements } = classroomIds.length === 0
+    ? { data: [] as any[] }
+    : await supabase
+        .from("announcements")
+        .select("id,body,pinned,created_at,classroom_id")
+        .in("classroom_id", classroomIds)
+        .order("created_at", { ascending: false })
+        .limit(8);
+
   return (
     <div className="space-y-5">
       <Link href="/family" className="text-sm text-brand-500">← Family</Link>
@@ -77,6 +95,26 @@ export default async function ParentStudentPage({
           {student?.goals?.length ? ` · goals: ${student.goals.join(", ")}` : ""}
         </p>
       </header>
+
+      {(announcements ?? []).length > 0 && (
+        <section className="space-y-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
+            Announcements
+          </h2>
+          <ul className="space-y-2">
+            {(announcements ?? []).map((a: any) => (
+              <li key={a.id} className="card space-y-1">
+                <p className="text-xs text-ink-500">
+                  {a.pinned && <span className="mr-1 text-brand-500">📌</span>}
+                  {classroomNames.get(a.classroom_id) ?? "Classroom"} ·{" "}
+                  {new Date(a.created_at).toLocaleDateString()}
+                </p>
+                <p className="whitespace-pre-wrap text-sm">{a.body}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {attCount > 0 && (
         <section className="space-y-2">

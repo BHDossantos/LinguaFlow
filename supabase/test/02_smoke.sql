@@ -108,4 +108,23 @@ select count(*) as stranger_can_see from public.attendance
   where user_id = '11111111-0000-0000-0000-000000000002';
 reset role;
 
+\echo '== 12. announcements visibility =='
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000001';
+insert into public.announcements (classroom_id, body, posted_by)
+values (:'classroom_id', 'Field trip Friday — bring lunch.', auth.uid());
+
+-- Parent of a student in the classroom can read (via guardian policy).
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000003';
+set role lf_rls_test;
+select count(*) as parent_sees_announcement
+  from public.announcements where classroom_id = :'classroom_id';
+reset role;
+
+-- Random user with no link to the classroom cannot.
+set request.jwt.claim.sub = '11111111-0000-0000-0000-000000000088';
+set role lf_rls_test;
+select count(*) as stranger_sees_announcement
+  from public.announcements where classroom_id = :'classroom_id';
+reset role;
+
 \echo '== SMOKE TESTS PASSED =='

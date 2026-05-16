@@ -5,6 +5,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { ClassroomRoster } from "./ClassroomRoster";
 import { ClassroomCourses } from "./ClassroomCourses";
 import { ClassroomSchedule } from "./ClassroomSchedule";
+import { Announcements } from "./Announcements";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +31,7 @@ export default async function ClassroomPage({
     { data: assignedCourses },
     { data: myCourses },
     { data: meetings },
+    { data: announcements },
   ] = await Promise.all([
     supabase
       .from("org_members")
@@ -64,6 +66,12 @@ export default async function ClassroomPage({
       .select("id,title,location,scheduled_at,duration_minutes,attendance(user_id)")
       .eq("classroom_id", params.classroomId)
       .order("scheduled_at", { ascending: true })
+      .limit(20),
+    supabase
+      .from("announcements")
+      .select("id,body,pinned,created_at,poster:profiles!announcements_posted_by_fkey(display_name)")
+      .eq("classroom_id", params.classroomId)
+      .order("created_at", { ascending: false })
       .limit(20),
   ]);
 
@@ -151,6 +159,19 @@ export default async function ClassroomPage({
         classroomId={classroom.id}
         canManage={canManage}
         meetings={meetingRows}
+      />
+
+      <Announcements
+        orgId={params.orgId}
+        classroomId={classroom.id}
+        canManage={canManage}
+        items={(announcements ?? []).map((a: any) => ({
+          id: a.id,
+          body: a.body,
+          pinned: a.pinned,
+          created_at: a.created_at,
+          posted_by_name: a.poster?.display_name ?? null,
+        }))}
       />
 
       {(recentAssignments ?? []).length > 0 && (
