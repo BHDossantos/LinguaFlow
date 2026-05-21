@@ -3,27 +3,43 @@
 Boots a minimal Supabase-compatible backend so the app can be exercised
 end-to-end without paying for or provisioning a hosted Supabase project.
 
-What's running:
-- `supabase/postgres` — postgres with the Supabase roles/schemas preloaded
-- `supabase/gotrue` — auth (signup, password sign-in, JWT issuance)
-- `postgrest/postgrest` — REST layer that PostgREST exposes for `.from()` queries
-- `gateway.mjs` — tiny Node proxy on `:54321` that routes `/auth/v1/*` → gotrue,
-  `/rest/v1/*` → postgrest, mimicking the Supabase URL shape `supabase-js` expects.
+`supabase start` itself pulls images from `public.ecr.aws`, which was blocked
+in our build sandbox — this stack pulls only from Docker Hub instead.
 
-Skipped: storage, realtime, edge-runtime, mailpit, studio, kong. The app uses
-storage in one place (assignment file uploads via `SubmitForm`); everything
-else is exercisable without it.
-
-## Boot
+## TL;DR
 
 ```bash
-cd devstack
-docker compose up -d
-# wait for postgres health (a few seconds), then:
-docker exec lf_pg psql -U postgres -f - < ../supabase/migrations/0001_init.sql
-# ...etc, or apply all in a loop; see scripts below.
-node gateway.mjs &
+# .env.local must have NEXT_PUBLIC_SUPABASE_URL/ANON_KEY + SUPABASE_SERVICE_ROLE_KEY
+set -a && . .env.local && set +a
+bash devstack/setup.sh        # boots everything, applies migrations, seeds data
+npm run dev                   # the app, against the local stack
 ```
+
+`setup.sh` is idempotent — safe to re-run.
+
+## What's running
+
+- `supabase/postgres` — postgres with the Supabase roles/schemas preloaded
+- `supabase/gotrue` — auth (signup, password sign-in, JWT issuance)
+- `postgrest/postgrest` — the REST layer behind `supabase.from()` / `.rpc()`
+- `supabase/storage-api` *or* `storage-stub.mjs` — object storage (see below)
+- `gateway.mjs` — host Node proxy on `:54321` that routes `/auth/v1/*` →
+  gotrue, `/rest/v1/*` → postgrest, `/storage/v1/*` → storage, and injects
+  CORS headers (the real Supabase setup does this in its kong gateway).
+
+Skipped: realtime, edge-runtime, mailpit, studio, kong, imgproxy. Nothing in
+the app depends on them for page rendering or the assignment-submission flow.
+
+## Storage: container vs. stub
+
+`setup.sh` prefers the real `supabase/storage-api` container. If that image
+isn't present locally (e.g. Docker Hub anonymous pull-rate limit), it falls
+back to `storage-stub.mjs` — a ~90-line Node service implementing exactly the
+storage HTTP subset `@supabase/storage-js` v2 uses in this app: multipart
+object upload, signed-URL minting, signed-URL GET. The stub does NOT enforce
+auth/RLS — it exercises the app's own upload code path, not Supabase's storage
+security. To use the real container, pre-pull the image:
+`docker pull supabase/storage-api:v1.19.3` then re-run `setup.sh`.
 
 ## Env vars for Next.js
 
@@ -55,25 +71,22 @@ console.log('anon =', jwt({iss:'supabase-demo',role:'anon',iat:Math.floor(Date.n
 console.log('srv  =', jwt({iss:'supabase-demo',role:'service_role',iat:Math.floor(Date.now()/1000),exp}));
 ```
 
-## Seed a test user
+## Seeded test data
 
-```bash
-SRK="<service-role JWT>"
-curl -X POST http://localhost:54321/auth/v1/admin/users \
-  -H "Authorization: Bearer $SRK" -H "apikey: $SRK" \
-  -H "Content-Type: application/json" \
-  -d '{"email":"learner@test.local","password":"test-password-123","email_confirm":true}'
-```
-
-Then in psql, populate the `target_languages` row so `requireOnboardedUser`
-passes, and apply `../supabase/seed/seed_es_a1.sql` for sample content.
+`setup.sh` creates (idempotently):
+- user `learner@test.local` / `test-password-123` (email pre-confirmed)
+- profile + a Spanish (es/latam, A1) target language → clears onboarding
+- sample content from `supabase/seed/*.sql` (3 courses, 13 lessons)
+- an enrollment + a `project`-kind assignment so the submission flow is testable
 
 ## Notes / known sharp edges
 
-- `supabase_auth_admin` and `authenticator` ship with no password in this
-  image. Set them via the local-trust 127.0.0.1 path as `supabase_admin`:
-  `docker exec -e PGPASSWORD=any lf_pg psql -h 127.0.0.1 -U supabase_admin -c "ALTER USER supabase_auth_admin WITH PASSWORD 'postgres'; ALTER USER authenticator WITH PASSWORD 'postgres';"`
-- Migration `0004_storage.sql` needs `storage.buckets`/`objects`, which are
-  normally created by `storage-api` on first boot. Since we're skipping that
-  service, create the bare tables once as `supabase_admin` (see the script
-  above) and `0004` will apply cleanly.
+- `supabase_auth_admin`, `authenticator`, and `supabase_storage_admin` ship
+  with no password in the supabase/postgres image. `setup.sh` sets them by
+  connecting over 127.0.0.1 (trust auth) as the superuser `supabase_admin`.
+- Migration `0004_storage.sql` needs `storage.buckets`/`objects`. With the
+  real storage-api container these are created by its own migrations; in stub
+  mode `setup.sh` creates the bare tables first so `0004` applies cleanly.
+- The supabase/postgres image restarts a few times during first init, so the
+  unix-socket healthcheck can pass before the TCP listener is ready —
+  `setup.sh` polls the real 127.0.0.1 connection instead.

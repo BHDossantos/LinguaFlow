@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   postgres:
     image: supabase/postgres:17.6.1.106
@@ -58,4 +57,26 @@ services:
       PGRST_DB_USE_LEGACY_GUCS: "false"
       PGRST_APP_SETTINGS_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
       PGRST_APP_SETTINGS_JWT_EXP: "3600"
+
+  storage:
+    image: supabase/storage-api:v1.19.3
+    container_name: lf_storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    environment:
+      ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NDkyMTMsImV4cCI6MTgxMDQ4NTIxM30.rrC5hZsATBonCaINRw295GaxWTUO0s9vzpW-ZvgvGtc
+      SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODk0OTIxMywiZXhwIjoxODEwNDg1MjEzfQ.uFvmQ0OXNMStkJQUJMhWs4odHAfXt6TuBp-6gjwnjwU
+      POSTGREST_URL: http://postgrest:3000
+      PGRST_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
+      DATABASE_URL: postgres://supabase_storage_admin:postgres@postgres:5432/postgres
+      FILE_SIZE_LIMIT: "52428800"
+      STORAGE_BACKEND: file
+      FILE_STORAGE_BACKEND_PATH: /var/lib/storage
+      TENANT_ID: stub
+      REGION: stub
+      GLOBAL_S3_BUCKET: stub
+      ENABLE_IMAGE_TRANSFORMATION: "false"
 
