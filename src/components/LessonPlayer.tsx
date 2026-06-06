@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { rateCardAction, completeLessonAction } from "@/app/learn/[courseId]/[lessonId]/actions";
+import { PronouncePractice } from "@/components/PronouncePractice";
 
 type Lesson = {
   id: string;
@@ -224,6 +225,16 @@ function VocabFlashcards({
           </button>
         )}
       </div>
+
+      {revealed && (
+        <div className="card">
+          <PronouncePractice
+            reference={item.example ?? item.term}
+            language={language}
+            locale={dialect ? `${language}-${dialect.toUpperCase()}` : undefined}
+          />
+        </div>
+      )}
 
       {revealed && (
         <div className="grid grid-cols-4 gap-2">
