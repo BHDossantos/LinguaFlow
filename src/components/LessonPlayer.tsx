@@ -130,6 +130,21 @@ function ContentLesson({
   );
 }
 
+// A vocab lesson now drills each item through THREE modes back-to-back:
+//   1. Recognize — see the term, recall the meaning, self-rate (existing flow).
+//   2. Recall    — see the translation, TYPE the term in target language,
+//                  auto-graded against the expected answer.
+//   3. Listen    — hear the term via TTS, type what was said. Auto-graded.
+// Each interaction records an SRS rating; the lesson completes once every
+// item has been seen in all three modes.
+type Mode = "recognize" | "recall" | "listen";
+const MODE_ORDER: Mode[] = ["recognize", "recall", "listen"];
+const MODE_LABEL: Record<Mode, string> = {
+  recognize: "Recognize",
+  recall: "Recall",
+  listen: "Listen",
+};
+
 function VocabFlashcards({
   items, title, courseId, lessonId, language, dialect, grammar,
 }: {
@@ -141,45 +156,51 @@ function VocabFlashcards({
   dialect: string | null;
   grammar: string | null;
 }) {
-  const [i, setI] = useState(0);
-  const [revealed, setRevealed] = useState(false);
+  // Build the full sequence of {item, mode} steps once. This is the deepening:
+  // a 3-card vocab lesson becomes 9 interactions, not 3.
+  const sequence = useMemo(
+    () => items.flatMap((item) => MODE_ORDER.map((mode) => ({ item, mode }))),
+    [items],
+  );
+
+  const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
   const [ratings, setRatings] = useState<number[]>([]);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const item = items[i];
-  const total = items.length;
-  const progress = useMemo(() => (i / Math.max(1, total)) * 100, [i, total]);
+  const total = sequence.length;
+  const current = sequence[step];
+  const progress = useMemo(() => (step / Math.max(1, total)) * 100, [step, total]);
+  const locale = dialect ? `${language}-${dialect.toUpperCase()}` : undefined;
 
-  function rate(rating: number) {
-    if (!item) return;
-    setRatings((r) => [...r, rating]);
+  function record(rating: number) {
+    if (!current) return;
+    const nextRatings = [...ratings, rating];
+    setRatings(nextRatings);
     startTransition(async () => {
       try {
         await rateCardAction({
           language,
           dialect,
-          term: item.term,
-          translation: item.translation,
-          ipa: item.ipa,
-          example: item.example,
+          term: current.item.term,
+          translation: current.item.translation,
+          ipa: current.item.ipa,
+          example: current.item.example,
           rating,
         });
       } catch (e: any) {
         setError(e?.message ?? "Could not save review");
       }
     });
-    if (i + 1 >= total) {
-      const avg =
-        ([...ratings, rating].reduce((a, b) => a + b, 0) / total) * 20;
+    if (step + 1 >= total) {
+      const avg = (nextRatings.reduce((a, b) => a + b, 0) / total) * 20;
       startTransition(async () => {
         try { await completeLessonAction(lessonId, avg); } catch {}
       });
       setDone(true);
     } else {
-      setI(i + 1);
-      setRevealed(false);
+      setStep(step + 1);
     }
   }
 
@@ -188,7 +209,9 @@ function VocabFlashcards({
       <div className="space-y-3">
         <h1 className="text-xl font-bold">Lesson complete 🎉</h1>
         <p className="text-sm text-ink-500">
-          {pending ? "Saving your reviews…" : `${total} cards saved to your spaced-repetition queue.`}
+          {pending
+            ? "Saving your reviews…"
+            : `${items.length} cards practiced in ${MODE_ORDER.length} modes — saved to your spaced-repetition queue.`}
         </p>
         <div className="flex gap-2">
           <Link href="/review" className="btn-primary flex-1 text-center">Start a review</Link>
@@ -199,7 +222,7 @@ function VocabFlashcards({
     );
   }
 
-  if (!item) return <p>No items.</p>;
+  if (!current) return <p>No items.</p>;
 
   return (
     <div className="space-y-4">
@@ -208,9 +231,66 @@ function VocabFlashcards({
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5">
           <div className="h-full bg-brand-500 transition-all" style={{ width: `${progress}%` }} />
         </div>
-        <p className="text-xs text-ink-500">{i + 1} / {total}</p>
+        <div className="flex items-center justify-between text-xs text-ink-500">
+          <span>{step + 1} / {total}</span>
+          <span className="rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
+            {MODE_LABEL[current.mode]}
+          </span>
+        </div>
       </header>
 
+      {current.mode === "recognize" && (
+        <RecognizeCard
+          key={`r-${step}`}
+          item={current.item}
+          language={language}
+          locale={locale}
+          onRate={record}
+        />
+      )}
+      {current.mode === "recall" && (
+        <TypedExercise
+          key={`c-${step}`}
+          item={current.item}
+          language={language}
+          locale={locale}
+          mode="recall"
+          onRate={record}
+        />
+      )}
+      {current.mode === "listen" && (
+        <TypedExercise
+          key={`l-${step}`}
+          item={current.item}
+          language={language}
+          locale={locale}
+          mode="listen"
+          onRate={record}
+        />
+      )}
+
+      {grammar && (
+        <details className="card">
+          <summary className="cursor-pointer font-medium">Grammar notes</summary>
+          <p className="mt-2 whitespace-pre-wrap text-sm text-ink-700">{grammar}</p>
+        </details>
+      )}
+      {error && <p className="text-xs text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+function RecognizeCard({
+  item, language, locale, onRate,
+}: {
+  item: VocabItem;
+  language: string;
+  locale: string | undefined;
+  onRate: (rating: number) => void;
+}) {
+  const [revealed, setRevealed] = useState(false);
+  return (
+    <>
       <div className="card min-h-[220px] text-center">
         <p className="text-3xl font-semibold">{item.term}</p>
         {item.ipa && <p className="mt-1 text-sm text-ink-500">/{item.ipa}/</p>}
@@ -231,27 +311,135 @@ function VocabFlashcards({
           <PronouncePractice
             reference={item.example ?? item.term}
             language={language}
-            locale={dialect ? `${language}-${dialect.toUpperCase()}` : undefined}
+            locale={locale}
           />
         </div>
       )}
 
       {revealed && (
-        <div className="grid grid-cols-4 gap-2">
-          <button onClick={() => rate(0)} className="btn-ghost">Again</button>
-          <button onClick={() => rate(3)} className="btn-ghost">Hard</button>
-          <button onClick={() => rate(4)} className="btn-ghost">Good</button>
-          <button onClick={() => rate(5)} className="btn-primary">Easy</button>
+        <div className="grid grid-cols-4 gap-2" data-testid="self-rate">
+          <button onClick={() => onRate(0)} className="btn-ghost">Again</button>
+          <button onClick={() => onRate(3)} className="btn-ghost">Hard</button>
+          <button onClick={() => onRate(4)} className="btn-ghost">Good</button>
+          <button onClick={() => onRate(5)} className="btn-primary">Easy</button>
+        </div>
+      )}
+    </>
+  );
+}
+
+function TypedExercise({
+  item, language, locale, mode, onRate,
+}: {
+  item: VocabItem;
+  language: string;
+  locale: string | undefined;
+  mode: "recall" | "listen";
+  onRate: (rating: number) => void;
+}) {
+  const [given, setGiven] = useState("");
+  const [graded, setGraded] = useState<null | { ok: boolean; close: boolean; confidence: number }>(null);
+  const [played, setPlayed] = useState(false);
+
+  function playPrompt() {
+    if (typeof window === "undefined") return;
+    const u = new SpeechSynthesisUtterance(item.term);
+    u.lang = locale ?? `${language}-${language.toUpperCase()}`;
+    u.rate = 0.9;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+    setPlayed(true);
+  }
+
+  function check(e: React.FormEvent) {
+    e.preventDefault();
+    if (!given.trim()) return;
+    // Lazy-load to keep the client bundle slim.
+    import("@/lib/match").then(({ gradeTypedAnswer }) => {
+      setGraded(gradeTypedAnswer(item.term, given));
+    });
+  }
+
+  return (
+    <>
+      {mode === "recall" ? (
+        <div className="card min-h-[220px] text-center">
+          <p className="text-xs uppercase tracking-wider text-ink-500">Translate</p>
+          <p className="mt-2 text-2xl font-semibold">{item.translation}</p>
+          <p className="mt-3 text-sm text-ink-500">How do you say this in {language === "es" ? "Spanish" : language}?</p>
+        </div>
+      ) : (
+        <div className="card min-h-[220px] text-center">
+          <p className="text-xs uppercase tracking-wider text-ink-500">Listen</p>
+          <button
+            type="button"
+            onClick={playPrompt}
+            className="mt-3 text-4xl"
+            aria-label="Play audio"
+            data-testid="listen-play"
+          >
+            🔊
+          </button>
+          <p className="mt-2 text-sm text-ink-500">
+            {played ? "Type what you heard." : "Tap to hear the term, then type what you heard."}
+          </p>
         </div>
       )}
 
-      {grammar && (
-        <details className="card">
-          <summary className="cursor-pointer font-medium">Grammar notes</summary>
-          <p className="mt-2 whitespace-pre-wrap text-sm text-ink-700">{grammar}</p>
-        </details>
+      {!graded ? (
+        <form onSubmit={check} className="space-y-3" data-testid="typed-exercise-form">
+          <input
+            autoFocus
+            value={given}
+            onChange={(e) => setGiven(e.target.value)}
+            placeholder={mode === "listen" ? "What did you hear?" : "Your answer…"}
+            className="w-full rounded-xl border border-black/10 bg-white px-4 py-3"
+          />
+          <button
+            type="submit"
+            disabled={!given.trim() || (mode === "listen" && !played)}
+            className="btn-primary w-full"
+          >
+            Check
+          </button>
+        </form>
+      ) : (
+        <div
+          className={
+            "card space-y-2 " +
+            (graded.ok ? "border border-green-300 bg-green-50" : "border border-red-300 bg-red-50")
+          }
+          data-testid="typed-result"
+        >
+          <p className="text-sm font-semibold">
+            {graded.ok
+              ? graded.close
+                ? "Almost — close to perfect (mind the accents)."
+                : "Correct!"
+              : graded.close
+                ? "Close, but not quite."
+                : "Not quite."}
+          </p>
+          <p className="text-sm">
+            <span className="text-ink-500">You wrote:</span>{" "}
+            <span className="font-medium">{given || "—"}</span>
+          </p>
+          <p className="text-sm">
+            <span className="text-ink-500">Answer:</span>{" "}
+            <span className="font-medium">{item.term}</span>
+            {item.ipa && <span className="text-ink-500"> /{item.ipa}/</span>}
+          </p>
+          <button
+            type="button"
+            onClick={() => onRate(graded.confidence)}
+            className="btn-primary mt-1 w-full"
+            data-testid="typed-continue"
+          >
+            Continue
+          </button>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
