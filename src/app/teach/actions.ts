@@ -50,15 +50,44 @@ export async function createCourse(formData: FormData) {
   redirect(`/teach/courses/${course.id}`);
 }
 
-const LessonInput = z.object({
+const VocabItemInput = z.object({
+  term: z.string().min(1).max(160),
+  translation: z.string().min(1).max(200),
+  ipa: z.string().max(80).optional(),
+  example: z.string().max(400).optional(),
+});
+
+const VocabLesson = z.object({
   courseId: z.string().uuid(),
+  kind: z.literal("vocab"),
   title: z.string().min(2).max(160),
+  items: z.array(VocabItemInput).min(1).max(60),
+  notes: z.string().max(4000).optional(),
+  estimatedMinutes: z.coerce.number().int().min(1).max(180).default(8),
+});
+
+const RoleplayLesson = z.object({
+  courseId: z.string().uuid(),
+  kind: z.literal("roleplay"),
+  title: z.string().min(2).max(160),
+  scenario: z.string().min(5).max(1200),
+  persona: z.string().max(400).optional(),
+  goal: z.string().max(400).optional(),
+  notes: z.string().max(4000).optional(),
+  estimatedMinutes: z.coerce.number().int().min(1).max(180).default(10),
+});
+
+const ContentLesson = z.object({
+  courseId: z.string().uuid(),
   kind: z.enum(["reading", "grammar", "listening", "writing"]),
+  title: z.string().min(2).max(160),
   content: z.string().min(1).max(12000),
   keyTermsRaw: z.string().max(4000).optional(),
   notes: z.string().max(4000).optional(),
   estimatedMinutes: z.coerce.number().int().min(1).max(180).default(10),
 });
+
+const LessonInput = z.discriminatedUnion("kind", [VocabLesson, RoleplayLesson, ContentLesson]);
 
 function parseKeyTerms(raw?: string) {
   if (!raw) return [];
@@ -92,18 +121,29 @@ export async function createLesson(input: z.input<typeof LessonInput>) {
     .maybeSingle();
   const position = (last?.position ?? 0) + 1;
 
+  // Shape `body` per lesson kind. These shapes match what LessonPlayer renders.
+  let body: unknown;
+  if (data.kind === "vocab") {
+    body = { items: data.items };
+  } else if (data.kind === "roleplay") {
+    body = { scenario: data.scenario, persona: data.persona, goal: data.goal };
+  } else {
+    body = { content: data.content, key_terms: parseKeyTerms(data.keyTermsRaw) };
+  }
+
   const { error } = await supabase.from("lessons").insert({
     course_id: data.courseId,
     position,
     title: data.title,
     kind: data.kind,
-    body: { content: data.content, key_terms: parseKeyTerms(data.keyTermsRaw) },
+    body,
     grammar_notes_md: data.notes || null,
     estimated_minutes: data.estimatedMinutes,
   });
   if (error) throw new Error(error.message);
 
   revalidatePath(`/teach/courses/${data.courseId}`);
+  revalidatePath(`/learn/${data.courseId}`);
   redirect(`/teach/courses/${data.courseId}`);
 }
 

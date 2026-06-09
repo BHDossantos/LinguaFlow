@@ -21,7 +21,12 @@ export default async function TeacherCoursePage({
   if (!course) notFound();
   if (course.teacher_id !== user.id) redirect("/teach");
 
-  const [{ data: assignments }, { data: roster }] = await Promise.all([
+  const [{ data: lessons }, { data: assignments }, { data: roster }] = await Promise.all([
+    supabase
+      .from("lessons")
+      .select("id,title,kind,position,estimated_minutes")
+      .eq("course_id", params.courseId)
+      .order("position", { ascending: true }),
     supabase
       .from("assignments")
       .select("id,title,kind,due_at,published,max_score")
@@ -33,6 +38,11 @@ export default async function TeacherCoursePage({
       .eq("course_id", params.courseId)
       .order("enrolled_at", { ascending: false }),
   ]);
+
+  const KIND_ICON: Record<string, string> = {
+    vocab: "🧠", roleplay: "🎭", reading: "📖",
+    grammar: "✍️", listening: "🎧", writing: "📝", speaking: "🗣️",
+  };
 
   return (
     <div className="space-y-4">
@@ -57,6 +67,42 @@ export default async function TeacherCoursePage({
           Analytics
         </Link>
       </div>
+
+      <section className="space-y-2">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
+          Lessons ({lessons?.length ?? 0})
+        </h2>
+        {(lessons ?? []).length === 0 ? (
+          <p className="card text-sm text-ink-500">
+            No lessons yet.{" "}
+            <Link href={`/teach/courses/${course.id}/lessons/new`} className="text-brand-500">
+              Add your first lesson →
+            </Link>
+          </p>
+        ) : (
+          <ul className="space-y-2" data-testid="teacher-lessons">
+            {(lessons ?? []).map((l) => (
+              <li key={l.id}>
+                <Link
+                  href={`/learn/${course.id}/${l.id}`}
+                  className="card flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl" aria-hidden>{KIND_ICON[l.kind] ?? "📚"}</span>
+                    <div>
+                      <p className="font-medium">{l.position}. {l.title}</p>
+                      <p className="text-xs capitalize text-ink-500">
+                        {l.kind} · ~{l.estimated_minutes ?? 8} min
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-xs text-ink-500">Preview →</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <section className="space-y-2">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
