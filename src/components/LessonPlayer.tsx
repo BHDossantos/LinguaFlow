@@ -342,13 +342,19 @@ function TypedExercise({
   const [played, setPlayed] = useState(false);
 
   function playPrompt() {
-    if (typeof window === "undefined") return;
-    const u = new SpeechSynthesisUtterance(item.term);
-    u.lang = locale ?? `${language}-${language.toUpperCase()}`;
-    u.rate = 0.9;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+    // Unlock the answer field even if TTS is unavailable (some browsers /
+    // headless environments lack speechSynthesis) — the gate is a nudge to
+    // listen first, not a hard requirement.
     setPlayed(true);
+    try {
+      const u = new SpeechSynthesisUtterance(item.term);
+      u.lang = locale ?? `${language}-${language.toUpperCase()}`;
+      u.rate = 0.9;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    } catch {
+      // No TTS — the learner can still type from memory of the term.
+    }
   }
 
   function check(e: React.FormEvent) {

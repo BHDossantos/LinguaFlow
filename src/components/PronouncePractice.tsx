@@ -38,12 +38,15 @@ export function PronouncePractice({ reference, language, locale }: Props) {
   }, []);
 
   function speak() {
-    if (typeof window === "undefined") return;
-    const u = new SpeechSynthesisUtterance(reference);
-    u.lang = speechLocale;
-    u.rate = 0.95;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+    try {
+      const u = new SpeechSynthesisUtterance(reference);
+      u.lang = speechLocale;
+      u.rate = 0.95;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    } catch {
+      // No TTS available — nothing to do.
+    }
   }
 
   async function score(t: string) {

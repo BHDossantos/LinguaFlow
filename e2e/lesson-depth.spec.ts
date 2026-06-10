@@ -39,7 +39,8 @@ test.describe("vocab lesson — multi-mode practice", () => {
     await page.getByTestId("typed-continue").click();
 
     // Step 3 — Listen: needs the prompt played before Check enables.
-    await expect(page.getByText("Listen")).toBeVisible();
+    // ("Listen" appears in both the mode chip and the card label — use first.)
+    await expect(page.getByText("Listen").first()).toBeVisible();
     await page.getByTestId("listen-play").click();
     const listenForm = page.getByTestId("typed-exercise-form");
     await listenForm.locator("input").fill("hola");
