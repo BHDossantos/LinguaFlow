@@ -1,4 +1,4 @@
-# LinguaFlow → an AI-native Learning Operating System
+# Noelia → an AI-native Learning Operating System
 
 A mobile-first AI-native education platform. Where modern learning lives.
 

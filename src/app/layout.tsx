@@ -3,7 +3,7 @@ import "./globals.css";
 import { BottomNav } from "@/components/BottomNav";
 
 export const metadata: Metadata = {
-  title: "LinguaFlow",
+  title: "Noelia",
   description: "Speak fluently — adaptive lessons + on-demand human instructors.",
   manifest: "/manifest.json",
 };
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="mx-auto max-w-screen-sm min-h-screen pb-24 px-4 pt-6">
           <div className="mb-4 flex items-center justify-between">
             <a href="/" className="text-sm font-semibold tracking-tight">
-              LinguaFlow
+              Noelia
             </a>
             <div className="flex gap-3 text-xs text-ink-500">
               <a href="/inbox" className="hover:text-brand-500">Inbox</a>

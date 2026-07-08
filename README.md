@@ -1,4 +1,4 @@
-# LinguaFlow
+# Noelia
 
 Mobile-first hybrid AI + human language-learning platform. See [PRODUCT.md](./PRODUCT.md) for the spec.
 
