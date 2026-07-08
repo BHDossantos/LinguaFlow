@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   }
   const { language, reference, transcript } = parsed.data;
 
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 

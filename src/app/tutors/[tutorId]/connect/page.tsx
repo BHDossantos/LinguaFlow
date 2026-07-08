@@ -4,9 +4,10 @@ import { requireOnboardedUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
-export default async function ConnectPage({ params }: { params: { tutorId: string } }) {
+export default async function ConnectPage(props: { params: Promise<{ tutorId: string }> }) {
+  const params = await props.params;
   await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: tutor } = await supabase
     .from("tutors")
     .select("display_name,rate_cents_per_minute,languages,dialects,is_online")

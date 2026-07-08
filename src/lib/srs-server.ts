@@ -12,7 +12,7 @@ export type RateInput = {
 };
 
 export async function rateCardForUser(input: RateInput) {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("unauthorized");
 
@@ -90,7 +90,7 @@ export async function rateCardForUser(input: RateInput) {
 export async function ensureCardsForVocab(
   items: Array<Omit<RateInput, "rating">>,
 ) {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 

@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   }
   const { courseId, target, topic, lessonKind, assignmentKind } = parsed.data;
 
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 

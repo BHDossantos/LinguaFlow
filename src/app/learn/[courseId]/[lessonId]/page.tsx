@@ -4,13 +4,14 @@ import { requireOnboardedUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
-export default async function LessonPage({
-  params,
-}: {
-  params: { courseId: string; lessonId: string };
-}) {
+export default async function LessonPage(
+  props: {
+    params: Promise<{ courseId: string; lessonId: string }>;
+  }
+) {
+  const params = await props.params;
   await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const [{ data: lesson }, { data: course }] = await Promise.all([
     supabase.from("lessons").select("*").eq("id", params.lessonId).single(),
     supabase

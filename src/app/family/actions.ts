@@ -12,7 +12,7 @@ function makeCode() {
 }
 
 export async function ensureInviteCode() {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
@@ -35,7 +35,7 @@ export async function ensureInviteCode() {
 
 export async function linkStudent(input: { code: string }) {
   const code = z.string().trim().toUpperCase().length(6).parse(input.code);
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
@@ -57,7 +57,7 @@ export async function linkStudent(input: { code: string }) {
 
 export async function unlinkStudent(input: { studentId: string }) {
   const studentId = z.string().uuid().parse(input.studentId);
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 

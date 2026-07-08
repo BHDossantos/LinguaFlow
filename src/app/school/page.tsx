@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export default async function SchoolPage() {
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: memberships } = await supabase
     .from("org_members")

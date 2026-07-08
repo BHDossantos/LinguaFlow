@@ -6,13 +6,14 @@ import { SubmitForm } from "@/components/SubmitForm";
 
 export const dynamic = "force-dynamic";
 
-export default async function AssignmentPage({
-  params,
-}: {
-  params: { assignmentId: string };
-}) {
+export default async function AssignmentPage(
+  props: {
+    params: Promise<{ assignmentId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: a } = await supabase
     .from("assignments")

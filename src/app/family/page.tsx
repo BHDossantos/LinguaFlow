@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function FamilyPage() {
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const [{ data: profile }, { data: links }] = await Promise.all([
     supabase.from("profiles").select("guardian_invite_code").eq("id", user.id).single(),

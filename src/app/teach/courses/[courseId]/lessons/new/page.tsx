@@ -6,13 +6,14 @@ import { LessonComposer } from "./LessonComposer";
 
 export const dynamic = "force-dynamic";
 
-export default async function NewLessonPage({
-  params,
-}: {
-  params: { courseId: string };
-}) {
+export default async function NewLessonPage(
+  props: {
+    params: Promise<{ courseId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: course } = await supabase
     .from("courses").select("id,title,teacher_id").eq("id", params.courseId).single();
   if (!course) notFound();

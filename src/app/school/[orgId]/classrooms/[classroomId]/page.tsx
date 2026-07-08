@@ -9,13 +9,14 @@ import { Announcements } from "./Announcements";
 
 export const dynamic = "force-dynamic";
 
-export default async function ClassroomPage({
-  params,
-}: {
-  params: { orgId: string; classroomId: string };
-}) {
+export default async function ClassroomPage(
+  props: {
+    params: Promise<{ orgId: string; classroomId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: classroom } = await supabase
     .from("classrooms")

@@ -7,13 +7,14 @@ export const dynamic = "force-dynamic";
 // Refresh the page periodically while we wait for the AI grade to land.
 export const revalidate = 0;
 
-export default async function AssignmentResultPage({
-  params,
-}: {
-  params: { assignmentId: string };
-}) {
+export default async function AssignmentResultPage(
+  props: {
+    params: Promise<{ assignmentId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: a } = await supabase
     .from("assignments")
@@ -59,7 +60,7 @@ export default async function AssignmentResultPage({
     <div className="space-y-4">
       {waitingForAI && (
         // Poll while we wait for AI grading.
-        <meta httpEquiv="refresh" content="3" />
+        (<meta httpEquiv="refresh" content="3" />)
       )}
       <Link href="/assignments" className="text-sm text-brand-500">← Assignments</Link>
       <header>
@@ -68,7 +69,6 @@ export default async function AssignmentResultPage({
           Submitted {new Date(submission.submitted_at).toLocaleString()} · {submission.status}
         </p>
       </header>
-
       {isFinal ? (
         <section className="card space-y-2">
           <p className="text-xs font-semibold uppercase text-green-700">Final grade</p>
@@ -117,12 +117,10 @@ export default async function AssignmentResultPage({
           <p className="text-sm">⏳ Grading your submission… this usually takes a few seconds.</p>
         </section>
       )}
-
       <details className="card">
         <summary className="cursor-pointer text-sm font-medium">Your submission</summary>
         <p className="mt-2 whitespace-pre-wrap text-sm text-ink-700">{submission.text}</p>
       </details>
-
       <Link href={`/assignments/${a.id}`} className="btn-ghost block text-center">
         Edit & resubmit
       </Link>

@@ -4,12 +4,13 @@ import { SessionRoom } from "./SessionRoom";
 
 export const dynamic = "force-dynamic";
 
-export default async function SessionPage({
-  params,
-}: {
-  params: { tutorId: string; sessionId: string };
-}) {
-  const supabase = supabaseServer();
+export default async function SessionPage(
+  props: {
+    params: Promise<{ tutorId: string; sessionId: string }>;
+  }
+) {
+  const params = await props.params;
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return <p>Sign in to join.</p>;
 

@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export default async function ReviewPage() {
   const user = await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: dueCards } = await supabase
     .from("srs_cards")

@@ -6,9 +6,10 @@ import { OrgDashboard } from "./OrgDashboard";
 
 export const dynamic = "force-dynamic";
 
-export default async function OrgPage({ params }: { params: { orgId: string } }) {
+export default async function OrgPage(props: { params: Promise<{ orgId: string }> }) {
+  const params = await props.params;
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: org } = await supabase
     .from("organizations")

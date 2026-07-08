@@ -5,9 +5,10 @@ import { requireOnboardedUser, getPrimaryTargetLanguage } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
-export default async function TutorsPage({ searchParams }: { searchParams: { lang?: string } }) {
+export default async function TutorsPage(props: { searchParams: Promise<{ lang?: string }> }) {
+  const searchParams = await props.searchParams;
   await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const primary = await getPrimaryTargetLanguage();
   const lang = searchParams.lang ?? primary?.language ?? "es";
 

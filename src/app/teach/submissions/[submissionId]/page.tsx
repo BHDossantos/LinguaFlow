@@ -9,13 +9,14 @@ import { IntegrityPanel } from "@/components/IntegrityPanel";
 
 export const dynamic = "force-dynamic";
 
-export default async function TeacherSubmissionPage({
-  params,
-}: {
-  params: { submissionId: string };
-}) {
+export default async function TeacherSubmissionPage(
+  props: {
+    params: Promise<{ submissionId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: s } = await supabase
     .from("submissions")

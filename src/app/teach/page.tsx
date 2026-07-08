@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function TeachHome() {
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: courses } = await supabase
     .from("courses")

@@ -7,7 +7,7 @@ export async function rateCardAction(input: RateInput) {
 }
 
 export async function completeLessonAction(lessonId: string, score: number) {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
 

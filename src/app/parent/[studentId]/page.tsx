@@ -5,13 +5,14 @@ import { supabaseServer } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function ParentStudentPage({
-  params,
-}: {
-  params: { studentId: string };
-}) {
+export default async function ParentStudentPage(
+  props: {
+    params: Promise<{ studentId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   // Confirm the link exists (RLS also enforces this on every query below).
   const { data: link } = await supabase

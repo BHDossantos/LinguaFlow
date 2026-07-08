@@ -6,7 +6,7 @@ import { LANGUAGES } from "@/lib/languages";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) return <LoggedOutLanding />;
@@ -25,7 +25,7 @@ export default async function Home() {
 }
 
 async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang: string }) {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const nowIso = new Date().toISOString();
   const since14 = new Date(Date.now() - 14 * 86_400_000).toISOString();
 

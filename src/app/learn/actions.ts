@@ -8,7 +8,7 @@ const Input = z.object({ courseId: z.string().uuid() });
 
 export async function enrollInCourse(input: z.input<typeof Input>) {
   const { courseId } = Input.parse(input);
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
@@ -25,7 +25,7 @@ export async function enrollInCourse(input: z.input<typeof Input>) {
 
 export async function unenrollFromCourse(input: z.input<typeof Input>) {
   const { courseId } = Input.parse(input);
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 

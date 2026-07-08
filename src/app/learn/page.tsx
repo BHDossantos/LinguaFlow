@@ -7,13 +7,14 @@ export const dynamic = "force-dynamic";
 
 type Scope = "mine" | "all";
 
-export default async function LearnPage({
-  searchParams,
-}: {
-  searchParams: { lang?: string; scope?: string };
-}) {
+export default async function LearnPage(
+  props: {
+    searchParams: Promise<{ lang?: string; scope?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const user = await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const primary = await getPrimaryTargetLanguage();
   const lang = (searchParams.lang ?? primary?.language ?? "es") as LanguageCode;
   const scope: Scope = searchParams.scope === "all" ? "all" : "mine";

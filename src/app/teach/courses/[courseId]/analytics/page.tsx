@@ -7,13 +7,14 @@ export const dynamic = "force-dynamic";
 
 type CriterionAgg = { total: number; max: number; n: number };
 
-export default async function CourseAnalyticsPage({
-  params,
-}: {
-  params: { courseId: string };
-}) {
+export default async function CourseAnalyticsPage(
+  props: {
+    params: Promise<{ courseId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: course } = await supabase
     .from("courses").select("id,title,teacher_id").eq("id", params.courseId).single();

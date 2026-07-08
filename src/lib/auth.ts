@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
 
 export async function requireUser() {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
   return user;
@@ -10,7 +10,7 @@ export async function requireUser() {
 
 export async function requireOnboardedUser() {
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { count } = await supabase
     .from("target_languages")
     .select("*", { count: "exact", head: true })
@@ -20,7 +20,7 @@ export async function requireOnboardedUser() {
 }
 
 export async function getPrimaryTargetLanguage(): Promise<{ language: string; dialect: string | null } | null> {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
   const { data } = await supabase

@@ -15,9 +15,10 @@ const KIND_ICON: Record<string, string> = {
   writing: "✍️",
 };
 
-export default async function CoursePage({ params }: { params: { courseId: string } }) {
+export default async function CoursePage(props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   const user = await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const [{ data: course }, { data: lessons }, { data: enrollment }] = await Promise.all([
     supabase.from("courses").select("*").eq("id", params.courseId).single(),
     supabase

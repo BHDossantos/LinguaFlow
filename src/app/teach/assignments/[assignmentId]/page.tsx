@@ -5,13 +5,14 @@ import { supabaseServer } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function TeacherAssignmentPage({
-  params,
-}: {
-  params: { assignmentId: string };
-}) {
+export default async function TeacherAssignmentPage(
+  props: {
+    params: Promise<{ assignmentId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: a } = await supabase
     .from("assignments")

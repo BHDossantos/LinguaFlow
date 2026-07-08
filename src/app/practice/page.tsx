@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export default async function PracticePage() {
   const user = await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const primary = await getPrimaryTargetLanguage();
   const { data: profile } = await supabase
     .from("profiles").select("cefr_level").eq("id", user.id).single();

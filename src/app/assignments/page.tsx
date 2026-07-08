@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AssignmentsPage() {
   const user = await requireOnboardedUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: enrollments } = await supabase
     .from("enrollments")

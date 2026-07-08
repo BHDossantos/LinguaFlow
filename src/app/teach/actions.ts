@@ -16,7 +16,7 @@ const CourseInput = z.object({
 });
 
 export async function createCourse(formData: FormData) {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
@@ -104,7 +104,7 @@ function parseKeyTerms(raw?: string) {
 
 export async function createLesson(input: z.input<typeof LessonInput>) {
   const data = LessonInput.parse(input);
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
@@ -174,7 +174,7 @@ function parseRubric(raw?: string) {
 }
 
 export async function createAssignment(formData: FormData) {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
@@ -221,7 +221,7 @@ const ReviewInput = z.object({
 });
 
 export async function submitTeacherReview(formData: FormData) {
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 

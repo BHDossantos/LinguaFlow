@@ -15,7 +15,7 @@ const Input = z.object({
 
 export async function saveOnboarding(raw: unknown) {
   const data = Input.parse(raw);
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 

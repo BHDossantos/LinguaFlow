@@ -6,13 +6,14 @@ import { AttendanceTaker } from "./AttendanceTaker";
 
 export const dynamic = "force-dynamic";
 
-export default async function MeetingPage({
-  params,
-}: {
-  params: { orgId: string; classroomId: string; meetingId: string };
-}) {
+export default async function MeetingPage(
+  props: {
+    params: Promise<{ orgId: string; classroomId: string; meetingId: string }>;
+  }
+) {
+  const params = await props.params;
   const user = await requireUser();
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
 
   const { data: meeting } = await supabase
     .from("class_meetings")

@@ -17,7 +17,7 @@ export async function submitAssignment(input: z.input<typeof SubmitInput>) {
     throw new Error("Provide text, an attachment, or a recording");
   }
 
-  const supabase = supabaseServer();
+  const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
@@ -40,7 +40,7 @@ export async function submitAssignment(input: z.input<typeof SubmitInput>) {
 
   // Kick off AI grading in the background if there's text to grade.
   if (data.text.trim().length > 0) {
-    const h = headers();
+    const h = await headers();
     const proto = h.get("x-forwarded-proto") ?? "http";
     const host = h.get("host");
     if (host) {
