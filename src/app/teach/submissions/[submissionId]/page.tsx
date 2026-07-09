@@ -77,7 +77,7 @@ export default async function TeacherSubmissionPage(
 
       <section className="card space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold">AI grade</h2>
+          <h2 className="font-semibold">System grade</h2>
           {!grade && <GradeRunner submissionId={s.id} />}
         </div>
         {grade ? (
@@ -105,7 +105,7 @@ export default async function TeacherSubmissionPage(
             </p>
           </>
         ) : (
-          <p className="text-sm text-ink-500">Not graded yet — click Run AI grading.</p>
+          <p className="text-sm text-ink-500">Not graded yet — click Run system grading.</p>
         )}
       </section>
 
@@ -138,7 +138,7 @@ export default async function TeacherSubmissionPage(
         </label>
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" name="approvedAi" defaultChecked={!!grade} />
-          <span>Approved the AI grade with minimal changes</span>
+          <span>Approved the system grade with minimal changes</span>
         </label>
         <button type="submit" className="btn-primary w-full">
           Return to student

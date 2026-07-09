@@ -149,7 +149,7 @@ export function SubmitForm({ assignmentId, kind, defaultText, hasExisting }: Pro
         disabled={pending || (!text.trim() && !file && !audioBlob)}
         className="btn-primary w-full"
       >
-        {pending ? "Submitting…" : hasExisting ? "Resubmit" : "Submit for AI grading"}
+        {pending ? "Submitting…" : hasExisting ? "Resubmit" : "Submit for grading"}
       </button>
       {error && <p className="text-sm text-red-600">{error}</p>}
     </form>

@@ -461,7 +461,7 @@ function RoleplayLesson({
         {body.goal && <p className="text-sm text-ink-500">Goal: {body.goal}</p>}
       </div>
       <Link href={`/practice?scenario=${encodeURIComponent(body.scenario ?? "")}&persona=${encodeURIComponent(body.persona ?? "")}`} className="btn-primary block text-center">
-        Start AI roleplay
+        Start system roleplay
       </Link>
       <Link href={`/tutors`} className="btn-ghost block text-center">Or do this with a live instructor</Link>
       <Link href={`/learn/${courseId}`} className="block text-center text-sm text-ink-500">Back to course</Link>

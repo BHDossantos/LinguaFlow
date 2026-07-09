@@ -129,7 +129,7 @@ export function LessonComposer({ courseId }: { courseId: string }) {
             className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2"
           >
             <option value="vocab">Vocab — flashcards with multi-mode practice</option>
-            <option value="roleplay">Roleplay — scenario for AI conversation</option>
+            <option value="roleplay">Roleplay — conversation scenario</option>
             <option value="reading">Reading</option>
             <option value="grammar">Grammar</option>
             <option value="listening">Listening</option>
@@ -141,7 +141,7 @@ export function LessonComposer({ courseId }: { courseId: string }) {
       {kind !== "vocab" && kind !== "roleplay" && (
         <section className="card space-y-2">
           <h2 className="font-semibold">
-            Draft with AI <span className="text-xs font-normal text-ink-500">(optional)</span>
+            Generate a draft <span className="text-xs font-normal text-ink-500">(optional)</span>
           </h2>
           <label className="block">
             <span className="text-sm font-medium">Topic</span>
@@ -256,7 +256,7 @@ export function LessonComposer({ courseId }: { courseId: string }) {
               />
             </label>
             <label className="block">
-              <span className="text-sm font-medium">AI persona (optional)</span>
+              <span className="text-sm font-medium">Roleplay persona (optional)</span>
               <input
                 value={persona}
                 onChange={(e) => setPersona(e.target.value)}

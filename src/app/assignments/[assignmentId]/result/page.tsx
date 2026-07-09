@@ -88,7 +88,7 @@ export default async function AssignmentResultPage(
       ) : grade ? (
         <section className="card space-y-2">
           <p className="text-xs font-semibold uppercase text-amber-700">
-            AI-graded — awaiting teacher review
+            System-graded — awaiting teacher review
           </p>
           <p className="text-4xl font-bold">
             {grade.score?.toFixed(1)} <span className="text-base text-ink-500">/ {grade.max_score}</span>

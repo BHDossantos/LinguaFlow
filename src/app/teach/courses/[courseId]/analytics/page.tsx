@@ -146,7 +146,7 @@ export default async function CourseAnalyticsPage(
         </h2>
         {weakSpots.length === 0 ? (
           <p className="card text-sm text-ink-500">
-            No AI-graded criteria yet — grade some submissions to see patterns.
+            No system-graded criteria yet — grade some submissions to see patterns.
           </p>
         ) : (
           <ul className="space-y-2">

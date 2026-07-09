@@ -74,7 +74,7 @@ test.describe("teacher composer", () => {
 
     // Switch to reading — content textarea shows + the AI draft block returns
     await page.getByTestId("lesson-kind").selectOption("reading");
-    await expect(page.getByText(/draft with ai/i)).toBeVisible();
+    await expect(page.getByText(/generate a draft/i)).toBeVisible();
     await expect(page.getByTestId("roleplay-editor")).not.toBeVisible();
   });
 });

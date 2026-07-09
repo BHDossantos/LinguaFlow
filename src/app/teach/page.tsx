@@ -39,7 +39,7 @@ export default async function TeachHome() {
               <li key={s.id}>
                 <Link href={`/teach/submissions/${s.id}`} className="card flex items-center justify-between">
                   <span className="text-sm">{s.assignment.title}</span>
-                  <span className="text-xs text-ink-500">AI graded</span>
+                  <span className="text-xs text-ink-500">System graded</span>
                 </Link>
               </li>
             ))}

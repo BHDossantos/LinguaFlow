@@ -38,7 +38,7 @@ export default async function AssignmentsPage() {
       <header>
         <h1 className="text-2xl font-bold">Assignments</h1>
         <p className="text-sm text-ink-500">
-          AI grades in seconds — your teacher reviews and returns.
+          The system grades in seconds — your teacher reviews and returns.
         </p>
       </header>
 

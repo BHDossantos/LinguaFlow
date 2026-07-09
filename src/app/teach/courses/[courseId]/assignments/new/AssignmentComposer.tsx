@@ -49,7 +49,7 @@ export function AssignmentComposer({ courseId }: { courseId: string }) {
   return (
     <div className="space-y-4">
       <section className="card space-y-2">
-        <h2 className="font-semibold">Draft with AI</h2>
+        <h2 className="font-semibold">Generate a draft</h2>
         <label className="block">
           <span className="text-sm font-medium">Topic</span>
           <input

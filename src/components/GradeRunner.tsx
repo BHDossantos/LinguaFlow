@@ -29,7 +29,7 @@ export function GradeRunner({ submissionId }: { submissionId: string }) {
   return (
     <div className="flex flex-col items-end gap-1">
       <button onClick={run} disabled={busy} className="btn-primary text-sm">
-        {busy ? "Grading…" : "Run AI grading"}
+        {busy ? "Grading…" : "Run system grading"}
       </button>
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>

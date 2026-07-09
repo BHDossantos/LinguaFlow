@@ -64,7 +64,7 @@ export function PracticeClient({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">AI Roleplay</h1>
+      <h1 className="text-2xl font-bold">System Roleplay</h1>
       <p className="text-sm text-ink-500">
         Real conversations, no judgment. Mistakes are corrected at the end of each turn.
       </p>

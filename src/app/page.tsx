@@ -248,7 +248,7 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
           <span>📚</span><span className="text-sm font-medium">Lessons</span>
         </Link>
         <Link href="/practice" className="card flex items-center gap-2">
-          <span>💬</span><span className="text-sm font-medium">AI roleplay</span>
+          <span>💬</span><span className="text-sm font-medium">System roleplay</span>
         </Link>
         <Link href="/translate" className="card flex items-center gap-2">
           <span>🌐</span><span className="text-sm font-medium">Translate</span>
@@ -268,7 +268,7 @@ function LoggedOutLanding() {
         <p className="text-sm text-ink-500">Bienvenido / Bem-vindo / Bienvenue</p>
         <h1 className="text-3xl font-bold tracking-tight">Speak. Don't just tap.</h1>
         <p className="text-ink-500">
-          Adaptive lessons, AI roleplay, and live instructors — one app.
+          Adaptive lessons, system roleplay, and live instructors — one app.
         </p>
       </header>
 
@@ -289,7 +289,7 @@ function LoggedOutLanding() {
         </div>
         <div className="card">
           <span className="text-2xl">💬</span>
-          <p className="mt-1 font-semibold">AI roleplay</p>
+          <p className="mt-1 font-semibold">System roleplay</p>
           <p className="text-xs text-ink-500">Real conversations, no judgment.</p>
         </div>
         <div className="card">

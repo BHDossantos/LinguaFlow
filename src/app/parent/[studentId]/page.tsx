@@ -184,7 +184,7 @@ export default async function ParentStudentPage(
                     {final != null
                       ? `${final}/${max}`
                       : ai != null
-                      ? `${ai}/${max} (AI)`
+                      ? `${ai}/${max} (system)`
                       : "—"}
                   </span>
                 </li>
