@@ -26,4 +26,33 @@ html, body {
   .card {
     @apply rounded-2xl bg-white dark:bg-white/[0.04] border border-black/5 dark:border-white/10 p-4 shadow-sm;
   }
+
+  /* Landing-page hero backdrop: soft brand gradient with radial glows. */
+  .hero-bg {
+    background:
+      radial-gradient(420px 260px at 85% -10%, rgba(59, 108, 246, 0.18) 0%, transparent 65%),
+      radial-gradient(380px 260px at 0% 100%, rgba(139, 92, 246, 0.14) 0%, transparent 60%),
+      linear-gradient(160deg, #eef3ff 0%, #f7f9ff 55%, #eef0ff 100%);
+  }
+  @media (prefers-color-scheme: dark) {
+    .hero-bg {
+      background:
+        radial-gradient(420px 260px at 85% -10%, rgba(59, 108, 246, 0.25) 0%, transparent 65%),
+        radial-gradient(380px 260px at 0% 100%, rgba(139, 92, 246, 0.2) 0%, transparent 60%),
+        linear-gradient(160deg, #0e1430 0%, #0b1020 60%);
+    }
+  }
+}
+
+@layer utilities {
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: fade-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up { animation: none; }
+  }
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
 import { LANGUAGES } from "@/lib/languages";
+import { TryIt } from "@/components/TryIt";
 
 export const dynamic = "force-dynamic";
 
@@ -263,54 +264,159 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
 
 function LoggedOutLanding() {
   return (
-    <div className="space-y-6">
-      <header className="space-y-1">
-        <p className="text-sm text-ink-500">Bienvenido / Bem-vindo / Bienvenue</p>
-        <h1 className="text-3xl font-bold tracking-tight">Speak. Don't just tap.</h1>
-        <p className="text-ink-500">
-          Adaptive lessons, system roleplay, and live instructors — one app.
+    <div className="space-y-10 pb-6">
+      {/* Hero */}
+      <header className="hero-bg relative -mx-4 -mt-4 overflow-hidden px-4 pb-10 pt-10 text-center sm:rounded-b-[2.5rem]">
+        <p className="animate-fade-up mx-auto inline-block rounded-full bg-white/70 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-700 backdrop-blur dark:bg-white/10 dark:text-brand-100">
+          🗣️ Speak from day one
         </p>
+        <h1 className="animate-fade-up mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl [animation-delay:60ms]">
+          Speak. Don't
+          <br className="sm:hidden" /> just tap.
+        </h1>
+        <p className="animate-fade-up mx-auto mt-3 max-w-md text-ink-500 dark:text-white/70 [animation-delay:120ms]">
+          Say a phrase, get scored word-by-word, fix it on the spot. Lessons,
+          roleplay, and live instructors — one app.
+        </p>
+        <div className="animate-fade-up mt-6 flex flex-col items-center justify-center gap-2 sm:flex-row [animation-delay:180ms]">
+          <Link href="/sign-in" className="btn-primary w-full px-8 py-3 text-lg sm:w-auto">
+            Start learning free
+          </Link>
+          <a href="#how" className="btn-ghost w-full px-8 py-3 sm:w-auto">
+            How it works
+          </a>
+        </div>
+        <div className="animate-fade-up mt-6 flex flex-wrap items-center justify-center gap-2 [animation-delay:240ms]">
+          {Object.entries(LANGUAGES).map(([code, l]) => (
+            <span
+              key={code}
+              className="rounded-full bg-white/70 px-3 py-1 text-sm backdrop-blur dark:bg-white/10"
+            >
+              <span aria-hidden>{l.flag}</span> {l.label}
+            </span>
+          ))}
+        </div>
       </header>
 
-      <Link href="/sign-in" className="btn-primary block w-full text-center">
-        Get started
-      </Link>
+      {/* Instant demo — the product before the pitch */}
+      <section className="animate-fade-up [animation-delay:300ms]">
+        <TryIt />
+      </section>
 
+      {/* Honest proof points */}
+      <section className="grid grid-cols-3 gap-2 text-center">
+        <div className="card py-3">
+          <p className="text-xl font-extrabold text-brand-600">5</p>
+          <p className="text-[11px] text-ink-500">languages</p>
+        </div>
+        <div className="card py-3">
+          <p className="text-xl font-extrabold text-brand-600">3×</p>
+          <p className="text-[11px] text-ink-500">practice modes per word</p>
+        </div>
+        <div className="card py-3">
+          <p className="text-xl font-extrabold text-brand-600">0 s</p>
+          <p className="text-[11px] text-ink-500">wait for feedback</p>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section id="how" className="space-y-3">
+        <h2 className="text-center text-2xl font-bold">How Noelia works</h2>
+        <ol className="space-y-2">
+          <li className="card flex items-start gap-3">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">1</span>
+            <div>
+              <p className="font-semibold">Learn it three ways</p>
+              <p className="text-sm text-ink-500">
+                Every word is drilled by recognizing, recalling, and listening —
+                then scheduled for review right before you'd forget it.
+              </p>
+            </div>
+          </li>
+          <li className="card flex items-start gap-3">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">2</span>
+            <div>
+              <p className="font-semibold">Say it out loud</p>
+              <p className="text-sm text-ink-500">
+                Pronunciation is scored word-by-word in real time, and system
+                roleplay puts you in real scenes — cafés, interviews, travel.
+              </p>
+            </div>
+          </li>
+          <li className="card flex items-start gap-3">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">3</span>
+            <div>
+              <p className="font-semibold">Level up with humans</p>
+              <p className="text-sm text-ink-500">
+                Connect to a live instructor per-minute, or learn inside a real
+                classroom with teacher feedback and family visibility.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      {/* Feature grid */}
       <section className="grid grid-cols-2 gap-3">
         <div className="card">
-          <span className="text-2xl">📚</span>
-          <p className="mt-1 font-semibold">Self-study</p>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-100 text-xl dark:bg-amber-500/20">📚</span>
+          <p className="mt-2 font-semibold">Self-study</p>
           <p className="text-xs text-ink-500">Adaptive lessons + spaced repetition.</p>
         </div>
         <div className="card">
-          <span className="text-2xl">🧑‍🏫</span>
-          <p className="mt-1 font-semibold">Live instructor</p>
-          <p className="text-xs text-ink-500">Per-minute, instant connect.</p>
-        </div>
-        <div className="card">
-          <span className="text-2xl">💬</span>
-          <p className="mt-1 font-semibold">System roleplay</p>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-100 text-xl dark:bg-violet-500/20">💬</span>
+          <p className="mt-2 font-semibold">System roleplay</p>
           <p className="text-xs text-ink-500">Real conversations, no judgment.</p>
         </div>
         <div className="card">
-          <span className="text-2xl">🌐</span>
-          <p className="mt-1 font-semibold">Real-time translate</p>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-100 text-xl dark:bg-emerald-500/20">🧑‍🏫</span>
+          <p className="mt-2 font-semibold">Live instructor</p>
+          <p className="text-xs text-ink-500">Per-minute, instant connect.</p>
+        </div>
+        <div className="card">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-sky-100 text-xl dark:bg-sky-500/20">🌐</span>
+          <p className="mt-2 font-semibold">Real-time translate</p>
           <p className="text-xs text-ink-500">Voice, text, and on the go.</p>
         </div>
       </section>
 
-      <section>
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-ink-500">
-          Languages
-        </h2>
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(LANGUAGES).map(([code, l]) => (
-            <span key={code} className="card flex items-center gap-2 px-3 py-2">
-              <span aria-hidden>{l.flag}</span>
-              <span className="text-sm">{l.label}</span>
-            </span>
-          ))}
+      {/* Who it's for */}
+      <section className="space-y-3">
+        <h2 className="text-center text-2xl font-bold">Made for how you learn</h2>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="card text-center">
+            <span className="text-3xl">🎧</span>
+            <p className="mt-1 font-semibold">Self-learners</p>
+            <p className="text-xs text-ink-500">
+              Ten minutes a day. Your queue always knows what's next.
+            </p>
+          </div>
+          <div className="card text-center">
+            <span className="text-3xl">🏫</span>
+            <p className="mt-1 font-semibold">Classrooms</p>
+            <p className="text-xs text-ink-500">
+              Teachers assign, the system grades in seconds, teachers review.
+            </p>
+          </div>
+          <div className="card text-center">
+            <span className="text-3xl">👨‍👩‍👧</span>
+            <p className="mt-1 font-semibold">Families</p>
+            <p className="text-xs text-ink-500">
+              Parents follow progress, grades, and attendance — no nagging.
+            </p>
+          </div>
         </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="hero-bg -mx-4 px-4 py-10 text-center sm:rounded-[2.5rem]">
+        <h2 className="text-2xl font-extrabold">Your first phrase is 30 seconds away.</h2>
+        <p className="mx-auto mt-2 max-w-sm text-sm text-ink-500 dark:text-white/70">
+          Free to start. No credit card. Works on any phone.
+        </p>
+        <Link href="/sign-in" className="btn-primary mt-5 inline-block px-10 py-3 text-lg">
+          Start learning free
+        </Link>
       </section>
     </div>
   );
