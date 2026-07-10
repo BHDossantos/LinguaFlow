@@ -20,6 +20,7 @@ const ROUTES = [
   "/coach",
   "/profile",
   "/settings",
+  "/leaderboard",
 ];
 
 for (const route of ROUTES) {

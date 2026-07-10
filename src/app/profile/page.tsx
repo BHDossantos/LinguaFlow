@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
 import { levelProgress } from "@/lib/gamification";
+import { computeAchievements } from "@/lib/achievements";
 import { LANGUAGES } from "@/lib/languages";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,8 @@ export default async function ProfilePage() {
     { count: lessonsDone },
     { data: xpEvents },
     { data: weakCards },
+    { count: reviewCount },
+    { count: perfectPron },
   ] = await Promise.all([
     supabase.from("profiles").select("display_name,cefr_level").eq("id", user.id).single(),
     supabase.from("user_stats").select("*").eq("user_id", user.id).maybeSingle(),
@@ -36,12 +39,32 @@ export default async function ProfilePage() {
       .gt("repetitions", 0)
       .order("ease", { ascending: true })
       .limit(5),
+    supabase
+      .from("xp_events")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("kind", "card_review"),
+    supabase
+      .from("pronunciation_attempts")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id)
+      .eq("score", 100),
   ]);
 
   const xp = Number(stats?.xp ?? 0);
   const lp = levelProgress(xp);
   const streak = stats?.streak_days ?? 0;
   const longest = stats?.longest_streak ?? 0;
+
+  const achievements = computeAchievements({
+    xp,
+    longestStreak: longest,
+    lessonsDone: lessonsDone ?? 0,
+    wordsLearning: wordsLearned ?? 0,
+    reviewCount: reviewCount ?? 0,
+    perfectPronunciations: perfectPron ?? 0,
+  });
+  const earnedCount = achievements.filter((a) => a.earned).length;
 
   // Build a 12-week activity heatmap (weeks × 7 days) from XP events.
   const byDay = new Map<string, number>();
@@ -123,6 +146,44 @@ export default async function ProfilePage() {
           ))}
         </div>
       </section>
+
+      {/* Achievements */}
+      <section className="card">
+        <div className="mb-2 flex items-baseline justify-between">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+            Achievements
+          </p>
+          <p className="text-xs text-ink-500">{earnedCount} / {achievements.length}</p>
+        </div>
+        <div className="grid grid-cols-5 gap-2" data-testid="achievements">
+          {achievements.map((a) => (
+            <div
+              key={a.key}
+              title={`${a.title} — ${a.description}`}
+              className={
+                "flex flex-col items-center gap-0.5 rounded-xl p-2 text-center " +
+                (a.earned
+                  ? "bg-amber-50 dark:bg-amber-500/15"
+                  : "opacity-35 grayscale")
+              }
+            >
+              <span className="text-2xl">{a.icon}</span>
+              <span className="text-[9px] font-medium leading-tight">{a.title}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Link href="/leaderboard" className="card flex items-center justify-between hover:border-brand-500/30">
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-100 text-xl dark:bg-amber-500/20">🏆</span>
+          <div>
+            <p className="font-semibold">Weekly leaderboard</p>
+            <p className="text-xs text-ink-500">See where you rank this week</p>
+          </div>
+        </div>
+        <span className="text-ink-500">›</span>
+      </Link>
 
       {/* Weak words */}
       <section className="space-y-2">
