@@ -244,3 +244,97 @@ export async function submitTeacherReview(formData: FormData) {
   revalidatePath(`/teach/submissions/${data.submissionId}`);
   redirect(`/teach/submissions/${data.submissionId}`);
 }
+
+const LessonUpdate = z.object({
+  lessonId: z.string().uuid(),
+  title: z.string().min(2).max(160),
+  bodyJson: z.string().min(2).max(40000),
+  notes: z.string().max(4000).optional(),
+  estimatedMinutes: z.coerce.number().int().min(1).max(180).default(10),
+});
+
+async function assertOwnLesson(supabase: Awaited<ReturnType<typeof supabaseServer>>, lessonId: string) {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/sign-in");
+  const { data: lesson } = await supabase
+    .from("lessons")
+    .select("id,course_id,position,course:courses(teacher_id)")
+    .eq("id", lessonId)
+    .single();
+  if (!lesson || (lesson as any).course?.teacher_id !== user.id) {
+    throw new Error("not your lesson");
+  }
+  return lesson as unknown as { id: string; course_id: string; position: number };
+}
+
+export async function updateLesson(formData: FormData) {
+  const data = LessonUpdate.parse({
+    lessonId: formData.get("lessonId"),
+    title: formData.get("title"),
+    bodyJson: formData.get("bodyJson"),
+    notes: formData.get("notes")?.toString() || undefined,
+    estimatedMinutes: formData.get("estimatedMinutes"),
+  });
+  let body: unknown;
+  try {
+    body = JSON.parse(data.bodyJson);
+  } catch {
+    throw new Error("Lesson content is not valid JSON");
+  }
+
+  const supabase = await supabaseServer();
+  const lesson = await assertOwnLesson(supabase, data.lessonId);
+
+  const { error } = await supabase
+    .from("lessons")
+    .update({
+      title: data.title,
+      body,
+      grammar_notes_md: data.notes || null,
+      estimated_minutes: data.estimatedMinutes,
+    })
+    .eq("id", data.lessonId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/teach/courses/${lesson.course_id}`);
+  revalidatePath(`/learn/${lesson.course_id}`);
+  redirect(`/teach/courses/${lesson.course_id}`);
+}
+
+export async function deleteLesson(formData: FormData) {
+  const lessonId = z.string().uuid().parse(formData.get("lessonId"));
+  const supabase = await supabaseServer();
+  const lesson = await assertOwnLesson(supabase, lessonId);
+
+  const { error } = await supabase.from("lessons").delete().eq("id", lessonId);
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/teach/courses/${lesson.course_id}`);
+  revalidatePath(`/learn/${lesson.course_id}`);
+  redirect(`/teach/courses/${lesson.course_id}`);
+}
+
+export async function moveLesson(formData: FormData) {
+  const lessonId = z.string().uuid().parse(formData.get("lessonId"));
+  const direction = z.enum(["up", "down"]).parse(formData.get("direction"));
+  const supabase = await supabaseServer();
+  const lesson = await assertOwnLesson(supabase, lessonId);
+
+  // Swap positions with the neighbor in the chosen direction.
+  const { data: neighbor } = await supabase
+    .from("lessons")
+    .select("id,position")
+    .eq("course_id", lesson.course_id)
+    .filter("position", direction === "up" ? "lt" : "gt", lesson.position)
+    .order("position", { ascending: direction === "down" })
+    .limit(1)
+    .maybeSingle();
+  if (neighbor) {
+    await supabase.from("lessons").update({ position: neighbor.position }).eq("id", lesson.id);
+    await supabase.from("lessons").update({ position: lesson.position }).eq("id", neighbor.id);
+  }
+
+  revalidatePath(`/teach/courses/${lesson.course_id}`);
+  revalidatePath(`/learn/${lesson.course_id}`);
+  redirect(`/teach/courses/${lesson.course_id}`);
+}

@@ -26,6 +26,11 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
+  const { takeRateLimit } = await import("@/lib/rate-limit");
+  if (!(await takeRateLimit(`pron:${user.id}`, 120, 3600))) {
+    return NextResponse.json({ error: "rate limited" }, { status: 429 });
+  }
+
   const result = scorePronunciation(reference, transcript);
 
   // Optional AI coaching — never throws into the user response.

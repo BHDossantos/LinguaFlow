@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
+import { moveLesson } from "@/app/teach/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -82,23 +83,51 @@ export default async function TeacherCoursePage(
           </p>
         ) : (
           <ul className="space-y-2" data-testid="teacher-lessons">
-            {(lessons ?? []).map((l) => (
-              <li key={l.id}>
-                <Link
-                  href={`/learn/${course.id}/${l.id}`}
-                  className="card flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl" aria-hidden>{KIND_ICON[l.kind] ?? "📚"}</span>
-                    <div>
-                      <p className="font-medium">{l.position}. {l.title}</p>
-                      <p className="text-xs capitalize text-ink-500">
-                        {l.kind} · ~{l.estimated_minutes ?? 8} min
-                      </p>
-                    </div>
+            {(lessons ?? []).map((l, idx) => (
+              <li key={l.id} className="card flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="text-2xl" aria-hidden>{KIND_ICON[l.kind] ?? "📚"}</span>
+                  <div className="min-w-0">
+                    <p className="truncate font-medium">{l.position}. {l.title}</p>
+                    <p className="text-xs capitalize text-ink-500">
+                      {l.kind} · ~{l.estimated_minutes ?? 8} min
+                    </p>
                   </div>
-                  <span className="text-xs text-ink-500">Preview →</span>
-                </Link>
+                </div>
+                <div className="flex shrink-0 items-center gap-1">
+                  <form action={moveLesson}>
+                    <input type="hidden" name="lessonId" value={l.id} />
+                    <input type="hidden" name="direction" value="up" />
+                    <button
+                      type="submit"
+                      disabled={idx === 0}
+                      aria-label="Move up"
+                      className="rounded-lg px-1.5 py-1 text-sm text-ink-500 disabled:opacity-30 hover:bg-black/5 dark:hover:bg-white/10"
+                    >↑</button>
+                  </form>
+                  <form action={moveLesson}>
+                    <input type="hidden" name="lessonId" value={l.id} />
+                    <input type="hidden" name="direction" value="down" />
+                    <button
+                      type="submit"
+                      disabled={idx === (lessons ?? []).length - 1}
+                      aria-label="Move down"
+                      className="rounded-lg px-1.5 py-1 text-sm text-ink-500 disabled:opacity-30 hover:bg-black/5 dark:hover:bg-white/10"
+                    >↓</button>
+                  </form>
+                  <Link
+                    href={`/teach/courses/${course.id}/lessons/${l.id}/edit`}
+                    className="rounded-lg px-2 py-1 text-xs font-medium text-brand-600 hover:bg-brand-50 dark:hover:bg-white/10"
+                  >
+                    Edit
+                  </Link>
+                  <Link
+                    href={`/learn/${course.id}/${l.id}`}
+                    className="rounded-lg px-2 py-1 text-xs text-ink-500 hover:bg-black/5 dark:hover:bg-white/10"
+                  >
+                    Preview
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>

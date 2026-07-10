@@ -49,7 +49,7 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
       .eq("user_id", userId)
       .is("read_at", null),
     supabase.from("profiles").select("display_name").eq("id", userId).single(),
-    supabase.from("user_stats").select("streak_days,daily_goal_minutes,xp,last_activity_date").eq("user_id", userId).maybeSingle(),
+    supabase.from("user_stats").select("streak_days,daily_goal_xp,xp,last_activity_date").eq("user_id", userId).maybeSingle(),
     supabase
       .from("lesson_progress")
       .select("completed_at,lesson:lessons(id,course_id,title)")
@@ -89,7 +89,18 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const streak = stats?.streak_days ?? 0;
   const activeToday = stats?.last_activity_date === new Date().toISOString().slice(0, 10);
-  const goalMin = stats?.daily_goal_minutes ?? 20;
+  const goalXp = stats?.daily_goal_xp ?? 50;
+
+  // XP earned since UTC midnight — the daily goal is measured, not guessed.
+  const todayStart = new Date();
+  todayStart.setUTCHours(0, 0, 0, 0);
+  const { data: todayEvents } = await supabase
+    .from("xp_events")
+    .select("amount")
+    .eq("user_id", userId)
+    .gte("created_at", todayStart.toISOString());
+  const todayXp = (todayEvents ?? []).reduce((a, e) => a + e.amount, 0);
+  const goalPct = Math.min(100, Math.round((todayXp / Math.max(1, goalXp)) * 100));
 
   // 2. Classrooms I'm in → upcoming meetings + recent announcements.
   const { data: classroomLinks } = await supabase
@@ -209,10 +220,20 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
 
       {/* Today's goal + streak */}
       <section className="grid grid-cols-2 gap-2">
-        <div className="card">
+        <div className="card" data-testid="daily-goal">
           <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Today's goal</p>
-          <p className="mt-1 text-xl font-bold">{goalMin} min</p>
-          <p className="text-xs text-ink-500">{activeToday ? "✓ practiced today" : "not started yet"}</p>
+          <p className="mt-1 text-xl font-bold">
+            {todayXp} <span className="text-sm font-medium text-ink-500">/ {goalXp} XP</span>
+          </p>
+          <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+            <div
+              className={`h-full rounded-full transition-all duration-700 ${goalPct >= 100 ? "bg-green-500" : "bg-brand-500"}`}
+              style={{ width: `${goalPct}%` }}
+            />
+          </div>
+          <p className="mt-1 text-xs text-ink-500">
+            {goalPct >= 100 ? "✓ goal met — great work" : `${goalPct}% there`}
+          </p>
         </div>
         <div className="card">
           <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Streak</p>

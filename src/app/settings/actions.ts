@@ -8,7 +8,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 const ProfileInput = z.object({
   displayName: z.string().min(1).max(80),
   cefr: z.enum(["A1", "A2", "B1", "B2", "C1", "C2"]),
-  dailyGoalMinutes: z.coerce.number().int().min(5).max(240),
+  dailyGoalXp: z.coerce.number().int().min(10).max(1000),
 });
 
 export async function updateProfile(formData: FormData) {
@@ -19,7 +19,7 @@ export async function updateProfile(formData: FormData) {
   const data = ProfileInput.parse({
     displayName: formData.get("displayName"),
     cefr: formData.get("cefr"),
-    dailyGoalMinutes: formData.get("dailyGoalMinutes"),
+    dailyGoalXp: formData.get("dailyGoalXp"),
   });
 
   await supabase
@@ -30,7 +30,7 @@ export async function updateProfile(formData: FormData) {
   await supabase
     .from("user_stats")
     .upsert(
-      { user_id: user.id, daily_goal_minutes: data.dailyGoalMinutes },
+      { user_id: user.id, daily_goal_xp: data.dailyGoalXp },
       { onConflict: "user_id" },
     );
 

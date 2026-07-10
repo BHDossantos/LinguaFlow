@@ -28,6 +28,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ offline: true }, { status: 503 });
   }
 
+  const { takeRateLimit } = await import("@/lib/rate-limit");
+  if (!(await takeRateLimit(`coach:${user.id}`, 30, 3600))) {
+    return NextResponse.json(
+      { error: "You're going fast! The coach needs a short break — try again in a bit." },
+      { status: 429 },
+    );
+  }
+
   const [{ data: profile }, { data: target }] = await Promise.all([
     supabase.from("profiles").select("display_name,cefr_level").eq("id", user.id).single(),
     supabase

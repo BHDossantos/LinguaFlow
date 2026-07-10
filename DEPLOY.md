@@ -19,7 +19,12 @@ two free-tier accounts and ~20 minutes.
 5. Auth → URL Configuration: set Site URL to your production domain
    (magic-link emails redirect there). Supabase's built-in email service
    works out of the box for low volume.
-6. Collect three values from Project Settings → API:
+6. Optional — Google sign-in: Authentication → Providers → Google, paste
+   OAuth client ID/secret from Google Cloud Console, and add
+   `https://<your-domain>/auth/callback` to the provider's redirect URLs.
+   The button is already on the sign-in page and reports "not enabled"
+   gracefully until this is configured.
+7. Collect three values from Project Settings → API:
    - Project URL            → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon` public key      → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `service_role` key     → `SUPABASE_SERVICE_ROLE_KEY` (server-only secret)

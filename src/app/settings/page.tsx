@@ -17,7 +17,7 @@ export default async function SettingsPage({
 
   const [{ data: profile }, { data: stats }] = await Promise.all([
     supabase.from("profiles").select("display_name,cefr_level").eq("id", user.id).single(),
-    supabase.from("user_stats").select("daily_goal_minutes").eq("user_id", user.id).maybeSingle(),
+    supabase.from("user_stats").select("daily_goal_xp").eq("user_id", user.id).maybeSingle(),
   ]);
 
   return (
@@ -57,13 +57,14 @@ export default async function SettingsPage({
             </select>
           </label>
           <label className="block">
-            <span className="text-sm font-medium">Daily goal (min)</span>
+            <span className="text-sm font-medium">Daily goal (XP)</span>
             <input
-              name="dailyGoalMinutes"
+              name="dailyGoalXp"
               type="number"
-              min={5}
-              max={240}
-              defaultValue={stats?.daily_goal_minutes ?? 20}
+              min={10}
+              max={1000}
+              step={10}
+              defaultValue={stats?.daily_goal_xp ?? 50}
               className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2 dark:bg-white/5"
             />
           </label>
