@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 import { rateCardAction, completeLessonAction } from "@/app/learn/[courseId]/[lessonId]/actions";
 import { PronouncePractice } from "@/components/PronouncePractice";
+import { Celebrate } from "@/components/Celebrate";
+import { XP } from "@/lib/gamification";
 
 type Lesson = {
   id: string;
@@ -78,6 +80,7 @@ function ContentLesson({
   if (done) {
     return (
       <div className="space-y-3">
+        <Celebrate xp={XP.lessonComplete} />
         <h1 className="text-xl font-bold">Lesson complete 🎉</h1>
         <p className="text-sm text-ink-500">
           {pending ? "Saving your progress…" : "Progress saved."}
@@ -207,6 +210,7 @@ function VocabFlashcards({
   if (done) {
     return (
       <div className="space-y-3">
+        <Celebrate xp={XP.lessonComplete + total * XP.cardReview} />
         <h1 className="text-xl font-bold">Lesson complete 🎉</h1>
         <p className="text-sm text-ink-500">
           {pending

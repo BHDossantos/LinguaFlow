@@ -61,6 +61,7 @@ export async function POST(req: Request) {
     score: result.score,
     phoneme_feedback: result.wordFeedback,
   });
+  await supabase.rpc("award_xp", { p_amount: 5, p_kind: "pronunciation" });
 
   return NextResponse.json(result);
 }

@@ -55,6 +55,8 @@ export async function submitAssignment(input: z.input<typeof SubmitInput>) {
     }
   }
 
+  await supabase.rpc("award_xp", { p_amount: 15, p_kind: "submission" });
+
   revalidatePath(`/assignments/${data.assignmentId}`);
   redirect(`/assignments/${data.assignmentId}/result`);
 }

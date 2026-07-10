@@ -89,3 +89,40 @@ Conversational fluency · Pronunciation accuracy · Confidence · Accountability
 - Owl mascots, leaderboards, lottery boxes, dark-pattern streak guilt.
 - Becoming a generic translation app.
 - Boiling the ocean by shipping all 5 phases in parallel.
+
+---
+
+## Vision 2.0 — The Seven Experiences (roadmap of record, July 2026)
+
+North star: the Apple of education — beautiful, simple, personalized, AI-first.
+Design DNA: Apple simplicity · Spotify personalization · Duolingo engagement ·
+Notion cleanliness · conversational AI everywhere · Netflix-grade recommendations.
+
+| # | Experience | What it is | Status |
+|---|---|---|---|
+| 1 | **Learn** | Courses, bite-sized lessons, quizzes, projects; visual learning paths (chapter → challenge → project → capstone → certification) | ✅ Core shipped (courses, multi-mode lessons, SRS); learning-path visualization planned |
+| 2 | **AI Tutor (Coach)** | 24/7 personal teacher: explain anything, generate practice, test me, translate | ✅ Surface shipped (`/coach`); brain lights up with `ANTHROPIC_API_KEY` |
+| 3 | **Practice** | Flashcards, pronunciation, roleplay conversations, mock exams | ✅ Shipped (3-mode drills, word-scored pronunciation, roleplay scenarios) |
+| 4 | **Community** | Per-course discussions, study groups, peer review, mentors | Planned (schema next; needs moderation design before launch) |
+| 5 | **Marketplace** | Teachers sell courses/tutoring/materials; platform takes a cut | Planned (blocked on Stripe keys; teacher authoring already shipped) |
+| 6 | **Career** | Skills assessment, certificates, resume, interview prep, job matching | Planned (phase after retention proves out) |
+| 7 | **Creator Studio** | AI-assisted authoring, analytics, revenue, engagement tools | Partially shipped (composer + AI drafts + per-course analytics); revenue view blocked on Stripe |
+
+### Gamification (shipped July 2026)
+XP on every action (lessons +25, reviews +2, submissions +15, pronunciation +5),
+quadratic level curve, daily streaks with longest-streak memory, 12-week
+activity heatmap, confetti + XP pop on completion. Next: achievements,
+leaderboards, monthly challenges, coins/unlocks.
+
+### Design system rules
+Minimal palette (white / light gray / charcoal / blue accent / green success /
+gold achievements) · one font (Inter) · rounded cards, soft shadows, big
+buttons · every interaction animated (progress fills, confetti, count-ups) ·
+mobile-first always · five-tab navigation (Home, Discover, Coach, Practice,
+Profile) and no more.
+
+### AI everywhere (key-gated)
+Lesson/quiz/homework generation, study plans, roadmap generation ("I want to
+become X" → generated path), voice conversations, interview practice, grading,
+translations, recommendations. All routes are built to degrade gracefully:
+the app is fully usable without the key; intelligence layers on when present.

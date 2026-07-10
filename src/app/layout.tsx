@@ -3,9 +3,29 @@ import "./globals.css";
 import { BottomNav } from "@/components/BottomNav";
 
 export const metadata: Metadata = {
-  title: "Noelia",
-  description: "Speak fluently — adaptive lessons + on-demand human instructors.",
+  title: { default: "Noelia — Speak. Don't just tap.", template: "%s — Noelia" },
+  description:
+    "Say a phrase, get scored word-by-word, fix it on the spot. Adaptive lessons, system roleplay, and live instructors — one app.",
   manifest: "/manifest.json",
+  icons: {
+    icon: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  openGraph: {
+    title: "Noelia — Speak. Don't just tap.",
+    description:
+      "Say a phrase, get scored word-by-word, fix it on the spot. Free to start.",
+    siteName: "Noelia",
+    type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Noelia — Speak. Don't just tap." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Noelia — Speak. Don't just tap.",
+    description:
+      "Say a phrase, get scored word-by-word, fix it on the spot. Free to start.",
+    images: ["/og.png"],
+  },
 };
 
 export const viewport: Viewport = {

@@ -18,4 +18,18 @@ test.describe("auth gate (signed out)", () => {
     expect(resp?.status()).toBe(200);
     await expect(page.getByRole("button", { name: /magic link/i })).toBeVisible();
   });
+
+  test("legal pages and PWA assets are public", async ({ request }) => {
+    for (const path of ["/legal/privacy", "/legal/terms", "/icon-192.png", "/og.png"]) {
+      const resp = await request.get(path);
+      expect(resp.status(), path).toBe(200);
+    }
+  });
+
+  test("unknown route serves the branded 404 for signed-out users via sign-in redirect", async ({ page }) => {
+    // Middleware sends unknown paths to sign-in when logged out — by design
+    // (private-by-default). This just pins the behavior.
+    await page.goto("/definitely-not-a-page");
+    await expect(page).toHaveURL(/\/sign-in/);
+  });
 });

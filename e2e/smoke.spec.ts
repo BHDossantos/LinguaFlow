@@ -17,6 +17,9 @@ const ROUTES = [
   "/teach",
   "/school",
   "/inbox",
+  "/coach",
+  "/profile",
+  "/settings",
 ];
 
 for (const route of ROUTES) {

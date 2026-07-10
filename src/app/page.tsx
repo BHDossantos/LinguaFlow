@@ -30,8 +30,14 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
   const nowIso = new Date().toISOString();
   const since14 = new Date(Date.now() - 14 * 86_400_000).toISOString();
 
-  // 1. Due SRS reviews + unread notifications.
-  const [{ count: dueReviews }, { count: unreadNotifs }] = await Promise.all([
+  // 1. Due SRS reviews + unread notifications + gamification + continue-learning.
+  const [
+    { count: dueReviews },
+    { count: unreadNotifs },
+    { data: profile },
+    { data: stats },
+    { data: lastProgress },
+  ] = await Promise.all([
     supabase
       .from("srs_cards")
       .select("id", { count: "exact", head: true })
@@ -42,7 +48,48 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
       .select("id", { count: "exact", head: true })
       .eq("user_id", userId)
       .is("read_at", null),
+    supabase.from("profiles").select("display_name").eq("id", userId).single(),
+    supabase.from("user_stats").select("streak_days,daily_goal_minutes,xp,last_activity_date").eq("user_id", userId).maybeSingle(),
+    supabase
+      .from("lesson_progress")
+      .select("completed_at,lesson:lessons(id,course_id,title)")
+      .eq("user_id", userId)
+      .order("completed_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
   ]);
+
+  // Continue-learning card: latest course + its completion percentage.
+  let resume: { courseId: string; title: string; pct: number; cefr: string | null } | null = null;
+  const lastCourseId = (lastProgress as any)?.lesson?.course_id;
+  if (lastCourseId) {
+    const [{ data: course }, { data: courseLessons }, { data: doneRows }] = await Promise.all([
+      supabase.from("courses").select("id,title,cefr_level").eq("id", lastCourseId).single(),
+      supabase.from("lessons").select("id").eq("course_id", lastCourseId),
+      supabase
+        .from("lesson_progress")
+        .select("lesson_id")
+        .eq("user_id", userId)
+        .not("completed_at", "is", null),
+    ]);
+    if (course && courseLessons && courseLessons.length > 0) {
+      const idsInCourse = new Set(courseLessons.map((l) => l.id));
+      const doneInCourse = (doneRows ?? []).filter((r) => idsInCourse.has(r.lesson_id)).length;
+      resume = {
+        courseId: course.id,
+        title: course.title,
+        cefr: course.cefr_level,
+        pct: Math.round((doneInCourse / courseLessons.length) * 100),
+      };
+    }
+  }
+
+  const firstName = (profile?.display_name ?? "there").split(" ")[0];
+  const hour = new Date().getUTCHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  const streak = stats?.streak_days ?? 0;
+  const activeToday = stats?.last_activity_date === new Date().toISOString().slice(0, 10);
+  const goalMin = stats?.daily_goal_minutes ?? 20;
 
   // 2. Classrooms I'm in → upcoming meetings + recent announcements.
   const { data: classroomLinks } = await supabase
@@ -120,11 +167,75 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
   return (
     <div className="space-y-5">
       <header>
-        <p className="text-sm text-ink-500">Welcome back</p>
         <h1 className="text-2xl font-bold">
-          {langInfo ? `${langInfo.flag} ${langInfo.label}` : "Today"}
+          {greeting}, {firstName} 👋
         </h1>
+        <p className="text-sm text-ink-500">
+          {langInfo ? `Learning ${langInfo.flag} ${langInfo.label}` : "Let's learn something today"}
+        </p>
       </header>
+
+      {/* Continue learning */}
+      {resume ? (
+        <Link
+          href={`/learn/${resume.courseId}`}
+          className="card block space-y-2 border-brand-500/20 bg-gradient-to-br from-brand-50 to-white dark:from-white/[0.08] dark:to-white/[0.02]"
+          data-testid="continue-learning"
+        >
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+            Continue learning
+          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-lg font-bold">
+              {langInfo?.flag} {resume.title}
+              {resume.cefr ? <span className="ml-2 text-sm font-semibold text-brand-600">{resume.cefr}</span> : null}
+            </p>
+            <span className="btn-primary px-5 py-2 text-sm">Resume ▶</span>
+          </div>
+          <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+            <div
+              className="h-full rounded-full bg-brand-500 transition-all duration-700"
+              style={{ width: `${resume.pct}%` }}
+            />
+          </div>
+          <p className="text-xs text-ink-500">{resume.pct}% complete</p>
+        </Link>
+      ) : (
+        <Link href="/learn" className="card block text-center" data-testid="continue-learning">
+          <p className="font-semibold">Pick your first course</p>
+          <p className="text-xs text-ink-500">Ten minutes a day is all it takes.</p>
+        </Link>
+      )}
+
+      {/* Today's goal + streak */}
+      <section className="grid grid-cols-2 gap-2">
+        <div className="card">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Today's goal</p>
+          <p className="mt-1 text-xl font-bold">{goalMin} min</p>
+          <p className="text-xs text-ink-500">{activeToday ? "✓ practiced today" : "not started yet"}</p>
+        </div>
+        <div className="card">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Streak</p>
+          <p className="mt-1 text-xl font-bold">🔥 {streak} day{streak === 1 ? "" : "s"}</p>
+          <p className="text-xs text-ink-500">{activeToday ? "kept alive — nice" : "practice to keep it"}</p>
+        </div>
+      </section>
+
+      {/* Coach entry */}
+      <Link
+        href="/coach"
+        className="card flex items-center justify-between hover:border-brand-500/30"
+        data-testid="coach-entry"
+      >
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-100 text-xl dark:bg-violet-500/20">🤖</span>
+          <div>
+            <p className="font-semibold">Coach</p>
+            <p className="text-xs text-ink-500">Ask anything…</p>
+          </div>
+        </div>
+        <span className="text-ink-500">›</span>
+      </Link>
 
       <section className="grid grid-cols-3 gap-2">
         <Link href="/review" className="card flex flex-col items-start">

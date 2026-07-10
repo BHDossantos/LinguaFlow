@@ -5,13 +5,18 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
 
 const PUBLIC_PATHS = new Set<string>(["/", "/sign-in", "/auth/callback"]);
 
+// Static marketing/PWA assets served from /public.
+const PUBLIC_FILES = /\.(png|jpg|jpeg|svg|webp|ico|txt|xml)$/;
+
 function isPublic(pathname: string) {
   if (PUBLIC_PATHS.has(pathname)) return true;
   return (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api/stripe/webhook") ||
+    pathname.startsWith("/legal/") ||
     pathname === "/manifest.json" ||
-    pathname === "/favicon.ico"
+    pathname === "/favicon.ico" ||
+    PUBLIC_FILES.test(pathname)
   );
 }
 
