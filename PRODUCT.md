@@ -103,7 +103,7 @@ Notion cleanliness · conversational AI everywhere · Netflix-grade recommendati
 | 1 | **Learn** | Courses, bite-sized lessons, quizzes, projects; visual learning paths (chapter → challenge → project → capstone → certification) | ✅ Core shipped (courses, multi-mode lessons, SRS); learning-path visualization planned |
 | 2 | **AI Tutor (Coach)** | 24/7 personal teacher: explain anything, generate practice, test me, translate | ✅ Surface shipped (`/coach`); brain lights up with `ANTHROPIC_API_KEY` |
 | 3 | **Practice** | Flashcards, pronunciation, roleplay conversations, mock exams | ✅ Shipped (3-mode drills, word-scored pronunciation, roleplay scenarios) |
-| 4 | **Community** | Per-course discussions, study groups, peer review, mentors | Planned (schema next; needs moderation design before launch) |
+| 4 | **Community** | Per-course discussions, study groups, peer review, mentors | ✅ v1 shipped (per-course discussions with replies, author/teacher moderation, rate-limited posting); groups/mentors planned |
 | 5 | **Marketplace** | Teachers sell courses/tutoring/materials; platform takes a cut | Planned (blocked on Stripe keys; teacher authoring already shipped) |
 | 6 | **Career** | Skills assessment, certificates, resume, interview prep, job matching | Planned (phase after retention proves out) |
 | 7 | **Creator Studio** | AI-assisted authoring, analytics, revenue, engagement tools | Partially shipped (composer + AI drafts + per-course analytics); revenue view blocked on Stripe |
@@ -126,3 +126,9 @@ Lesson/quiz/homework generation, study plans, roadmap generation ("I want to
 become X" → generated path), voice conversations, interview practice, grading,
 translations, recommendations. All routes are built to degrade gracefully:
 the app is fully usable without the key; intelligence layers on when present.
+
+### Also shipped (July 2026)
+Universal search (postgres FTS over published courses/lessons, RLS-respecting),
+learning-path visualization (✓/▶/○ journey with progress bar and course-complete
+state), rule-based "Recommended for you" on home, honest /pricing page
+(free beta + premium placeholder).

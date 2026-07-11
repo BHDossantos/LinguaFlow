@@ -21,6 +21,7 @@ const ROUTES = [
   "/profile",
   "/settings",
   "/leaderboard",
+  "/search",
 ];
 
 for (const route of ROUTES) {

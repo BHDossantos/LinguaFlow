@@ -45,6 +45,13 @@ export default async function LearnPage(
 
   return (
     <div className="space-y-5">
+      <Link
+        href="/search"
+        className="card flex items-center gap-2 py-3 text-sm text-ink-500"
+        data-testid="search-entry"
+      >
+        🔍 Search courses and lessons…
+      </Link>
       <header>
         <h1 className="text-2xl font-bold">
           Learn {LANGUAGES[lang]?.label ?? lang}

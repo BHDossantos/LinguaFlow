@@ -3,7 +3,7 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 
 type CookieToSet = { name: string; value: string; options: CookieOptions };
 
-const PUBLIC_PATHS = new Set<string>(["/", "/sign-in", "/auth/callback"]);
+const PUBLIC_PATHS = new Set<string>(["/", "/sign-in", "/auth/callback", "/pricing"]);
 
 // Static marketing/PWA assets served from /public.
 const PUBLIC_FILES = /\.(png|jpg|jpeg|svg|webp|ico|txt|xml)$/;

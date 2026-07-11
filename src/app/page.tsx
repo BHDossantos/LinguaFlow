@@ -59,6 +59,19 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
       .maybeSingle(),
   ]);
 
+  // Recommended: published courses in my language I'm not enrolled in yet.
+  const { data: myEnrollments } = await supabase
+    .from("enrollments").select("course_id").eq("user_id", userId);
+  const enrolledSet = new Set((myEnrollments ?? []).map((e) => e.course_id));
+  const { data: recPool } = await supabase
+    .from("courses")
+    .select("id,title,cefr_level,goal_tag")
+    .eq("language", primaryLang)
+    .eq("published", true)
+    .order("position")
+    .limit(12);
+  const recommended = (recPool ?? []).filter((c) => !enrolledSet.has(c.id)).slice(0, 3);
+
   // Continue-learning card: latest course + its completion percentage.
   let resume: { courseId: string; title: string; pct: number; cefr: string | null } | null = null;
   const lastCourseId = (lastProgress as any)?.lesson?.course_id;
@@ -257,6 +270,27 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
         </div>
         <span className="text-ink-500">›</span>
       </Link>
+
+      {recommended.length > 0 && (
+        <section className="space-y-2" data-testid="recommended">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
+            Recommended for you
+          </h2>
+          <div className="grid gap-2">
+            {recommended.map((c) => (
+              <Link key={c.id} href={`/learn/${c.id}`} className="card flex items-center justify-between">
+                <div>
+                  <p className="font-medium">{c.title}</p>
+                  <p className="text-xs text-ink-500">
+                    {c.cefr_level ?? ""}{c.goal_tag ? ` · ${c.goal_tag}` : ""}
+                  </p>
+                </div>
+                <span className="text-xs font-medium text-brand-600">Explore →</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="grid grid-cols-3 gap-2">
         <Link href="/review" className="card flex flex-col items-start">
@@ -549,6 +583,13 @@ function LoggedOutLanding() {
         <Link href="/sign-in" className="btn-primary mt-5 inline-block px-10 py-3 text-lg">
           Start learning free
         </Link>
+        <p className="mt-4 text-xs text-ink-500">
+          <Link href="/pricing" className="underline underline-offset-2">Pricing</Link>
+          {" · "}
+          <Link href="/legal/privacy" className="underline underline-offset-2">Privacy</Link>
+          {" · "}
+          <Link href="/legal/terms" className="underline underline-offset-2">Terms</Link>
+        </p>
       </section>
     </div>
   );
