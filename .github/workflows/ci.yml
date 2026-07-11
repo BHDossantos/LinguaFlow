@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+env:
+  # Local devstack demo credentials — the well-known local JWT secret, not
+  # production values. Real deployments use Vercel/Supabase env vars.
+  NEXT_PUBLIC_SUPABASE_URL: http://localhost:54321
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NDkyMTMsImV4cCI6MTgxMDQ4NTIxM30.rrC5hZsATBonCaINRw295GaxWTUO0s9vzpW-ZvgvGtc
+  SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODk0OTIxMywiZXhwIjoxODEwNDg1MjEzfQ.uFvmQ0OXNMStkJQUJMhWs4odHAfXt6TuBp-6gjwnjwU
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run build
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Boot the same local Supabase stack the repo ships for development:
+      # postgres + gotrue + postgrest containers, storage stub, and the
+      # host gateway that mimics the Supabase URL shape.
+      - name: Start devstack
+        run: |
+          bash devstack/setup.sh
+          node devstack/gateway.mjs > /tmp/gateway.log 2>&1 &
+          node devstack/storage-stub.mjs > /tmp/storage.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:54321/auth/v1/health >/dev/null && break
+            sleep 2
+          done
+          curl -sf http://localhost:54321/auth/v1/health
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run e2e suite
+        run: npx playwright test
+
+      - name: Upload report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

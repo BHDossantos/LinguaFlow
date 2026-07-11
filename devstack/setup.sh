@@ -77,6 +77,7 @@ fi
 # Sample content (idempotent — uses fixed UUIDs)
 docker exec -i lf_pg psql -U postgres < "$ROOT/supabase/seed/seed_es_a1.sql" >/dev/null 2>&1 || true
 docker exec -i lf_pg psql -U postgres < "$ROOT/supabase/seed/seed_academic.sql" >/dev/null 2>&1 || true
+docker exec -i lf_pg psql -U postgres < "$ROOT/supabase/seed/seed_starter_pack.sql" >/dev/null 2>&1 || true
 
 # Seed test user + per-user data (idempotent)
 SRK="${SUPABASE_SERVICE_ROLE_KEY:-}"

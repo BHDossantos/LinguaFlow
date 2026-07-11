@@ -12,8 +12,9 @@ two free-tier accounts and ~20 minutes.
      (applies everything in `supabase/migrations/`), or
    - **Dashboard:** paste each file from `supabase/migrations/` into the
      SQL editor in filename order (0001 → 0014).
-3. Optional starter content: run `supabase/seed/seed_es_a1.sql` and
-   `seed_academic.sql` in the SQL editor.
+3. Optional starter content: run `supabase/seed/seed_es_a1.sql`,
+   `seed_academic.sql`, and `seed_starter_pack.sql` (4-language starter
+   library, 20 lessons) in the SQL editor.
 4. Storage: create a **private** bucket named `submissions`
    (Storage → New bucket). The RLS policies for it ship in migration 0004.
 5. Auth → URL Configuration: set Site URL to your production domain

@@ -98,6 +98,7 @@ until curl -s -o /dev/null http://localhost:3001/; do sleep 1; done
 # --- seed -----------------------------------------------------------------------
 $PSQL -f "$ROOT/supabase/seed/seed_es_a1.sql" >/dev/null 2>&1 || true
 $PSQL -f "$ROOT/supabase/seed/seed_academic.sql" >/dev/null 2>&1 || true
+$PSQL -f "$ROOT/supabase/seed/seed_starter_pack.sql" >/dev/null 2>&1 || true
 
 SRK="${SUPABASE_SERVICE_ROLE_KEY:-}"
 if [ -n "$SRK" ]; then
