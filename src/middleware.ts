@@ -13,9 +13,12 @@ function isPublic(pathname: string) {
   return (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api/stripe/webhook") ||
+    pathname === "/api/track" ||
     pathname.startsWith("/legal/") ||
     pathname === "/manifest.json" ||
     pathname === "/sw.js" ||
+    pathname === "/sitemap.xml" ||
+    pathname === "/robots.txt" ||
     pathname === "/favicon.ico" ||
     PUBLIC_FILES.test(pathname)
   );

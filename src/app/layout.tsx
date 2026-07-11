@@ -1,8 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { BottomNav } from "@/components/BottomNav";
+import { PageBeacon } from "@/components/PageBeacon";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://learnnoelia.com";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "/" },
   title: { default: "Noelia — Speak. Don't just tap.", template: "%s — Noelia" },
   description:
     "Say a phrase, get scored word-by-word, fix it on the spot. Adaptive lessons, system roleplay, and live instructors — one app.",
@@ -12,6 +17,7 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
+    url: SITE_URL,
     title: "Noelia — Speak. Don't just tap.",
     description:
       "Say a phrase, get scored word-by-word, fix it on the spot. Free to start.",
@@ -54,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <BottomNav />
+        <PageBeacon />
       </body>
     </html>
   );

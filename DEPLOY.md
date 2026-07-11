@@ -36,6 +36,19 @@ two free-tier accounts and ~20 minutes.
 2. Add the three Supabase env vars above (all environments).
 3. Deploy. Every push to the production branch redeploys automatically.
 
+### Custom domain: learnnoelia.com
+
+1. Vercel → Project → Settings → Domains → add `learnnoelia.com` and
+   `www.learnnoelia.com` (set www to redirect to the apex).
+2. At your registrar's DNS panel, add the records Vercel shows — typically:
+   - `A` record, host `@`, value `76.76.21.21`
+   - `CNAME` record, host `www`, value `cname.vercel-dns.com`
+   HTTPS is automatic once DNS propagates (minutes to a few hours).
+3. Supabase → Auth → URL Configuration → Site URL: `https://learnnoelia.com`
+   (magic links redirect here). If Google sign-in is enabled, add
+   `https://learnnoelia.com/auth/callback` to the provider redirect URLs.
+4. Vercel env: `NEXT_PUBLIC_SITE_URL=https://learnnoelia.com` (canonical/OG).
+
 Any Next-compatible host (Netlify, Railway, Fly, self-hosted `next start`)
 works the same way — the app has no Vercel-specific code.
 
