@@ -3,6 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
 import { updateProfile } from "@/app/settings/actions";
 import { SignOutButton, DeleteAccountButton } from "@/app/settings/SettingsClient";
+import { RemindersToggle } from "@/app/settings/RemindersClient";
 
 export const dynamic = "force-dynamic";
 
@@ -81,6 +82,8 @@ export default async function SettingsPage({
           Manage languages
         </Link>
       </section>
+
+      <RemindersToggle />
 
       <section className="space-y-2">
         <SignOutButton />

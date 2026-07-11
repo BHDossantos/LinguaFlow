@@ -52,7 +52,19 @@ computed locally); only the extra coaching tip is skipped. Grading, roleplay,
 and translate endpoints return errors until the key is set — the UI surfaces
 them as "generation failed" style messages rather than crashing.
 
-## 4. Post-deploy smoke check
+## 4. Optional — streak reminders (web push)
+
+1. Generate keys once: `npx web-push generate-vapid-keys`.
+2. Set `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`,
+   `VAPID_SUBJECT` (mailto:you@yourdomain), and a random `CRON_SECRET`
+   in Vercel env vars.
+3. vercel.json already schedules `/api/push/send-reminders` daily at 17:00
+   UTC; Vercel sends the `Authorization: Bearer CRON_SECRET` header
+   automatically when the env var is set.
+4. Users opt in from Settings → Streak reminders. Without the env vars the
+   toggle reports push as unavailable and nothing breaks.
+
+## 5. Post-deploy smoke check
 
 1. Open the site → home page renders with Noelia branding.
 2. Sign in with a magic link (check your email).
