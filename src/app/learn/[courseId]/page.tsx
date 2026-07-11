@@ -200,7 +200,10 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         <div className="card border-green-300 bg-green-50 text-center dark:border-green-500/30 dark:bg-green-500/10">
           <p className="text-lg font-bold">Course complete 🎓</p>
           <p className="text-sm text-ink-500">Every lesson done — keep it fresh in Review.</p>
-          <Link href="/review" className="btn-primary mt-2 inline-block">Review now</Link>
+          <div className="mt-2 flex justify-center gap-2">
+            <Link href={`/certificates/${course.id}`} className="btn-primary">View certificate</Link>
+            <Link href="/review" className="btn-ghost">Review now</Link>
+          </div>
         </div>
       )}
     </div>

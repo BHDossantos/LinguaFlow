@@ -3,11 +3,14 @@ import { useState, useTransition } from "react";
 import { createLesson } from "@/app/teach/actions";
 
 type ContentKind = "reading" | "grammar" | "listening" | "writing";
-type LessonKind = "vocab" | "roleplay" | ContentKind;
+type LessonKind = "vocab" | "roleplay" | "quiz" | ContentKind;
 
 type VocabRow = { term: string; translation: string; ipa: string; example: string };
 
 const EMPTY_ROW: VocabRow = { term: "", translation: "", ipa: "", example: "" };
+
+type QuizRow = { prompt: string; options: string[]; answer: number; explanation: string };
+const EMPTY_QUIZ: QuizRow = { prompt: "", options: ["", "", "", ""], answer: 0, explanation: "" };
 
 export function LessonComposer({ courseId }: { courseId: string }) {
   const [kind, setKind] = useState<LessonKind>("vocab");
@@ -22,6 +25,7 @@ export function LessonComposer({ courseId }: { courseId: string }) {
   const [goal, setGoal] = useState("");
   const [content, setContent] = useState("");
   const [keyTerms, setKeyTerms] = useState("");
+  const [quizzes, setQuizzes] = useState<QuizRow[]>([{ ...EMPTY_QUIZ }]);
 
   const [topic, setTopic] = useState("");
   const [generating, setGenerating] = useState(false);
@@ -30,7 +34,7 @@ export function LessonComposer({ courseId }: { courseId: string }) {
 
   async function generate() {
     if (topic.trim().length < 3) return;
-    if (kind === "vocab" || kind === "roleplay") return;
+    if (kind === "vocab" || kind === "roleplay" || kind === "quiz") return;
     setGenerating(true);
     setError(null);
     try {
@@ -73,6 +77,9 @@ export function LessonComposer({ courseId }: { courseId: string }) {
       return items.some((it) => it.term.trim() && it.translation.trim());
     }
     if (kind === "roleplay") return scenario.trim().length >= 5;
+    if (kind === "quiz") {
+      return quizzes.some((q) => q.prompt.trim().length >= 3 && q.options.filter((o) => o.trim()).length >= 2);
+    }
     return content.trim().length >= 1;
   }
 
@@ -92,6 +99,23 @@ export function LessonComposer({ courseId }: { courseId: string }) {
           if (cleanItems.length === 0) throw new Error("Add at least one term/translation pair");
           await createLesson({
             courseId, kind: "vocab", title, items: cleanItems,
+            notes: notes || undefined, estimatedMinutes: minutes,
+          });
+        } else if (kind === "quiz") {
+          const cleanQs = quizzes
+            .filter((q) => q.prompt.trim().length >= 3 && q.options.filter((o) => o.trim()).length >= 2)
+            .map((q) => {
+              const opts = q.options.map((o) => o.trim()).filter(Boolean);
+              return {
+                prompt: q.prompt.trim(),
+                options: opts,
+                answer: Math.min(q.answer, opts.length - 1),
+                explanation: q.explanation.trim() || undefined,
+              };
+            });
+          if (cleanQs.length === 0) throw new Error("Add at least one complete question");
+          await createLesson({
+            courseId, kind: "quiz", title, questions: cleanQs,
             notes: notes || undefined, estimatedMinutes: minutes,
           });
         } else if (kind === "roleplay") {
@@ -130,6 +154,7 @@ export function LessonComposer({ courseId }: { courseId: string }) {
           >
             <option value="vocab">Vocab — flashcards with multi-mode practice</option>
             <option value="roleplay">Roleplay — conversation scenario</option>
+            <option value="quiz">Quiz — quick multiple choice check</option>
             <option value="reading">Reading</option>
             <option value="grammar">Grammar</option>
             <option value="listening">Listening</option>
@@ -138,7 +163,7 @@ export function LessonComposer({ courseId }: { courseId: string }) {
         </label>
       </section>
 
-      {kind !== "vocab" && kind !== "roleplay" && (
+      {kind !== "vocab" && kind !== "roleplay" && kind !== "quiz" && (
         <section className="card space-y-2">
           <h2 className="font-semibold">
             Generate a draft <span className="text-xs font-normal text-ink-500">(optional)</span>
@@ -165,7 +190,7 @@ export function LessonComposer({ courseId }: { courseId: string }) {
 
       <section className="space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
-          {kind === "vocab" ? "Vocabulary items" : kind === "roleplay" ? "Roleplay scenario" : "Content"}
+          {kind === "vocab" ? "Vocabulary items" : kind === "roleplay" ? "Roleplay scenario" : kind === "quiz" ? "Questions" : "Content"}
         </h2>
 
         <label className="block">
@@ -238,6 +263,80 @@ export function LessonComposer({ courseId }: { courseId: string }) {
               className="btn-ghost w-full"
             >
               + Add item
+            </button>
+          </div>
+        )}
+
+        {kind === "quiz" && (
+          <div className="space-y-2" data-testid="quiz-editor">
+            {quizzes.map((q, qi) => (
+              <div key={qi} className="card space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+                    Question {qi + 1}
+                  </span>
+                  {quizzes.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => setQuizzes((p) => p.filter((_, i) => i !== qi))}
+                      className="text-xs text-red-600"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                <input
+                  value={q.prompt}
+                  onChange={(e) =>
+                    setQuizzes((p) => p.map((row, i) => (i === qi ? { ...row, prompt: e.target.value } : row)))
+                  }
+                  placeholder="Question prompt"
+                  data-testid={`quiz-prompt-${qi}`}
+                  className="w-full rounded-xl border border-black/10 bg-white px-3 py-2 text-sm"
+                />
+                {q.options.map((opt, oi) => (
+                  <div key={oi} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name={`answer-${qi}`}
+                      checked={q.answer === oi}
+                      onChange={() =>
+                        setQuizzes((p) => p.map((row, i) => (i === qi ? { ...row, answer: oi } : row)))
+                      }
+                      aria-label={`Mark option ${oi + 1} correct`}
+                    />
+                    <input
+                      value={opt}
+                      onChange={(e) =>
+                        setQuizzes((p) =>
+                          p.map((row, i) =>
+                            i === qi
+                              ? { ...row, options: row.options.map((o, j) => (j === oi ? e.target.value : o)) }
+                              : row,
+                          ),
+                        )
+                      }
+                      placeholder={`Option ${oi + 1}${q.answer === oi ? " (correct)" : ""}`}
+                      className="flex-1 rounded-xl border border-black/10 bg-white px-3 py-1.5 text-sm"
+                    />
+                  </div>
+                ))}
+                <input
+                  value={q.explanation}
+                  onChange={(e) =>
+                    setQuizzes((p) => p.map((row, i) => (i === qi ? { ...row, explanation: e.target.value } : row)))
+                  }
+                  placeholder="Explanation shown after answering (optional)"
+                  className="w-full rounded-xl border border-black/10 bg-white px-3 py-1.5 text-sm"
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => setQuizzes((p) => [...p, { ...EMPTY_QUIZ }])}
+              className="btn-ghost w-full"
+            >
+              + Add question
             </button>
           </div>
         )}

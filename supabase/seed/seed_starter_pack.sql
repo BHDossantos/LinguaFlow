@@ -203,3 +203,18 @@ where not exists (
   select 1 from public.lessons l
   where l.course_id = '66666666-6666-6666-6666-666666666661' and l.position = v.pos
 );
+
+-- Quiz checkpoint for the Spanish essentials course.
+insert into public.lessons (course_id, position, title, kind, body, grammar_notes_md, estimated_minutes)
+select '11111111-1111-1111-1111-111111111112', 6, 'Checkpoint quiz', 'quiz',
+ '{"questions":[
+    {"prompt":"How do you say \"the mother\"?","options":["el padre","la madre","la hermana","los abuelos"],"answer":1,"explanation":"la madre = the mother; el padre = the father."},
+    {"prompt":"\"Son las tres y media\" means…","options":["It''s 3:30","It''s 3:15","It''s 2:30","It''s quarter to three"],"answer":0,"explanation":"y media = half past."},
+    {"prompt":"Pick the right weather phrase for a sunny day:","options":["Está lloviendo","Hace frío","Hace sol","Hace calor"],"answer":2,"explanation":"Hace sol = it''s sunny."},
+    {"prompt":"\"¿Qué hora es?\" asks about…","options":["the price","the time","the weather","directions"],"answer":1,"explanation":"Literally: what hour is it?"}
+ ]}'::jsonb,
+ null, 5
+where not exists (
+  select 1 from public.lessons l
+  where l.course_id = '11111111-1111-1111-1111-111111111112' and l.position = 6
+);

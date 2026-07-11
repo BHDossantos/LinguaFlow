@@ -87,7 +87,23 @@ const ContentLesson = z.object({
   estimatedMinutes: z.coerce.number().int().min(1).max(180).default(10),
 });
 
-const LessonInput = z.discriminatedUnion("kind", [VocabLesson, RoleplayLesson, ContentLesson]);
+const QuizQuestion = z.object({
+  prompt: z.string().min(3).max(400),
+  options: z.array(z.string().min(1).max(200)).min(2).max(6),
+  answer: z.number().int().min(0),
+  explanation: z.string().max(400).optional(),
+});
+
+const QuizLesson = z.object({
+  courseId: z.string().uuid(),
+  kind: z.literal("quiz"),
+  title: z.string().min(2).max(160),
+  questions: z.array(QuizQuestion).min(1).max(30),
+  notes: z.string().max(4000).optional(),
+  estimatedMinutes: z.coerce.number().int().min(1).max(180).default(5),
+});
+
+const LessonInput = z.discriminatedUnion("kind", [VocabLesson, RoleplayLesson, ContentLesson, QuizLesson]);
 
 function parseKeyTerms(raw?: string) {
   if (!raw) return [];
@@ -125,6 +141,12 @@ export async function createLesson(input: z.input<typeof LessonInput>) {
   let body: unknown;
   if (data.kind === "vocab") {
     body = { items: data.items };
+  } else if (data.kind === "quiz") {
+    // Reject out-of-range answer indexes before they reach the player.
+    for (const q of data.questions) {
+      if (q.answer >= q.options.length) throw new Error("answer index out of range");
+    }
+    body = { questions: data.questions };
   } else if (data.kind === "roleplay") {
     body = { scenario: data.scenario, persona: data.persona, goal: data.goal };
   } else {

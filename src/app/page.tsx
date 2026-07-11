@@ -255,6 +255,9 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
         </div>
       </section>
 
+      {/* Weekly challenge */}
+      <WeeklyChallenge userId={userId} />
+
       {/* Coach entry */}
       <Link
         href="/coach"
@@ -591,6 +594,41 @@ function LoggedOutLanding() {
           <Link href="/legal/terms" className="underline underline-offset-2">Terms</Link>
         </p>
       </section>
+    </div>
+  );
+}
+
+
+// Weekly challenge: a fixed, honest target — 300 XP in the rolling last
+// 7 days. Computed live from xp_events; no hidden state to desync.
+async function WeeklyChallenge({ userId }: { userId: string }) {
+  const supabase = await supabaseServer();
+  const TARGET = 300;
+  const since = new Date(Date.now() - 7 * 86_400_000).toISOString();
+  const { data } = await supabase
+    .from("xp_events")
+    .select("amount")
+    .eq("user_id", userId)
+    .gte("created_at", since);
+  const earned = (data ?? []).reduce((a, e) => a + e.amount, 0);
+  const pct = Math.min(100, Math.round((earned / TARGET) * 100));
+  return (
+    <div className="card" data-testid="weekly-challenge">
+      <div className="flex items-baseline justify-between">
+        <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+          Weekly challenge
+        </p>
+        <span className="text-xs text-ink-500">{earned} / {TARGET} XP</span>
+      </div>
+      <p className="mt-1 text-sm font-medium">
+        {pct >= 100 ? "🏅 Challenge complete — legend." : `Earn ${TARGET} XP this week`}
+      </p>
+      <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+        <div
+          className={`h-full rounded-full transition-all duration-700 ${pct >= 100 ? "bg-amber-500" : "bg-violet-500"}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
     </div>
   );
 }

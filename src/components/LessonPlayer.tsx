@@ -41,6 +41,16 @@ export function LessonPlayer({
   if (lesson.kind === "roleplay") {
     return <RoleplayLesson body={lesson.body} title={lesson.title} courseId={courseId} />;
   }
+  if (lesson.kind === "quiz") {
+    return (
+      <QuizLesson
+        questions={lesson.body?.questions ?? []}
+        title={lesson.title}
+        courseId={courseId}
+        lessonId={lesson.id}
+      />
+    );
+  }
   return (
     <ContentLesson
       body={lesson.body}
@@ -469,6 +479,130 @@ function RoleplayLesson({
       </Link>
       <Link href={`/tutors`} className="btn-ghost block text-center">Or do this with a live instructor</Link>
       <Link href={`/learn/${courseId}`} className="block text-center text-sm text-ink-500">Back to course</Link>
+    </div>
+  );
+}
+
+type QuizQuestion = {
+  prompt: string;
+  options: string[];
+  answer: number;
+  explanation?: string;
+};
+
+// Quick quiz: answer each question, get instant feedback + explanation,
+// finish with a percentage score that feeds lesson_progress and XP.
+function QuizLesson({
+  questions, title, courseId, lessonId,
+}: {
+  questions: QuizQuestion[];
+  title: string;
+  courseId: string;
+  lessonId: string;
+}) {
+  const [i, setI] = useState(0);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [done, setDone] = useState(false);
+  const [pending, startTransition] = useTransition();
+
+  const q = questions[i];
+  const total = questions.length;
+
+  function pick(idx: number) {
+    if (picked !== null) return;
+    setPicked(idx);
+    if (idx === q.answer) setCorrectCount((c) => c + 1);
+  }
+
+  function next() {
+    if (i + 1 >= total) {
+      const finalCorrect = correctCount;
+      const score = Math.round((finalCorrect / Math.max(1, total)) * 100);
+      startTransition(async () => {
+        try { await completeLessonAction(lessonId, score); } catch {}
+      });
+      setDone(true);
+    } else {
+      setI(i + 1);
+      setPicked(null);
+    }
+  }
+
+  if (total === 0) return <p>No questions.</p>;
+
+  if (done) {
+    const score = Math.round((correctCount / total) * 100);
+    return (
+      <div className="space-y-3">
+        <Celebrate xp={XP.lessonComplete} />
+        <h1 className="text-xl font-bold">Quiz complete 🎉</h1>
+        <p className="text-3xl font-extrabold" data-testid="quiz-score">{score}%</p>
+        <p className="text-sm text-ink-500">
+          {correctCount} of {total} correct{pending ? " · saving…" : ""}
+        </p>
+        <Link href={`/learn/${courseId}`} className="btn-primary inline-block">Continue</Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <header className="space-y-2">
+        <h1 className="text-xl font-bold">{title}</h1>
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+          <div
+            className="h-full bg-brand-500 transition-all"
+            style={{ width: `${(i / total) * 100}%` }}
+          />
+        </div>
+        <p className="text-xs text-ink-500">{i + 1} / {total}</p>
+      </header>
+
+      <div className="card">
+        <p className="font-medium" data-testid="quiz-prompt">{q.prompt}</p>
+      </div>
+
+      <div className="space-y-2" data-testid="quiz-options">
+        {q.options.map((opt, idx) => {
+          const isPicked = picked === idx;
+          const isAnswer = idx === q.answer;
+          const revealed = picked !== null;
+          return (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => pick(idx)}
+              disabled={revealed}
+              className={
+                "card w-full text-left text-sm transition " +
+                (revealed && isAnswer
+                  ? "border-green-400 bg-green-50 dark:bg-green-500/10"
+                  : revealed && isPicked
+                    ? "border-red-400 bg-red-50 dark:bg-red-500/10"
+                    : "hover:border-brand-500/40")
+              }
+            >
+              {opt}
+              {revealed && isAnswer && <span className="ml-2">✓</span>}
+              {revealed && isPicked && !isAnswer && <span className="ml-2">✕</span>}
+            </button>
+          );
+        })}
+      </div>
+
+      {picked !== null && (
+        <div className="space-y-2">
+          {q.explanation && (
+            <p className="card text-sm text-ink-700 dark:text-white/80" data-testid="quiz-explanation">
+              {q.explanation}
+            </p>
+          )}
+          <button type="button" onClick={next} className="btn-primary w-full" data-testid="quiz-next">
+            {i + 1 >= total ? "Finish" : "Next"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -174,6 +174,8 @@ export default async function ProfilePage() {
         </div>
       </section>
 
+      <CertificatesSection userId={user.id} />
+
       <Link href="/leaderboard" className="card flex items-center justify-between hover:border-brand-500/30">
         <div className="flex items-center gap-3">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-100 text-xl dark:bg-amber-500/20">🏆</span>
@@ -209,5 +211,51 @@ export default async function ProfilePage() {
         </Link>
       </section>
     </div>
+  );
+}
+
+
+// Completed courses become certificates. A course counts as complete when
+// every one of its lessons has a completed_at for this user.
+async function CertificatesSection({ userId }: { userId: string }) {
+  const supabase = await supabaseServer();
+  const [{ data: done }, { data: allLessons }] = await Promise.all([
+    supabase
+      .from("lesson_progress")
+      .select("lesson_id")
+      .eq("user_id", userId)
+      .not("completed_at", "is", null),
+    supabase.from("lessons").select("id,course_id,course:courses(id,title,language)"),
+  ]);
+  const doneIds = new Set((done ?? []).map((d) => d.lesson_id));
+  const byCourse = new Map<string, { title: string; language: string; total: number; done: number }>();
+  for (const l of allLessons ?? []) {
+    const c: any = (l as any).course;
+    if (!c) continue;
+    const cur = byCourse.get(c.id) ?? { title: c.title, language: c.language, total: 0, done: 0 };
+    cur.total++;
+    if (doneIds.has(l.id)) cur.done++;
+    byCourse.set(c.id, cur);
+  }
+  const completed = [...byCourse.entries()].filter(([, v]) => v.total > 0 && v.done === v.total);
+  if (completed.length === 0) return null;
+
+  return (
+    <section className="space-y-2" data-testid="certificates">
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
+        Certificates
+      </h2>
+      {completed.map(([id, v]) => (
+        <Link key={id} href={`/certificates/${id}`} className="card flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">🎓</span>
+            <p className="font-medium">
+              {(LANGUAGES as any)[v.language]?.flag} {v.title}
+            </p>
+          </div>
+          <span className="text-xs font-medium text-brand-600">View →</span>
+        </Link>
+      ))}
+    </section>
   );
 }
