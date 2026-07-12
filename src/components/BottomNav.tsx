@@ -2,13 +2,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Five tabs, per the product design: Home, Discover, Coach, Practice, Profile.
-// (Review and Tasks live inside Home's "what's next" flow and Profile.)
+// Five tabs, per the product design: Home, Discover, Coach, Community, Profile.
+// (Practice lives one tap inside Community, Home cards, and lesson deep links.)
 const items = [
   { href: "/", label: "Home", icon: "🏠" },
   { href: "/learn", label: "Discover", icon: "🔍" },
   { href: "/coach", label: "Coach", icon: "🤖" },
-  { href: "/practice", label: "Practice", icon: "💬" },
+  { href: "/community", label: "Community", icon: "👥" },
   { href: "/profile", label: "Profile", icon: "👤" },
 ];
 

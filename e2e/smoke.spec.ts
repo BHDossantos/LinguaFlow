@@ -11,6 +11,8 @@ const ROUTES = [
   "/review",
   "/assignments",
   "/practice",
+  "/community",
+  "/career",
   "/translate",
   "/tutors",
   "/family",
