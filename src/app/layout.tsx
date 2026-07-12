@@ -74,9 +74,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
             <Logo />
             <nav className="flex items-center gap-4 text-sm">
-              <a href="/#how" className="hidden text-ink-500 hover:text-brand-500 sm:block">
+              <Link href="/#how" className="hidden text-ink-500 hover:text-brand-500 sm:block">
                 How it works
-              </a>
+              </Link>
               <Link href="/pricing" className="text-ink-500 hover:text-brand-500">
                 Pricing
               </Link>
