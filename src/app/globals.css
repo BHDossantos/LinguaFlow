@@ -37,9 +37,10 @@ html, body {
   @media (prefers-color-scheme: dark) {
     .hero-bg {
       background:
-        radial-gradient(420px 260px at 85% -10%, rgba(59, 108, 246, 0.25) 0%, transparent 65%),
-        radial-gradient(380px 260px at 0% 100%, rgba(139, 92, 246, 0.2) 0%, transparent 60%),
-        linear-gradient(160deg, #0e1430 0%, #0b1020 60%);
+        radial-gradient(560px 360px at 80% -10%, rgba(59, 108, 246, 0.45) 0%, transparent 62%),
+        radial-gradient(520px 360px at 5% 110%, rgba(139, 92, 246, 0.35) 0%, transparent 58%),
+        radial-gradient(300px 200px at 50% 50%, rgba(59, 108, 246, 0.12) 0%, transparent 70%),
+        linear-gradient(160deg, #141b3d 0%, #0d1228 55%, #10142e 100%);
     }
   }
 }

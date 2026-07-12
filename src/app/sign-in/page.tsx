@@ -41,7 +41,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="mx-auto max-w-md space-y-4 pt-8">
       <h1 className="text-2xl font-bold">Sign in</h1>
 
       {GOOGLE_ENABLED && (

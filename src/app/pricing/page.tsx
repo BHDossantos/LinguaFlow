@@ -7,7 +7,7 @@ export const metadata = { title: "Pricing" };
 // not sold.
 export default function PricingPage() {
   return (
-    <div className="space-y-6 pb-6">
+    <div className="mx-auto max-w-3xl space-y-6 pb-6 pt-6">
       <header className="text-center">
         <h1 className="text-3xl font-bold">Pricing</h1>
         <p className="mt-1 text-ink-500">Start free. Stay free while we're in beta.</p>

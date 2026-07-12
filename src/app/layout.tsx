@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Link from "next/link";
 import { BottomNav } from "@/components/BottomNav";
 import { PageBeacon } from "@/components/PageBeacon";
+import { supabaseServer } from "@/lib/supabase/server";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://learnnoelia.com";
 
@@ -41,20 +43,66 @@ export const viewport: Viewport = {
   themeColor: "#3b6cf6",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+function Logo() {
+  return (
+    <Link href="/" className="flex items-center gap-2">
+      <span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-violet-500 text-base font-extrabold text-white">
+        N
+      </span>
+      <span className="text-lg font-bold tracking-tight">Noelia</span>
+    </Link>
+  );
+}
+
+// Visitors get a clean marketing shell (wide pages, no app tabs); signed-in
+// users get the app shell (phone-width column + bottom navigation).
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  let authed = false;
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const supabase = await supabaseServer();
+      authed = !!(await supabase.auth.getUser()).data.user;
+    }
+  } catch {
+    // Treat as signed out; middleware still guards protected routes.
+  }
+
+  if (!authed) {
+    return (
+      <html lang="en">
+        <body className="font-sans">
+          <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+            <Logo />
+            <nav className="flex items-center gap-4 text-sm">
+              <a href="/#how" className="hidden text-ink-500 hover:text-brand-500 sm:block">
+                How it works
+              </a>
+              <Link href="/pricing" className="text-ink-500 hover:text-brand-500">
+                Pricing
+              </Link>
+              <Link href="/sign-in" className="btn-primary px-4 py-2 text-sm">
+                Sign in
+              </Link>
+            </nav>
+          </header>
+          <main className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">{children}</main>
+          <PageBeacon />
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en">
       <body className="font-sans">
         <main className="mx-auto max-w-screen-sm min-h-screen pb-24 px-4 pt-6">
           <div className="mb-4 flex items-center justify-between">
-            <a href="/" className="text-sm font-semibold tracking-tight">
-              Noelia
-            </a>
+            <Logo />
             <div className="flex gap-3 text-xs text-ink-500">
-              <a href="/inbox" className="hover:text-brand-500">Inbox</a>
-              <a href="/family" className="hover:text-brand-500">Family</a>
-              <a href="/teach" className="hover:text-brand-500">Teach</a>
-              <a href="/school" className="hover:text-brand-500">School</a>
+              <Link href="/inbox" className="hover:text-brand-500">Inbox</Link>
+              <Link href="/family" className="hover:text-brand-500">Family</Link>
+              <Link href="/teach" className="hover:text-brand-500">Teach</Link>
+              <Link href="/school" className="hover:text-brand-500">School</Link>
             </div>
           </div>
           {children}
