@@ -24,6 +24,12 @@ export async function POST(req: Request) {
   }
   const { language, dialect, scenario, persona, cefr, history, userMessage } = parsed.data;
 
+  // Same contract as /api/coach: honest 503 the client can explain,
+  // instead of a crash when the key isn't configured.
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ offline: true }, { status: 503 });
+  }
+
   const system = `You are a ${persona} role-playing in ${language}${dialect ? ` (${dialect} dialect)` : ""}.
 Scenario: ${scenario}
 The learner is at CEFR ${cefr}. Stay strictly in character and in ${language}.

@@ -24,6 +24,10 @@ export async function POST(req: Request) {
   }
   const { text, source, target, formality } = parsed.data;
 
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ offline: true }, { status: 503 });
+  }
+
   const system = `You are a precise translator for a language-learning app.
 Translate the user's text into "${target}". Source: ${source === "auto" ? "auto-detect" : source}.
 Tone: ${formality}.

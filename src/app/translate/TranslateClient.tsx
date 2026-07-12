@@ -18,6 +18,7 @@ export function TranslateClient({
   const [result, setResult] = useState<Result | null>(null);
   const [loading, setLoading] = useState(false);
   const [listening, setListening] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   async function translate() {
     if (!text.trim()) return;
@@ -28,7 +29,18 @@ export function TranslateClient({
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ text, source, target }),
       });
-      setResult(await res.json());
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setNotice(
+          data.offline
+            ? "Translation isn't connected on this deployment yet — it goes live once the system key is configured."
+            : "Something went wrong — try again.",
+        );
+        setResult(null);
+        return;
+      }
+      setNotice(null);
+      setResult(data);
     } finally {
       setLoading(false);
     }
@@ -67,6 +79,9 @@ export function TranslateClient({
       <p className="text-sm text-ink-500">
         Voice or text. Each translation feeds your learner model — words you look up resurface in lessons.
       </p>
+      {notice && (
+        <p className="card border-amber-200 bg-amber-50 text-sm text-amber-800">{notice}</p>
+      )}
 
       <div className="grid grid-cols-2 gap-2">
         <select

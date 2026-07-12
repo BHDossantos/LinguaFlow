@@ -2,6 +2,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { LANGUAGES, LANGUAGE_CODES, type LanguageCode } from "@/lib/languages";
 import { GOALS } from "@/lib/goals";
+import { PLACEMENT, scorePlacement } from "@/lib/placement";
 import { saveOnboarding } from "./actions";
 
 const CEFR = [
@@ -21,6 +22,8 @@ export function OnboardingClient({ defaultName = "" }: { defaultName?: string })
   const [langs, setLangs] = useState<LanguageCode[]>([]);
   const [dialects, setDialects] = useState<Partial<Record<LanguageCode, string>>>({});
   const [cefr, setCefr] = useState("A1");
+  const [testing, setTesting] = useState(false);
+  const [tested, setTested] = useState<string | null>(null);
   const [goals, setGoals] = useState<string[]>([]);
   const [adultMode, setAdultMode] = useState(true);
   const [pending, start] = useTransition();
@@ -172,18 +175,46 @@ export function OnboardingClient({ defaultName = "" }: { defaultName?: string })
         <section className="space-y-3">
           <h1 className="text-2xl font-bold">Where are you now?</h1>
           <p className="text-sm text-ink-500">Honest beats optimistic — we&apos;ll calibrate.</p>
-          <div className="space-y-2">
-            {CEFR.map((c) => (
+          {testing ? (
+            <PlacementTest
+              language={langs[0] ?? "es"}
+              onDone={(level) => {
+                setCefr(level);
+                setTested(level);
+                setTesting(false);
+              }}
+              onCancel={() => setTesting(false)}
+            />
+          ) : (
+            <>
               <button
-                key={c.id}
-                onClick={() => setCefr(c.id)}
-                className={`card w-full text-left ${cefr === c.id ? "ring-2 ring-brand-500" : ""}`}
+                onClick={() => setTesting(true)}
+                className="card w-full border-dashed text-left"
               >
-                <p className="font-medium">{c.label}</p>
-                <p className="text-xs text-ink-500">{c.desc}</p>
+                <p className="font-medium">🎯 Not sure? Take the 2-minute placement test</p>
+                <p className="text-xs text-ink-500">
+                  8 quick questions in {LANGUAGES[langs[0] ?? "es"].label} — we measure your level instead of guessing.
+                </p>
               </button>
-            ))}
-          </div>
+              {tested && (
+                <p className="card border-green-200 bg-green-50 text-sm text-green-700">
+                  ✓ Placement result: <strong>{tested}</strong> — selected below. Override it if it feels wrong.
+                </p>
+              )}
+              <div className="space-y-2">
+                {CEFR.map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => setCefr(c.id)}
+                    className={`card w-full text-left ${cefr === c.id ? "ring-2 ring-brand-500" : ""}`}
+                  >
+                    <p className="font-medium">{c.label}</p>
+                    <p className="text-xs text-ink-500">{c.desc}</p>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </section>
       )}
 
@@ -231,7 +262,7 @@ export function OnboardingClient({ defaultName = "" }: { defaultName?: string })
         </section>
       )}
 
-      <div className="flex gap-2">
+      <div className={`flex gap-2 ${testing && step === 2 ? "hidden" : ""}`}>
         {step > 0 && (
           <button onClick={back} className="btn-ghost flex-1">Back</button>
         )}
@@ -257,6 +288,64 @@ export function OnboardingClient({ defaultName = "" }: { defaultName?: string })
         )}
       </div>
       {error && <p className="text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+// Inline placement test: one question at a time, instant feedback withheld
+// until the end so answers stay honest. Result maps total-correct → CEFR.
+function PlacementTest({
+  language, onDone, onCancel,
+}: {
+  language: LanguageCode;
+  onDone: (level: string) => void;
+  onCancel: () => void;
+}) {
+  const questions = PLACEMENT[language];
+  const [i, setI] = useState(0);
+  const [correct, setCorrect] = useState(0);
+  const [picked, setPicked] = useState<number | null>(null);
+  const q = questions[i];
+
+  function submit() {
+    if (picked === null) return;
+    const nextCorrect = correct + (picked === q.answer ? 1 : 0);
+    setPicked(null);
+    if (i + 1 < questions.length) {
+      setCorrect(nextCorrect);
+      setI(i + 1);
+    } else {
+      onDone(scorePlacement(nextCorrect));
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between text-xs text-ink-500">
+        <span>Question {i + 1} of {questions.length}</span>
+        <button onClick={onCancel} className="underline">Cancel test</button>
+      </div>
+      <div className="card space-y-3">
+        <p className="font-medium">{q.prompt}</p>
+        <div className="space-y-2">
+          {q.options.map((opt, idx) => (
+            <button
+              key={idx}
+              onClick={() => setPicked(idx)}
+              className={`card w-full py-2.5 text-left text-sm ${picked === idx ? "ring-2 ring-brand-500" : ""}`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={submit}
+          disabled={picked === null}
+          className="btn-primary w-full disabled:opacity-50"
+        >
+          {i + 1 < questions.length ? "Next" : "See my level"}
+        </button>
+      </div>
     </div>
   );
 }

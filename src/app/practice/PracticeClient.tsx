@@ -28,6 +28,7 @@ export function PracticeClient({
   const [input, setInput] = useState("");
   const [meta, setMeta] = useState<Meta | null>(null);
   const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   async function send() {
     if (!input.trim()) return;
@@ -45,7 +46,18 @@ export function PracticeClient({
           history, userMessage,
         }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setNotice(
+          data.offline
+            ? "Roleplay isn't connected on this deployment yet — it goes live once the system key is configured."
+            : data.error ?? "Something went wrong — try again.",
+        );
+        setHistory(history);
+        setInput(userMessage);
+        return;
+      }
+      setNotice(null);
       setHistory([...next, { role: "assistant", content: data.reply }]);
       setMeta(data.meta);
       if (data.meta?.newWords?.length) {
@@ -68,6 +80,11 @@ export function PracticeClient({
       <p className="text-sm text-ink-500">
         Real conversations, no judgment. Mistakes are corrected at the end of each turn.
       </p>
+      {notice && (
+        <p className="card border-amber-200 bg-amber-50 text-sm text-amber-800">
+          {notice}
+        </p>
+      )}
 
       <div className="grid grid-cols-2 gap-2">
         <select value={language} onChange={(e) => { setLanguage(e.target.value as LanguageCode); reset(); }}
