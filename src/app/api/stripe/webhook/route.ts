@@ -1,8 +1,19 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 import { getStripe } from "@/lib/stripe";
 import type Stripe from "stripe";
 
 export const runtime = "nodejs";
+
+// Service-role client: subscriptions has no user write policies on purpose —
+// Stripe (via this webhook) is the only writer.
+function admin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } },
+  );
+}
 
 export async function POST(req: Request) {
   const sig = req.headers.get("stripe-signature");
@@ -20,12 +31,54 @@ export async function POST(req: Request) {
   }
 
   switch (event.type) {
-    case "payment_intent.succeeded":
-    case "payment_intent.canceled":
-    case "payment_intent.amount_capturable_updated":
-    case "charge.refunded":
-      // TODO: reconcile with public.payments rows.
+    case "checkout.session.completed": {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const userId = session.client_reference_id;
+      if (session.mode === "subscription" && userId) {
+        await admin().from("subscriptions").upsert({
+          user_id: userId,
+          status: "active",
+          stripe_customer_id: String(session.customer ?? ""),
+          stripe_subscription_id: String(session.subscription ?? ""),
+          updated_at: new Date().toISOString(),
+        });
+      }
       break;
+    }
+    case "customer.subscription.updated":
+    case "customer.subscription.deleted": {
+      const sub = event.data.object as Stripe.Subscription;
+      const userId = sub.metadata?.user_id;
+      const status =
+        event.type === "customer.subscription.deleted" ? "canceled"
+        : sub.status === "active" ? "active"
+        : sub.status === "trialing" ? "trialing"
+        : sub.status === "past_due" ? "past_due"
+        : "inactive";
+      const periodEnd = (sub as any).current_period_end
+        ? new Date((sub as any).current_period_end * 1000).toISOString()
+        : null;
+      const db = admin();
+      if (userId) {
+        await db.from("subscriptions").upsert({
+          user_id: userId,
+          status,
+          stripe_customer_id: String(sub.customer ?? ""),
+          stripe_subscription_id: sub.id,
+          current_period_end: periodEnd,
+          updated_at: new Date().toISOString(),
+        });
+      } else {
+        // Older subscriptions without metadata: match by subscription id.
+        await db
+          .from("subscriptions")
+          .update({ status, current_period_end: periodEnd, updated_at: new Date().toISOString() })
+          .eq("stripe_subscription_id", sub.id);
+      }
+      break;
+    }
+    // Tutor-session PaymentIntents are recorded at capture time by
+    // /api/tutor-sessions/end; nothing to reconcile here yet.
     default:
       break;
   }
