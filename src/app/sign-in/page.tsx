@@ -16,9 +16,15 @@ export default function SignInPage() {
     e.preventDefault();
     setError(null);
     start(async () => {
-      const res = await requestMagicLink({ email });
-      if (res.ok) setSent(true);
-      else setError(res.error ?? "Could not send the link");
+      try {
+        const res = await requestMagicLink({ email });
+        if (res.ok) setSent(true);
+        else setError(res.error ?? "Could not send the link");
+      } catch {
+        // Most common cause: the page is from an older deployment than the
+        // server (we deploy often). A refresh re-syncs them.
+        setError("The site was just updated — refresh this page and try again.");
+      }
     });
   }
 
