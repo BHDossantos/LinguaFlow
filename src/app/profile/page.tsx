@@ -4,6 +4,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { levelProgress } from "@/lib/gamification";
 import { computeAchievements } from "@/lib/achievements";
 import { LANGUAGES } from "@/lib/languages";
+import { goalLabel } from "@/lib/goals";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,7 @@ export default async function ProfilePage() {
     { count: reviewCount },
     { count: perfectPron },
   ] = await Promise.all([
-    supabase.from("profiles").select("display_name,cefr_level").eq("id", user.id).single(),
+    supabase.from("profiles").select("display_name,cefr_level,goals,native_language,created_at").eq("id", user.id).single(),
     supabase.from("user_stats").select("*").eq("user_id", user.id).maybeSingle(),
     supabase.from("target_languages").select("language,dialect,cefr_level").eq("user_id", user.id),
     supabase.from("srs_cards").select("id", { count: "exact", head: true }).eq("user_id", user.id),
@@ -84,19 +85,82 @@ export default async function ProfilePage() {
     : n < 30 ? "bg-brand-500/60"
     : "bg-brand-600";
 
+  // Who this learner is: prefer the name they gave us, then the identity
+  // provider's name, then their email — never a bare "Learner".
+  const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+  const displayName =
+    profile?.display_name ||
+    (typeof meta.full_name === "string" && meta.full_name) ||
+    (typeof meta.name === "string" && meta.name) ||
+    user.email?.split("@")[0] ||
+    "Learner";
+  const memberSince = profile?.created_at
+    ? new Date(profile.created_at).toLocaleDateString(undefined, { month: "long", year: "numeric" })
+    : null;
+
   return (
     <div className="space-y-5">
       <header className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">{profile?.display_name ?? "Learner"}</h1>
-          <p className="text-sm text-ink-500">
-            {(targets ?? [])
-              .map((t) => `${(LANGUAGES as any)[t.language]?.flag ?? ""} ${t.cefr_level ?? ""}`)
-              .join(" · ") || "No languages yet"}
-          </p>
+        <div className="flex items-center gap-3">
+          <span className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-violet-500 text-xl font-bold text-white">
+            {displayName.slice(0, 1).toUpperCase()}
+          </span>
+          <div>
+            <h1 className="text-2xl font-bold">{displayName}</h1>
+            <p className="text-sm text-ink-500">
+              {user.email}
+              {memberSince ? ` · member since ${memberSince}` : ""}
+            </p>
+          </div>
         </div>
         <Link href="/settings" className="btn-ghost text-sm" aria-label="Settings">⚙️ Settings</Link>
       </header>
+
+      {/* Languages + why they're here */}
+      <section className="card space-y-3">
+        <div>
+          <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-ink-500">
+            Learning
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {(targets ?? []).length === 0 ? (
+              <Link href="/onboarding" className="text-sm text-brand-600 underline">
+                Choose your languages →
+              </Link>
+            ) : (
+              (targets ?? []).map((t) => {
+                const lang = (LANGUAGES as any)[t.language];
+                const dialect = lang?.dialects?.find((d: any) => d.code === t.dialect)?.label;
+                return (
+                  <span
+                    key={t.language}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-700"
+                  >
+                    {lang?.flag} {lang?.label ?? t.language}
+                    <span className="text-xs font-normal text-ink-500">
+                      {dialect ? `${dialect} · ` : ""}{t.cefr_level}
+                    </span>
+                  </span>
+                );
+              })
+            )}
+          </div>
+        </div>
+        {(profile?.goals ?? []).length > 0 && (
+          <div>
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-ink-500">
+              Learning for
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {(profile?.goals ?? []).map((g: string) => (
+                <span key={g} className="rounded-full bg-black/5 px-3 py-1 text-sm">
+                  {goalLabel(g)}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
 
       {/* Level card */}
       <section className="card space-y-2">

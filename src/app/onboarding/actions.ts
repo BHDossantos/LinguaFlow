@@ -5,6 +5,7 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { LANGUAGE_CODES } from "@/lib/languages";
 
 const Input = z.object({
+  name: z.string().trim().min(1).max(60),
   languages: z
     .array(
       z.object({
@@ -29,6 +30,7 @@ export async function saveOnboarding(raw: unknown) {
   await supabase
     .from("profiles")
     .update({
+      display_name: data.name,
       cefr_level: data.cefr,
       goals: data.goals,
       adult_mode: data.adultMode,

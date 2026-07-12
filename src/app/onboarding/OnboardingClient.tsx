@@ -1,16 +1,8 @@
 "use client";
 import { useEffect, useState, useTransition } from "react";
 import { LANGUAGES, LANGUAGE_CODES, type LanguageCode } from "@/lib/languages";
+import { GOALS } from "@/lib/goals";
 import { saveOnboarding } from "./actions";
-
-const GOALS = [
-  { id: "travel", label: "Travel", icon: "✈️" },
-  { id: "work", label: "Work", icon: "💼" },
-  { id: "family", label: "Family / partner", icon: "👨‍👩‍👧" },
-  { id: "school", label: "School / exams", icon: "🎓" },
-  { id: "media", label: "Films & shows", icon: "🎬" },
-  { id: "dating", label: "Dating", icon: "💛" },
-];
 
 const CEFR = [
   { id: "A1", label: "A1 — brand new", desc: "I know almost nothing." },
@@ -21,8 +13,9 @@ const CEFR = [
   { id: "C2", label: "C2 — near-native", desc: "I want polish, not basics." },
 ];
 
-export function OnboardingClient() {
+export function OnboardingClient({ defaultName = "" }: { defaultName?: string }) {
   const [step, setStep] = useState(0);
+  const [name, setName] = useState(defaultName);
   // Multi-select: learners often want more than one language. The first
   // pick is the primary one (drives the initial dashboard/learn view).
   const [langs, setLangs] = useState<LanguageCode[]>([]);
@@ -93,6 +86,7 @@ export function OnboardingClient() {
     start(async () => {
       try {
         await saveOnboarding({
+          name: name.trim(),
           languages: langs.map((l) => ({ language: l, dialect: dialects[l] ?? null })),
           cefr, goals, adultMode, nativeLanguage,
         });
@@ -195,7 +189,18 @@ export function OnboardingClient() {
 
       {step === 3 && (
         <section className="space-y-3">
-          <h1 className="text-2xl font-bold">Why are you learning?</h1>
+          <h1 className="text-2xl font-bold">About you</h1>
+          <label className="block">
+            <span className="text-sm font-medium">What should we call you?</span>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              maxLength={60}
+              className="mt-1 w-full rounded-xl border border-black/10 bg-white px-4 py-3"
+            />
+          </label>
+          <h2 className="pt-1 text-lg font-bold">Why are you learning?</h2>
           <p className="text-sm text-ink-500">Pick anything that fits. We&apos;ll bias content toward your goals.</p>
           <div className="grid grid-cols-2 gap-2">
             {GOALS.map((g) => (
@@ -242,7 +247,11 @@ export function OnboardingClient() {
             Continue
           </button>
         ) : (
-          <button onClick={submit} disabled={pending} className="btn-primary flex-1">
+          <button
+            onClick={submit}
+            disabled={pending || !name.trim()}
+            className="btn-primary flex-1 disabled:opacity-50"
+          >
             {pending ? "Saving…" : "Start learning"}
           </button>
         )}
