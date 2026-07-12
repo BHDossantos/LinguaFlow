@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
 import { AttendanceTaker } from "./AttendanceTaker";
+import { ClassVideo } from "./ClassVideo";
 
 export const dynamic = "force-dynamic";
 
@@ -71,6 +72,26 @@ export default async function MeetingPage(
 
   const when = new Date(meeting.scheduled_at);
 
+  // Live video: any classroom member (or org admin) gets a room token.
+  // Config-gated — without LiveKit env the page stays attendance-only.
+  const isMember = !!classMembership || isOrgAdmin;
+  const livekitConfigured = !!(
+    process.env.LIVEKIT_URL &&
+    process.env.LIVEKIT_API_KEY &&
+    process.env.LIVEKIT_API_SECRET
+  );
+  let videoToken: string | null = null;
+  if (isMember && livekitConfigured) {
+    const { mintLivekitToken } = await import("@/lib/livekit");
+    const { data: me } = await supabase
+      .from("profiles").select("display_name").eq("id", user.id).maybeSingle();
+    videoToken = await mintLivekitToken({
+      identity: user.id,
+      name: me?.display_name ?? "Member",
+      room: `class-${meeting.id}`,
+    });
+  }
+
   return (
     <div className="space-y-4">
       <Link
@@ -86,6 +107,19 @@ export default async function MeetingPage(
           {meeting.location ? ` · ${meeting.location}` : ""}
         </p>
       </header>
+
+      {videoToken && (
+        <ClassVideo
+          livekitUrl={process.env.LIVEKIT_URL!}
+          token={videoToken}
+          title={meeting.title || "Class meeting"}
+        />
+      )}
+      {!livekitConfigured && canManage && (
+        <p className="card text-xs text-ink-500">
+          Video rooms activate when LiveKit is configured (LIVEKIT_URL / API key / secret).
+        </p>
+      )}
 
       <AttendanceTaker
         orgId={params.orgId}
