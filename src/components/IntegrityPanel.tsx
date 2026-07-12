@@ -54,7 +54,7 @@ export function IntegrityPanel({
         <div className="space-y-2 text-sm">
           <div>
             <div className="flex justify-between">
-              <span>AI-likelihood</span>
+              <span>Generated-text likelihood</span>
               <span className={
                 aiPct! >= 70 ? "font-semibold text-red-600" :
                 aiPct! >= 40 ? "font-semibold text-amber-600" : "text-green-600"
@@ -87,7 +87,7 @@ export function IntegrityPanel({
         </div>
       ) : (
         <p className="text-sm text-ink-500">
-          Not checked yet. Runs an AI-likelihood estimate and a similarity scan
+          Not checked yet. Runs a generated-text estimate and a similarity scan
           against other submissions on this assignment.
         </p>
       )}
