@@ -183,7 +183,9 @@ export default async function ProfilePage() {
       <section className="grid grid-cols-3 gap-2 text-center">
         <div className="card py-3">
           <p className="text-2xl font-extrabold">🔥 {streak}</p>
-          <p className="text-[11px] text-ink-500">day streak (best {longest})</p>
+          <p className="text-[11px] text-ink-500">
+            day streak (best {longest}) · ❄️ {stats?.streak_freezes ?? 0}
+          </p>
         </div>
         <div className="card py-3">
           <p className="text-2xl font-extrabold">{wordsLearned ?? 0}</p>
