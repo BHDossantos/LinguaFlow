@@ -25,6 +25,26 @@ function isPublic(pathname: string) {
 }
 
 export async function middleware(req: NextRequest) {
+  // Canonical host: serve everything from the host in NEXT_PUBLIC_SITE_URL.
+  // Auth cookies (incl. the PKCE code-verifier set mid-OAuth) are host-bound,
+  // so letting www and the apex both serve pages breaks sign-in whenever a
+  // flow starts on one host and finishes on the other.
+  const site = process.env.NEXT_PUBLIC_SITE_URL;
+  if (site) {
+    const canonical = new URL(site).host;
+    const host = req.headers.get("host") ?? "";
+    if (
+      host !== canonical &&
+      (host === `www.${canonical}` || canonical === `www.${host}`)
+    ) {
+      const url = req.nextUrl.clone();
+      url.protocol = "https:";
+      url.host = canonical;
+      url.port = "";
+      return NextResponse.redirect(url, 308);
+    }
+  }
+
   const res = NextResponse.next();
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return res;
 

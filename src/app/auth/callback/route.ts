@@ -9,7 +9,29 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
-  const redirectTo = url.searchParams.get("redirectTo") ?? "/";
+
+  // Behind Vercel's proxy req.url's origin can differ from the host the
+  // browser is on — build redirects from the forwarded host instead.
+  const proto = req.headers.get("x-forwarded-proto") ?? "https";
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
+  const origin = host ? `${proto}://${host}` : url.origin;
+
+  // Supabase reports failures (provider errors, expired links, database
+  // errors on signup) as query params with no code. Forward them to the
+  // sign-in page so the user sees why — otherwise this looks like a silent
+  // bounce back to sign-in.
+  const providerError =
+    url.searchParams.get("error_description") ?? url.searchParams.get("error");
+  if (!code && providerError) {
+    return NextResponse.redirect(
+      new URL(`/sign-in?error=${encodeURIComponent(providerError)}`, origin),
+    );
+  }
+
+  // Only same-site paths — never redirect to another host.
+  const requested = url.searchParams.get("redirectTo") ?? "/";
+  const redirectTo =
+    requested.startsWith("/") && !requested.startsWith("//") ? requested : "/";
 
   if (code) {
     const cookieStore = await cookies();
@@ -29,10 +51,10 @@ export async function GET(req: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
       return NextResponse.redirect(
-        new URL(`/sign-in?error=${encodeURIComponent(error.message)}`, url.origin),
+        new URL(`/sign-in?error=${encodeURIComponent(error.message)}`, origin),
       );
     }
   }
 
-  return NextResponse.redirect(new URL(redirectTo, url.origin));
+  return NextResponse.redirect(new URL(redirectTo, origin));
 }

@@ -39,3 +39,26 @@ test("auth callback route is public and redirects home on bare hit", async ({ re
   expect([307, 308]).toContain(resp.status());
   expect(resp.headers()["location"]).not.toContain("/sign-in");
 });
+
+test("auth callback forwards provider errors to the sign-in page", async ({ request }) => {
+  // Supabase reports OAuth failures as ?error/error_description with no
+  // code. These must land on sign-in with the reason attached — dropping
+  // them makes failures look like a silent bounce.
+  const resp = await request.get(
+    "/auth/callback?error=access_denied&error_description=Provider+said+no",
+    { maxRedirects: 0 },
+  );
+  expect([307, 308]).toContain(resp.status());
+  const location = resp.headers()["location"] ?? "";
+  expect(location).toContain("/sign-in");
+  expect(location).toContain("error=Provider%20said%20no");
+});
+
+test("auth callback never redirects off-site via redirectTo", async ({ request }) => {
+  const resp = await request.get(
+    "/auth/callback?redirectTo=https://evil.example.com",
+    { maxRedirects: 0 },
+  );
+  const location = resp.headers()["location"] ?? "";
+  expect(location).not.toContain("evil.example.com");
+});

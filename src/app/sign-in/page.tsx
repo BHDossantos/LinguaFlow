@@ -15,7 +15,15 @@ export default function SignInPage() {
   // Surface errors handed back by /auth/callback (?error=...) — previously
   // these were silently swallowed and sign-in failures looked like a bounce.
   useEffect(() => {
-    const err = new URLSearchParams(window.location.search).get("error");
+    const qs = new URLSearchParams(window.location.search);
+    // Supabase can also report errors in the URL fragment, which never
+    // reaches the server — read both.
+    const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const err =
+      qs.get("error_description") ??
+      qs.get("error") ??
+      hash.get("error_description") ??
+      hash.get("error");
     if (err) setError(`Sign-in failed: ${err}`);
   }, []);
 
