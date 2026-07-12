@@ -7,6 +7,14 @@ export function PageBeacon() {
   const pathname = usePathname();
   const last = useRef<string | null>(null);
 
+  // Register the service worker once per load: offline fallback + asset
+  // cache for everyone, not just users who enabled push reminders.
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    }
+  }, []);
+
   useEffect(() => {
     if (!pathname || pathname === last.current) return;
     last.current = pathname;
