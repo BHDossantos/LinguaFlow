@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
 html, body {
@@ -11,10 +11,6 @@ html, body {
   background: #fafbff;
   color: #0b1020;
   -webkit-tap-highlight-color: transparent;
-}
-
-@media (prefers-color-scheme: dark) {
-  html, body { background: #0b1020; color: #f4f6ff; }
 }
 
 @layer components {
@@ -34,15 +30,7 @@ html, body {
       radial-gradient(380px 260px at 0% 100%, rgba(139, 92, 246, 0.14) 0%, transparent 60%),
       linear-gradient(160deg, #eef3ff 0%, #f7f9ff 55%, #eef0ff 100%);
   }
-  @media (prefers-color-scheme: dark) {
-    .hero-bg {
-      background:
-        radial-gradient(560px 360px at 80% -10%, rgba(59, 108, 246, 0.45) 0%, transparent 62%),
-        radial-gradient(520px 360px at 5% 110%, rgba(139, 92, 246, 0.35) 0%, transparent 58%),
-        radial-gradient(300px 200px at 50% 50%, rgba(59, 108, 246, 0.12) 0%, transparent 70%),
-        linear-gradient(160deg, #141b3d 0%, #0d1228 55%, #10142e 100%);
-    }
-  }
+
 }
 
 @layer utilities {
