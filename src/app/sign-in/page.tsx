@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { requestMagicLink } from "@/app/sign-in/actions";
 
@@ -11,6 +11,13 @@ export default function SignInPage() {
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
   const [oauthBusy, setOauthBusy] = useState(false);
+
+  // Surface errors handed back by /auth/callback (?error=...) — previously
+  // these were silently swallowed and sign-in failures looked like a bounce.
+  useEffect(() => {
+    const err = new URLSearchParams(window.location.search).get("error");
+    if (err) setError(`Sign-in failed: ${err}`);
+  }, []);
 
   function handle(e: React.FormEvent) {
     e.preventDefault();
