@@ -33,3 +33,9 @@ test.describe("auth gate (signed out)", () => {
     await expect(page).toHaveURL(/\/sign-in/);
   });
 });
+
+test("auth callback route is public and redirects home on bare hit", async ({ request }) => {
+  const resp = await request.get("/auth/callback", { maxRedirects: 0 });
+  expect([307, 308]).toContain(resp.status());
+  expect(resp.headers()["location"]).not.toContain("/sign-in");
+});

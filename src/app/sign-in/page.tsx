@@ -3,6 +3,8 @@ import { useState, useTransition } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { requestMagicLink } from "@/app/sign-in/actions";
 
+const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_GOOGLE_AUTH === "1";
+
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
@@ -42,6 +44,7 @@ export default function SignInPage() {
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Sign in</h1>
 
+      {GOOGLE_ENABLED && (
       <button
         type="button"
         onClick={google}
@@ -61,12 +64,15 @@ export default function SignInPage() {
           </span>
         )}
       </button>
+      )}
 
+      {GOOGLE_ENABLED && (
       <div className="flex items-center gap-3 text-xs text-ink-500">
         <span className="h-px flex-1 bg-black/10 dark:bg-white/10" />
         or with email
         <span className="h-px flex-1 bg-black/10 dark:bg-white/10" />
       </div>
+      )}
 
       {sent ? (
         <p className="card">Check your email for the magic link.</p>

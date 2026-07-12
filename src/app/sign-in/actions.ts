@@ -33,8 +33,18 @@ export async function requestMagicLink(
     };
   }
 
+  // The email link must land on /auth/callback (which exchanges the code for
+  // a session) — without emailRedirectTo it lands on the Site URL root, where
+  // nothing processes the code and the user never gets signed in.
+  const proto = h.get("x-forwarded-proto") ?? "https";
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? (host ? `${proto}://${host}` : "");
+
   const supabase = await supabaseServer();
-  const { error } = await supabase.auth.signInWithOtp({ email });
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: origin ? { emailRedirectTo: `${origin}/auth/callback` } : undefined,
+  });
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }
