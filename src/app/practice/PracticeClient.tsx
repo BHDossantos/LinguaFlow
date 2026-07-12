@@ -19,11 +19,13 @@ type Meta = {
 };
 
 export function PracticeClient({
-  defaultLanguage = "es", defaultCefr = "A2",
-}: { defaultLanguage?: LanguageCode; defaultCefr?: string }) {
+  defaultLanguage = "es", defaultCefr = "A2", defaultScenarioTitle,
+}: { defaultLanguage?: LanguageCode; defaultCefr?: string; defaultScenarioTitle?: string }) {
   const [language, setLanguage] = useState<LanguageCode>(defaultLanguage);
   const [cefr, setCefr] = useState(defaultCefr);
-  const [scenario, setScenario] = useState(SCENARIOS[0]);
+  const [scenario, setScenario] = useState(
+    SCENARIOS.find((s) => s.title === defaultScenarioTitle) ?? SCENARIOS[0],
+  );
   const [history, setHistory] = useState<Turn[]>([]);
   const [input, setInput] = useState("");
   const [meta, setMeta] = useState<Meta | null>(null);

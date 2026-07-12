@@ -5,7 +5,10 @@ import type { LanguageCode } from "@/lib/languages";
 
 export const dynamic = "force-dynamic";
 
-export default async function PracticePage() {
+export default async function PracticePage(props: {
+  searchParams: Promise<{ scenario?: string }>;
+}) {
+  const { scenario } = await props.searchParams;
   const user = await requireOnboardedUser();
   const supabase = await supabaseServer();
   const primary = await getPrimaryTargetLanguage();
@@ -16,6 +19,7 @@ export default async function PracticePage() {
     <PracticeClient
       defaultLanguage={(primary?.language ?? "es") as LanguageCode}
       defaultCefr={profile?.cefr_level ?? "A2"}
+      defaultScenarioTitle={scenario}
     />
   );
 }

@@ -240,6 +240,17 @@ export default async function ProfilePage() {
 
       <CertificatesSection userId={user.id} />
 
+      <Link href="/career" className="card flex items-center justify-between hover:border-brand-500/30">
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-xl">💼</span>
+          <div>
+            <p className="font-semibold">Career</p>
+            <p className="text-xs text-ink-500">What your level unlocks · résumé line · interview practice</p>
+          </div>
+        </div>
+        <span className="text-ink-500">›</span>
+      </Link>
+
       <Link href="/leaderboard" className="card flex items-center justify-between hover:border-brand-500/30">
         <div className="flex items-center gap-3">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-100 text-xl dark:bg-amber-500/20">🏆</span>
