@@ -15,7 +15,7 @@ const items = [
 export function BottomNav() {
   const pathname = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-black/5 dark:border-white/10 bg-white/90 dark:bg-[#0b1020]/90 backdrop-blur">
+    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-black/5 dark:border-white/10 bg-white/90 dark:bg-[#0b1020]/90 backdrop-blur lg:hidden">
       <ul className="mx-auto flex max-w-screen-sm justify-between px-2 py-2">
         {items.map((it) => {
           const active = pathname === it.href || (it.href !== "/" && pathname.startsWith(it.href));

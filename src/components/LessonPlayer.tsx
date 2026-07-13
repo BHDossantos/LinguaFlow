@@ -17,16 +17,27 @@ type Lesson = {
 
 type VocabItem = { term: string; translation: string; ipa?: string; example?: string };
 
+type OutlineLesson = {
+  id: string;
+  position: number;
+  title: string;
+  kind: string;
+  completed: boolean;
+};
+
 export function LessonPlayer({
-  lesson, courseId, language, dialect,
+  lesson, courseId, language, dialect, outline = [], courseTitle = "",
 }: {
   lesson: Lesson;
   courseId: string;
   language: string;
   dialect: string | null;
+  outline?: OutlineLesson[];
+  courseTitle?: string;
 }) {
+  let content: React.ReactNode;
   if (lesson.kind === "vocab") {
-    return (
+    content = (
       <VocabFlashcards
         items={lesson.body.items ?? []}
         title={lesson.title}
@@ -37,12 +48,10 @@ export function LessonPlayer({
         grammar={lesson.grammar_notes_md}
       />
     );
-  }
-  if (lesson.kind === "roleplay") {
-    return <RoleplayLesson body={lesson.body} title={lesson.title} courseId={courseId} />;
-  }
-  if (lesson.kind === "quiz") {
-    return (
+  } else if (lesson.kind === "roleplay") {
+    content = <RoleplayLesson body={lesson.body} title={lesson.title} courseId={courseId} />;
+  } else if (lesson.kind === "quiz") {
+    content = (
       <QuizLesson
         questions={lesson.body?.questions ?? []}
         title={lesson.title}
@@ -50,15 +59,182 @@ export function LessonPlayer({
         lessonId={lesson.id}
       />
     );
+  } else {
+    content = (
+      <ContentLesson
+        body={lesson.body}
+        title={lesson.title}
+        courseId={courseId}
+        lessonId={lesson.id}
+        grammar={lesson.grammar_notes_md}
+      />
+    );
+  }
+
+  const vocabItems: VocabItem[] = Array.isArray(lesson.body?.items) ? lesson.body.items : [];
+  const hasOutline = outline.length > 0;
+  const hasVocabPanel = vocabItems.length > 0;
+
+  // No desktop chrome to render — behave exactly as before.
+  if (!hasOutline && !hasVocabPanel) return <>{content}</>;
+
+  // Desktop three-zone layout at lg+; below lg the sidebars are hidden and
+  // the single-column experience is untouched. Grid templates are written as
+  // full literal class strings so Tailwind's JIT picks them up.
+  const gridCols =
+    hasOutline && hasVocabPanel
+      ? "lg:grid-cols-[240px_minmax(0,1fr)_280px]"
+      : hasOutline
+        ? "lg:grid-cols-[240px_minmax(0,1fr)]"
+        : "lg:grid-cols-[minmax(0,1fr)_280px]";
+
+  return (
+    <div className={`lg:grid lg:items-start lg:gap-6 ${gridCols}`}>
+      {hasOutline && (
+        <aside className="hidden lg:sticky lg:top-4 lg:block">
+          <CourseOutline
+            outline={outline}
+            courseId={courseId}
+            courseTitle={courseTitle}
+            currentLessonId={lesson.id}
+          />
+        </aside>
+      )}
+      <div className="min-w-0">{content}</div>
+      {hasVocabPanel && (
+        <aside className="hidden lg:sticky lg:top-4 lg:block">
+          <VocabPanel
+            items={vocabItems}
+            language={language}
+            dialect={dialect}
+            grammar={lesson.grammar_notes_md}
+          />
+        </aside>
+      )}
+    </div>
+  );
+}
+
+// Desktop left sidebar: course outline with progress + current-lesson accent.
+function CourseOutline({
+  outline, courseId, courseTitle, currentLessonId,
+}: {
+  outline: OutlineLesson[];
+  courseId: string;
+  courseTitle: string;
+  currentLessonId: string;
+}) {
+  const total = outline.length;
+  const doneCount = outline.filter((l) => l.completed).length;
+  const pct = total ? Math.round((doneCount / total) * 100) : 0;
+  return (
+    <nav className="card space-y-3" aria-label="Course outline" data-testid="lesson-outline">
+      <div>
+        <Link href={`/learn/${courseId}`} className="text-xs font-medium text-brand-500 hover:underline">
+          ← Back to course
+        </Link>
+        {courseTitle && <p className="mt-1 text-sm font-bold leading-snug">{courseTitle}</p>}
+      </div>
+      <div className="space-y-1">
+        <div className="flex items-baseline justify-between text-[11px] text-ink-500">
+          <span>{doneCount} / {total} complete</span>
+          <span>{pct}%</span>
+        </div>
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5">
+          <div
+            className="h-full rounded-full bg-brand-500 transition-all"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+      </div>
+      <ol className="space-y-1">
+        {outline.map((l, i) => {
+          const current = l.id === currentLessonId;
+          return (
+            <li key={l.id}>
+              <Link
+                href={`/learn/${courseId}/${l.id}`}
+                aria-current={current ? "page" : undefined}
+                className={
+                  "flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition " +
+                  (current
+                    ? "bg-brand-50 font-medium text-brand-700 ring-1 ring-brand-500"
+                    : "text-ink-700 hover:bg-black/5")
+                }
+              >
+                <span
+                  aria-hidden
+                  className={
+                    "grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px] font-bold " +
+                    (l.completed
+                      ? "bg-brand-500 text-white"
+                      : current
+                        ? "bg-white text-brand-600 ring-1 ring-brand-500"
+                        : "bg-black/5 text-ink-500")
+                  }
+                >
+                  {l.completed ? "✓" : i + 1}
+                </span>
+                <span className="truncate">{l.title}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+// Desktop right sidebar: quick vocabulary reference with TTS + grammar focus.
+function VocabPanel({
+  items, language, dialect, grammar,
+}: {
+  items: VocabItem[];
+  language: string;
+  dialect: string | null;
+  grammar: string | null;
+}) {
+  function speak(term: string) {
+    try {
+      const u = new SpeechSynthesisUtterance(term);
+      u.lang = dialect ? `${language}-${dialect.toUpperCase()}` : language;
+      u.rate = 0.9;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    } catch {
+      // TTS unavailable — the panel remains a silent reference list.
+    }
   }
   return (
-    <ContentLesson
-      body={lesson.body}
-      title={lesson.title}
-      courseId={courseId}
-      lessonId={lesson.id}
-      grammar={lesson.grammar_notes_md}
-    />
+    <div className="space-y-4" data-testid="vocab-panel">
+      <section className="card">
+        <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Vocabulary</p>
+        <ul className="mt-1 divide-y divide-black/5">
+          {items.map((it, i) => (
+            <li key={i} className="flex items-center gap-2 py-2">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold">{it.term}</p>
+                <p className="truncate text-xs text-ink-500">{it.translation}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => speak(it.term)}
+                aria-label={`Play pronunciation of ${it.term}`}
+                className="shrink-0 rounded-full p-1.5 text-base transition hover:bg-black/5"
+              >
+                🔊
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+      {grammar && (
+        <section className="card">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Grammar Focus</p>
+          <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-ink-700">{grammar}</p>
+        </section>
+      )}
+    </div>
   );
 }
 
@@ -534,29 +710,45 @@ function QuizLesson({
   if (done) {
     const score = Math.round((correctCount / total) * 100);
     return (
-      <div className="space-y-3">
-        <Celebrate xp={XP.lessonComplete} />
-        <h1 className="text-xl font-bold">Quiz complete 🎉</h1>
-        <p className="text-3xl font-extrabold" data-testid="quiz-score">{score}%</p>
-        <p className="text-sm text-ink-500">
-          {correctCount} of {total} correct{pending ? " · saving…" : ""}
-        </p>
-        <Link href={`/learn/${courseId}`} className="btn-primary inline-block">Continue</Link>
+      <div className="mx-auto max-w-md">
+        <div className="card space-y-3 py-8 text-center">
+          <Celebrate xp={XP.lessonComplete} />
+          <h1 className="text-xl font-bold">Quiz complete 🎉</h1>
+          <p className="text-6xl font-extrabold tracking-tight text-brand-600" data-testid="quiz-score">
+            {score}%
+          </p>
+          <p className="text-sm text-ink-500">
+            {correctCount} of {total} correct{pending ? " · saving…" : ""}
+          </p>
+          <Link href={`/learn/${courseId}`} className="btn-primary inline-block">Continue</Link>
+        </div>
       </div>
     );
   }
+
+  const answered = i + (picked !== null ? 1 : 0);
 
   return (
     <div className="space-y-4">
       <header className="space-y-2">
         <h1 className="text-xl font-bold">{title}</h1>
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5">
           <div
             className="h-full bg-brand-500 transition-all"
-            style={{ width: `${(i / total) * 100}%` }}
+            style={{ width: `${(answered / total) * 100}%` }}
           />
         </div>
-        <p className="text-xs text-ink-500">{i + 1} / {total}</p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-xs text-ink-500">Question {i + 1} of {total}</p>
+          <div className="flex items-center gap-1.5">
+            <span className="rounded-full bg-brand-50 px-2.5 py-0.5 text-[11px] font-semibold text-brand-700">
+              Score: {correctCount}
+            </span>
+            <span className="rounded-full bg-black/5 px-2.5 py-0.5 text-[11px] font-semibold text-ink-500">
+              {answered} / {total} answered
+            </span>
+          </div>
+        </div>
       </header>
 
       <div className="card">
@@ -568,38 +760,59 @@ function QuizLesson({
           const isPicked = picked === idx;
           const isAnswer = idx === q.answer;
           const revealed = picked !== null;
+          const letter = String.fromCharCode(65 + idx);
+          let cardCls: string;
+          let badgeCls: string;
+          if (revealed && isAnswer) {
+            cardCls = "border-green-400 bg-green-50 ring-1 ring-green-400";
+            badgeCls = "bg-green-500 text-white";
+          } else if (revealed && isPicked) {
+            cardCls = "border-red-400 bg-red-50 ring-1 ring-red-400";
+            badgeCls = "bg-red-500 text-white";
+          } else if (isPicked) {
+            cardCls = "ring-2 ring-brand-500";
+            badgeCls = "bg-brand-500 text-white";
+          } else if (revealed) {
+            cardCls = "opacity-60";
+            badgeCls = "bg-black/5 text-ink-500";
+          } else {
+            cardCls = "hover:border-brand-500/40 hover:ring-1 hover:ring-brand-500/40";
+            badgeCls = "bg-black/5 text-ink-500";
+          }
           return (
             <button
               key={idx}
               type="button"
               onClick={() => pick(idx)}
               disabled={revealed}
-              className={
-                "card w-full text-left text-sm transition " +
-                (revealed && isAnswer
-                  ? "border-green-400 bg-green-50 dark:bg-green-500/10"
-                  : revealed && isPicked
-                    ? "border-red-400 bg-red-50 dark:bg-red-500/10"
-                    : "hover:border-brand-500/40")
-              }
+              className={`card flex w-full items-center gap-3 text-left text-sm transition ${cardCls}`}
             >
-              {opt}
-              {revealed && isAnswer && <span className="ml-2">✓</span>}
-              {revealed && isPicked && !isAnswer && <span className="ml-2">✕</span>}
+              <span
+                aria-hidden
+                className={`grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-bold ${badgeCls}`}
+              >
+                {letter}
+              </span>
+              <span className="flex-1">{opt}</span>
+              {revealed && isAnswer && <span className="font-semibold text-green-600">✓</span>}
+              {revealed && isPicked && !isAnswer && <span className="font-semibold text-red-600">✕</span>}
             </button>
           );
         })}
       </div>
 
       {picked !== null && (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {q.explanation && (
-            <p className="card text-sm text-ink-700 dark:text-white/80" data-testid="quiz-explanation">
-              {q.explanation}
-            </p>
+            <div className="card border-l-4 border-l-green-500" data-testid="quiz-explanation">
+              <p className="flex items-center gap-2 text-sm font-semibold text-green-700">
+                <span aria-hidden>✓</span> Why this is correct
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-ink-700">{q.explanation}</p>
+            </div>
           )}
           <button type="button" onClick={next} className="btn-primary w-full" data-testid="quiz-next">
-            {i + 1 >= total ? "Finish" : "Next"}
+            {i + 1 >= total ? "See results" : "Next Question"}
           </button>
         </div>
       )}

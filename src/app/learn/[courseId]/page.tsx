@@ -81,6 +81,22 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
   }
   const missingPrereqs = prereqs.filter((p) => !p.done);
 
+  const nextLesson = list.find((l) => l.id === nextId) ?? null;
+  const minutesLeft = list
+    .filter((l) => !doneIds.has(l.id))
+    .reduce((s, l) => s + (l.estimated_minutes ?? 8), 0);
+
+  // Khan-style mastery status per lesson, derived from the recorded score.
+  const masteryOf = (id: string): { label: string; cls: string } | null => {
+    if (!doneIds.has(id)) return null;
+    const score = scoreById.get(id);
+    if (score == null) return { label: "Completed", cls: "bg-brand-50 text-brand-700" };
+    if (score >= 90) return { label: "Mastered", cls: "bg-green-100 text-green-700" };
+    if (score >= 80) return { label: "Proficient", cls: "bg-green-50 text-green-700" };
+    if (score >= 60) return { label: "Familiar", cls: "bg-amber-50 text-amber-700" };
+    return { label: "Attempted", cls: "bg-black/5 text-ink-500" };
+  };
+
   return (
     <div className="space-y-4">
       <header className="flex items-start justify-between gap-3">
@@ -108,22 +124,59 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         </div>
       )}
 
-      {/* Course progress */}
-      <div className="card space-y-1.5" data-testid="course-progress">
-        <div className="flex items-baseline justify-between">
-          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">
-            Your path
-          </p>
-          <p className="text-xs text-ink-500">{doneCount} / {list.length} · {pct}%</p>
+      {/* Course dashboard hero: progress + stats + continue */}
+      <div className="card space-y-3" data-testid="course-progress">
+        <div className="flex items-center gap-3">
+          <div className="h-2 flex-1 overflow-hidden rounded-full bg-black/5">
+            <div
+              className="h-full rounded-full bg-brand-500 transition-all duration-700"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+          <p className="text-xs font-semibold text-brand-600">{pct}% complete</p>
+          {pct > 0 && pct < 100 && (
+            <span className="rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+              On track
+            </span>
+          )}
+          {pct === 100 && (
+            <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+              🎓 Complete
+            </span>
+          )}
         </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
-          <div
-            className="h-full rounded-full bg-brand-500 transition-all duration-700"
-            style={{ width: `${pct}%` }}
-          />
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <div className="rounded-xl bg-black/[0.03] p-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">Level</p>
+            <p className="text-sm font-semibold">{course.cefr_level ?? "Foundations"}</p>
+          </div>
+          <div className="rounded-xl bg-black/[0.03] p-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">Lessons</p>
+            <p className="text-sm font-semibold">{doneCount} of {list.length}</p>
+          </div>
+          <div className="rounded-xl bg-black/[0.03] p-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">Time left</p>
+            <p className="text-sm font-semibold">~{Math.max(1, Math.round(minutesLeft / 60 * 10) / 10)}h</p>
+          </div>
+          <div className="rounded-xl bg-black/[0.03] p-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">Next lesson</p>
+            <p className="truncate text-sm font-semibold">{nextLesson?.title ?? "All done!"}</p>
+          </div>
         </div>
+        {nextLesson && (
+          <Link href={`/learn/${course.id}/${nextLesson.id}`} className="btn-primary block w-full text-center">
+            {doneCount === 0 ? "Start learning" : "Continue learning"}
+          </Link>
+        )}
+        {pct === 100 && (
+          <Link href={`/certificates/${course.id}`} className="btn-primary block w-full text-center">
+            🎓 View your certificate
+          </Link>
+        )}
       </div>
 
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start lg:gap-6">
+      <div>
       {/* Learning path */}
       <ol className="relative space-y-0" data-testid="learning-path">
         {list.map((l, i) => {
@@ -168,6 +221,14 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
                     {done && typeof score === "number" ? ` · scored ${Math.round(score)}` : ""}
                   </div>
                 </div>
+                {done && (() => {
+                  const m = masteryOf(l.id);
+                  return m ? (
+                    <span className={`hidden rounded-full px-2 py-0.5 text-[10px] font-semibold sm:inline ${m.cls}`}>
+                      {m.label}
+                    </span>
+                  ) : null;
+                })()}
                 {isNext ? (
                   <span className="btn-primary px-4 py-1.5 text-xs">Start</span>
                 ) : (
@@ -178,6 +239,40 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
           );
         })}
       </ol>
+      </div>
+
+      {/* Desktop right rail: certificate + skills mastery */}
+      <aside className="hidden space-y-4 lg:block">
+        <div className="card space-y-1.5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Certificate</p>
+          {pct === 100 ? (
+            <Link href={`/certificates/${course.id}`} className="btn-primary block w-full text-center text-sm">
+              🎓 View certificate
+            </Link>
+          ) : (
+            <p className="text-sm text-ink-500">
+              🎓 Finish all {list.length} lessons to earn the {course.title} certificate.
+            </p>
+          )}
+        </div>
+        <div className="card">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">Skills mastery</p>
+          <ul className="space-y-1.5">
+            {list.map((l) => {
+              const m = masteryOf(l.id);
+              return (
+                <li key={l.id} className="flex items-center justify-between gap-2 text-xs">
+                  <span className="truncate">{l.title}</span>
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${m ? m.cls : "bg-black/5 text-ink-500"}`}>
+                    {m?.label ?? "Not started"}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </aside>
+      </div>
 
       {/* Discussion */}
       <section className="space-y-2" data-testid="discussion">

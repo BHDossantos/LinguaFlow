@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Link from "next/link";
 import { BottomNav } from "@/components/BottomNav";
+import { SideNav } from "@/components/SideNav";
 import { PageBeacon } from "@/components/PageBeacon";
 import { supabaseServer } from "@/lib/supabase/server";
 
@@ -95,17 +96,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className="font-sans">
-        <main className="mx-auto max-w-screen-sm min-h-screen pb-24 px-4 pt-6">
-          <div className="mb-4 flex items-center justify-between">
-            <Logo />
-            <div className="flex gap-3 text-xs text-ink-500">
-              <Link href="/inbox" className="hover:text-brand-500">Inbox</Link>
-              <Link href="/family" className="hover:text-brand-500">Family</Link>
-              <Link href="/teach" className="hover:text-brand-500">Teach</Link>
-              <Link href="/school" className="hover:text-brand-500">School</Link>
+        <SideNav />
+        <main className="min-h-screen px-4 pb-24 pt-6 lg:pl-64 lg:pr-8 lg:pb-10">
+          <div className="mx-auto max-w-screen-sm lg:max-w-4xl">
+            {/* Mobile top bar — the desktop sidebar replaces it at lg+ */}
+            <div className="mb-4 flex items-center justify-between lg:hidden">
+              <Logo />
+              <div className="flex gap-3 text-xs text-ink-500">
+                <Link href="/inbox" className="hover:text-brand-500">Inbox</Link>
+                <Link href="/family" className="hover:text-brand-500">Family</Link>
+                <Link href="/teach" className="hover:text-brand-500">Teach</Link>
+                <Link href="/school" className="hover:text-brand-500">School</Link>
+              </div>
             </div>
+            {children}
           </div>
-          {children}
         </main>
         <BottomNav />
         <PageBeacon />
