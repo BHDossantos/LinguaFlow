@@ -60,6 +60,27 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
   // The "next" lesson is the first incomplete one.
   const nextId = list.find((l) => !doneIds.has(l.id))?.id ?? null;
 
+  // Prerequisites (recommendation, not a hard lock): which are finished?
+  const prereqIds: string[] = (course as any).prerequisite_ids ?? [];
+  let prereqs: { id: string; title: string; done: boolean }[] = [];
+  if (prereqIds.length > 0) {
+    const [{ data: pcs }, { data: plessons }] = await Promise.all([
+      supabase.from("courses").select("id,title").in("id", prereqIds),
+      supabase.from("lessons").select("id,course_id").in("course_id", prereqIds),
+    ]);
+    const lessonsByCourse = new Map<string, string[]>();
+    for (const l of plessons ?? []) {
+      const arr = lessonsByCourse.get(l.course_id) ?? [];
+      arr.push(l.id);
+      lessonsByCourse.set(l.course_id, arr);
+    }
+    prereqs = (pcs ?? []).map((c) => {
+      const ids = lessonsByCourse.get(c.id) ?? [];
+      return { id: c.id, title: c.title, done: ids.length > 0 && ids.every((id) => doneIds.has(id)) };
+    });
+  }
+  const missingPrereqs = prereqs.filter((p) => !p.done);
+
   return (
     <div className="space-y-4">
       <header className="flex items-start justify-between gap-3">
@@ -70,6 +91,22 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         </div>
         <EnrollButton courseId={course.id} enrolled={enrolled} />
       </header>
+
+      {missingPrereqs.length > 0 && doneCount === 0 && (
+        <div className="card border-amber-200 bg-amber-50 text-sm text-amber-800">
+          <p className="font-medium">Recommended before this course:</p>
+          <ul className="mt-1 space-y-0.5">
+            {missingPrereqs.map((p) => (
+              <li key={p.id}>
+                <Link href={`/learn/${p.id}`} className="underline">→ {p.title}</Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-1 text-xs">
+            You can still start here — or take the diagnostic in lesson 1 to check you&apos;re ready.
+          </p>
+        </div>
+      )}
 
       {/* Course progress */}
       <div className="card space-y-1.5" data-testid="course-progress">

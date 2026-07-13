@@ -9,7 +9,21 @@ const Body = z.object({
     .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().min(1).max(4000) }))
     .min(1)
     .max(30),
+  mode: z.enum(["explain", "socratic", "practice", "review"]).default("explain"),
 });
+
+// Pedagogy per tutor mode. Socratic deliberately withholds answers and
+// teaches through questions (Cambridge supervision style).
+const MODE_PROMPTS: Record<string, string> = {
+  explain:
+    "Mode: EXPLAIN. Explain concepts clearly at the student's level with one concrete example, then one quick check-for-understanding question.",
+  socratic:
+    "Mode: SOCRATIC. Never state the answer directly, even if asked. Guide with 2-4 short questions that lead the student to discover it. Acknowledge each attempt, narrow the next question based on their reasoning, and only confirm once THEY have said the answer. If they are stuck after several genuine attempts, give a strong hint — still not the full answer.",
+  practice:
+    "Mode: PRACTICE. Generate practice problems matched to the student's level: one at a time, wait for their answer, then grade it with a one-line explanation and give the next (slightly adapted to their performance).",
+  review:
+    "Mode: REVIEW. Focus on the student's likely weak spots. Ask what they got wrong recently or pick common trouble areas for their level; re-teach briefly, then drill with 2-3 targeted questions.",
+};
 
 // The AI Coach: a learning tutor that knows the student's level and target
 // language. Requires ANTHROPIC_API_KEY; returns 503 with a friendly flag
@@ -57,7 +71,8 @@ export async function POST(req: Request) {
       `learning ${target?.language ?? "a new language"}${target?.dialect ? ` (${target.dialect})` : ""}. ` +
       `Answer anything they ask about learning: explain concepts simply, create practice problems, ` +
       `quiz them, give examples, translate, correct mistakes kindly. ` +
-      `Match their level; prefer short, concrete answers with one clear next step.`,
+      `Match their level; prefer short, concrete answers with one clear next step. ` +
+      MODE_PROMPTS[parsed.data.mode],
     messages: parsed.data.messages,
   });
 

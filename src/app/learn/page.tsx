@@ -6,10 +6,17 @@ import { requireOnboardedUser, getPrimaryTargetLanguage } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 
 type Scope = "mine" | "all";
+type Subject = "language" | "math" | "technology";
+
+const SCHOOLS: { id: Subject; icon: string; label: string; blurb: string }[] = [
+  { id: "language", icon: "🌍", label: "Languages", blurb: "CEFR-aligned paths from first words to seminar level." },
+  { id: "math", icon: "➗", label: "Mathematics", blurb: "Mastery-based progression from arithmetic to algebra." },
+  { id: "technology", icon: "💻", label: "Technology", blurb: "Digital literacy, Python, and the web — hands-on." },
+];
 
 export default async function LearnPage(
   props: {
-    searchParams: Promise<{ lang?: string; scope?: string }>;
+    searchParams: Promise<{ lang?: string; scope?: string; school?: string }>;
   }
 ) {
   const searchParams = await props.searchParams;
@@ -18,13 +25,25 @@ export default async function LearnPage(
   const primary = await getPrimaryTargetLanguage();
   const lang = (searchParams.lang ?? primary?.language ?? "es") as LanguageCode;
   const scope: Scope = searchParams.scope === "all" ? "all" : "mine";
+  const subject: Subject =
+    searchParams.school === "math" || searchParams.school === "technology"
+      ? searchParams.school
+      : "language";
+  const school = SCHOOLS.find((s) => s.id === subject)!;
 
   let query = supabase
     .from("courses")
     .select("id,title,description,cefr_level,goal_tag,language,dialect,org_id,teacher_id")
-    .eq("language", lang)
     .eq("published", true)
     .order("position");
+
+  // The language school filters by target language; other schools filter by
+  // subject only (their `language` column is just the instruction language).
+  if (subject === "language") {
+    query = query.eq("language", lang);
+  } else {
+    query = query.eq("subject", subject);
+  }
 
   if (scope === "mine") {
     const [{ data: enrollments }, { data: orgs }] = await Promise.all([
@@ -43,6 +62,18 @@ export default async function LearnPage(
 
   const { data: courses } = await query;
 
+  const qs = (over: Partial<{ school: string; lang: string; scope: string }>) => {
+    const p = new URLSearchParams();
+    const s = over.school ?? (subject === "language" ? "" : subject);
+    if (s) p.set("school", s);
+    const l = over.lang ?? (subject === "language" ? lang : "");
+    if (l && (over.school ?? subject) === "language") p.set("lang", l);
+    const sc = over.scope ?? (scope === "all" ? "all" : "");
+    if (sc === "all") p.set("scope", "all");
+    const str = p.toString();
+    return str ? `/learn?${str}` : "/learn";
+  };
+
   return (
     <div className="space-y-5">
       <Link
@@ -52,37 +83,56 @@ export default async function LearnPage(
       >
         🔍 Search courses and lessons…
       </Link>
-      <header>
-        <h1 className="text-2xl font-bold">
-          Learn {LANGUAGES[lang]?.label ?? lang}
-        </h1>
-        <p className="text-sm text-ink-500">
-          {scope === "mine"
-            ? "Your courses plus platform-authored content."
-            : "Every published course on the platform."}
-        </p>
-      </header>
 
-      <div className="flex gap-2 overflow-x-auto pb-2">
-        {Object.entries(LANGUAGES).map(([code, l]) => (
+      {/* Schools */}
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {SCHOOLS.map((s) => (
           <Link
-            key={code}
-            href={`/learn?lang=${code}${scope === "all" ? "&scope=all" : ""}`}
-            className={`shrink-0 rounded-full border px-3 py-1.5 text-sm ${
-              code === lang
-                ? "border-brand-500 bg-brand-50 text-brand-700"
+            key={s.id}
+            href={qs({ school: s.id === "language" ? "language" : s.id })}
+            className={`shrink-0 rounded-full border px-3 py-1.5 text-sm font-medium ${
+              s.id === subject
+                ? "border-brand-500 bg-brand-500 text-white"
                 : "border-black/10 bg-white text-ink-700"
             }`}
           >
-            <span className="mr-1">{l.flag}</span>
-            {l.label}
+            <span className="mr-1">{s.icon}</span>
+            {s.label}
           </Link>
         ))}
       </div>
 
+      <header>
+        <h1 className="text-2xl font-bold">
+          {subject === "language"
+            ? `Learn ${LANGUAGES[lang]?.label ?? lang}`
+            : `School of ${school.label}`}
+        </h1>
+        <p className="text-sm text-ink-500">{school.blurb}</p>
+      </header>
+
+      {subject === "language" && (
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {Object.entries(LANGUAGES).map(([code, l]) => (
+            <Link
+              key={code}
+              href={qs({ lang: code, school: "language" })}
+              className={`shrink-0 rounded-full border px-3 py-1.5 text-sm ${
+                code === lang
+                  ? "border-brand-500 bg-brand-50 text-brand-700"
+                  : "border-black/10 bg-white text-ink-700"
+              }`}
+            >
+              <span className="mr-1">{l.flag}</span>
+              {l.label}
+            </Link>
+          ))}
+        </div>
+      )}
+
       <div className="flex gap-2 text-sm">
         <Link
-          href={`/learn?lang=${lang}`}
+          href={qs({ scope: "mine" })}
           className={
             "rounded-full px-3 py-1 " +
             (scope === "mine" ? "bg-brand-500 text-white" : "bg-black/5 text-ink-700")
@@ -91,7 +141,7 @@ export default async function LearnPage(
           My courses
         </Link>
         <Link
-          href={`/learn?lang=${lang}&scope=all`}
+          href={qs({ scope: "all" })}
           className={
             "rounded-full px-3 py-1 " +
             (scope === "all" ? "bg-brand-500 text-white" : "bg-black/5 text-ink-700")
@@ -107,7 +157,7 @@ export default async function LearnPage(
             <Link href={`/learn/${c.id}`} className="card block">
               <div className="flex items-center justify-between">
                 <h2 className="font-semibold">{c.title}</h2>
-                {c.cefr_level && (
+                {c.cefr_level && subject === "language" && (
                   <span className="rounded-md bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700">
                     {c.cefr_level}
                   </span>
@@ -124,9 +174,11 @@ export default async function LearnPage(
         ))}
         {(!courses || courses.length === 0) && (
           <li className="card text-sm text-ink-500">
-            {scope === "mine"
-              ? "Nothing here yet. Browse all courses to enroll, or ask your teacher to attach a course to your classroom."
-              : "No published courses yet for this language."}
+            {subject !== "language"
+              ? "This school opens as soon as the latest platform update is applied to the database."
+              : scope === "mine"
+                ? "Nothing here yet. Browse all courses to enroll, or ask your teacher to attach a course to your classroom."
+                : "No published courses yet for this language."}
           </li>
         )}
       </ul>

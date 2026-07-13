@@ -10,11 +10,22 @@ const SUGGESTIONS = [
   "How do I roll my Rs?",
 ];
 
+// Tutor modes: same coach, different pedagogy. Socratic guides with
+// questions instead of revealing answers.
+const MODES = [
+  { id: "explain", label: "💡 Explain", hint: "clear explanations at your level" },
+  { id: "socratic", label: "🧭 Socratic", hint: "guides you with questions, never spoils the answer" },
+  { id: "practice", label: "✏️ Practice", hint: "generates problems and drills" },
+  { id: "review", label: "🔁 Review", hint: "targets your weak spots" },
+] as const;
+type ModeId = (typeof MODES)[number]["id"];
+
 export function CoachClient() {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [offline, setOffline] = useState(false);
+  const [mode, setMode] = useState<ModeId>("explain");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   async function send(text: string) {
@@ -28,7 +39,7 @@ export function CoachClient() {
       const r = await fetch("/api/coach", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, mode }),
       });
       if (r.status === 503) {
         setOffline(true);
@@ -56,6 +67,24 @@ export function CoachClient() {
           Your personal tutor. Ask anything — explanations, practice, quizzes.
         </p>
       </header>
+
+      <div className="mb-3 flex gap-1.5 overflow-x-auto pb-1">
+        {MODES.map((m) => (
+          <button
+            key={m.id}
+            type="button"
+            title={m.hint}
+            onClick={() => setMode(m.id)}
+            className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium ${
+              mode === m.id
+                ? "border-brand-500 bg-brand-500 text-white"
+                : "border-black/10 bg-white text-ink-700"
+            }`}
+          >
+            {m.label}
+          </button>
+        ))}
+      </div>
 
       {offline && (
         <div className="card mb-3 border-amber-200 bg-amber-50 text-sm text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300">
