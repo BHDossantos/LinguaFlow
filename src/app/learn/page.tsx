@@ -6,12 +6,14 @@ import { requireOnboardedUser, getPrimaryTargetLanguage } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 
 type Scope = "mine" | "all";
-type Subject = "language" | "math" | "technology";
+type Subject = "language" | "math" | "technology" | "business" | "science";
 
 const SCHOOLS: { id: Subject; icon: string; label: string; blurb: string }[] = [
   { id: "language", icon: "🌍", label: "Languages", blurb: "CEFR-aligned paths from first words to seminar level." },
   { id: "math", icon: "➗", label: "Mathematics", blurb: "Mastery-based progression from arithmetic to algebra." },
   { id: "technology", icon: "💻", label: "Technology", blurb: "Digital literacy, Python, and the web — hands-on." },
+  { id: "business", icon: "💼", label: "Business", blurb: "How companies work — from first principles to strategy." },
+  { id: "science", icon: "🔬", label: "Science", blurb: "Evidence-first foundations, structured like the open textbooks." },
 ];
 
 export default async function LearnPage(
@@ -25,10 +27,11 @@ export default async function LearnPage(
   const primary = await getPrimaryTargetLanguage();
   const lang = (searchParams.lang ?? primary?.language ?? "es") as LanguageCode;
   const scope: Scope = searchParams.scope === "all" ? "all" : "mine";
-  const subject: Subject =
-    searchParams.school === "math" || searchParams.school === "technology"
-      ? searchParams.school
-      : "language";
+  const subject: Subject = (["math", "technology", "business", "science"] as const).includes(
+    searchParams.school as any,
+  )
+    ? (searchParams.school as Subject)
+    : "language";
   const school = SCHOOLS.find((s) => s.id === subject)!;
 
   let query = supabase
