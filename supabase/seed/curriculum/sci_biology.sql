@@ -7,7 +7,7 @@
 -- and guarded inserts make the file idempotent: safe to re-run at any time.
 
 -- ============ Concepts of Biology ============
-insert into public.courses (id, language, dialect, title, description, cefr_level, goal_tag, position, published, subject, prerequisite_ids)
+insert into public.courses (id, language, dialect, title, description, cefr_level, goal_tag, position, published, school, prerequisite_ids)
 values (
   'bbbb0004-0000-4000-8000-000000000001',
   'en', null,

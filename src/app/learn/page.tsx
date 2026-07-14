@@ -42,10 +42,12 @@ export default async function LearnPage(
 
   // The language school filters by target language; other schools filter by
   // subject only (their `language` column is just the instruction language).
+  // Every tab filters by school; the language school additionally filters by
+  // target language (math/tech/… are taught in English but are not English
+  // courses).
+  query = query.eq("school", subject);
   if (subject === "language") {
     query = query.eq("language", lang);
-  } else {
-    query = query.eq("subject", subject);
   }
 
   if (scope === "mine") {

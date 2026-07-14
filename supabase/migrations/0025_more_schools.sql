@@ -1,8 +1,6 @@
--- Schools of Business and Science (curriculum blueprint: 10-school vision,
--- grown incrementally). Postgres check constraints can't be altered in
--- place — drop and recreate with the wider set.
+-- Superseded by 0027_school_taxonomy.sql.
+-- This migration added a check constraint on courses.subject, which is a
+-- free-text teacher field — it violated on real data (e.g. "AP Biology").
+-- Kept as a no-op so ordered replays stay stable.
 
 alter table public.courses drop constraint if exists courses_subject_check;
-alter table public.courses
-  add constraint courses_subject_check
-  check (subject in ('language','math','technology','business','science'));
