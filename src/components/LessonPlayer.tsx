@@ -100,7 +100,17 @@ export function LessonPlayer({
           />
         </aside>
       )}
-      <div className="min-w-0">{content}</div>
+      <div className="min-w-0">
+        {/* Lesson mode tabs (per the product design): Learn is this page;
+            the others deep-link to the matching experience. */}
+        <div className="mb-4 hidden gap-5 border-b border-black/5 text-sm lg:flex">
+          <span className="border-b-2 border-brand-500 pb-2 font-semibold text-brand-700">Learn</span>
+          <a href="/practice" className="pb-2 text-ink-500 hover:text-ink-900">Practice</a>
+          <a href="/practice" className="pb-2 text-ink-500 hover:text-ink-900">Speak</a>
+          <a href="/review" className="pb-2 text-ink-500 hover:text-ink-900">Review</a>
+        </div>
+        {content}
+      </div>
       {hasVocabPanel && (
         <aside className="hidden lg:sticky lg:top-4 lg:block">
           <VocabPanel

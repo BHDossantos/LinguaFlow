@@ -59,10 +59,20 @@ function Logo() {
 // users get the app shell (phone-width column + bottom navigation).
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   let authed = false;
+  let userName: string | undefined;
   try {
     if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
       const supabase = await supabaseServer();
-      authed = !!(await supabase.auth.getUser()).data.user;
+      const { data: { user } } = await supabase.auth.getUser();
+      authed = !!user;
+      if (user) {
+        const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+        userName =
+          (typeof meta.full_name === "string" && meta.full_name) ||
+          (typeof meta.name === "string" && meta.name) ||
+          user.email?.split("@")[0] ||
+          undefined;
+      }
     }
   } catch {
     // Treat as signed out; middleware still guards protected routes.
@@ -96,7 +106,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className="font-sans">
-        <SideNav />
+        <SideNav userName={userName} />
         <main className="min-h-screen px-4 pb-24 pt-6 lg:pl-64 lg:pr-8 lg:pb-10">
           <div className="mx-auto max-w-screen-sm lg:max-w-4xl">
             {/* Mobile top bar — the desktop sidebar replaces it at lg+ */}

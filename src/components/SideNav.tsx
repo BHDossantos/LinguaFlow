@@ -41,7 +41,7 @@ function Item({ href, label, icon, active }: { href: string; label: string; icon
   );
 }
 
-export function SideNav() {
+export function SideNav({ userName }: { userName?: string }) {
   const pathname = usePathname();
   const isActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
@@ -77,6 +77,20 @@ export function SideNav() {
         <Link href="/settings" className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm text-ink-700 hover:bg-black/[0.04]">
           ⚙️ Settings
         </Link>
+        {userName && (
+          <Link
+            href="/profile"
+            className="mt-1 flex items-center gap-2.5 rounded-xl border border-black/5 px-3 py-2 hover:bg-black/[0.04]"
+          >
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-violet-500 text-sm font-bold text-white">
+              {userName.slice(0, 1).toUpperCase()}
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate text-sm font-medium">{userName}</span>
+              <span className="block text-[11px] text-ink-500">View profile</span>
+            </span>
+          </Link>
+        )}
       </div>
     </aside>
   );

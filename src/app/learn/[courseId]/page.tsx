@@ -99,14 +99,38 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
 
   return (
     <div className="space-y-4">
-      <header className="flex items-start justify-between gap-3">
-        <div>
-          <Link href="/learn" className="text-sm text-brand-500">← All courses</Link>
-          <h1 className="mt-2 text-2xl font-bold">{course.title}</h1>
+      {/* Breadcrumb */}
+      <nav className="text-xs text-ink-500">
+        <Link href="/learn" className="hover:text-brand-600">My Learning</Link>
+        <span className="mx-1.5">›</span>
+        <span className="text-ink-900">{course.title}</span>
+      </nav>
+
+      {/* Hero: thumbnail tile + title + enroll */}
+      <header className="flex items-start gap-4">
+        <div className="hidden h-24 w-24 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-violet-500 text-white sm:flex">
+          <span className="text-xl font-extrabold leading-none">
+            {course.cefr_level ?? "101"}
+          </span>
+          <span className="mt-1 px-1 text-center text-[10px] font-medium leading-tight opacity-90">
+            {course.title.split("—")[0].trim().split(" ").slice(0, 2).join(" ")}
+          </span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl font-bold">{course.title}</h1>
           <p className="text-sm text-ink-500">{course.description}</p>
         </div>
         <EnrollButton courseId={course.id} enrolled={enrolled} />
       </header>
+
+      {/* Tabs (per the product design) */}
+      <div className="flex gap-5 border-b border-black/5 text-sm">
+        <span className="border-b-2 border-brand-500 pb-2 font-semibold text-brand-700">Overview</span>
+        <a href="#curriculum" className="pb-2 text-ink-500 hover:text-ink-900">Curriculum</a>
+        <Link href="/practice" className="pb-2 text-ink-500 hover:text-ink-900">Practice</Link>
+        <Link href="/profile" className="pb-2 text-ink-500 hover:text-ink-900">Progress</Link>
+        <Link href="/coach" className="pb-2 text-ink-500 hover:text-ink-900">Coach</Link>
+      </div>
 
       {missingPrereqs.length > 0 && doneCount === 0 && (
         <div className="card border-amber-200 bg-amber-50 text-sm text-amber-800">
@@ -175,8 +199,27 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         )}
       </div>
 
+      {/* Up next */}
+      {nextLesson && (
+        <Link
+          href={`/learn/${course.id}/${nextLesson.id}`}
+          className="card flex items-center gap-3 border-brand-500/30 hover:shadow-md"
+        >
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl">
+            {KIND_ICON[nextLesson.kind] ?? "📘"}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-brand-600">Up next</p>
+            <p className="truncate font-semibold">{nextLesson.title}</p>
+            <p className="text-xs text-ink-500">⏱ {nextLesson.estimated_minutes} min</p>
+          </div>
+          <span className="btn-primary px-4 py-1.5 text-xs">Continue</span>
+        </Link>
+      )}
+
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start lg:gap-6">
-      <div>
+      <div id="curriculum">
+      <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-ink-500">Curriculum</h2>
       {/* Learning path */}
       <ol className="relative space-y-0" data-testid="learning-path">
         {list.map((l, i) => {
