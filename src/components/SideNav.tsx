@@ -41,7 +41,7 @@ function Item({ href, label, icon, active }: { href: string; label: string; icon
   );
 }
 
-export function SideNav({ userName }: { userName?: string }) {
+export function SideNav({ userName, version }: { userName?: string; version?: string }) {
   const pathname = usePathname();
   const isActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
@@ -77,6 +77,9 @@ export function SideNav({ userName }: { userName?: string }) {
         <Link href="/settings" className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm text-ink-700 hover:bg-black/[0.04]">
           ⚙️ Settings
         </Link>
+        {version && (
+          <p className="px-3 pt-1 text-[9px] tracking-wide text-ink-500/60">build {version}</p>
+        )}
         {userName && (
           <Link
             href="/profile"

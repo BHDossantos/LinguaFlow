@@ -106,7 +106,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className="font-sans">
-        <SideNav userName={userName} />
+        <SideNav
+          userName={userName}
+          version={process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? "dev"}
+        />
         <main className="min-h-screen px-4 pb-24 pt-6 lg:pl-64 lg:pr-8 lg:pb-10">
           <div className="mx-auto max-w-screen-sm lg:max-w-4xl">
             {/* Mobile top bar — the desktop sidebar replaces it at lg+ */}
