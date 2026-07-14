@@ -22,10 +22,15 @@ export default async function Home() {
     .maybeSingle();
   if (!target) redirect("/onboarding");
 
-  return <Dashboard userId={user.id} primaryLang={target.language} />;
+  const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+  const metaName =
+    (typeof meta.full_name === "string" && meta.full_name) ||
+    (typeof meta.name === "string" && meta.name) ||
+    undefined;
+  return <Dashboard userId={user.id} primaryLang={target.language} metaName={metaName} />;
 }
 
-async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang: string }) {
+async function Dashboard({ userId, primaryLang, metaName }: { userId: string; primaryLang: string; metaName?: string }) {
   const supabase = await supabaseServer();
   const nowIso = new Date().toISOString();
   const since14 = new Date(Date.now() - 14 * 86_400_000).toISOString();
@@ -97,7 +102,12 @@ async function Dashboard({ userId, primaryLang }: { userId: string; primaryLang:
     }
   }
 
-  const firstName = (profile?.display_name ?? "there").split(" ")[0];
+  // Prefer a real name: a display_name that is just the email local-part
+  // (set by early signups) loses to the identity provider's name.
+  const looksLikeEmailPrefix = !!profile?.display_name && !profile.display_name.includes(" ") && /\d/.test(profile.display_name);
+  const bestName =
+    (!looksLikeEmailPrefix && profile?.display_name) || metaName || profile?.display_name || "there";
+  const firstName = bestName.split(" ")[0];
   const hour = new Date().getUTCHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const streak = stats?.streak_days ?? 0;
