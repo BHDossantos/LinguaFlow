@@ -60,6 +60,7 @@ function Logo() {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   let authed = false;
   let userName: string | undefined;
+  let unreadCount = 0;
   try {
     if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
       const supabase = await supabaseServer();
@@ -72,6 +73,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           (typeof meta.name === "string" && meta.name) ||
           user.email?.split("@")[0] ||
           undefined;
+        const { count } = await supabase
+          .from("notifications")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", user.id)
+          .is("read_at", null);
+        unreadCount = count ?? 0;
       }
     }
   } catch {
@@ -109,6 +116,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <SideNav
           userName={userName}
           version={process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? "dev"}
+          unreadCount={unreadCount}
         />
         <main className="min-h-screen px-4 pb-24 pt-6 lg:pl-64 lg:pr-8 lg:pb-10">
           <div className="mx-auto max-w-screen-sm lg:max-w-4xl">
