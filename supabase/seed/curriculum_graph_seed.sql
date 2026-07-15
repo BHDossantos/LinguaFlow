@@ -111,3 +111,4 @@ update public.courses set source_id = 'openstax' where id = 'bbbb0003-0000-4000-
 update public.courses set source_id = 'openstax' where id = 'bbbb0004-0000-4000-8000-000000000001' and source_id is null;
 update public.courses set source_id = 'mit_ocw'  where id = 'bbbb0002-0000-4000-8000-000000000004' and source_id is null;
 update public.courses set source_id = 'openstax' where id = 'bbbb0004-0000-4000-8000-000000000002' and source_id is null;
+update public.courses set source_id = 'openstax' where id = 'bbbb0003-0000-4000-8000-000000000002' and source_id is null;
