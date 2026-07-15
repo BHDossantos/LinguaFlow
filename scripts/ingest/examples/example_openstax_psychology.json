@@ -1,0 +1,96 @@
+{
+  "source": {
+    "id": "openstax",
+    "name": "OpenStax Psychology 2e",
+    "url": "https://openstax.org/details/books/psychology-2e",
+    "license": "CC BY 4.0"
+  },
+  "course": {
+    "id": "bbbb0004-0000-4000-8000-000000000002",
+    "title": "Introduction to Psychology",
+    "description": "A first tour of how the mind and behavior work — from the brain to memory, development, and disorders. Structure adapted from OpenStax Psychology 2e (CC BY 4.0).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "science",
+    "goal_tag": "foundations",
+    "position": 2,
+    "prerequisite_ids": []
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 10, "body": { "questions": [
+      { "prompt": "Psychology is best defined as the scientific study of…", "options": ["only mental illness", "mind and behavior", "the nervous system only", "personality types"], "answer": 1, "explanation": "Psychology studies both mind and behavior — see 'What is psychology?'." },
+      { "prompt": "The part of a neuron that receives signals is the…", "options": ["axon", "dendrite", "synapse", "myelin"], "answer": 1, "explanation": "Dendrites receive; axons send — covered in 'Brain and behavior'." },
+      { "prompt": "Classical conditioning was first described by…", "options": ["Skinner", "Freud", "Pavlov", "Piaget"], "answer": 2, "explanation": "Pavlov's dogs — see 'Learning'." },
+      { "prompt": "Short-term memory typically holds about…", "options": ["3 items", "7 items", "20 items", "unlimited"], "answer": 1, "explanation": "Miller's 'magic number seven' — see 'Memory'." },
+      { "prompt": "A researcher manipulates one variable and measures another. This is a…", "options": ["case study", "survey", "correlational study", "experiment"], "answer": 3, "explanation": "Manipulation + control = experiment — see 'Psychological research'." },
+      { "prompt": "Piaget studied primarily…", "options": ["memory", "cognitive development in children", "sleep", "personality"], "answer": 1, "explanation": "Piaget's stages — see 'Development'." },
+      { "prompt": "Which is an example of intrinsic motivation?", "options": ["studying for a cash reward", "reading for pleasure", "working only for a grade", "exercising to win a prize"], "answer": 1, "explanation": "Intrinsic = the activity is its own reward — see 'Motivation'." },
+      { "prompt": "Depression and anxiety are examples of…", "options": ["personality traits", "psychological disorders", "learning styles", "reflexes"], "answer": 1, "explanation": "Covered in 'Psychological disorders'." }
+    ] } },
+    { "position": 2, "title": "What psychology is (and how it's studied)", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Correlation is not causation — keep that phrase handy all course.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Define psychology and name the main research methods. Warm-up: from the diagnostic, what makes a study an *experiment* rather than a survey?" },
+      { "heading": "The idea", "text": "Psychology is the *scientific* study of mind and behavior. 'Scientific' is the load-bearing word: claims are tested with evidence, not intuition. The main methods are the case study (deep look at one person), naturalistic observation, the survey, the correlational study (do two things move together?), and the experiment (manipulate one variable, control the rest, measure the effect)." },
+      { "heading": "Worked example", "text": "Claim: 'ice-cream sales cause drowning.' Both rise in summer, so they *correlate* — but heat is the hidden third variable. Only a controlled experiment can establish cause. This is why correlation ≠ causation." },
+      { "heading": "Your turn", "text": "Classify each: (1) surveying 500 students about sleep, (2) giving half a group caffeine and testing reaction time, (3) tracking one patient for a year. Answers: (1) survey, (2) experiment, (3) case study." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: assuming a correlation proves cause. Mistake: thinking psychology isn't a science. Exit: (a) Which method can show causation? (b) Name the hidden-variable problem in one word. Answers: experiment; confounding." }
+    ] } },
+    { "position": 3, "title": "The brain and the nervous system", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Neuron parts: dendrite in, axon out.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Describe how neurons communicate and name key brain regions. Warm-up: which neuron part receives signals?" },
+      { "heading": "The idea", "text": "A *neuron* fires an electrical signal down its *axon*; at the *synapse* it releases chemicals (neurotransmitters) that reach the next neuron's *dendrites*. Billions of these form the nervous system. The brain's *cerebral cortex* handles thought; the *cerebellum* handles balance; the *amygdala* handles fear." },
+      { "heading": "Worked example", "text": "Touch a hot stove: sensory neurons signal the spinal cord, which fires motor neurons to pull back — before the brain even 'decides'. That's a reflex arc." },
+      { "heading": "Your turn", "text": "Match: (1) balance, (2) fear, (3) thinking. To: cerebellum / amygdala / cortex. Answers: 1-cerebellum, 2-amygdala, 3-cortex." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking neurons touch (they don't — the synapse is a gap). Exit: (a) What crosses the synapse? (b) Dendrite: in or out? Answers: neurotransmitters; in." }
+    ] } },
+    { "position": 4, "title": "Learning: conditioning and reinforcement", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Classical = association; operant = consequences.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Tell classical from operant conditioning. Warm-up: who rang a bell for dogs?" },
+      { "heading": "The idea", "text": "*Classical conditioning* (Pavlov) pairs a neutral cue with a reflex until the cue alone triggers it. *Operant conditioning* (Skinner) changes behavior with consequences: *reinforcement* increases a behavior, *punishment* decreases it." },
+      { "heading": "Worked example", "text": "A phone buzz (neutral) repeatedly precedes good news → you feel excitement at the buzz alone (classical). A dog sits and gets a treat → it sits more (operant, positive reinforcement)." },
+      { "heading": "Your turn", "text": "Classify: (1) feeling hungry at a restaurant's smell, (2) a child cleans up to earn screen time, (3) flinching at a dentist's drill sound. Answers: 1-classical, 2-operant, 3-classical." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: calling negative reinforcement 'punishment' — it still increases behavior by removing something unpleasant. Exit: (a) Reinforcement does what to a behavior? (b) Pavlov studied which type? Answers: increases it; classical." }
+    ] } },
+    { "position": 5, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "Which can establish causation?", "options": ["survey", "correlational study", "experiment", "case study"], "answer": 2, "explanation": "Only controlled experiments." },
+      { "prompt": "Neurotransmitters are released at the…", "options": ["dendrite", "synapse", "cortex", "axon hillock"], "answer": 1, "explanation": "The synapse is the gap between neurons." },
+      { "prompt": "A treat that makes a dog sit more often is…", "options": ["punishment", "reinforcement", "a neutral stimulus", "extinction"], "answer": 1, "explanation": "Reinforcement increases behavior." },
+      { "prompt": "'Ice cream and drowning both rise in summer' illustrates…", "options": ["causation", "a confounding variable", "reinforcement", "a reflex"], "answer": 1, "explanation": "Heat is the confound." },
+      { "prompt": "The amygdala is most associated with…", "options": ["balance", "fear", "language", "vision"], "answer": 1, "explanation": "Fear and emotion." },
+      { "prompt": "Pavlov's work is an example of…", "options": ["operant conditioning", "classical conditioning", "observational learning", "insight"], "answer": 1, "explanation": "Association of stimuli." }
+    ] } },
+    { "position": 6, "title": "Memory: encoding, storage, retrieval", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Three stages: encode → store → retrieve.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Describe the three memory stages and why we forget. Warm-up: roughly how many items fit in short-term memory?" },
+      { "heading": "The idea", "text": "Memory has three steps: *encoding* (getting information in), *storage* (holding it), and *retrieval* (getting it back). Short-term memory holds ~7 items for seconds; *rehearsal* and meaning move items into long-term memory. Forgetting often means retrieval failure, not erasure." },
+      { "heading": "Worked example", "text": "A phone number you repeat (rehearse) survives long enough to dial. Chunking '1 4 9 2' into '1492' turns four items into one — beating the seven-item limit." },
+      { "heading": "Your turn", "text": "Which stage fails when: (1) you never really paid attention, (2) the name is 'on the tip of your tongue'? Answers: 1-encoding, 2-retrieval." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking memory is a video recording (it's reconstructive and editable). Exit: (a) Name the three stages. (b) What does chunking do? Answers: encode/store/retrieve; groups items to beat the capacity limit." }
+    ] } },
+    { "position": 7, "title": "Development across the lifespan", "kind": "reading", "estimated_minutes": 11, "grammar_note": "Piaget = cognitive stages in childhood.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Summarize how thinking changes with age. Warm-up: who studied children's cognitive stages?" },
+      { "heading": "The idea", "text": "Development is lifelong. *Piaget* described stages: sensorimotor (infants learn through senses), preoperational (symbols, but egocentric), concrete operational (logic about concrete things), formal operational (abstract reasoning). *Attachment* between infant and caregiver shapes later relationships." },
+      { "heading": "Worked example", "text": "Object permanence: a 4-month-old acts as if a hidden toy is gone; a 12-month-old searches for it — a sensorimotor milestone." },
+      { "heading": "Your turn", "text": "Which stage: (1) abstract algebra reasoning, (2) pretend play with symbols? Answers: 1-formal operational, 2-preoperational." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking stages are rigid ages (they're approximate). Exit: (a) Object permanence appears in which stage? (b) Abstract reasoning? Answers: sensorimotor; formal operational." }
+    ] } },
+    { "position": 8, "title": "Key terms", "kind": "vocab", "estimated_minutes": 8, "body": { "items": [
+      { "term": "neuron", "translation": "a nerve cell that transmits electrical and chemical signals", "example": "Each neuron passes signals to the next across a synapse." },
+      { "term": "synapse", "translation": "the tiny gap where neurotransmitters cross between neurons", "example": "Signals jump the synapse chemically." },
+      { "term": "reinforcement", "translation": "a consequence that makes a behavior more likely", "example": "A treat is positive reinforcement." },
+      { "term": "encoding", "translation": "the process of getting information into memory", "example": "Paying attention improves encoding." },
+      { "term": "correlation", "translation": "a relationship where two variables move together (not necessarily cause)", "example": "Correlation is not causation." },
+      { "term": "attachment", "translation": "the emotional bond between an infant and caregiver", "example": "Secure attachment predicts later trust." }
+    ] } },
+    { "position": 9, "title": "Checkpoint 2", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "The three stages of memory are…", "options": ["input, process, output", "encode, store, retrieve", "sense, think, act", "read, write, recall"], "answer": 1, "explanation": "Encoding, storage, retrieval." },
+      { "prompt": "'Tip of the tongue' is a failure of…", "options": ["encoding", "storage", "retrieval", "attention"], "answer": 2, "explanation": "The item is stored but not retrieved." },
+      { "prompt": "Object permanence develops in the … stage.", "options": ["formal operational", "sensorimotor", "concrete operational", "preoperational"], "answer": 1, "explanation": "Sensorimotor, in infancy." },
+      { "prompt": "Chunking helps because it…", "options": ["erases old memories", "groups items to beat the ~7 limit", "slows retrieval", "prevents encoding"], "answer": 1, "explanation": "Fewer, bigger units." },
+      { "prompt": "Abstract reasoning marks the … stage.", "options": ["sensorimotor", "preoperational", "formal operational", "concrete operational"], "answer": 2, "explanation": "Formal operational." },
+      { "prompt": "Secure attachment in infancy is linked to…", "options": ["worse memory", "later trust in relationships", "faster reflexes", "higher IQ guaranteed"], "answer": 1, "explanation": "Attachment shapes relationships." }
+    ] } },
+    { "position": 10, "title": "Applied project: run a mini-observation", "kind": "writing", "estimated_minutes": 15, "body": { "sections": [
+      { "heading": "The task", "text": "Design and describe a small naturalistic observation of an everyday behavior (e.g. how people choose a seat on a bus). You will not run a full study — you'll plan it rigorously." },
+      { "heading": "Milestones", "text": "1) Write a clear question. 2) Define exactly what you'd observe and how you'd record it. 3) Name one confounding variable. 4) State whether your design could show causation (and why not, if observational)." },
+      { "heading": "Self-check rubric", "text": "✔ Question is specific and answerable. ✔ Observation is operationally defined (someone else could replicate it). ✔ You identified a confound. ✔ You correctly noted observation shows correlation, not cause. If all four are true, you've thought like a psychologist." }
+    ] } }
+  ]
+}

@@ -62,6 +62,26 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
   if (!course) return <p>Course not found.</p>;
   const enrolled = !!enrollment;
 
+  // Standards alignment (Curriculum Engine). Separate + null-safe so a
+  // database without the graph tables just renders no chips.
+  let alignedChips: string[] = [];
+  try {
+    const { data: aligned } = await supabase
+      .from("course_standards")
+      .select("descriptor:standard_descriptors(code, standard:standards(framework))")
+      .eq("course_id", params.courseId)
+      .limit(4);
+    alignedChips = (aligned ?? [])
+      .map((r: any) => {
+        const fw = r.descriptor?.standard?.framework?.split(" ")[0] ?? "";
+        const code = r.descriptor?.code ?? "";
+        return fw && code ? `${fw} · ${code}` : code;
+      })
+      .filter(Boolean);
+  } catch {
+    // graph tables not migrated yet — no chips
+  }
+
   const doneIds = new Set((progress ?? []).map((p) => p.lesson_id));
   const scoreById = new Map((progress ?? []).map((p) => [p.lesson_id, p.score as number | null]));
   const list = lessons ?? [];
@@ -186,6 +206,16 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
             <EnrollButton courseId={course.id} enrolled={enrolled} />
           </div>
           <p className="truncate text-sm text-ink-500">{course.description}</p>
+          {alignedChips.length > 0 && (
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-500">Aligned to</span>
+              {alignedChips.map((c) => (
+                <span key={c} className="rounded-full bg-black/[0.04] px-2 py-0.5 text-[11px] text-ink-700">
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="mt-3 flex items-center gap-3" data-testid="course-progress">
             <div className="h-2 flex-1 overflow-hidden rounded-full bg-black/5">
               <div
