@@ -17,8 +17,17 @@ const KIND_ICON: Record<string, string> = {
   writing: "✍️",
 };
 
-// Learning path: a vertical journey with completed / next / upcoming states,
-// so the learner always knows exactly where they are.
+// "3h 24m" style duration; zero minutes renders as an em dash.
+function formatMinutes(mins: number): string {
+  if (mins <= 0) return "—";
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  if (h === 0) return `${m}m`;
+  return m === 0 ? `${h}h` : `${h}h ${m}m`;
+}
+
+// Course dashboard: hero row + stat row + tabbed overview panels, with the
+// curriculum rendered as a table so the learner can scan the whole path.
 export default async function CoursePage(props: { params: Promise<{ courseId: string }> }) {
   const params = await props.params;
   const user = await requireOnboardedUser();
@@ -83,15 +92,26 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
   const missingPrereqs = prereqs.filter((p) => !p.done);
 
   const nextLesson = list.find((l) => l.id === nextId) ?? null;
-  const minutesLeft = list
-    .filter((l) => !doneIds.has(l.id))
+  // Time spent: total estimated minutes of the lessons the learner has finished.
+  const minutesSpent = list
+    .filter((l) => doneIds.has(l.id))
     .reduce((s, l) => s + (l.estimated_minutes ?? 8), 0);
+
+  // Score curve data: this course's completed lessons in completion order.
+  const courseLessonIds = new Set(list.map((l) => l.id));
+  const curvePoints = (progress ?? [])
+    .filter((p) => courseLessonIds.has(p.lesson_id) && p.completed_at)
+    .sort(
+      (a, b) =>
+        new Date(a.completed_at as string).getTime() - new Date(b.completed_at as string).getTime(),
+    )
+    .map((p) => (typeof p.score === "number" ? p.score : 70));
 
   // Module grouping: every quiz lesson is a checkpoint that ENDS a module.
   // A diagnostic quiz sitting at the very start of the course forms its own
   // "Diagnostic" module; remaining segments are numbered Module 1, 2, …
   type LessonRow = (typeof list)[number];
-  const modules: { label: string; lessons: LessonRow[] }[] = [];
+  const modules: { label: string; num: number; lessons: LessonRow[] }[] = [];
   {
     let current: LessonRow[] = [];
     let moduleNum = 0;
@@ -101,16 +121,17 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         const isDiagnostic = modules.length === 0 && current.length === 1;
         modules.push({
           label: isDiagnostic ? "Diagnostic" : `Module ${++moduleNum}`,
+          num: isDiagnostic ? 0 : moduleNum,
           lessons: current,
         });
         current = [];
       }
     }
     if (current.length > 0) {
-      modules.push({ label: `Module ${++moduleNum}`, lessons: current });
+      modules.push({ label: `Module ${++moduleNum}`, num: moduleNum, lessons: current });
     }
   }
-  // The last quiz in the whole path is the final checkpoint (trophy node).
+  // The last quiz in the whole path is the final checkpoint.
   const finalQuizId = [...list].reverse().find((l) => l.kind === "quiz")?.id ?? null;
 
   // Khan-style mastery status per lesson, derived from the recorded score.
@@ -124,6 +145,22 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
     return { label: "Attempted", cls: "bg-black/5 text-ink-500" };
   };
 
+  // Inline score curve chart (no dependencies) for the "My Progress" panel.
+  const W = 300;
+  const H = 130;
+  const LEFT = 34;
+  const RIGHT = 8;
+  const TOP = 8;
+  const BOTTOM = 20;
+  const xAt = (i: number) =>
+    curvePoints.length > 1 ? LEFT + (i * (W - LEFT - RIGHT)) / (curvePoints.length - 1) : LEFT;
+  const yAt = (score: number) => TOP + (1 - Math.min(100, Math.max(0, score)) / 100) * (H - TOP - BOTTOM);
+  const linePts = curvePoints.map((s, i) => `${xAt(i).toFixed(1)},${yAt(s).toFixed(1)}`).join(" ");
+  const areaPts =
+    curvePoints.length >= 2
+      ? `${xAt(0).toFixed(1)},${H - BOTTOM} ${linePts} ${xAt(curvePoints.length - 1).toFixed(1)},${H - BOTTOM}`
+      : "";
+
   return (
     <div className="space-y-4">
       {/* Breadcrumb */}
@@ -133,7 +170,7 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         <span className="text-ink-900">{course.title}</span>
       </nav>
 
-      {/* Hero: thumbnail tile + title + enroll */}
+      {/* HERO ROW: gradient tile · title/description/progress · certificate card */}
       <header className="flex items-start gap-4">
         <div className="hidden h-24 w-24 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-violet-500 text-white sm:flex">
           <span className="text-xl font-extrabold leading-none">
@@ -144,19 +181,99 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
           </span>
         </div>
         <div className="min-w-0 flex-1">
-          <h1 className="text-2xl font-bold">{course.title}</h1>
-          <p className="text-sm text-ink-500">{course.description}</p>
+          <div className="flex items-start justify-between gap-3">
+            <h1 className="text-2xl font-bold">{course.title}</h1>
+            <EnrollButton courseId={course.id} enrolled={enrolled} />
+          </div>
+          <p className="truncate text-sm text-ink-500">{course.description}</p>
+          <div className="mt-3 flex items-center gap-3" data-testid="course-progress">
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-black/5">
+              <div
+                className="h-full rounded-full bg-brand-500 transition-all duration-700"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            <p className="shrink-0 text-xs font-semibold text-brand-600">{pct}% Complete</p>
+            {pct > 0 && pct < 100 && (
+              <span className="shrink-0 rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+                On Track
+              </span>
+            )}
+            {pct === 100 && (
+              <span className="shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+                🎓 Complete
+              </span>
+            )}
+          </div>
         </div>
-        <EnrollButton courseId={course.id} enrolled={enrolled} />
+        {/* Certificate card (desktop): promoted out of the rail per the dashboard mock */}
+        <div className="card hidden w-56 shrink-0 lg:block">
+          <p className="text-sm font-semibold">🎓 Certificate</p>
+          <p className="mt-0.5 truncate text-xs text-ink-500">{course.title}</p>
+          {pct === 100 ? (
+            <Link
+              href={`/certificates/${course.id}`}
+              className="mt-1.5 inline-block text-xs font-semibold text-brand-600 hover:text-brand-700"
+            >
+              View certificate ›
+            </Link>
+          ) : (
+            <a
+              href="#curriculum"
+              className="mt-1.5 inline-block text-xs font-semibold text-brand-600 hover:text-brand-700"
+            >
+              View requirements ›
+            </a>
+          )}
+        </div>
       </header>
 
+      {/* STAT ROW: four tiles + Continue Learning */}
+      <div className="card flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-4">
+          <div className="rounded-xl bg-black/[0.03] p-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">Level</p>
+            <p className="text-sm font-semibold">{course.cefr_level ?? "Foundations"}</p>
+          </div>
+          <div className="rounded-xl bg-black/[0.03] p-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">Lessons</p>
+            <p className="text-sm font-semibold">{doneCount} of {list.length}</p>
+          </div>
+          <div className="rounded-xl bg-black/[0.03] p-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">Time spent</p>
+            <p className="text-sm font-semibold">{formatMinutes(minutesSpent)}</p>
+          </div>
+          <div className="rounded-xl bg-black/[0.03] p-2.5">
+            <p className="text-[10px] uppercase tracking-wider text-ink-500">Next lesson</p>
+            <p className="truncate text-sm font-semibold">{nextLesson?.title ?? "All done!"}</p>
+          </div>
+        </div>
+        {nextLesson && (
+          <Link
+            href={`/learn/${course.id}/${nextLesson.id}`}
+            className="btn-primary shrink-0 text-center sm:ml-auto"
+          >
+            Continue Learning
+          </Link>
+        )}
+        {!nextLesson && pct === 100 && (
+          <Link
+            href={`/certificates/${course.id}`}
+            className="btn-primary shrink-0 text-center sm:ml-auto"
+          >
+            🎓 View your certificate
+          </Link>
+        )}
+      </div>
+
       {/* Tabs (per the product design) */}
-      <div className="flex gap-5 border-b border-black/5 text-sm">
+      <div className="flex gap-5 overflow-x-auto border-b border-black/5 text-sm">
         <span className="border-b-2 border-brand-500 pb-2 font-semibold text-brand-700">Overview</span>
         <a href="#curriculum" className="pb-2 text-ink-500 hover:text-ink-900">Curriculum</a>
         <Link href="/practice" className="pb-2 text-ink-500 hover:text-ink-900">Practice</Link>
         <Link href="/profile" className="pb-2 text-ink-500 hover:text-ink-900">Progress</Link>
-        <Link href="/coach" className="pb-2 text-ink-500 hover:text-ink-900">Coach</Link>
+        <Link href="/notes" className="pb-2 text-ink-500 hover:text-ink-900">Notes</Link>
+        <Link href="/coach" className="pb-2 text-ink-500 hover:text-ink-900">Tutor</Link>
       </div>
 
       {missingPrereqs.length > 0 && doneCount === 0 && (
@@ -175,79 +292,154 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         </div>
       )}
 
-      {/* Course dashboard hero: progress + stats + continue */}
-      <div className="card space-y-3" data-testid="course-progress">
-        <div className="flex items-center gap-3">
-          <div className="h-2 flex-1 overflow-hidden rounded-full bg-black/5">
-            <div
-              className="h-full rounded-full bg-brand-500 transition-all duration-700"
-              style={{ width: `${pct}%` }}
-            />
+      {/* OVERVIEW: Up Next · My Progress curve · Skills Mastery */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        {/* Up next (compact) */}
+        {nextLesson ? (
+          <Link
+            href={`/learn/${course.id}/${nextLesson.id}`}
+            className="card flex items-center gap-3 border-brand-500/30 hover:shadow-md"
+          >
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl">
+              {KIND_ICON[nextLesson.kind] ?? "📘"}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-brand-600">Up next</p>
+              <p className="truncate font-semibold">{nextLesson.title}</p>
+              <p className="text-xs text-ink-500">⏱ {nextLesson.estimated_minutes ?? 10} min</p>
+            </div>
+            <span className="btn-primary px-4 py-1.5 text-xs">Continue</span>
+          </Link>
+        ) : (
+          <div className="card flex items-center gap-3">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl">🎓</span>
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-brand-600">Up next</p>
+              <p className="font-semibold">All lessons complete</p>
+              <p className="text-xs text-ink-500">Keep it fresh in Review.</p>
+            </div>
           </div>
-          <p className="text-xs font-semibold text-brand-600">{pct}% complete</p>
-          {pct > 0 && pct < 100 && (
-            <span className="rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-semibold text-green-700">
-              On track
-            </span>
-          )}
-          {pct === 100 && (
-            <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
-              🎓 Complete
-            </span>
+        )}
+
+        {/* My Progress: score curve over completed lessons */}
+        <div className="card">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">My Progress</p>
+          {curvePoints.length >= 2 ? (
+            <svg
+              viewBox={`0 0 ${W} ${H}`}
+              className="h-auto w-full"
+              role="img"
+              aria-label={`Score curve across ${curvePoints.length} completed lessons`}
+            >
+              <defs>
+                <linearGradient id="progress-area" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#3b6cf6" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#3b6cf6" stopOpacity="0.02" />
+                </linearGradient>
+              </defs>
+              {[25, 50, 75, 100].map((v) => (
+                <g key={v}>
+                  <line
+                    x1={LEFT}
+                    y1={yAt(v)}
+                    x2={W - RIGHT}
+                    y2={yAt(v)}
+                    stroke="rgba(0,0,0,0.06)"
+                    strokeWidth="1"
+                  />
+                  <text x={LEFT - 5} y={yAt(v) + 3} textAnchor="end" fontSize="8" fill="#5a6178">
+                    {v}%
+                  </text>
+                </g>
+              ))}
+              <polygon points={areaPts} fill="url(#progress-area)" />
+              <polyline
+                points={linePts}
+                fill="none"
+                stroke="#3b6cf6"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle
+                cx={xAt(curvePoints.length - 1)}
+                cy={yAt(curvePoints[curvePoints.length - 1])}
+                r="3"
+                fill="#3b6cf6"
+              />
+              <text x={W - RIGHT} y={H - 6} textAnchor="end" fontSize="8" fill="#5a6178">
+                Today
+              </text>
+            </svg>
+          ) : (
+            <p className="py-6 text-center text-sm text-ink-500">
+              Complete lessons to see your curve
+            </p>
           )}
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <div className="rounded-xl bg-black/[0.03] p-2.5">
-            <p className="text-[10px] uppercase tracking-wider text-ink-500">Level</p>
-            <p className="text-sm font-semibold">{course.cefr_level ?? "Foundations"}</p>
-          </div>
-          <div className="rounded-xl bg-black/[0.03] p-2.5">
-            <p className="text-[10px] uppercase tracking-wider text-ink-500">Lessons</p>
-            <p className="text-sm font-semibold">{doneCount} of {list.length}</p>
-          </div>
-          <div className="rounded-xl bg-black/[0.03] p-2.5">
-            <p className="text-[10px] uppercase tracking-wider text-ink-500">Time left</p>
-            <p className="text-sm font-semibold">~{Math.max(1, Math.round(minutesLeft / 60 * 10) / 10)}h</p>
-          </div>
-          <div className="rounded-xl bg-black/[0.03] p-2.5">
-            <p className="text-[10px] uppercase tracking-wider text-ink-500">Next lesson</p>
-            <p className="truncate text-sm font-semibold">{nextLesson?.title ?? "All done!"}</p>
-          </div>
+
+        {/* Skills Mastery (top 5) */}
+        <div className="card">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">Skills Mastery</p>
+          <ul className="space-y-1.5">
+            {list.slice(0, 5).map((l) => {
+              const m = masteryOf(l.id);
+              return (
+                <li key={l.id} className="flex items-center justify-between gap-2 text-xs">
+                  <span className="truncate">{l.title}</span>
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${m ? m.cls : "bg-black/5 text-ink-500"}`}>
+                    {m?.label ?? "Not started"}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          <a
+            href="#curriculum"
+            className="mt-2 inline-block text-xs font-semibold text-brand-600 hover:text-brand-700"
+          >
+            View all skills ›
+          </a>
         </div>
-        {nextLesson && (
-          <Link href={`/learn/${course.id}/${nextLesson.id}`} className="btn-primary block w-full text-center">
-            {doneCount === 0 ? "Start learning" : "Continue learning"}
-          </Link>
-        )}
-        {pct === 100 && (
-          <Link href={`/certificates/${course.id}`} className="btn-primary block w-full text-center">
-            🎓 View your certificate
-          </Link>
-        )}
       </div>
 
-      {/* Up next */}
-      {nextLesson && (
-        <Link
-          href={`/learn/${course.id}/${nextLesson.id}`}
-          className="card flex items-center gap-3 border-brand-500/30 hover:shadow-md"
-        >
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-xl">
-            {KIND_ICON[nextLesson.kind] ?? "📘"}
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-brand-600">Up next</p>
-            <p className="truncate font-semibold">{nextLesson.title}</p>
-            <p className="text-xs text-ink-500">⏱ {nextLesson.estimated_minutes ?? 10} min</p>
-          </div>
-          <span className="btn-primary px-4 py-1.5 text-xs">Continue</span>
-        </Link>
-      )}
+      {/* Course description + resources */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="card lg:col-span-2">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-500">
+            Course Description
+          </p>
+          <p className="text-sm text-ink-700">{course.description}</p>
+        </div>
+        <div className="card">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-ink-500">Resources</p>
+          <ul className="space-y-1 text-sm">
+            <li>
+              <a href="#curriculum" className="text-brand-600 hover:text-brand-700">
+                📘 Course guide (in-app)
+              </a>
+            </li>
+            <li>
+              <a href="#curriculum" className="text-brand-600 hover:text-brand-700">
+                🧠 Vocabulary list (in-app)
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start lg:gap-6">
       <div id="curriculum">
       <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-ink-500">Curriculum</h2>
-      {/* Learning path */}
+      {/* Table header */}
+      <div className="grid grid-cols-[2.5rem_minmax(0,1fr)_3.5rem] items-center gap-2 px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-ink-500 sm:grid-cols-[2.5rem_minmax(0,1fr)_6rem_4.5rem_3.5rem]">
+        <span>Nr</span>
+        <span>Topic</span>
+        <span className="hidden sm:block">Type</span>
+        <span className="hidden sm:block">Time</span>
+        <span className="text-right">Status</span>
+      </div>
+      {/* Curriculum table, grouped by module */}
       <ol className="relative space-y-0" data-testid="learning-path">
         {modules.map((mod, mi) => {
           const modDone = mod.lessons.filter((l) => doneIds.has(l.id)).length;
@@ -262,90 +454,52 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
                 </p>
               </li>
               {mod.lessons.map((l, j) => {
-          const i = list.findIndex((x) => x.id === l.id);
-          const done = doneIds.has(l.id);
-          const isNext = l.id === nextId;
-          const score = scoreById.get(l.id);
-          const isQuiz = l.kind === "quiz";
-          return (
-            <li key={l.id} className="relative pl-10 pb-2">
-              {/* connector line — stops at the module boundary so each module reads as its own segment */}
-              {j < mod.lessons.length - 1 && (
-                <span
-                  aria-hidden
-                  className={`absolute left-[15px] top-8 h-full w-0.5 ${
-                    done ? "bg-brand-500/50" : "bg-black/10 dark:bg-white/10"
-                  }`}
-                />
-              )}
-              {/* node */}
-              <span
-                aria-hidden
-                className={`absolute left-0 top-3 grid h-8 w-8 place-items-center rounded-full text-sm font-bold ${
-                  done
-                    ? "bg-brand-500 text-white"
-                    : isNext
-                      ? "bg-white text-brand-600 ring-2 ring-brand-500 dark:bg-white/10"
-                      : "bg-black/5 text-ink-500 dark:bg-white/10"
-                }`}
-              >
-                {isQuiz
-                  ? l.id === finalQuizId
-                    ? "🏆"
-                    : done
-                      ? "★"
-                      : "☆"
-                  : done
-                    ? "✓"
-                    : isNext
-                      ? "▶"
-                      : i + 1}
-              </span>
-              <Link
-                href={`/learn/${course.id}/${l.id}`}
-                className={`card flex items-center gap-3 ${
-                  isNext ? "border-brand-500/40 shadow-md" : done ? "opacity-90" : ""
-                }`}
-              >
-                <span className="text-2xl">{KIND_ICON[l.kind] ?? "📘"}</span>
-                <div className="flex-1">
-                  <div className="font-medium">{l.title}</div>
-                  <div className="text-xs capitalize text-ink-500">
-                    {l.kind} · ~{l.estimated_minutes ?? 10} min
-                    {done && typeof score === "number" ? ` · scored ${Math.round(score)}` : ""}
-                  </div>
-                </div>
-                {done && (() => {
-                  const m = masteryOf(l.id);
-                  return m ? (
-                    <span className={`hidden rounded-full px-2 py-0.5 text-[10px] font-semibold sm:inline ${m.cls}`}>
-                      {m.label}
-                    </span>
-                  ) : null;
-                })()}
-                {isNext ? (
-                  <span className="btn-primary px-4 py-1.5 text-xs">Start</span>
-                ) : (
-                  <span className="text-ink-500">›</span>
-                )}
-              </Link>
-            </li>
-          );
+                const done = doneIds.has(l.id);
+                const isNext = l.id === nextId;
+                const score = scoreById.get(l.id);
+                const isQuiz = l.kind === "quiz";
+                return (
+                  <li key={l.id} className="pb-1.5">
+                    <Link
+                      href={`/learn/${course.id}/${l.id}`}
+                      className={`card grid grid-cols-[2.5rem_minmax(0,1fr)_3.5rem] items-center gap-2 py-2.5 sm:grid-cols-[2.5rem_minmax(0,1fr)_6rem_4.5rem_3.5rem] ${
+                        isNext ? "border-brand-500/40 shadow-md" : done ? "opacity-90" : ""
+                      }`}
+                    >
+                      <span className="text-xs font-semibold text-ink-500">
+                        {mod.num}.{j + 1}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-medium">{l.title}</span>
+                        <span className="block text-[11px] capitalize text-ink-500 sm:hidden">
+                          {l.kind} · ~{l.estimated_minutes ?? 10} min
+                        </span>
+                        {done && typeof score === "number" && (
+                          <span className="block text-[11px] text-ink-500">
+                            Scored {Math.round(score)}
+                          </span>
+                        )}
+                      </span>
+                      <span className="hidden text-xs capitalize text-ink-500 sm:block">
+                        {KIND_ICON[l.kind] ?? (isQuiz ? "★" : "📘")} {l.kind}
+                      </span>
+                      <span className="hidden text-xs text-ink-500 sm:block">
+                        ~{l.estimated_minutes ?? 10} min
+                      </span>
+                      <span className="text-right text-sm" aria-hidden>
+                        {done ? "✅" : isNext ? "▶" : "○"}
+                        {isQuiz ? (l.id === finalQuizId ? " 🏆" : " ⭐") : ""}
+                      </span>
+                    </Link>
+                  </li>
+                );
               })}
             </Fragment>
           );
         })}
         {/* Terminal node: the course certificate at the end of the path */}
         {list.length > 0 && (
-          <li className="relative pl-10 pt-3">
-            <span
-              aria-hidden
-              className={`absolute left-0 top-[22px] grid h-8 w-8 place-items-center rounded-full text-sm ${
-                pct === 100 ? "bg-brand-500 text-white" : "bg-black/5 text-ink-500 grayscale"
-              }`}
-            >
-              🎓
-            </span>
+          <li className="pt-3">
             {pct === 100 ? (
               <Link
                 href={`/certificates/${course.id}`}
@@ -372,7 +526,7 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
       </ol>
       </div>
 
-      {/* Desktop right rail: certificate + skills mastery */}
+      {/* Desktop right rail: skill-dimension progress + full skills mastery */}
       <aside className="hidden space-y-4 lg:block">
         {/* Skill dimensions: progress per skill type, not one flat percent */}
         <div className="card">
@@ -407,18 +561,6 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
               );
             })}
           </ul>
-        </div>
-        <div className="card space-y-1.5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Certificate</p>
-          {pct === 100 ? (
-            <Link href={`/certificates/${course.id}`} className="btn-primary block w-full text-center text-sm">
-              🎓 View certificate
-            </Link>
-          ) : (
-            <p className="text-sm text-ink-500">
-              🎓 Finish all {list.length} lessons to earn the {course.title} certificate.
-            </p>
-          )}
         </div>
         <div className="card">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">Skills mastery</p>
