@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
-import { LANGUAGES } from "@/lib/languages";
+import { LANGUAGES, languageLabel, type LanguageCode } from "@/lib/languages";
 import { TryIt } from "@/components/TryIt";
 
 export const dynamic = "force-dynamic";
+
+/** Turn raw goal tags like "daily_life" into "daily life". */
+function humanizeTag(tag: string) {
+  return tag.replace(/[_-]+/g, " ").trim();
+}
 
 export default async function Home() {
   const supabase = await supabaseServer();
@@ -77,13 +82,25 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
     .limit(12);
   const recommended = (recPool ?? []).filter((c) => !enrolledSet.has(c.id)).slice(0, 3);
 
-  // Continue-learning card: latest course + its completion percentage.
+  // Continue-learning: latest course, its completion percentage, and the next
+  // lesson to do — that lesson becomes today's mission.
   let resume: { courseId: string; title: string; pct: number; cefr: string | null } | null = null;
+  let mission: {
+    courseId: string;
+    courseTitle: string;
+    lessonId: string | null;
+    lessonTitle: string | null;
+    minutes: number;
+  } | null = null;
   const lastCourseId = (lastProgress as any)?.lesson?.course_id;
   if (lastCourseId) {
     const [{ data: course }, { data: courseLessons }, { data: doneRows }] = await Promise.all([
       supabase.from("courses").select("id,title,cefr_level").eq("id", lastCourseId).single(),
-      supabase.from("lessons").select("id").eq("course_id", lastCourseId),
+      supabase
+        .from("lessons")
+        .select("id,title,estimated_minutes")
+        .eq("course_id", lastCourseId)
+        .order("position"),
       supabase
         .from("lesson_progress")
         .select("lesson_id")
@@ -92,14 +109,45 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
     ]);
     if (course && courseLessons && courseLessons.length > 0) {
       const idsInCourse = new Set(courseLessons.map((l) => l.id));
-      const doneInCourse = (doneRows ?? []).filter((r) => idsInCourse.has(r.lesson_id)).length;
+      const doneIds = new Set(
+        (doneRows ?? []).filter((r) => idsInCourse.has(r.lesson_id)).map((r) => r.lesson_id),
+      );
       resume = {
         courseId: course.id,
         title: course.title,
         cefr: course.cefr_level,
-        pct: Math.round((doneInCourse / courseLessons.length) * 100),
+        pct: Math.round((doneIds.size / courseLessons.length) * 100),
       };
+      const nextLesson = courseLessons.find((l) => !doneIds.has(l.id));
+      if (nextLesson) {
+        mission = {
+          courseId: course.id,
+          courseTitle: course.title,
+          lessonId: nextLesson.id,
+          lessonTitle: nextLesson.title,
+          minutes: nextLesson.estimated_minutes ?? 10,
+        };
+      }
     }
+  }
+
+  // No in-progress lesson → the mission is the first lesson of a recommended course.
+  if (!mission && recommended.length > 0) {
+    const rec = recommended[0];
+    const { data: firstLesson } = await supabase
+      .from("lessons")
+      .select("id,title,estimated_minutes")
+      .eq("course_id", rec.id)
+      .order("position")
+      .limit(1)
+      .maybeSingle();
+    mission = {
+      courseId: rec.id,
+      courseTitle: rec.title,
+      lessonId: firstLesson?.id ?? null,
+      lessonTitle: firstLesson?.title ?? null,
+      minutes: firstLesson?.estimated_minutes ?? 10,
+    };
   }
 
   // Prefer a real name: a display_name that is just the email local-part
@@ -196,7 +244,7 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
     .order("reviewed_at", { ascending: false })
     .limit(3);
 
-  const langInfo = (LANGUAGES as any)[primaryLang];
+  const langInfo = LANGUAGES[primaryLang as LanguageCode];
 
   return (
     <div className="space-y-5">
@@ -205,38 +253,63 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
           {greeting}, {firstName} 👋
         </h1>
         <p className="text-sm text-ink-500">
-          {langInfo ? `Learning ${langInfo.flag} ${langInfo.label}` : "Let's learn something today"}
+          {langInfo
+            ? `Learning ${langInfo.flag} ${langInfo.label}`
+            : `Learning ${languageLabel(primaryLang)}`}
         </p>
       </header>
 
-      {/* Continue learning */}
-      {resume ? (
-        <Link
-          href={`/learn/${resume.courseId}`}
-          className="card block space-y-2 border-brand-500/20 bg-gradient-to-br from-brand-50 to-white dark:from-white/[0.08] dark:to-white/[0.02]"
-          data-testid="continue-learning"
+      {/* Today's mission */}
+      {mission ? (
+        <div
+          className="card space-y-3 border-brand-500/20 bg-gradient-to-br from-brand-50 to-white dark:from-white/[0.08] dark:to-white/[0.02]"
+          data-testid="todays-mission"
         >
           <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">
-            Continue learning
+            🎯 Today's mission
           </p>
-          <div className="flex items-center justify-between">
-            <p className="text-lg font-bold">
-              {langInfo?.flag} {resume.title}
-              {resume.cefr ? <span className="ml-2 text-sm font-semibold text-brand-600">{resume.cefr}</span> : null}
-            </p>
-            <span className="btn-primary px-5 py-2 text-sm">Resume ▶</span>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="truncate text-lg font-bold">
+                {langInfo?.flag} {mission.lessonTitle ?? mission.courseTitle}
+              </p>
+              <p className="text-xs text-ink-500">
+                {mission.lessonTitle ? <>{mission.courseTitle} · </> : null}
+                <span className="font-semibold text-brand-600">+25 XP</span>
+                {" · ⏱ ~"}{mission.minutes} min
+              </p>
+            </div>
+            <Link
+              href={mission.lessonId ? `/learn/${mission.courseId}/${mission.lessonId}` : `/learn/${mission.courseId}`}
+              className="btn-primary px-5 py-2 text-sm"
+            >
+              Start now
+            </Link>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
-            <div
-              className="h-full rounded-full bg-brand-500 transition-all duration-700"
-              style={{ width: `${resume.pct}%` }}
-            />
-          </div>
-          <p className="text-xs text-ink-500">{resume.pct}% complete</p>
-        </Link>
+          {resume && resume.courseId === mission.courseId && (
+            <>
+              <div className="h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+                <div
+                  className="h-full rounded-full bg-brand-500 transition-all duration-700"
+                  style={{ width: `${resume.pct}%` }}
+                />
+              </div>
+              <p className="text-xs text-ink-500">
+                {resume.pct}% through {resume.title}
+                {resume.cefr ? ` · ${resume.cefr}` : ""}
+              </p>
+            </>
+          )}
+          <p className="text-xs text-ink-500">
+            You're {todayXp} / {goalXp} XP today
+          </p>
+        </div>
       ) : (
-        <Link href="/learn" className="card block text-center" data-testid="continue-learning">
-          <p className="font-semibold">Pick your first course</p>
+        <Link href="/learn" className="card block text-center" data-testid="todays-mission">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+            🎯 Today's mission
+          </p>
+          <p className="mt-1 font-semibold">Pick your first course</p>
           <p className="text-xs text-ink-500">Ten minutes a day is all it takes.</p>
         </Link>
       )}
@@ -295,7 +368,7 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
                 <div>
                   <p className="font-medium">{c.title}</p>
                   <p className="text-xs text-ink-500">
-                    {c.cefr_level ?? ""}{c.goal_tag ? ` · ${c.goal_tag}` : ""}
+                    {c.cefr_level ?? ""}{c.goal_tag ? ` · ${humanizeTag(c.goal_tag)}` : ""}
                   </p>
                 </div>
                 <span className="text-xs font-medium text-brand-600">Explore →</span>

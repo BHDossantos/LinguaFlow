@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { requireOnboardedUser } from "@/lib/auth";
@@ -85,6 +86,32 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
   const minutesLeft = list
     .filter((l) => !doneIds.has(l.id))
     .reduce((s, l) => s + (l.estimated_minutes ?? 8), 0);
+
+  // Module grouping: every quiz lesson is a checkpoint that ENDS a module.
+  // A diagnostic quiz sitting at the very start of the course forms its own
+  // "Diagnostic" module; remaining segments are numbered Module 1, 2, …
+  type LessonRow = (typeof list)[number];
+  const modules: { label: string; lessons: LessonRow[] }[] = [];
+  {
+    let current: LessonRow[] = [];
+    let moduleNum = 0;
+    for (const l of list) {
+      current.push(l);
+      if (l.kind === "quiz") {
+        const isDiagnostic = modules.length === 0 && current.length === 1;
+        modules.push({
+          label: isDiagnostic ? "Diagnostic" : `Module ${++moduleNum}`,
+          lessons: current,
+        });
+        current = [];
+      }
+    }
+    if (current.length > 0) {
+      modules.push({ label: `Module ${++moduleNum}`, lessons: current });
+    }
+  }
+  // The last quiz in the whole path is the final checkpoint (trophy node).
+  const finalQuizId = [...list].reverse().find((l) => l.kind === "quiz")?.id ?? null;
 
   // Khan-style mastery status per lesson, derived from the recorded score.
   const masteryOf = (id: string): { label: string; cls: string } | null => {
@@ -222,14 +249,28 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
       <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-ink-500">Curriculum</h2>
       {/* Learning path */}
       <ol className="relative space-y-0" data-testid="learning-path">
-        {list.map((l, i) => {
+        {modules.map((mod, mi) => {
+          const modDone = mod.lessons.filter((l) => doneIds.has(l.id)).length;
+          return (
+            <Fragment key={mod.label}>
+              {/* Module header row */}
+              <li className={`pb-2 ${mi > 0 ? "pt-3" : ""}`}>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-ink-500">
+                  {mod.label === "Diagnostic"
+                    ? "Diagnostic"
+                    : `${mod.label} — ${modDone} of ${mod.lessons.length} done`}
+                </p>
+              </li>
+              {mod.lessons.map((l, j) => {
+          const i = list.findIndex((x) => x.id === l.id);
           const done = doneIds.has(l.id);
           const isNext = l.id === nextId;
           const score = scoreById.get(l.id);
+          const isQuiz = l.kind === "quiz";
           return (
             <li key={l.id} className="relative pl-10 pb-2">
-              {/* connector line */}
-              {i < list.length - 1 && (
+              {/* connector line — stops at the module boundary so each module reads as its own segment */}
+              {j < mod.lessons.length - 1 && (
                 <span
                   aria-hidden
                   className={`absolute left-[15px] top-8 h-full w-0.5 ${
@@ -248,7 +289,17 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
                       : "bg-black/5 text-ink-500 dark:bg-white/10"
                 }`}
               >
-                {done ? "✓" : isNext ? "▶" : i + 1}
+                {isQuiz
+                  ? l.id === finalQuizId
+                    ? "🏆"
+                    : done
+                      ? "★"
+                      : "☆"
+                  : done
+                    ? "✓"
+                    : isNext
+                      ? "▶"
+                      : i + 1}
               </span>
               <Link
                 href={`/learn/${course.id}/${l.id}`}
@@ -280,7 +331,44 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
               </Link>
             </li>
           );
+              })}
+            </Fragment>
+          );
         })}
+        {/* Terminal node: the course certificate at the end of the path */}
+        {list.length > 0 && (
+          <li className="relative pl-10 pt-3">
+            <span
+              aria-hidden
+              className={`absolute left-0 top-[22px] grid h-8 w-8 place-items-center rounded-full text-sm ${
+                pct === 100 ? "bg-brand-500 text-white" : "bg-black/5 text-ink-500 grayscale"
+              }`}
+            >
+              🎓
+            </span>
+            {pct === 100 ? (
+              <Link
+                href={`/certificates/${course.id}`}
+                className="card flex items-center gap-3 border-brand-500/40 bg-brand-50"
+              >
+                <span className="text-2xl">🎓</span>
+                <div className="flex-1">
+                  <div className="font-medium">🎓 Certificate</div>
+                  <div className="text-xs text-ink-500">Course complete — view your certificate</div>
+                </div>
+                <span className="text-ink-500">›</span>
+              </Link>
+            ) : (
+              <div className="card flex items-center gap-3 opacity-60">
+                <span className="text-2xl grayscale">🎓</span>
+                <div className="flex-1">
+                  <div className="font-medium text-ink-500">🎓 Certificate</div>
+                  <div className="text-xs text-ink-500">Complete all lessons</div>
+                </div>
+              </div>
+            )}
+          </li>
+        )}
       </ol>
       </div>
 
