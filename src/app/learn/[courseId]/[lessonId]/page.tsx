@@ -12,7 +12,7 @@ export default async function LessonPage(
   const params = await props.params;
   const user = await requireOnboardedUser();
   const supabase = await supabaseServer();
-  const [{ data: lesson }, { data: course }, { data: lessons }, { data: progress }] =
+  const [{ data: lesson }, { data: course }, { data: lessons }, { data: progress }, { data: stats }] =
     await Promise.all([
       supabase.from("lessons").select("*").eq("id", params.lessonId).single(),
       supabase
@@ -30,6 +30,11 @@ export default async function LessonPage(
         .select("lesson_id,completed_at")
         .eq("user_id", user.id)
         .not("completed_at", "is", null),
+      supabase
+        .from("user_stats")
+        .select("streak_days")
+        .eq("user_id", user.id)
+        .maybeSingle(),
     ]);
 
   if (!lesson || !course) return <p>Lesson not found.</p>;
@@ -51,6 +56,7 @@ export default async function LessonPage(
       dialect={course.dialect}
       outline={outline}
       courseTitle={course.title}
+      streakDays={stats?.streak_days ?? 0}
     />
   );
 }
