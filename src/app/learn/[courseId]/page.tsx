@@ -286,6 +286,40 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
 
       {/* Desktop right rail: certificate + skills mastery */}
       <aside className="hidden space-y-4 lg:block">
+        {/* Skill dimensions: progress per skill type, not one flat percent */}
+        <div className="card">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">My progress</p>
+          <ul className="space-y-2">
+            {Object.entries(
+              list.reduce<Record<string, { done: number; total: number; scoreSum: number; scored: number }>>((acc, l) => {
+                const k = l.kind === "quiz" ? "checkpoints" : l.kind;
+                acc[k] ??= { done: 0, total: 0, scoreSum: 0, scored: 0 };
+                acc[k].total++;
+                if (doneIds.has(l.id)) {
+                  acc[k].done++;
+                  const s = scoreById.get(l.id);
+                  if (typeof s === "number") { acc[k].scoreSum += s; acc[k].scored++; }
+                }
+                return acc;
+              }, {}),
+            ).map(([kind, v]) => {
+              const pctK = v.scored > 0
+                ? Math.round((v.scoreSum / v.scored) * (v.done / v.total))
+                : Math.round((v.done / v.total) * 100);
+              return (
+                <li key={kind}>
+                  <div className="mb-0.5 flex justify-between text-[11px]">
+                    <span className="capitalize">{kind}</span>
+                    <span className="text-ink-500">{pctK}%</span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/5">
+                    <div className="h-full rounded-full bg-brand-500" style={{ width: `${pctK}%` }} />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         <div className="card space-y-1.5">
           <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Certificate</p>
           {pct === 100 ? (
