@@ -21,6 +21,10 @@ export default async function CommunityPage() {
     supabase.rpc("get_weekly_leaderboard").limit(5),
   ]);
 
+  // A post whose course is gone (deleted / not visible) would link to
+  // /learn/undefined — skip those rows.
+  const visiblePosts = (posts ?? []).filter((p: any) => p.course?.id);
+
   return (
     <div className="space-y-5">
       <header>
@@ -81,7 +85,7 @@ export default async function CommunityPage() {
         <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
           Latest discussions
         </h2>
-        {(posts ?? []).length === 0 ? (
+        {visiblePosts.length === 0 ? (
           <div className="card text-sm text-ink-500">
             No posts yet. Every course page has a discussion thread — ask your
             first question there and it shows up here.
@@ -89,7 +93,7 @@ export default async function CommunityPage() {
           </div>
         ) : (
           <ul className="space-y-2">
-            {(posts ?? []).map((p: any) => (
+            {visiblePosts.map((p: any) => (
               <li key={p.id}>
                 <Link href={`/learn/${p.course?.id}#discussion`} className="card block space-y-1 hover:border-brand-500/30">
                   <p className="line-clamp-2 text-sm">{p.body}</p>

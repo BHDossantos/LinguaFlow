@@ -28,10 +28,14 @@ export async function GET(req: Request) {
     );
   }
 
-  // Only same-site paths — never redirect to another host.
+  // Only same-site paths — never redirect to another host. Backslashes are
+  // treated as slashes by URL parsing, so "/\evil.com" would resolve
+  // protocol-relative — reject it too.
   const requested = url.searchParams.get("redirectTo") ?? "/";
   const redirectTo =
-    requested.startsWith("/") && !requested.startsWith("//") ? requested : "/";
+    requested.startsWith("/") && !requested.startsWith("//") && !requested.startsWith("/\\")
+      ? requested
+      : "/";
 
   if (code) {
     const cookieStore = await cookies();

@@ -238,7 +238,7 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
           <div className="min-w-0 flex-1">
             <p className="text-[10px] font-semibold uppercase tracking-wider text-brand-600">Up next</p>
             <p className="truncate font-semibold">{nextLesson.title}</p>
-            <p className="text-xs text-ink-500">⏱ {nextLesson.estimated_minutes} min</p>
+            <p className="text-xs text-ink-500">⏱ {nextLesson.estimated_minutes ?? 10} min</p>
           </div>
           <span className="btn-primary px-4 py-1.5 text-xs">Continue</span>
         </Link>
@@ -311,7 +311,7 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
                 <div className="flex-1">
                   <div className="font-medium">{l.title}</div>
                   <div className="text-xs capitalize text-ink-500">
-                    {l.kind} · ~{l.estimated_minutes} min
+                    {l.kind} · ~{l.estimated_minutes ?? 10} min
                     {done && typeof score === "number" ? ` · scored ${Math.round(score)}` : ""}
                   </div>
                 </div>

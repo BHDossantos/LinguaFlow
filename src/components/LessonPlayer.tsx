@@ -39,7 +39,7 @@ export function LessonPlayer({
   if (lesson.kind === "vocab") {
     content = (
       <VocabFlashcards
-        items={lesson.body.items ?? []}
+        items={Array.isArray(lesson.body?.items) ? lesson.body.items : []}
         title={lesson.title}
         courseId={courseId}
         lessonId={lesson.id}
@@ -51,9 +51,14 @@ export function LessonPlayer({
   } else if (lesson.kind === "roleplay") {
     content = <RoleplayLesson body={lesson.body} title={lesson.title} courseId={courseId} />;
   } else if (lesson.kind === "quiz") {
+    // Malformed questions (no prompt/options) are skipped rather than crashing
+    // or dead-ending the quiz.
+    const questions: QuizQuestion[] = (
+      Array.isArray(lesson.body?.questions) ? lesson.body.questions : []
+    ).filter((q: any) => q && Array.isArray(q.options) && q.options.length > 0);
     content = (
       <QuizLesson
-        questions={lesson.body?.questions ?? []}
+        questions={questions}
         title={lesson.title}
         courseId={courseId}
         lessonId={lesson.id}
@@ -264,7 +269,9 @@ function ContentLesson({
   //   { content: "markdown-ish text" }
   //   { sections: [{ heading, text }] }
   //   { content, sections }
-  const sections: Array<{ heading?: string; text: string }> = body?.sections ?? [];
+  const sections: Array<{ heading?: string; text: string }> = Array.isArray(body?.sections)
+    ? body.sections
+    : [];
 
   function complete() {
     startTransition(async () => {
@@ -657,10 +664,10 @@ function RoleplayLesson({
       <h1 className="text-xl font-bold">{title}</h1>
       <div className="card space-y-2">
         <p className="text-sm font-semibold uppercase tracking-wider text-ink-500">Scenario</p>
-        <p>{body.scenario}</p>
-        {body.goal && <p className="text-sm text-ink-500">Goal: {body.goal}</p>}
+        <p>{body?.scenario}</p>
+        {body?.goal && <p className="text-sm text-ink-500">Goal: {body.goal}</p>}
       </div>
-      <Link href={`/practice?scenario=${encodeURIComponent(body.scenario ?? "")}&persona=${encodeURIComponent(body.persona ?? "")}`} className="btn-primary block text-center">
+      <Link href={`/practice?scenario=${encodeURIComponent(body?.scenario ?? "")}&persona=${encodeURIComponent(body?.persona ?? "")}`} className="btn-primary block text-center">
         Start system roleplay
       </Link>
       <Link href={`/tutors`} className="btn-ghost block text-center">Or do this with a live instructor</Link>
@@ -766,7 +773,7 @@ function QuizLesson({
       </div>
 
       <div className="space-y-2" data-testid="quiz-options">
-        {q.options.map((opt, idx) => {
+        {(q.options ?? []).map((opt, idx) => {
           const isPicked = picked === idx;
           const isAnswer = idx === q.answer;
           const revealed = picked !== null;
