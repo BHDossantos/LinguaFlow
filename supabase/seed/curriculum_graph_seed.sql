@@ -142,3 +142,8 @@ update public.courses set source_id='oer_commons' where id='bbbb0003-0000-4000-8
 insert into public.course_standards (course_id, descriptor_id) values
   ('bbbb0002-0000-4000-8000-000000000008','acm.dm')
 on conflict do nothing;
+update public.courses set source_id='openstax' where id in ('bbbb0004-0000-4000-8000-00000000000c','bbbb0003-0000-4000-8000-000000000008','bbbb0004-0000-4000-8000-00000000000d','bbbb0004-0000-4000-8000-00000000000e') and source_id is null;
+update public.courses set source_id='acm'      where id='bbbb0002-0000-4000-8000-000000000009' and source_id is null;
+insert into public.course_standards (course_id, descriptor_id) values
+  ('bbbb0002-0000-4000-8000-000000000009','acm.se')
+on conflict do nothing;
