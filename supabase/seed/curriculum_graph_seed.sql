@@ -112,3 +112,12 @@ update public.courses set source_id = 'openstax' where id = 'bbbb0004-0000-4000-
 update public.courses set source_id = 'mit_ocw'  where id = 'bbbb0002-0000-4000-8000-000000000004' and source_id is null;
 update public.courses set source_id = 'openstax' where id = 'bbbb0004-0000-4000-8000-000000000002' and source_id is null;
 update public.courses set source_id = 'openstax' where id = 'bbbb0003-0000-4000-8000-000000000002' and source_id is null;
+update public.courses set source_id = 'openstax' where id in (
+  'bbbb0004-0000-4000-8000-000000000003','bbbb0004-0000-4000-8000-000000000004',
+  'bbbb0004-0000-4000-8000-000000000005','bbbb0003-0000-4000-8000-000000000003',
+  'bbbb0001-0000-4000-8000-000000000006') and source_id is null;
+-- Precalculus → Common Core Functions; Physics/Chemistry/etc are science (no CC math map)
+insert into public.course_standards (course_id, descriptor_id) values
+  ('bbbb0001-0000-4000-8000-000000000006','ccss.math.f'),
+  ('bbbb0001-0000-4000-8000-000000000006','ccss.math.ee')
+on conflict do nothing;

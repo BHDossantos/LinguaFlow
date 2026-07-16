@@ -1,0 +1,96 @@
+{
+  "source": {
+    "id": "openstax",
+    "name": "OpenStax Precalculus 2e",
+    "url": "https://openstax.org/details/books/precalculus-2e",
+    "license": "CC BY 4.0"
+  },
+  "course": {
+    "id": "bbbb0001-0000-4000-8000-000000000006",
+    "title": "Precalculus",
+    "description": "A bridge from algebra to calculus — functions and their graphs, transformations, polynomials and rationals, exponentials and logarithms, and the trigonometry of the unit circle. Structure adapted from OpenStax Precalculus 2e (CC BY 4.0).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "math",
+    "goal_tag": "foundations",
+    "position": 6,
+    "prerequisite_ids": ["bbbb0001-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 10, "body": { "questions": [
+      { "prompt": "A function assigns to each input…", "options": ["exactly one output", "at least two outputs", "any number of outputs", "no output"], "answer": 0, "explanation": "One input maps to exactly one output — that is the definition of a function." },
+      { "prompt": "If f(x) = 3x + 2, then f(4) equals…", "options": ["11", "14", "12", "20"], "answer": 1, "explanation": "3(4) + 2 = 12 + 2 = 14." },
+      { "prompt": "The graph of y = x^2 + 5 compared with y = x^2 is shifted…", "options": ["up 5 units", "down 5 units", "right 5 units", "left 5 units"], "answer": 0, "explanation": "Adding 5 outside the square raises every point by 5." },
+      { "prompt": "The degree of the polynomial 4x^3 - 2x + 7 is…", "options": ["2", "3", "4", "7"], "answer": 1, "explanation": "Degree is the highest exponent, here 3." },
+      { "prompt": "log base 2 of 8 equals…", "options": ["2", "3", "4", "8"], "answer": 1, "explanation": "2^3 = 8, so log_2(8) = 3." },
+      { "prompt": "On the unit circle, cos(0) equals…", "options": ["0", "1", "-1", "1/2"], "answer": 1, "explanation": "At angle 0 the point is (1, 0); cosine is the x-coordinate, so cos(0) = 1." },
+      { "prompt": "The zeros of (x - 5)(x + 3) are…", "options": ["5 and -3", "-5 and 3", "5 and 3", "-5 and -3"], "answer": 0, "explanation": "Set each factor to 0: x - 5 = 0 gives 5; x + 3 = 0 gives -3." },
+      { "prompt": "The next term of the sequence 2, 4, 6, 8, … is…", "options": ["9", "10", "12", "16"], "answer": 1, "explanation": "It is arithmetic with common difference 2, so 8 + 2 = 10." }
+    ] } },
+    { "position": 2, "title": "Functions and their graphs", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Read f(x) as 'f of x', not 'f times x'.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Define a function, evaluate f(x), and read domain and range from a rule or graph. Warm-up: from the diagnostic, if f(x) = 3x + 2, what did f(4) come out to — and what operation did you do first?" },
+      { "heading": "The idea", "text": "A *function* is a rule that gives each input exactly one output. We write f(x) = 2x + 1, where x is the input and f(x) the output. Graphically, a curve is a function only if it passes the *vertical line test*: no vertical line meets it more than once. Worked example: for f(x) = 2x + 1, evaluate f(3) by substituting: f(3) = 2(3) + 1 = 7." },
+      { "heading": "Worked examples", "text": "Evaluate g(x) = 3x^2 - 5x + 2 at x = 2: g(2) = 3(2)^2 - 5(2) + 2 = 3(4) - 10 + 2 = 12 - 10 + 2 = 4. Domain of h(x) = 1/(x - 4): division by zero is undefined at x = 4, so the domain is all real numbers except x = 4. Domain of k(x) = sqrt(x - 2): the inside must be non-negative, x - 2 >= 0, so x >= 2." },
+      { "heading": "Your turn", "text": "(1) f(x) = 4x - 7, find f(3). (2) g(x) = x^2 + 1, find g(-2). (3) State the domain of 1/(x + 3). (4) State the domain of sqrt(x + 5). (5) Can a vertical line be the graph of a function? Answers: (1) 4(3) - 7 = 5; (2) (-2)^2 + 1 = 5; (3) all real numbers except x = -3; (4) x >= -5; (5) no — it fails the vertical line test." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: reading f(x) as multiplication instead of 'the output at x'. Mistake: letting one input map to two outputs — not allowed. Exit: (a) if f(x) = 5x, what is f(4)? (b) may one input give two outputs? Answers: 5(4) = 20; no." }
+    ] } },
+    { "position": 3, "title": "Transformations of functions", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Inside the parentheses moves left/right; outside moves up/down.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Predict how adding or multiplying constants shifts, stretches, or reflects a graph. Warm-up: how does y = x^2 + 3 differ from the plain parabola y = x^2?" },
+      { "heading": "The idea", "text": "Start from a *parent function* f(x) and change it in predictable ways. f(x) + k shifts the graph up by k; f(x) - k shifts it down. f(x - h) shifts *right* by h; f(x + h) shifts *left* by h (the inside moves the opposite way from its sign). -f(x) reflects across the x-axis, and a·f(x) with a > 1 stretches it vertically. Worked example: g(x) = (x - 2)^2 + 3 is the parabola x^2 moved right 2 and up 3, so its vertex is at (2, 3)." },
+      { "heading": "Worked examples", "text": "Take f(x) = |x|. Then y = |x + 4| - 1 moves it left 4 and down 1, giving vertex (-4, -1). The graph y = -x^2 reflects the upward parabola across the x-axis, so it opens downward. The graph y = 2x^2 is a vertical stretch by 2: at x = 1, y = 2(1)^2 = 2 instead of 1, so points are pulled twice as far from the x-axis." },
+      { "heading": "Your turn", "text": "(1) Describe how y = x^2 - 5 relates to y = x^2. (2) Give the vertex of y = (x - 3)^2 + 1. (3) Which direction does y = (x + 1)^2 shift the parabola? (4) What does y = -sqrt(x) do to y = sqrt(x)? (5) Compare y = 3|x| with y = |x| at x = 2. Answers: (1) shifted down 5; (2) (3, 1); (3) left 1; (4) reflects it across the x-axis; (5) 3|2| = 6 versus |2| = 2, a stretch by 3." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking f(x - 2) shifts left — it shifts right, because the inside sign is reversed. Mistake: confusing a vertical stretch with a horizontal one. Exit: (a) which way does y = (x - 6)^2 shift? (b) give the vertex of y = (x + 2)^2 - 4. Answers: right 6; (-2, -4)." }
+    ] } },
+    { "position": 4, "title": "Polynomial and rational functions", "kind": "reading", "estimated_minutes": 13, "grammar_note": "A factor (x - a) gives the zero x = a — the sign flips.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Read a polynomial's degree and end behavior, find zeros by factoring, and locate asymptotes of a rational function. Warm-up: what is the degree of 3x^4 - x + 2?" },
+      { "heading": "The idea", "text": "For a *polynomial*, the degree and leading coefficient decide the *end behavior*. Even degree with a positive leading coefficient sends both ends up; odd degree with a positive leading coefficient falls on the left and rises on the right. The *zeros* are the x-values where f(x) = 0 — find them by factoring. Worked example: f(x) = x^2 - 5x + 6 factors as (x - 2)(x - 3), so the zeros are x = 2 and x = 3." },
+      { "heading": "Worked examples", "text": "Factor x^2 - 9 = (x - 3)(x + 3), giving zeros x = 3 and x = -3. For f(x) = (x + 1)(x - 4), the zeros are x = -1 and x = 4, and since the leading term is x^2 the parabola opens up. For the rational r(x) = (x + 2)/(x - 3), the denominator is zero at x = 3, so there is a vertical asymptote at x = 3, and the numerator is zero at x = -2, giving an x-intercept there. For (2x)/(x + 1) the top and bottom have equal degree, so the horizontal asymptote is the ratio of leading coefficients, y = 2/1 = 2." },
+      { "heading": "Your turn", "text": "(1) Give the degree and end behavior of -2x^3. (2) Find the zeros of x^2 - 7x + 12. (3) Find the vertical asymptote of 1/(x - 5). (4) Find the zeros of (x - 6)(x + 2). (5) Find the horizontal asymptote of (3x)/(x - 2). Answers: (1) degree 3; as x goes to +infinity it falls (down on the right) and as x goes to -infinity it rises (up on the left); (2) (x - 3)(x - 4) gives 3 and 4; (3) x = 5; (4) 6 and -2; (5) y = 3." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: reading the zero of (x - 2) as -2 instead of +2 — set the factor to zero and solve. Mistake: using the numerator instead of the denominator for a vertical asymptote. Exit: (a) what is the zero of (x + 7)? (b) where is the vertical asymptote of 1/(x + 4)? Answers: x = -7; x = -4." }
+    ] } },
+    { "position": 5, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "If f(x) = 2x - 3, then f(5) equals…", "options": ["7", "10", "13", "2"], "answer": 0, "explanation": "2(5) - 3 = 10 - 3 = 7." },
+      { "prompt": "The graph of y = (x - 4)^2 shifts y = x^2…", "options": ["left 4", "right 4", "up 4", "down 4"], "answer": 1, "explanation": "The inside (x - 4) moves the graph right 4." },
+      { "prompt": "The vertex of y = (x + 1)^2 - 2 is…", "options": ["(1, -2)", "(-1, -2)", "(-1, 2)", "(1, 2)"], "answer": 1, "explanation": "(x + 1) means x = -1; the -2 lowers it, giving (-1, -2)." },
+      { "prompt": "The zeros of x^2 - 9 are…", "options": ["3 only", "3 and -3", "9 and -9", "no real zeros"], "answer": 1, "explanation": "x^2 - 9 = (x - 3)(x + 3), so x = 3 and x = -3." },
+      { "prompt": "The vertical asymptote of 1/(x - 6) is at…", "options": ["x = 0", "x = 6", "x = -6", "y = 6"], "answer": 1, "explanation": "The denominator is zero at x = 6." },
+      { "prompt": "A degree-2 polynomial with a positive leading coefficient has a graph that…", "options": ["opens upward", "opens downward", "is a straight line", "has no zeros"], "answer": 0, "explanation": "Even degree with positive leading coefficient opens upward." }
+    ] } },
+    { "position": 6, "title": "Exponential and logarithmic functions", "kind": "reading", "estimated_minutes": 13, "grammar_note": "log_b(y) = x is just another way to write b^x = y.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Evaluate exponentials and logarithms and use logs to solve exponential equations. Warm-up: what is 2^5?" },
+      { "heading": "The idea", "text": "An *exponential function* f(x) = b^x grows by a constant factor b each time x increases by 1. A *logarithm* is its inverse: log_b(y) = x means exactly b^x = y. Reading it aloud helps: 'log base b of y is the exponent that turns b into y.' Worked example: log_2(8) = 3 because 2^3 = 8." },
+      { "heading": "Worked examples", "text": "Evaluate 3^4 = 81. Evaluate log_10(1000) = 3 because 10^3 = 1000. Solve 2^x = 16 by noticing 2^4 = 16, so x = 4. Solve 5^x = 125 by 5^3 = 125, so x = 3. A negative exponent gives a fraction: log_2(1/4) = -2 because 2^(-2) = 1/4. The product rule combines logs: log(2) + log(3) = log(6)." },
+      { "heading": "Your turn", "text": "(1) Evaluate 4^3. (2) Evaluate log_3(27). (3) Solve 2^x = 64. (4) Evaluate log_10(1/100). (5) Simplify log(5) + log(2) in base 10. (6) Solve 10^x = 0.001. Answers: (1) 64; (2) 3, since 3^3 = 27; (3) 6, since 2^6 = 64; (4) -2, since 10^(-2) = 1/100; (5) log(10) = 1; (6) -3, since 10^(-3) = 0.001." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: writing log(a + b) = log(a) + log(b) — false; the real product rule is log(a·b) = log(a) + log(b). Mistake: forgetting that b^0 = 1 for any base b. Exit: (a) what is log_2(1)? (b) what is 3^0? Answers: 0, since 2^0 = 1; 1." }
+    ] } },
+    { "position": 7, "title": "Trigonometry: the unit circle, sine and cosine", "kind": "reading", "estimated_minutes": 13, "grammar_note": "Cosine is the x-coordinate; sine is the y-coordinate.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Use the unit circle to read sine and cosine of the key angles and convert between degrees and radians. Warm-up: on the unit circle, what are the coordinates of the point at angle 0?" },
+      { "heading": "The idea", "text": "On the *unit circle* (radius 1 centered at the origin), the point at angle θ has coordinates (cos θ, sin θ). Angles can be measured in radians, where a half turn of 180 degrees equals π radians. Worked example: at θ = 90 degrees (π/2 radians) the point is (0, 1), so cos(90 degrees) = 0 and sin(90 degrees) = 1." },
+      { "heading": "Worked examples", "text": "At θ = 0 the point is (1, 0): cos(0) = 1, sin(0) = 0. At θ = 30 degrees (π/6) the point is (sqrt(3)/2, 1/2), so cos(30 degrees) = sqrt(3)/2 and sin(30 degrees) = 1/2. At θ = 45 degrees (π/4) the point is (sqrt(2)/2, sqrt(2)/2), so sine and cosine are equal. At θ = 60 degrees (π/3) the point is (1/2, sqrt(3)/2). At θ = 180 degrees (π) the point is (-1, 0). Every point obeys the Pythagorean identity sin^2(θ) + cos^2(θ) = 1; check at 30 degrees: (1/2)^2 + (sqrt(3)/2)^2 = 1/4 + 3/4 = 1." },
+      { "heading": "Your turn", "text": "(1) What is sin(0)? (2) What is cos(90 degrees)? (3) What is sin(30 degrees)? (4) What is cos(60 degrees)? (5) Convert 180 degrees to radians. (6) Verify sin^2(45 degrees) + cos^2(45 degrees). Answers: (1) 0; (2) 0; (3) 1/2; (4) 1/2; (5) π radians; (6) (sqrt(2)/2)^2 + (sqrt(2)/2)^2 = 1/2 + 1/2 = 1." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: swapping sine and cosine — cosine is the x-coordinate, sine is the y-coordinate. Mistake: mixing degrees and radians in the same calculation. Exit: (a) which coordinate gives cosine? (b) what is sin(90 degrees)? Answers: the x-coordinate; 1." }
+    ] } },
+    { "position": 8, "title": "Key terms", "kind": "vocab", "estimated_minutes": 10, "body": { "items": [
+      { "term": "function", "translation": "a rule that assigns each input exactly one output", "example": "f(x) = 2x + 1 is a function: each x gives one value." },
+      { "term": "domain", "translation": "the set of all allowed input values of a function", "example": "The domain of sqrt(x) is x >= 0." },
+      { "term": "asymptote", "translation": "a line the graph approaches but never reaches", "example": "1/(x - 3) has a vertical asymptote at x = 3." },
+      { "term": "logarithm", "translation": "the exponent a base must be raised to in order to produce a number", "example": "log_2(8) = 3 because 2^3 = 8." },
+      { "term": "radian", "translation": "an angle measure in which a full circle is 2·pi radians", "example": "180 degrees equals pi radians." },
+      { "term": "sequence", "translation": "an ordered list of numbers that follows a pattern", "example": "2, 4, 6, 8 is an arithmetic sequence with common difference 2." }
+    ] } },
+    { "position": 9, "title": "Checkpoint 2", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "2^5 equals…", "options": ["10", "25", "32", "16"], "answer": 2, "explanation": "2·2·2·2·2 = 32." },
+      { "prompt": "log base 10 of 1000 equals…", "options": ["2", "3", "4", "10"], "answer": 1, "explanation": "10^3 = 1000, so the logarithm is 3." },
+      { "prompt": "Solve 3^x = 27. Then x equals…", "options": ["2", "3", "9", "27"], "answer": 1, "explanation": "3^3 = 27, so x = 3." },
+      { "prompt": "sin(30 degrees) equals…", "options": ["1/2", "sqrt(3)/2", "1", "0"], "answer": 0, "explanation": "On the unit circle the point at 30 degrees is (sqrt(3)/2, 1/2); sine is the y-coordinate, 1/2." },
+      { "prompt": "cos(90 degrees) equals…", "options": ["1", "0", "-1", "1/2"], "answer": 1, "explanation": "At 90 degrees the point is (0, 1); cosine is the x-coordinate, 0." },
+      { "prompt": "The common difference of 5, 8, 11, 14, … is…", "options": ["2", "3", "4", "5"], "answer": 1, "explanation": "Each term increases by 3." }
+    ] } },
+    { "position": 10, "title": "Applied project: model growth two ways", "kind": "writing", "estimated_minutes": 15, "body": { "sections": [
+      { "heading": "The task", "text": "Pick a real quantity that grows by a constant factor — savings earning interest, a population, or the resale value of a collectible — and describe it two ways: as an exponential function and as a geometric sequence. You will not need real data; you will build and connect a correct model." },
+      { "heading": "Milestones", "text": "1) Choose a starting amount A and a growth factor b (for example, 10 percent growth means b = 1.1). 2) Write the exponential function f(n) = A·b^n for the amount after n steps. 3) List the first five terms as a geometric sequence and state the common ratio. 4) Predict a future value using your function and name one assumption that could make the real result differ." },
+      { "heading": "Self-check rubric", "text": "Check: the function has the form A·b^n with your chosen numbers. Check: the sequence terms are found by multiplying by b each step, so consecutive terms have ratio b (for A = 100 and b = 1.1 the terms are 100, 110, 121, 133.1, 146.41). Check: your common ratio equals the growth factor b. Check: you named a real-world assumption, such as a constant rate. If all four hold, your two models agree — the mark of correct precalculus modeling." }
+    ] } }
+  ]
+}
