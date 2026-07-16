@@ -1,0 +1,87 @@
+{
+  "source": {
+    "id": "cefr",
+    "name": "CEFR (Council of Europe)",
+    "url": "https://www.coe.int/en/web/common-european-framework-reference-languages",
+    "license": "Council of Europe"
+  },
+  "course": {
+    "id": "aaaa0005-0000-4000-8000-000000000005",
+    "title": "English B2 — Upper Intermediate",
+    "description": "Defend an argument, negotiate a deal, decode the news, and write formal messages that get results — upper-intermediate American English aligned to CEFR level B2 for confident work and study.",
+    "language": "en",
+    "dialect": "us",
+    "cefr_level": "B2",
+    "school": "language",
+    "goal_tag": "work",
+    "position": 13,
+    "prerequisite_ids": ["aaaa0005-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    { "position": 1, "title": "Hedging and nuance", "kind": "vocab", "estimated_minutes": 9, "grammar_note": "Hedges like *tend to*, *arguably*, and *to some extent* don't weaken you — they make you sound measured and hard to argue with. Overstate a claim and one counterexample sinks it.", "body": { "items": [
+      { "term": "tend to", "translation": "to usually do or be something, but not always", "ipa": "ˈtɛnd tu", "example": "Newer hires tend to ask more questions, which is a good thing." },
+      { "term": "arguably", "translation": "a word that marks a claim as reasonable, while admitting others may disagree", "ipa": "ˈɑrɡjuəbli", "example": "This is arguably the strongest quarter we've had in three years." },
+      { "term": "to some extent", "translation": "partly true, but not completely", "ipa": "tə səm ɪkˈstɛnt", "example": "I agree with you to some extent, but I'd draw the line differently." },
+      { "term": "by and large", "translation": "mostly, when you weigh everything together", "ipa": "ˌbaɪ ən ˈlɑrdʒ", "example": "By and large, the rollout went smoothly — a few bugs aside." },
+      { "term": "have a point", "translation": "to be saying something reasonable or valid", "ipa": "ˈhæv ə ˈpɔɪnt", "example": "You have a point — the timeline probably is too tight." },
+      { "term": "that said", "translation": "a phrase that admits the previous idea but signals a contrast is coming", "ipa": "ˈðæt ˈsɛd", "example": "The design is bold. That said, it may confuse first-time users." }
+    ] } },
+    { "position": 2, "title": "Third and mixed conditionals", "kind": "grammar", "estimated_minutes": 12, "grammar_note": null, "body": { "sections": [
+      { "heading": "Third conditional: rewriting the past", "text": "Use *if + past perfect, would have + past participle* to imagine a past that never happened: If we had launched in June, we would have beaten the competitor. Nothing here is real — the launch didn't happen in June — so this form carries regret, blame, or relief: If I hadn't missed that train, I wouldn't have met her. Swap *would have* for *could have* (ability) or *might have* (possibility) to soften the certainty." },
+      { "heading": "Mixed conditional: past cause, present result", "text": "Real life doesn't keep past and present in separate boxes. When a past event still shapes the present, mix the forms: *if + past perfect, would + base verb*. If I had taken that job, I would be in Chicago now. The condition is past (I didn't take it); the result is present (where I live today). This is the natural way to trace a present situation back to an old decision." },
+      { "heading": "Mixed conditional: present cause, past result", "text": "The mirror image also exists: a permanent present truth explaining a past outcome. Here use *if + past simple, would have + past participle*. If I were more organized, I wouldn't have missed the deadline. Being disorganized is an ongoing trait (present), but the missed deadline is finished (past). Note the subjunctive *were* for all subjects in careful English: If she were taller…" },
+      { "heading": "Why the tense feels 'wrong'", "text": "Learners trip on conditionals because the tense marks distance from reality, not time. Past forms signal 'this is imagined,' which is why the second conditional uses a past tense for the present (If I had more time…). Once you read past forms as 'unreal' rather than 'yesterday,' the third and mixed patterns stop feeling like exceptions and start feeling like a system." }
+    ] } },
+    { "position": 3, "title": "Defending your position", "kind": "roleplay", "estimated_minutes": 13, "grammar_note": null, "body": {
+      "scenario": "Your team is deciding whether to adopt a four-day work week as a permanent policy. In a review meeting, you argue in favor. You'll need to make a clear claim, back it with evidence, handle pointed objections about productivity and coverage, and concede a fair point without abandoning your position.",
+      "persona": "A skeptical operations director who respects data, interrupts weak reasoning, and keeps pressing: 'But how does that scale?'",
+      "goal": "State a thesis, support it with at least two concrete reasons, rebut one objection using a hedge (e.g., 'That's arguably true, but…'), and concede one point gracefully without giving up the argument"
+    } },
+    { "position": 4, "title": "The language of negotiation", "kind": "vocab", "estimated_minutes": 10, "grammar_note": "Negotiation English leans on softeners and conditionals: *We'd be able to move on price if you could commit to a two-year term.* Trade, don't just concede — every 'yes' asks for something back.", "body": { "items": [
+      { "term": "meet in the middle", "translation": "to reach a compromise where each side gives up something", "ipa": "ˈmit ɪn ðə ˈmɪdl", "example": "You want fifteen, I said ten — can we meet in the middle at twelve?" },
+      { "term": "deal-breaker", "translation": "a condition that will end the agreement if it isn't met", "ipa": "ˈdil ˌbreɪkər", "example": "Remote work isn't a nice-to-have for me — it's a deal-breaker." },
+      { "term": "leverage", "translation": "an advantage that gives you more power in a negotiation", "ipa": "ˈlɛvərɪdʒ", "example": "Having a competing offer gave her real leverage on salary." },
+      { "term": "on the table", "translation": "being offered or open for discussion right now", "ipa": "ˈɑn ðə ˈteɪbl", "example": "Let's be clear about what's actually on the table before we go further." },
+      { "term": "wiggle room", "translation": "a little flexibility to change the terms", "ipa": "ˈwɪɡl ˌrum", "example": "The budget is tight, but there may be some wiggle room on the start date." },
+      { "term": "walk away", "translation": "to leave a negotiation without making a deal", "ipa": "ˈwɔk əˌweɪ", "example": "Know your limit going in, so you're ready to walk away if you have to." }
+    ] } },
+    { "position": 5, "title": "Passive voice and reported speech", "kind": "grammar", "estimated_minutes": 13, "grammar_note": null, "body": { "sections": [
+      { "heading": "The passive: moving the spotlight", "text": "Form the passive with *be + past participle*: The report was reviewed by the board. English goes passive to spotlight the action or its target rather than the doer — useful when the agent is unknown (My laptop was stolen), obvious, or deliberately hidden (Mistakes were made). It's the default voice of formal and scientific writing: The sample was heated to 40°C. Add *by* only when the doer matters." },
+      { "heading": "Reported speech: shifting back a step", "text": "When you report what someone said earlier, tenses usually shift one step into the past. 'I need the file' becomes She said she needed the file. Present becomes past, past becomes past perfect, will becomes would. Pronouns and time words move too: 'I'll call you tomorrow' → He said he'd call me the next day. If the statement is still true, you can keep the present: She said the office is closed on Fridays." },
+      { "heading": "Reporting verbs carry meaning", "text": "'Said' and 'told' are neutral, but B2 speakers pick verbs that add attitude: admit, claim, deny, suggest, insist, warn, point out. Each brings its own grammar — He admitted making the error, She suggested that we wait, They denied taking the money. Choosing *claimed* over *said* quietly tells your listener you have doubts about the statement." },
+      { "heading": "Reported questions: no inversion", "text": "Reported questions drop the question word order and any *do/does/did*. Direct: 'Where do you live?' Reported: She asked where I lived (not 'where did I live'). Yes/no questions take *if* or *whether*: 'Are you coming?' → He asked if I was coming. The sentence ends with a period, not a question mark — it's a statement about a question, not the question itself." }
+    ] } },
+    { "position": 6, "title": "Negotiating a job offer", "kind": "roleplay", "estimated_minutes": 13, "grammar_note": null, "body": {
+      "scenario": "You've received a job offer you're excited about, but the base salary is 8% below your target and there's no mention of remote days. On a call with the recruiter, you want to negotiate up on pay and secure two remote days a week — without souring the relationship before you even start.",
+      "persona": "A friendly but budget-conscious recruiter who has some flexibility but tests how firm you are and quietly hopes you'll accept the first number",
+      "goal": "Open by signaling genuine interest, make a specific counter with a reason, trade rather than demand ('If you could match X, I'd be glad to commit'), and reach agreement or a clear next step without ultimatums"
+    } },
+    { "position": 7, "title": "Reading between the lines", "kind": "vocab", "estimated_minutes": 10, "grammar_note": "Media English is full of framing verbs — *claims*, *admits*, *reportedly*, *allegedly*. They tell you how much the writer stands behind a fact. Spot them and you read the slant, not just the story.", "body": { "items": [
+      { "term": "spin", "translation": "to present information in a biased way to influence how people see it", "ipa": "ˈspɪn", "example": "Both parties tried to put their own spin on the jobs report." },
+      { "term": "take (it) with a grain of salt", "translation": "to not fully believe something; to stay a little skeptical", "ipa": "teɪk ɪt wɪð ə ˈɡreɪn əv ˈsɔlt", "example": "It's an anonymous review, so take it with a grain of salt." },
+      { "term": "read between the lines", "translation": "to understand a meaning that isn't stated directly", "ipa": "ˈrid bɪˈtwin ðə ˈlaɪnz", "example": "She didn't say no, but read between the lines — she's not interested." },
+      { "term": "cherry-pick", "translation": "to choose only the facts that support your view and ignore the rest", "ipa": "ˈtʃɛri ˌpɪk", "example": "The ad cherry-picks the two best months and hides the rest of the year." },
+      { "term": "op-ed", "translation": "a newspaper article that gives the writer's opinion, not straight news", "ipa": "ˌɑp ˈɛd", "example": "That's an op-ed, so it's meant to argue a case, not report neutrally." },
+      { "term": "the takeaway", "translation": "the main point you should remember from something", "ipa": "ðə ˈteɪkəˌweɪ", "example": "Lots of detail in that report, but the takeaway is: costs are rising." }
+    ] } },
+    { "position": 8, "title": "Writing a formal complaint", "kind": "writing", "estimated_minutes": 14, "grammar_note": null, "body": { "sections": [
+      { "heading": "Register: firm, not fiery", "text": "A formal complaint gets results when it stays calm, specific, and polite. Open with a professional greeting (Dear Customer Service Team,) and a one-line purpose: I am writing to report a problem with an order placed on July 3. Avoid slang, exclamation marks, and blame. Contractions read as casual, so formal writing usually spells them out: I am rather than I'm, do not rather than don't." },
+      { "heading": "Let grammar do the diplomacy", "text": "The passive voice keeps the focus on the problem instead of pointing fingers: The package was delivered damaged reads better than You sent me a broken package. Hedged, conditional phrasing sounds reasonable and hard to refuse: I would appreciate a full refund, and I would be grateful if this could be resolved within five business days. You're being firm — the grammar just keeps it civil." },
+      { "heading": "A model to steal from", "text": "Dear Support Team, I am writing regarding order #48213, placed on July 3. The blender arrived with a cracked jar, and it stopped working after two uses. I have attached photos. As the product is still under its one-year warranty, I would like to request a replacement or a full refund. I would be grateful for your response within five business days. Thank you for your attention to this matter. Sincerely, Bruno Santos. Notice the shape: greeting, purpose, facts, request, deadline, courteous close." },
+      { "heading": "Structure and self-check", "text": "Follow a reliable arc: greeting → purpose → the facts (dates, order numbers, what went wrong) → a clear, specific request → a reasonable deadline → a polite sign-off (Sincerely, / Best regards,). Before sending, check three things: Is every claim backed by a concrete detail? Did I say exactly what outcome I want? Would I feel respected if I received this? If yes to all three, send it." }
+    ] } },
+    { "position": 9, "title": "Discussing an abstract topic", "kind": "roleplay", "estimated_minutes": 13, "grammar_note": null, "body": {
+      "scenario": "Over coffee, a friend raises a big question: does social media do more harm than good for society? This isn't a debate to win but a discussion to explore. You'll weigh both sides, think out loud, build on your friend's ideas, and comfortably say 'I'm not sure' where the answer is genuinely unclear.",
+      "persona": "A thoughtful friend who enjoys nuance, asks 'but what about…?', shares personal examples, and resists easy black-and-white answers",
+      "goal": "Explore both sides using hedges (*it depends*, *to some extent*, *arguably*), build on at least one thing your friend says ('That's a good point — and it also means…'), and express a genuinely nuanced view rather than a flat yes or no"
+    } },
+    { "position": 10, "title": "B2 checkpoint", "kind": "quiz", "estimated_minutes": 8, "grammar_note": null, "body": { "questions": [
+      { "prompt": "\"If we had left earlier, we would have caught the flight.\" This means the speaker…", "options": ["caught the flight", "left early and arrived on time", "did not leave early and missed the flight", "will leave early next time"], "answer": 2, "explanation": "The third conditional imagines an unreal past: they didn't leave early, so they missed it." },
+      { "prompt": "Which is a correct mixed conditional?", "options": ["If I had studied medicine, I would be a doctor now.", "If I would study medicine, I am a doctor now.", "If I studied medicine, I would have been a doctor now.", "If I have studied medicine, I will be a doctor."], "answer": 0, "explanation": "Past condition (had studied) + present result (would be now) is the classic mixed conditional." },
+      { "prompt": "Put into reported speech: She said, \"I am finishing the report tomorrow.\"", "options": ["She said she is finishing the report tomorrow.", "She said she was finishing the report the next day.", "She said she finished the report tomorrow.", "She said she will finish the report the next day."], "answer": 1, "explanation": "Present continuous shifts back to past continuous, and 'tomorrow' becomes 'the next day.'" },
+      { "prompt": "Which sentence is in the passive voice?", "options": ["The board reviewed the proposal.", "The proposal was reviewed by the board.", "The board is reviewing the proposal.", "The board will review the proposal."], "answer": 1, "explanation": "Passive = be + past participle (was reviewed), with the doer moved into a 'by' phrase." },
+      { "prompt": "Reporting a statement with \"claimed\" instead of \"said\" suggests the speaker…", "options": ["fully believes it", "has some doubt about it", "is repeating a rule", "is asking a question"], "answer": 1, "explanation": "'Claimed' quietly signals the writer isn't vouching for the statement's truth." },
+      { "prompt": "\"Take that review with a grain of salt\" advises you to…", "options": ["believe it completely", "stay a bit skeptical about it", "share it widely", "reply to it angrily"], "answer": 1, "explanation": "The idiom warns you not to accept something at full face value." }
+    ] } }
+  ]
+}
