@@ -1,0 +1,171 @@
+{
+  "source": {
+    "id": "cefr",
+    "name": "CEFR (Council of Europe)",
+    "url": "https://www.coe.int/en/web/common-european-framework-reference-languages",
+    "license": "Council of Europe"
+  },
+  "course": {
+    "id": "aaaa0002-0000-4000-8000-000000000005",
+    "title": "French B2 — Upper Intermediate",
+    "description": "Reach upper-intermediate French: defend an argument, decode complex media, negotiate, and write formal correspondence. This CEFR B2 course follows the Council of Europe's B2 level descriptors.",
+    "language": "fr",
+    "dialect": "fr",
+    "cefr_level": "B2",
+    "school": "language",
+    "goal_tag": "work",
+    "position": 13,
+    "prerequisite_ids": ["aaaa0002-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    {
+      "position": 1,
+      "title": "Nuancer et préciser sa pensée",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "These hedging phrases let you agree partially and sound measured — a hallmark of B2 speech. *Il n'en reste pas moins que* belongs to careful speech and writing; *quand même* is its everyday cousin.",
+      "body": {
+        "items": [
+          {"term": "avoir tendance à", "translation": "to tend to", "ipa": "a.vwaʁ tɑ̃.dɑ̃s a", "example": "Les gens ont tendance à sous-estimer ce genre de problème."},
+          {"term": "dans une certaine mesure", "translation": "to a certain extent", "ipa": "dɑ̃z yn sɛʁ.tɛn mə.zyʁ", "example": "Je vous rejoins, dans une certaine mesure, mais tout n'est pas si simple."},
+          {"term": "il n'en reste pas moins que", "translation": "the fact remains that", "ipa": "il nɑ̃ ʁɛst pa mwɛ̃ kə", "example": "Il n'en reste pas moins que la situation demeure préoccupante."},
+          {"term": "nuancer", "translation": "to qualify, to add nuance", "ipa": "ny.ɑ̃.se", "example": "Il faudrait nuancer cette affirmation un peu trop catégorique."},
+          {"term": "à première vue", "translation": "at first glance", "ipa": "a pʁə.mjɛʁ vy", "example": "À première vue, l'idée paraît séduisante, mais elle soulève des questions."},
+          {"term": "force est de constater que", "translation": "one has to acknowledge that", "ipa": "fɔʁs ɛ də kɔ̃s.ta.te kə", "example": "Force est de constater que rien n'a vraiment changé depuis un an."}
+        ]
+      }
+    },
+    {
+      "position": 2,
+      "title": "Le subjonctif approfondi",
+      "kind": "grammar",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "Au-delà de « il faut que »", "text": "At B2 the subjunctive spreads well beyond necessity. It follows emotion (*je suis ravi que tu viennes*), doubt (*je doute qu'il ait raison*), will and wish (*je souhaite que vous réussissiez*), and value judgements (*il est normal qu'elle hésite*). The common thread: the *que*-clause reports something wished, feared or judged — not a plain fact."},
+          {"heading": "Le subjonctif passé", "text": "To place the subjunctive event before the main verb, use the present subjunctive of *avoir* or *être* plus the past participle: *Je suis désolé que tu aies raté le train. Bien qu'elle soit partie tôt, elle a manqué sa correspondance.* Same agreement rules as the passé composé: *qu'elle soit arrivée*, *que nous soyons venus*."},
+          {"heading": "Indicatif ou subjonctif ?", "text": "*Penser* and *croire* take the indicative when affirmative (*je pense qu'il a raison*) but the subjunctive when negative or questioned (*je ne pense pas qu'il ait raison*), because doubt appears. *Espérer que* keeps the indicative (*j'espère qu'il viendra*), and so, in careful usage, does *après que* (*après qu'il est parti*) — a classic trap."},
+          {"heading": "Les conjonctions à mémoriser", "text": "Some conjunctions always trigger the subjunctive: *bien que* and *quoique* (although), *pour que* and *afin que* (so that), *à condition que* (provided that), *avant que* (before), *jusqu'à ce que* (until), and *sans que* (without). Drill them whole: *Je t'explique tout pour que tu puisses décider. Bien que ce soit cher, cela en vaut la peine.*"}
+        ]
+      }
+    },
+    {
+      "position": 3,
+      "title": "Connecteurs logiques et articulation du discours",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "*Néanmoins*, *toutefois* and *par ailleurs* belong to writing and formal speech; casually you'll hear *mais quand même* and *en plus*. Their position is flexible — sentence-initial or tucked in after the verb.",
+      "body": {
+        "items": [
+          {"term": "néanmoins", "translation": "nevertheless", "ipa": "ne.ɑ̃.mwɛ̃", "example": "Le projet est ambitieux ; néanmoins, il reste tout à fait réalisable."},
+          {"term": "en revanche", "translation": "on the other hand", "ipa": "ɑ̃ ʁə.vɑ̃ʃ", "example": "Paris est cher ; en revanche, l'offre culturelle y est incomparable."},
+          {"term": "dans la mesure où", "translation": "insofar as, given that", "ipa": "dɑ̃ la mə.zyʁ u", "example": "Je soutiens ce plan dans la mesure où il respecte le budget."},
+          {"term": "par ailleurs", "translation": "moreover, besides", "ipa": "paʁ a.jœʁ", "example": "Par ailleurs, il ne faut pas négliger la question des délais."},
+          {"term": "toutefois", "translation": "however", "ipa": "tut.fwa", "example": "La proposition est intéressante ; toutefois, son coût nous inquiète."},
+          {"term": "quant à", "translation": "as for, regarding", "ipa": "kɑ̃t a", "example": "Quant à moi, je préfère réserver mon jugement pour l'instant."}
+        ]
+      }
+    },
+    {
+      "position": 4,
+      "title": "Défendre un point de vue : débat de société",
+      "kind": "roleplay",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A lively, televised-style debate with a French friend over whether large cities should ban private cars from their centres. You argue in favour of the ban. Present three structured arguments, rebut at least one counter-argument, and concede a limited point without abandoning your thesis.",
+        "persona": "A sharp, articulate opponent who interrupts with pointed counter-examples and keeps demanding concrete evidence",
+        "goal": "Sustain an argument on an abstract topic using logical connectors and the subjunctive, rebut one objection, and restate your position in a clear closing sentence"
+      }
+    },
+    {
+      "position": 5,
+      "title": "L'hypothèse : si et le conditionnel",
+      "kind": "grammar",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "Le possible : si + présent → futur", "text": "For a realistic condition, pair the present after *si* with the future in the main clause: *Si j'ai le temps ce week-end, je viendrai t'aider. S'il fait beau demain, nous irons à la mer.* This is the everyday hypothesis about things that may well happen. Never put a future or a conditional directly after *si*."},
+          {"heading": "L'irréel du présent : si + imparfait → conditionnel présent", "text": "For something contrary to the present or unlikely, use the imperfect after *si* and the present conditional in the main clause: *Si j'avais plus de temps, je voyagerais davantage. Si tu étais à ma place, que ferais-tu ?* The conditional adds the imperfect endings to the future stem: *je voyagerais, tu ferais, il pourrait*."},
+          {"heading": "L'irréel du passé : si + plus-que-parfait → conditionnel passé", "text": "To express regret about the past, use the plus-que-parfait after *si* and the past conditional after: *Si j'avais su, je ne serais pas venu. Si tu m'avais prévenu, j'aurais pu t'aider.* The past conditional is *avoir* or *être* in the present conditional plus a past participle: *j'aurais fait, je serais parti*."},
+          {"heading": "Le conditionnel de l'information non confirmée", "text": "Beyond hypotheses, French journalism uses the conditional to flag unverified news: *Le ministre aurait démissionné* means he has reportedly resigned, but it is not confirmed. *Selon la police, le suspect aurait agi seul.* Recognizing this saves you from mistaking cautious reporting for established fact."}
+        ]
+      }
+    },
+    {
+      "position": 6,
+      "title": "Comprendre les médias et l'actualité",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "*Infox* is the Académie française's official French coinage for fake news (*info* + *intox*). *Défrayer la chronique* — to be the talk of the town — is a handy set phrase whenever you discuss a story in the news.",
+      "body": {
+        "items": [
+          {"term": "un fait divers", "translation": "a human-interest news item", "ipa": "œ̃ fɛ di.vɛʁ", "example": "Ce fait divers a défrayé la chronique pendant tout l'été."},
+          {"term": "les gros titres", "translation": "the headlines", "ipa": "le ɡʁo titʁ", "example": "Ce matin, les gros titres évoquent tous la même réforme."},
+          {"term": "une source fiable", "translation": "a reliable source", "ipa": "yn suʁs fjabl", "example": "Avant de partager un article, vérifie que la source est fiable."},
+          {"term": "l'infox (la désinformation)", "translation": "fake news, disinformation", "ipa": "lɛ̃.fɔks", "example": "Les réseaux sociaux propagent l'infox à une vitesse inquiétante."},
+          {"term": "un éditorial", "translation": "an editorial, an op-ed", "ipa": "œ̃ ne.di.tɔ.ʁjal", "example": "L'éditorial du journal critique vertement la nouvelle mesure."},
+          {"term": "avoir du recul", "translation": "to take a step back, to keep perspective", "ipa": "a.vwaʁ dy ʁə.kyl", "example": "Face aux chaînes d'info en continu, il faut savoir avoir du recul."}
+        ]
+      }
+    },
+    {
+      "position": 7,
+      "title": "Négocier ses conditions au travail",
+      "kind": "roleplay",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "scenario": "An annual review with your manager at a French company. You want a raise and one day of remote work per week. Open diplomatically, justify your request with concrete results, respond to budget objections, and land either a firm agreement or a dated next step.",
+        "persona": "A cordial but budget-conscious manager who counters with « ce n'est pas le bon moment » and initially offers less than you ask",
+        "goal": "Negotiate in the conditional and a formal register, back your case with evidence, make a counter-offer, and secure a concrete commitment or follow-up date"
+      }
+    },
+    {
+      "position": 8,
+      "title": "Rédiger un courriel formel",
+      "kind": "writing",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "Structure et formules d'appel", "text": "A formal French email opens with a clear *Objet :* line, then an address line with no first name: *Madame,* / *Monsieur,* / *Madame, Monsieur,* when you don't know the recipient. Open the body neutrally: *Je me permets de vous contacter au sujet de…* or *Suite à notre entretien du 12 mars, je vous écris pour…* Keep one idea per paragraph."},
+          {"heading": "Le registre soutenu", "text": "Stay in *vous* throughout, spell everything out, and prefer polished requests: *Je vous saurais gré de bien vouloir m'adresser le document.* The passive and impersonal forms add professional distance: *Il a été décidé que le projet serait reporté. Votre demande sera examinée dans les meilleurs délais.* Avoid *je veux* and casual abbreviations."},
+          {"heading": "Rapporter et citer (le discours rapporté)", "text": "Reporting earlier exchanges calls for reported speech and the sequence of tenses: *Vous m'avez indiqué que le dossier serait traité avant la fin du mois.* A present becomes an imperfect, a future becomes a conditional: *« Je vous rappelle » → Vous m'aviez dit que vous me rappelleriez.* Anchor references with *comme convenu lors de notre échange*."},
+          {"heading": "Formules de politesse finales", "text": "Close in proportion to the formality. Very formal: *Dans l'attente de votre réponse, je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées.* Standard professional: *Bien cordialement,* Lighter, between colleagues: *Cordialement,* Never sign off a formal letter with *Bises* or a bare first name."}
+        ]
+      }
+    },
+    {
+      "position": 9,
+      "title": "Table ronde : commenter l'actualité",
+      "kind": "roleplay",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A radio round-table where the host invites you to comment on a current debate — the effect of remote work on the life of city centres. React to another guest's opinion, agree in part, add nuance, and bring one fresh angle backed by a concrete example.",
+        "persona": "A brisk host who pushes you to react on the spot, alongside a fellow guest who overstates their case and generalizes",
+        "goal": "Comment on an abstract topic, respond to another speaker with partial agreement and nuance, and support your view with a specific, concrete example"
+      }
+    },
+    {
+      "position": 10,
+      "title": "B2 checkpoint",
+      "kind": "quiz",
+      "estimated_minutes": 8,
+      "grammar_note": null,
+      "body": {
+        "questions": [
+          {"prompt": "Complétez : « Bien qu'elle ___ tôt, elle a manqué sa correspondance. »", "options": ["est partie", "soit partie", "partait", "partira"], "answer": 1, "explanation": "*Bien que* always triggers the subjunctive; since the departure precedes the main verb, use the past subjunctive: *soit partie*."},
+          {"prompt": "Complétez : « Si j'avais plus de temps, je ___ davantage. »", "options": ["voyage", "voyagerai", "voyagerais", "voyagerait"], "answer": 2, "explanation": "*Si* + imperfect calls for the present conditional in the main clause; the *je* form is *voyagerais*, not the future *voyagerai*."},
+          {"prompt": "« En revanche » sert avant tout à…", "options": ["ajouter un exemple", "exprimer une conséquence", "introduire un contraste", "conclure le propos"], "answer": 2, "explanation": "*En revanche* marks a contrast, much like *par contre* in everyday speech, but in a more formal register."},
+          {"prompt": "« Le ministre aurait démissionné » signifie que…", "options": ["il a démissionné, c'est certain", "il aurait aimé démissionner", "il a peut-être démissionné, mais l'information n'est pas confirmée", "il va bientôt démissionner"], "answer": 2, "explanation": "This is the journalistic conditional: it reports information that is not yet confirmed rather than an established fact."},
+          {"prompt": "« Une infox », c'est…", "options": ["un éditorial engagé", "une fausse information", "un simple fait divers", "une source fiable"], "answer": 1, "explanation": "*Infox* (from *info* + *intox*) is the official French term for fake news or disinformation."},
+          {"prompt": "Choisissez la forme correcte : « Je ne pense pas qu'il ___ raison. »", "options": ["a", "ait", "aura", "avait"], "answer": 1, "explanation": "In the negative, *penser que* expresses doubt and takes the subjunctive: *ait*. The affirmative *je pense qu'il a raison* would keep the indicative."}
+        ]
+      }
+    }
+  ]
+}
