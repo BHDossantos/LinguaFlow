@@ -136,3 +136,9 @@ insert into public.course_standards (course_id, descriptor_id) values
   ('bbbb0002-0000-4000-8000-000000000007','acm.dm'),
   ('bbbb0001-0000-4000-8000-000000000007','ccss.math.f')
 on conflict do nothing;
+update public.courses set source_id='openstax'    where id in ('bbbb0003-0000-4000-8000-000000000006','bbbb0004-0000-4000-8000-00000000000a','bbbb0004-0000-4000-8000-00000000000b') and source_id is null;
+update public.courses set source_id='acm'         where id='bbbb0002-0000-4000-8000-000000000008' and source_id is null;
+update public.courses set source_id='oer_commons' where id='bbbb0003-0000-4000-8000-000000000007' and source_id is null;
+insert into public.course_standards (course_id, descriptor_id) values
+  ('bbbb0002-0000-4000-8000-000000000008','acm.dm')
+on conflict do nothing;
