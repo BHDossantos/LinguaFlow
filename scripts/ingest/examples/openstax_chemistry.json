@@ -1,0 +1,104 @@
+{
+  "source": {
+    "id": "openstax",
+    "name": "OpenStax Chemistry 2e",
+    "url": "https://openstax.org/details/books/chemistry-2e",
+    "license": "CC BY 4.0"
+  },
+  "course": {
+    "id": "bbbb0004-0000-4000-8000-000000000003",
+    "title": "Introduction to Chemistry",
+    "description": "A first tour of matter — atoms, bonds, the mole, gases, solutions, and reactions — with just enough math to make predictions. Structure adapted from OpenStax Chemistry 2e (CC BY 4.0).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "science",
+    "goal_tag": "foundations",
+    "position": 3,
+    "prerequisite_ids": []
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 10, "body": { "questions": [
+      { "prompt": "An atom's identity (which element it is) is set by its number of…", "options": ["neutrons", "protons", "electrons", "molecules"], "answer": 1, "explanation": "The atomic number = number of protons — see 'Atoms and the periodic table'." },
+      { "prompt": "A bond formed by transferring electrons from a metal to a nonmetal is…", "options": ["covalent", "ionic", "metallic", "hydrogen"], "answer": 1, "explanation": "Electron transfer makes ions that attract — see 'Chemical bonds'." },
+      { "prompt": "One mole of any substance contains about…", "options": ["100 particles", "6.022 × 10²³ particles", "1000 particles", "1 gram of particles"], "answer": 1, "explanation": "Avogadro's number — see 'The mole and stoichiometry'." },
+      { "prompt": "At constant temperature, if you halve a gas's volume its pressure…", "options": ["halves", "doubles", "stays the same", "drops to zero"], "answer": 1, "explanation": "Boyle's law: P and V are inversely related — see 'Gases and the states of matter'." },
+      { "prompt": "Molarity is defined as…", "options": ["grams per liter", "moles of solute per liter of solution", "moles per gram", "particles per mole"], "answer": 1, "explanation": "Molarity = mol solute ÷ L solution — see 'Solutions and concentration'." },
+      { "prompt": "A solution with pH = 3 is…", "options": ["basic", "neutral", "acidic", "impossible"], "answer": 2, "explanation": "pH below 7 is acidic — this idea is sampled in 'Key terms' and both checkpoints." },
+      { "prompt": "In the formula H₂O, the subscript 2 means there are…", "options": ["2 water molecules", "2 hydrogen atoms per molecule", "2 oxygen atoms", "2 moles"], "answer": 1, "explanation": "Subscripts count atoms of that element — see 'Chemical bonds' and 'The mole and stoichiometry'." },
+      { "prompt": "A balanced chemical equation must have the same number of each atom on…", "options": ["the left only", "the right only", "both sides", "neither side"], "answer": 2, "explanation": "Conservation of mass — see 'The mole and stoichiometry'." }
+    ] } },
+    { "position": 2, "title": "Atoms and the periodic table", "kind": "reading", "estimated_minutes": 13, "grammar_note": "Protons set identity, electrons set behavior.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "State what makes one element different from another and read basic information off the periodic table. Warm-up: from the diagnostic, which subatomic particle decides which element an atom is?" },
+      { "heading": "The idea", "text": "Every atom has a dense *nucleus* of *protons* (positive) and *neutrons* (neutral), surrounded by *electrons* (negative). The *atomic number* is the count of protons and it defines the element: 6 protons is always carbon, 8 is always oxygen. The *mass number* is protons + neutrons. Atoms of one element with different neutron counts are *isotopes*. The periodic table lists elements by increasing atomic number; columns (*groups*) share similar chemical behavior because they have the same number of outer electrons, and rows (*periods*) fill in a new electron shell." },
+      { "heading": "Worked example", "text": "Fluorine sits in group 17 with atomic number 9. That tells us: 9 protons (so a neutral atom has 9 electrons), and being in group 17 it has 7 outer electrons — one short of a full shell, which is exactly why fluorine is so reactive and eager to gain one electron." },
+      { "heading": "Your turn", "text": "Use the atomic numbers given. (1) Sodium is atomic number 11 — how many protons? (2) An atom has 17 protons and 18 neutrons — what is its mass number? (3) Carbon-12 and carbon-14 differ in what particle? (4) Group 18 elements (noble gases) rarely react — why? (5) Which has more protons, potassium (19) or calcium (20)? Answers: (1) 11; (2) 35; (3) neutrons (they are isotopes); (4) their outer electron shell is already full; (5) calcium." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking the number of neutrons defines the element — it's the protons. Mistake: confusing atomic number (protons) with mass number (protons + neutrons). Exit: (a) What defines the element? (b) What are two atoms with the same protons but different neutrons called? Answers: number of protons; isotopes." }
+    ] } },
+    { "position": 3, "title": "Chemical bonds", "kind": "reading", "estimated_minutes": 13, "grammar_note": "Ionic = transfer electrons; covalent = share electrons.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Tell ionic bonds from covalent bonds and predict which forms. Warm-up: from the diagnostic, what kind of bond forms when a metal hands electrons to a nonmetal?" },
+      { "heading": "The idea", "text": "Atoms bond to reach a stable, full outer electron shell (the *octet rule* — usually eight outer electrons). In an *ionic bond*, a metal *transfers* electrons to a nonmetal; the metal becomes a positive *cation*, the nonmetal a negative *anion*, and opposite charges attract. In a *covalent bond*, two nonmetals *share* electron pairs instead of transferring them. When shared electrons are pulled more strongly by one atom, the bond is *polar* — this is why water molecules have slightly charged ends." },
+      { "heading": "Worked example", "text": "Sodium (group 1, one outer electron) meets chlorine (group 17, seven outer electrons). Sodium gives up its single outer electron to become Na⁺; chlorine accepts it to become Cl⁻. The two ions attract into NaCl — table salt. Contrast: two chlorine atoms each need one more electron, so instead of transferring they share a pair, forming a covalent Cl₂ molecule." },
+      { "heading": "Worked example (part two)", "text": "Predict the bond in each: metal + nonmetal → ionic; nonmetal + nonmetal → covalent. So magnesium (metal) + oxygen (nonmetal) → ionic MgO. Hydrogen + oxygen (both nonmetals) → covalent, forming H₂O." },
+      { "heading": "Your turn", "text": "Classify the bond as ionic or covalent: (1) K + Br, (2) O + O, (3) Ca + Cl, (4) C + H, (5) Li + F, (6) N + N. Answers: (1) ionic; (2) covalent; (3) ionic; (4) covalent; (5) ionic; (6) covalent." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking atoms bond to 'want' something — they simply reach lower, more stable energy with full shells. Mistake: assuming all bonds share equally; many covalent bonds are polar. Exit: (a) Ionic bonds involve transferring or sharing electrons? (b) Two nonmetals usually form which bond type? Answers: transferring; covalent." }
+    ] } },
+    { "position": 4, "title": "The mole and stoichiometry", "kind": "reading", "estimated_minutes": 14, "grammar_note": "The mole is a counting unit, like 'a dozen' but 6.022 × 10²³.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Convert between grams, moles, and particles, and use a balanced equation to relate amounts of reactants and products. Warm-up: from the diagnostic, roughly how many particles are in one mole?" },
+      { "heading": "The idea", "text": "Chemists count particles in *moles*. One mole is *Avogadro's number*, 6.022 × 10²³ particles — a bridge between the atomic world and grams you can weigh. The *molar mass* (grams per mole) of an element is its atomic mass in grams; for a compound you add up the molar masses of its atoms. A *balanced equation* obeys conservation of mass: the same count of each atom appears on both sides, and the coefficients give the mole ratio between substances. *Stoichiometry* uses that ratio to predict how much product a reaction makes." },
+      { "heading": "Worked example", "text": "How many moles are in 36 g of water (H₂O)? Molar mass of H₂O = 2(1.0) + 16.0 = 18.0 g/mol. Moles = mass ÷ molar mass = 36 g ÷ 18.0 g/mol = 2.0 mol. That is 2.0 × 6.022 × 10²³ ≈ 1.2 × 10²⁴ molecules." },
+      { "heading": "Worked example (part two)", "text": "For 2 H₂ + O₂ → 2 H₂O, the coefficients say 2 moles of H₂ react with 1 mole of O₂ to give 2 moles of H₂O. So 4 moles of H₂ would need 2 moles of O₂ and produce 4 moles of H₂O — just scale the ratio." },
+      { "heading": "Your turn", "text": "Use molar masses C = 12.0, O = 16.0, H = 1.0. (1) Molar mass of CO₂? (2) How many moles in 88 g of CO₂? (3) In N₂ + 3 H₂ → 2 NH₃, how many moles of H₂ react with 1 mole of N₂? (4) How many moles of NH₃ come from 2 moles of N₂ (with excess H₂)? (5) How many molecules are in 0.5 mol? (6) Why must an equation be balanced? Answers: (1) 44.0 g/mol; (2) 2.0 mol; (3) 3 moles; (4) 4 moles; (5) ≈ 3.0 × 10²³; (6) mass (atoms) is conserved — none are created or destroyed." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: dividing by the wrong number — moles = mass ÷ molar mass, not mass × molar mass. Mistake: changing subscripts to balance an equation (only coefficients may change). Exit: (a) Moles = mass ÷ ___? (b) When balancing, which numbers are you allowed to change? Answers: molar mass; the coefficients." }
+    ] } },
+    { "position": 5, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "The atomic number of an element equals its number of…", "options": ["neutrons", "protons", "electrons plus neutrons", "isotopes"], "answer": 1, "explanation": "Protons define the element." },
+      { "prompt": "Two atoms with the same protons but different neutrons are…", "options": ["ions", "isotopes", "molecules", "cations"], "answer": 1, "explanation": "Isotopes differ only in neutron count." },
+      { "prompt": "Table salt (NaCl) is held together by a(n)…", "options": ["covalent bond", "ionic bond", "hydrogen bond", "metallic bond"], "answer": 1, "explanation": "Sodium transfers an electron to chlorine; the ions attract." },
+      { "prompt": "One mole contains about 6.022 × 10²³…", "options": ["grams", "liters", "particles", "protons only"], "answer": 2, "explanation": "Avogadro's number counts particles." },
+      { "prompt": "The molar mass of water (H₂O) is about…", "options": ["10 g/mol", "18 g/mol", "36 g/mol", "2 g/mol"], "answer": 1, "explanation": "2(1.0) + 16.0 = 18.0 g/mol." },
+      { "prompt": "When balancing an equation you may change only the…", "options": ["subscripts", "coefficients", "element symbols", "charges"], "answer": 1, "explanation": "Coefficients scale amounts without changing the substances." }
+    ] } },
+    { "position": 6, "title": "Gases and the states of matter", "kind": "reading", "estimated_minutes": 13, "grammar_note": "For a fixed amount of gas: P, V, and T trade off against each other.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Describe the three common states of matter and predict how a gas responds to changes in pressure, volume, and temperature. Warm-up: from the diagnostic, if you squeeze a gas into half the volume at constant temperature, what happens to its pressure?" },
+      { "heading": "The idea", "text": "Matter's state depends on how tightly its particles are held. In a *solid* particles vibrate in fixed positions; in a *liquid* they touch but slide past one another; in a *gas* they fly apart and fill any container. For gases, three properties are linked: *pressure* (P), *volume* (V), and *temperature* (T, measured from absolute zero in kelvin). *Boyle's law* says at fixed temperature P and V are inversely related (squeeze smaller → pressure rises). *Charles's law* says at fixed pressure V rises with T. The *ideal gas law*, PV = nRT, ties them together with the number of moles n." },
+      { "heading": "Worked example", "text": "A gas occupies 4.0 L at 100 kPa. You compress it to 2.0 L at the same temperature. Boyle's law: P₁V₁ = P₂V₂, so (100)(4.0) = P₂(2.0), giving P₂ = 200 kPa. Halving the volume doubled the pressure — exactly the diagnostic result." },
+      { "heading": "Worked example (part two)", "text": "A balloon at 300 K is warmed to 600 K at constant pressure. Charles's law: V₁/T₁ = V₂/T₂. Doubling the absolute temperature doubles the volume, so the balloon expands to twice its size. Note temperature must be in kelvin, not Celsius." },
+      { "heading": "Your turn", "text": "(1) Which state has particles in fixed positions? (2) At constant T, a gas goes from 6 L to 3 L — pressure does what? (3) At constant P, a gas is cooled — volume does what? (4) In PV = nRT, what does n stand for? (5) A gas is 300 K; convert to a doubling by naming the new temperature that doubles its volume at constant P. (6) Why must T be in kelvin? Answers: (1) solid; (2) doubles; (3) decreases; (4) number of moles; (5) 600 K; (6) kelvin starts at absolute zero, so ratios of temperature are meaningful." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: using Celsius in gas-law ratios — always convert to kelvin. Mistake: thinking pressure and volume rise together (at fixed T they are inverse). Exit: (a) Boyle's law relates which two quantities? (b) What temperature scale do gas laws require? Answers: pressure and volume; kelvin." }
+    ] } },
+    { "position": 7, "title": "Solutions and concentration", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Molarity (M) = moles of solute ÷ liters of solution.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Define a solution and calculate molarity. Warm-up: from the diagnostic, what two quantities go into molarity?" },
+      { "heading": "The idea", "text": "A *solution* is a uniform mixture of a *solute* (the substance dissolved, often smaller amount) in a *solvent* (the substance doing the dissolving, often water). *Concentration* measures how much solute is packed into a given amount of solution. The most common chemistry unit is *molarity* (M): moles of solute divided by liters of solution. Diluting with more solvent lowers the molarity because the same moles now spread through more volume." },
+      { "heading": "Worked example", "text": "Dissolve 2.0 mol of NaCl in enough water to make 4.0 L of solution. Molarity = moles ÷ liters = 2.0 mol ÷ 4.0 L = 0.50 M. If you then add water to reach 8.0 L, the moles stay 2.0 but molarity falls to 2.0 ÷ 8.0 = 0.25 M." },
+      { "heading": "Your turn", "text": "(1) In salt water, which is the solute and which the solvent? (2) 3.0 mol of sugar in 1.5 L of solution — what molarity? (3) 0.10 mol in 0.50 L — what molarity? (4) You dilute 1.0 L of 2.0 M solution to 2.0 L — new molarity? (5) Does adding solvent raise or lower molarity? (6) How many moles are in 2.0 L of 0.5 M solution? Answers: (1) salt is solute, water is solvent; (2) 2.0 M; (3) 0.20 M; (4) 1.0 M; (5) lowers it; (6) 1.0 mol (moles = molarity × liters)." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: dividing moles by liters of solvent instead of liters of total solution. Mistake: thinking dilution changes the number of moles of solute (it doesn't — only the volume). Exit: (a) Molarity = moles per ___? (b) Does dilution change the moles of solute? Answers: liter of solution; no." }
+    ] } },
+    { "position": 8, "title": "Key terms", "kind": "vocab", "estimated_minutes": 8, "body": { "items": [
+      { "term": "atomic number", "translation": "the number of protons in an atom, which decides its element", "example": "Carbon's atomic number is 6, so every carbon atom has 6 protons." },
+      { "term": "ionic bond", "translation": "a bond where a metal transfers electrons to a nonmetal, and the resulting opposite charges attract", "example": "Sodium and chlorine form an ionic bond in table salt." },
+      { "term": "covalent bond", "translation": "a bond where two nonmetal atoms share electron pairs", "example": "The two hydrogen atoms in H₂ are joined by a covalent bond." },
+      { "term": "mole", "translation": "a counting unit equal to 6.022 × 10²³ particles", "example": "One mole of water weighs about 18 grams." },
+      { "term": "molarity", "translation": "concentration measured as moles of solute per liter of solution", "example": "Two moles of salt in four liters gives a molarity of 0.5 M." },
+      { "term": "pH", "translation": "a 0–14 scale for how acidic or basic a solution is, where below 7 is acidic and above 7 is basic", "example": "Lemon juice has a low pH, so it is acidic." }
+    ] } },
+    { "position": 9, "title": "Checkpoint 2", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "Boyle's law says that at constant temperature, pressure and volume are…", "options": ["directly proportional", "inversely related", "unrelated", "always equal"], "answer": 1, "explanation": "Squeeze the volume smaller and pressure rises." },
+      { "prompt": "Gas-law calculations require temperature in…", "options": ["Celsius", "Fahrenheit", "kelvin", "any scale"], "answer": 2, "explanation": "Kelvin starts at absolute zero, so ratios are meaningful." },
+      { "prompt": "In a salt-water solution, water is the…", "options": ["solute", "solvent", "precipitate", "ion"], "answer": 1, "explanation": "The solvent does the dissolving." },
+      { "prompt": "2.0 mol of solute in 4.0 L of solution has a molarity of…", "options": ["0.5 M", "2.0 M", "8.0 M", "4.0 M"], "answer": 0, "explanation": "2.0 ÷ 4.0 = 0.50 M." },
+      { "prompt": "Adding more solvent to a solution…", "options": ["raises the molarity", "lowers the molarity", "adds moles of solute", "changes the solute's identity"], "answer": 1, "explanation": "The same moles spread through more volume." },
+      { "prompt": "A gas at 3 L is compressed to 1 L at constant temperature; its pressure…", "options": ["stays the same", "triples", "falls to one third", "doubles"], "answer": 1, "explanation": "Inverse relationship: one third the volume means three times the pressure." }
+    ] } },
+    { "position": 10, "title": "Final assessment", "kind": "quiz", "estimated_minutes": 12, "body": { "questions": [
+      { "prompt": "An atom has 12 protons and 12 neutrons. Its atomic number is…", "options": ["24", "12", "6", "0"], "answer": 1, "explanation": "Atomic number = protons = 12 (magnesium)." },
+      { "prompt": "Which pair would most likely form an ionic bond?", "options": ["oxygen and oxygen", "carbon and hydrogen", "potassium and chlorine", "nitrogen and nitrogen"], "answer": 2, "explanation": "A metal (potassium) plus a nonmetal (chlorine) transfer electrons." },
+      { "prompt": "The molar mass of CO₂ (C = 12, O = 16) is…", "options": ["28 g/mol", "44 g/mol", "16 g/mol", "12 g/mol"], "answer": 1, "explanation": "12 + 2(16) = 44 g/mol." },
+      { "prompt": "For 2 H₂ + O₂ → 2 H₂O, 4 moles of H₂ produce how many moles of water?", "options": ["2", "4", "8", "1"], "answer": 1, "explanation": "The 2:2 ratio means 4 moles H₂ give 4 moles H₂O." },
+      { "prompt": "A gas at 5.0 L and 100 kPa is compressed to 1.0 L at constant temperature. Its new pressure is…", "options": ["20 kPa", "100 kPa", "500 kPa", "50 kPa"], "answer": 2, "explanation": "Boyle's law: (100)(5.0) = P₂(1.0) → 500 kPa." },
+      { "prompt": "How many moles of solute are in 2.0 L of a 1.5 M solution?", "options": ["0.75 mol", "3.0 mol", "1.5 mol", "2.0 mol"], "answer": 1, "explanation": "moles = molarity × liters = 1.5 × 2.0 = 3.0 mol." },
+      { "prompt": "A solution with pH = 9 is…", "options": ["acidic", "neutral", "basic", "a pure element"], "answer": 2, "explanation": "pH above 7 is basic." },
+      { "prompt": "The reason a balanced equation has equal atoms on both sides is…", "options": ["a naming rule", "conservation of mass", "Avogadro's number", "the octet rule"], "answer": 1, "explanation": "Atoms are neither created nor destroyed in a reaction." }
+    ] } }
+  ]
+}
