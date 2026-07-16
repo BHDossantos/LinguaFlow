@@ -128,3 +128,11 @@ insert into public.course_standards (course_id, descriptor_id) values
   ('bbbb0002-0000-4000-8000-000000000005','acm.al'),
   ('bbbb0002-0000-4000-8000-000000000005','acm.dm')
 on conflict do nothing;
+update public.courses set source_id='acm'      where id in ('bbbb0002-0000-4000-8000-000000000006','bbbb0002-0000-4000-8000-000000000007') and source_id is null;
+update public.courses set source_id='openstax' where id in ('bbbb0003-0000-4000-8000-000000000004','bbbb0003-0000-4000-8000-000000000005','bbbb0001-0000-4000-8000-000000000007') and source_id is null;
+insert into public.course_standards (course_id, descriptor_id) values
+  ('bbbb0002-0000-4000-8000-000000000006','acm.sec'),
+  ('bbbb0002-0000-4000-8000-000000000007','acm.se'),
+  ('bbbb0002-0000-4000-8000-000000000007','acm.dm'),
+  ('bbbb0001-0000-4000-8000-000000000007','ccss.math.f')
+on conflict do nothing;
