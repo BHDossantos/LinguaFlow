@@ -1,0 +1,96 @@
+{
+  "source": {
+    "id": "openstax",
+    "name": "OpenStax U.S. History",
+    "url": "https://openstax.org/details/books/us-history",
+    "license": "CC BY 4.0"
+  },
+  "course": {
+    "id": "bbbb0004-0000-4000-8000-000000000009",
+    "title": "U.S. History",
+    "description": "A chronological survey of the United States — from colonial settlement and the Revolution through the Constitution, the Civil War, industrialization, and the twentieth century. Structure adapted from OpenStax U.S. History (CC BY 4.0).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "science",
+    "goal_tag": "foundations",
+    "position": 9,
+    "prerequisite_ids": []
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 10, "body": { "questions": [
+      { "prompt": "The first permanent English colony in North America was…", "options": ["Plymouth", "Jamestown", "Boston", "Roanoke"], "answer": 1, "explanation": "Jamestown, Virginia, was founded in 1607 — see 'Colonial America'." },
+      { "prompt": "The Declaration of Independence was adopted in…", "options": ["1765", "1776", "1783", "1787"], "answer": 1, "explanation": "July 1776 — see 'The American Revolution'." },
+      { "prompt": "The U.S. Constitution replaced which earlier framework?", "options": ["the Bill of Rights", "the Articles of Confederation", "the Mayflower Compact", "the Federalist Papers"], "answer": 1, "explanation": "The Articles proved too weak — see 'The Constitution and the early republic'." },
+      { "prompt": "The idea that the U.S. was destined to expand across the continent was called…", "options": ["popular sovereignty", "Manifest Destiny", "nullification", "Reconstruction"], "answer": 1, "explanation": "A widely used slogan of the 1840s." },
+      { "prompt": "The American Civil War was fought primarily over…", "options": ["taxation without representation", "slavery and its expansion", "the gold standard", "immigration"], "answer": 1, "explanation": "Slavery's future in the territories was the central conflict — see 'The Civil War and Reconstruction'." },
+      { "prompt": "Reconstruction refers to the period…", "options": ["before the Revolution", "rebuilding the South after the Civil War", "the 1920s boom", "the New Deal"], "answer": 1, "explanation": "1865–1877, reintegrating the South." },
+      { "prompt": "Late-1800s industrial growth was driven largely by…", "options": ["railroads, steel, and factories", "plantation agriculture", "fur trading", "whaling"], "answer": 0, "explanation": "The Second Industrial Revolution — see 'Industrialization'." },
+      { "prompt": "The Civil Rights Movement of the 1950s–60s sought mainly to…", "options": ["end child labor", "dismantle legal racial segregation", "win women the vote", "reduce tariffs"], "answer": 1, "explanation": "Ending Jim Crow segregation — see 'The twentieth century'." }
+    ] } },
+    { "position": 2, "title": "Colonial America, 1607–1763", "kind": "reading", "estimated_minutes": 13, "grammar_note": "Dates read as ranges: '1607–1763' means the whole span between those years.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Explain why Europeans colonized North America and how the colonial regions differed. Warm-up: from the diagnostic, which English colony came first — Jamestown or Plymouth?" },
+      { "heading": "The idea", "text": "Beginning at *Jamestown* (1607) and *Plymouth* (1620), England planted colonies for profit, land, and religious freedom. Three regions took shape: New England (small farms, towns, Puritan churches), the Middle Colonies (diverse and commercial), and the South (large plantations growing tobacco and rice). Southern plantations increasingly relied on enslaved Africans, making *slavery* a foundation of the colonial economy. Colonists mostly governed their own local affairs while remaining British subjects." },
+      { "heading": "Primary-source reasoning", "text": "The Mayflower Compact (1620) has the signers 'covenant and combine ourselves together into a civil body politic' to make 'just and equal laws.' Notice what this shows: even before landing, colonists assumed they could create their own government by agreement — a habit of self-rule that later fed revolutionary ideas." },
+      { "heading": "Your turn", "text": "Match each to its region — New England, Middle, or South: (1) tobacco plantations worked by enslaved people, (2) Puritan town meetings, (3) religiously diverse ports like Philadelphia, (4) rice cultivation in the Carolinas. Answers: 1-South, 2-New England, 3-Middle, 4-South." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking all colonists came seeking religious freedom (many came for land and profit; many arrived enslaved and by force). Mistake: treating the colonies as one uniform society. Exit: (a) Name the first permanent English colony. (b) Which region depended most on plantation slavery? Answers: Jamestown; the South." }
+    ] } },
+    { "position": 3, "title": "The American Revolution, 1763–1783", "kind": "reading", "estimated_minutes": 13, "grammar_note": "'No taxation without representation' is a slogan — memorize it as one phrase.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Trace how colonial protest became a war for independence. Warm-up: in what year was the Declaration of Independence adopted?" },
+      { "heading": "The idea", "text": "After 1763 Britain taxed the colonies to pay war debts — the *Stamp Act*, the *Townshend duties*, the tax on tea. Colonists objected that Parliament could not tax them without their consent: 'no taxation without representation.' Protest escalated (the Boston Massacre, the Boston Tea Party) until war broke out in 1775. In 1776 the *Declaration of Independence*, drafted mainly by *Thomas Jefferson*, argued that governments derive 'just powers from the consent of the governed.' With French help, the Americans won, sealed by victory at Yorktown (1781) and the Treaty of Paris (1783)." },
+      { "heading": "Primary-source reasoning", "text": "The Declaration states people have rights to 'Life, Liberty and the pursuit of Happiness,' and that when a government abuses these rights, the people may 'alter or abolish it.' Reason it through: this is not just a complaint about taxes — it is a general theory that political power must rest on consent, which is why the document still echoes worldwide." },
+      { "heading": "Your turn", "text": "Put these in order: (a) Treaty of Paris, (b) Stamp Act, (c) Declaration of Independence, (d) Boston Tea Party. Also: who was the main author of the Declaration? Answers: order = b, d, c, a; author = Thomas Jefferson." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking independence was declared the moment war began (fighting started in 1775; independence was declared in 1776). Mistake: forgetting France's decisive military aid. Exit: (a) What did colonists mean by 'no taxation without representation'? (b) Which battle effectively ended the fighting? Answers: Parliament shouldn't tax them without their consent; Yorktown." }
+    ] } },
+    { "position": 4, "title": "The Constitution and the early republic, 1787–1820", "kind": "reading", "estimated_minutes": 14, "grammar_note": "Branches of government: legislative (makes laws), executive (enforces), judicial (interprets).", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Explain why the Constitution replaced the Articles of Confederation and how it divides power. Warm-up: which weak framework came before the Constitution?" },
+      { "heading": "The idea", "text": "The first national government under the *Articles of Confederation* was too weak — it could not tax or regulate trade effectively. In 1787 delegates wrote a new *Constitution* creating three branches (legislative, executive, judicial) that *check and balance* one another, plus *federalism* dividing power between nation and states. A *Bill of Rights* (1791) guaranteed liberties like free speech and a fair trial. The first parties — *Federalists* and *Democratic-Republicans* — soon disagreed over how strong the central government should be." },
+      { "heading": "Primary-source reasoning", "text": "The Constitution opens, 'We the People of the United States, in Order to form a more perfect Union…' Reason about the phrase 'more perfect': the founders admitted the system was improvable, not finished. The amendment process they built in proves they expected the document to change over time." },
+      { "heading": "Your turn", "text": "Match each branch to its job — legislative, executive, judicial: (1) interprets laws and the Constitution, (2) writes and passes laws, (3) enforces laws and leads the military. Then: which document guarantees free speech? Answers: 1-judicial, 2-legislative, 3-executive; the Bill of Rights." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: confusing the Articles of Confederation with the Constitution (the Articles came first and were replaced). Mistake: thinking the Bill of Rights was in the original 1787 text (it was added by amendment in 1791). Exit: (a) Why replace the Articles? (b) Name the three branches. Answers: they were too weak to tax or regulate trade; legislative, executive, judicial." }
+    ] } },
+    { "position": 5, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "Southern colonial plantations depended most heavily on…", "options": ["free wage labor", "enslaved African labor", "indentured European nobles", "monastic orders"], "answer": 1, "explanation": "Slavery underpinned the plantation economy." },
+      { "prompt": "'No taxation without representation' was a protest against…", "options": ["state taxes", "Parliament taxing colonists without their consent", "church tithes", "import bans"], "answer": 1, "explanation": "Colonists had no members in Parliament." },
+      { "prompt": "The main author of the Declaration of Independence was…", "options": ["George Washington", "Thomas Jefferson", "Benjamin Franklin", "John Adams"], "answer": 1, "explanation": "Jefferson drafted it in 1776." },
+      { "prompt": "The Articles of Confederation were replaced because they…", "options": ["gave the president too much power", "created too many courts", "left the national government too weak", "banned all taxes forever"], "answer": 2, "explanation": "It could not tax or regulate trade effectively." },
+      { "prompt": "Checks and balances mean that…", "options": ["one branch controls all others", "each branch can limit the others", "states have no power", "the courts write laws"], "answer": 1, "explanation": "Power is divided so no branch dominates." },
+      { "prompt": "The Bill of Rights was added in…", "options": ["1776", "1783", "1787", "1791"], "answer": 3, "explanation": "The first ten amendments were ratified in 1791." }
+    ] } },
+    { "position": 6, "title": "The Civil War and Reconstruction, 1861–1877", "kind": "reading", "estimated_minutes": 14, "grammar_note": "'Union' means the northern states/federal side; 'Confederacy' means the seceding southern states.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Explain why the Civil War began and what Reconstruction tried to accomplish. Warm-up: what central issue divided North and South?" },
+      { "heading": "The idea", "text": "As the nation expanded west, North and South clashed over whether new territories would allow *slavery*. When *Abraham Lincoln* was elected in 1860, southern states *seceded* and formed the *Confederacy*, sparking war in 1861. The *Emancipation Proclamation* (1863) redefined the war as a fight against slavery; the Union won in 1865. The *Thirteenth Amendment* abolished slavery, and during *Reconstruction* the Fourteenth and Fifteenth Amendments granted citizenship and voting rights to formerly enslaved men — though these gains were rolled back after 1877." },
+      { "heading": "Primary-source reasoning", "text": "At Gettysburg (1863) Lincoln called for 'a new birth of freedom' so that 'government of the people, by the people, for the people, shall not perish.' Reason about 'new birth': he was reframing the war not merely to preserve the Union but to extend the Revolution's promise of freedom to the enslaved." },
+      { "heading": "Your turn", "text": "Match each amendment to its effect — 13th, 14th, 15th: (1) citizenship and equal protection, (2) abolished slavery, (3) voting rights regardless of race. Also: which side was the 'Confederacy'? Answers: 1-14th, 2-13th, 3-15th; the seceding southern states." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: claiming the war 'wasn't about slavery' (the expansion of slavery was the central cause). Mistake: thinking Reconstruction permanently secured Black civil rights (many were undone by 1877 and after). Exit: (a) What did the 13th Amendment do? (b) What was the goal of Reconstruction? Answers: abolished slavery; to rebuild the South and secure rights for freed people." }
+    ] } },
+    { "position": 7, "title": "The twentieth century: world wars and civil rights", "kind": "reading", "estimated_minutes": 14, "grammar_note": "Roman-numeral wars: World War I (1914–18), World War II (1939–45).", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Summarize how the U.S. became a world power and how Americans expanded civil rights. Warm-up: what did the Civil Rights Movement mainly aim to end?" },
+      { "heading": "The idea", "text": "The U.S. entered *World War I* in 1917 and emerged a leading power. After the *Great Depression*, *Franklin Roosevelt's New Deal* expanded the government's economic role. *World War II* (U.S. entered 1941 after Pearl Harbor) defeated the Axis and launched the *Cold War* rivalry with the Soviet Union. At home, the *Civil Rights Movement* — led by figures like *Martin Luther King Jr.* and *Rosa Parks* — used nonviolent protest to end legal segregation, winning the Civil Rights Act (1964) and Voting Rights Act (1965)." },
+      { "heading": "Primary-source reasoning", "text": "In 1963 King dreamed his children would 'not be judged by the color of their skin but by the content of their character.' Reason about the appeal: rather than rejecting American ideals, he demanded the nation finally live up to the Declaration's claim that 'all men are created equal' — turning founding principles into a tool for change." },
+      { "heading": "Your turn", "text": "Order these events: (a) Civil Rights Act, (b) World War I, (c) New Deal, (d) Pearl Harbor. Also: name one leader of the Civil Rights Movement. Answers: order = b, c, d, a; e.g. Martin Luther King Jr. or Rosa Parks." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: thinking the U.S. joined both world wars at the start (it entered WWI in 1917 and WWII in 1941). Mistake: assuming one law ended all discrimination. Exit: (a) What event brought the U.S. into WWII? (b) What did the Civil Rights Movement seek to end? Answers: the attack on Pearl Harbor; legal racial segregation." }
+    ] } },
+    { "position": 8, "title": "Key terms", "kind": "vocab", "estimated_minutes": 8, "body": { "items": [
+      { "term": "colony", "translation": "a territory settled and controlled by a distant parent country", "example": "Virginia was an English colony before independence." },
+      { "term": "secession", "translation": "the act of formally withdrawing from a nation or union", "example": "Southern states declared secession after Lincoln's election in 1860." },
+      { "term": "federalism", "translation": "a system dividing power between a national government and the states", "example": "Federalism lets states set their own laws within national limits." },
+      { "term": "abolition", "translation": "the movement and act of ending slavery", "example": "The Thirteenth Amendment completed abolition in 1865." },
+      { "term": "Reconstruction", "translation": "the post–Civil War era of rebuilding the South and extending rights to freed people", "example": "Reconstruction ended in 1877." },
+      { "term": "segregation", "translation": "the enforced separation of racial groups, especially by law", "example": "The Civil Rights Movement fought to end segregation." }
+    ] } },
+    { "position": 9, "title": "Checkpoint 2", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "Southern states seceded in 1860–61 mainly because of…", "options": ["a gold shortage", "the future of slavery", "a foreign invasion", "high tariffs alone"], "answer": 1, "explanation": "Slavery's expansion was the central issue." },
+      { "prompt": "The Emancipation Proclamation (1863)…", "options": ["ended the war", "reframed the war as a fight against slavery", "created the Confederacy", "abolished the presidency"], "answer": 1, "explanation": "It redefined Union war aims." },
+      { "prompt": "The Thirteenth Amendment…", "options": ["gave women the vote", "abolished slavery", "created the income tax", "ended Reconstruction"], "answer": 1, "explanation": "Slavery was abolished in 1865." },
+      { "prompt": "The United States entered World War II after…", "options": ["the sinking of the Lusitania", "the attack on Pearl Harbor", "the fall of France", "the New Deal"], "answer": 1, "explanation": "Japan's 1941 attack brought the U.S. in." },
+      { "prompt": "The Civil Rights Movement primarily sought to…", "options": ["expand railroads", "end legal racial segregation", "lower tariffs", "annex new territory"], "answer": 1, "explanation": "It targeted Jim Crow segregation." },
+      { "prompt": "Federalism refers to dividing power between…", "options": ["rich and poor", "the nation and the states", "church and army", "cities and farms"], "answer": 1, "explanation": "National and state governments share power." }
+    ] } },
+    { "position": 10, "title": "Applied project: make a historical argument", "kind": "writing", "estimated_minutes": 15, "body": { "sections": [
+      { "heading": "The task", "text": "Write a short argument (one page) answering a debatable historical question, for example: 'What was the primary cause of the American Civil War?' or 'Did Reconstruction succeed or fail?' You are making a case, not just listing facts." },
+      { "heading": "Milestones", "text": "1) State a clear thesis that takes a position. 2) Support it with at least two specific pieces of evidence (an event, law, or primary source from this course). 3) Address one reasonable counterargument and respond to it. 4) End with a conclusion that restates your claim in light of the evidence." },
+      { "heading": "Self-check rubric", "text": "✔ Thesis is arguable, not just a fact everyone accepts. ✔ Each claim is backed by specific historical evidence, not opinion alone. ✔ You fairly stated and answered a counterargument. ✔ Chronology and dates are accurate. If all four are true, you've reasoned like a historian." }
+    ] } }
+  ]
+}

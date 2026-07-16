@@ -121,3 +121,10 @@ insert into public.course_standards (course_id, descriptor_id) values
   ('bbbb0001-0000-4000-8000-000000000006','ccss.math.f'),
   ('bbbb0001-0000-4000-8000-000000000006','ccss.math.ee')
 on conflict do nothing;
+update public.courses set source_id='mit_ocw'  where id='bbbb0002-0000-4000-8000-000000000005' and source_id is null;
+update public.courses set source_id='openstax' where id in ('bbbb0004-0000-4000-8000-000000000006','bbbb0004-0000-4000-8000-000000000007','bbbb0004-0000-4000-8000-000000000009') and source_id is null;
+update public.courses set source_id='ck12'     where id='bbbb0004-0000-4000-8000-000000000008' and source_id is null;
+insert into public.course_standards (course_id, descriptor_id) values
+  ('bbbb0002-0000-4000-8000-000000000005','acm.al'),
+  ('bbbb0002-0000-4000-8000-000000000005','acm.dm')
+on conflict do nothing;
