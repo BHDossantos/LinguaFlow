@@ -1,0 +1,107 @@
+{
+  "source": {
+    "id": "cefr",
+    "name": "CEFR (Council of Europe)",
+    "url": "https://www.coe.int/en/web/common-european-framework-reference-languages",
+    "license": "Council of Europe"
+  },
+  "course": {
+    "id": "aaaa0001-0000-4000-8000-000000000005",
+    "title": "Spanish B2 — Upper Intermediate",
+    "description": "Reach the CEFR B2 upper-intermediate level in Latin-American Spanish: defend an argument, follow complex media, negotiate, write formal correspondence, and express nuance with the imperfect subjunctive, si-clauses, reported speech, and the passive.",
+    "language": "es",
+    "dialect": "latam",
+    "cefr_level": "B2",
+    "school": "language",
+    "goal_tag": "work",
+    "position": 13,
+    "prerequisite_ids": ["aaaa0001-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    { "position": 1, "title": "Imperfect subjunctive & si-clauses", "kind": "grammar", "estimated_minutes": 13,
+      "grammar_note": "For unreal 'if' situations: si + imperfect subjunctive, then the conditional — *si tuviera tiempo, iría*.",
+      "body": { "sections": [
+        { "heading": "Building the imperfect subjunctive", "text": "Start from the ellos form of the pretérito, drop -ron, and add the -ra endings: *hablaron → hablara, hablaras, hablara, habláramos, hablaran*; *comieron → comiera*; *fueron → fuera*. Every irregular pretérito comes along for free: *tuvieron → tuviera*, *pudieron → pudiera*, *dijeron → dijera*, *hicieron → hiciera*. There is a parallel -se set (*hablase, comiese*) that means the same thing but sounds more formal or literary in Latin America." },
+        { "heading": "Unreal si-clauses", "text": "To talk about situations that are contrary to fact or unlikely, pair *si* + imperfect subjunctive with a main clause in the conditional: *Si tuviera más presupuesto, contrataría a otro diseñador.* *Si yo fuera tú, no firmaría ese contrato.* Note the split: the subjunctive never rides with *si* for real conditions — *si tengo tiempo, voy* (real) versus *si tuviera tiempo, iría* (hypothetical)." },
+        { "heading": "Como si and ojalá", "text": "Two everyday triggers demand this tense. *Como si* (as if) always takes the imperfect subjunctive: *Habla como si lo supiera todo.* And *ojalá* (I wish / if only) shifts from hope to fantasy: *ojalá venga* means 'I hope he comes', while *ojalá viniera* means 'I wish he would come (but I doubt it)'." },
+        { "heading": "Softening with the subjunctive", "text": "Upper-intermediate speakers use *quisiera*, *pudiera*, and *debiera* to sound tactful rather than blunt. *Quisiera plantear una duda* is gentler than *quiero*; *¿pudiera repetirlo?* softens a request in a meeting. This polite layer is one of the clearest markers that separates a B1 speaker from a B2 one." }
+      ] } },
+    { "position": 2, "title": "Connectors for building an argument", "kind": "vocab", "estimated_minutes": 9,
+      "grammar_note": "These formal connectors signal the shape of your reasoning — contrast, cause, consequence — and lift speech from B1 to B2.",
+      "body": { "items": [
+        { "term": "no obstante", "translation": "nevertheless / however", "ipa": "no oβsˈtan.te", "example": "La propuesta es ambiciosa; no obstante, carece de un presupuesto realista." },
+        { "term": "dado que", "translation": "given that / since", "ipa": "ˈða.ðo ke", "example": "Dado que el plazo es tan corto, tendremos que priorizar." },
+        { "term": "por consiguiente", "translation": "consequently / therefore", "ipa": "poɾ kon.siˈɣjen.te", "example": "No llegamos a un acuerdo; por consiguiente, la reunión se pospuso." },
+        { "term": "cabe destacar que", "translation": "it is worth noting that", "ipa": "ˈka.βe ðes.taˈkaɾ ke", "example": "Cabe destacar que las ventas crecieron a pesar de la crisis." },
+        { "term": "aun así", "translation": "even so / still", "ipa": "aun aˈsi", "example": "El informe tenía errores; aun así, la idea central era sólida." },
+        { "term": "en definitiva", "translation": "in short / ultimately", "ipa": "en de.fiˈni.ti.βa", "example": "En definitiva, hay que decidir hoy o perdemos al cliente." }
+      ] } },
+    { "position": 3, "title": "Defending a proposal to your boss", "kind": "roleplay", "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A one-on-one meeting at a company in Lima. You want to convince your manager to approve a four-day work week pilot for your team. Present your case, back each claim with data or an example, respond to two objections without backing down, and propose a concrete trial with clear metrics.",
+        "persona": "A pragmatic, skeptical manager who uses usted, worries about client coverage and fairness to other teams, and pushes back on every point until convinced",
+        "goal": "Get provisional approval for a measured pilot, defending your argument and conceding only on minor details"
+      } },
+    { "position": 4, "title": "Reported speech, passive & impersonal", "kind": "grammar", "estimated_minutes": 14,
+      "grammar_note": "Reporting past speech usually pushes each tense one step back; the *se* impersonal lets you state facts with no named subject.",
+      "body": { "sections": [
+        { "heading": "Backshifting in reported speech", "text": "When you report what someone said in the past, tenses shift back one step: present → imperfect (*'trabajo aquí' → dijo que trabajaba aquí*), pretérito/perfect → pluscuamperfecto (*'terminé' → dijo que había terminado*), future → conditional (*'iré' → dijo que iría*). Pronouns and time words move too: *hoy → ese día*, *mañana → al día siguiente*." },
+        { "heading": "Reported questions and commands", "text": "Yes/no questions are introduced with *si*: *'¿vienes?' → me preguntó si venía.* Information questions keep their question word: *me preguntó cuándo empezaba.* Commands turn into *que* + subjunctive, and a past command uses the imperfect subjunctive: *'llámame' → me pidió que lo llamara.*" },
+        { "heading": "The passive with ser", "text": "Formal writing and news use *ser* + past participle, with the agent marked by *por*: *El proyecto fue aprobado por la junta.* *Los resultados serán publicados la próxima semana.* The participle agrees in gender and number: *las medidas fueron anunciadas*. It is common in reports but sounds stiff in conversation." },
+        { "heading": "The se passive and impersonal", "text": "Far more natural in speech is the pasiva refleja: *Se aprobó el proyecto*, *Se venden departamentos*, *Se necesitan voluntarios* — the verb agrees with the thing. When there is no object at all, the impersonal *se* states a general truth with no subject: *Aquí se trabaja mucho*, *No se puede fumar*, *¿Cómo se dice esto en español?*" }
+      ] } },
+    { "position": 5, "title": "Formal correspondence toolkit", "kind": "vocab", "estimated_minutes": 9,
+      "grammar_note": "These are set formulas for professional emails and letters — keep them in the usted register and let them frame your message.",
+      "body": { "items": [
+        { "term": "por medio de la presente", "translation": "by means of this letter / I am writing to", "ipa": "poɾ ˈme.ðjo ðe la pɾeˈsen.te", "example": "Por medio de la presente, solicito una revisión de mi contrato." },
+        { "term": "adjunto encontrará…", "translation": "please find attached…", "ipa": "aðˈxun.to en.kon.tɾaˈɾa", "example": "Adjunto encontrará el informe trimestral y las facturas correspondientes." },
+        { "term": "le agradecería que…", "translation": "I would be grateful if you would…", "ipa": "le a.ɣɾa.ðe.seˈɾi.a ke", "example": "Le agradecería que me confirmara la recepción del documento." },
+        { "term": "lamentamos informarle que…", "translation": "we regret to inform you that…", "ipa": "la.menˈta.mos in.foɾˈmaɾ.le ke", "example": "Lamentamos informarle que su solicitud no fue aprobada." },
+        { "term": "quedo a la espera de su respuesta", "translation": "I look forward to your reply", "ipa": "ˈke.ðo a la esˈpe.ɾa ðe su resˈpwes.ta", "example": "Quedo a la espera de su respuesta y le saludo cordialmente." },
+        { "term": "no dude en contactarme", "translation": "do not hesitate to contact me", "ipa": "no ˈðu.ðe en kon.takˈtaɾ.me", "example": "Ante cualquier consulta, no dude en contactarme." }
+      ] } },
+    { "position": 6, "title": "Writing a formal letter of complaint", "kind": "writing", "estimated_minutes": 13,
+      "grammar_note": "A formal complaint stays in usted throughout and softens demands with the conditional — you persuade, you don't shout.",
+      "body": { "sections": [
+        { "heading": "The three-part structure", "text": "A B2 formal letter has a predictable skeleton. Opening: state who you are and why you write — *Me dirijo a ustedes para presentar una queja formal respecto a…* Body: lay out the facts in order, with dates and reference numbers, in the passive or impersonal where it sounds objective — *El pedido fue entregado con dos semanas de retraso.* Closing: state clearly what you expect and sign off — *Solicito el reembolso íntegro y quedo a la espera de su respuesta.*" },
+        { "heading": "Register and tone", "text": "Everything stays in usted, and demands are softened with the conditional and the subjunctive so you sound firm but professional: *Agradecería que revisaran mi caso* rather than *revisen mi caso ya*. Avoid contractions of anger; instead escalate with measured phrases like *me veo en la obligación de…* and *de lo contrario, me reservo el derecho de…*" },
+        { "heading": "Useful connectors and formulas", "text": "String the facts together with the connectors from Lesson 2: *En primer lugar…*, *No obstante…*, *Por consiguiente…*, *En definitiva…* Open with *Estimados señores:* (note the colon, not a comma) and close with *Atentamente,* or *Le saludo cordialmente,* above your full name." },
+        { "heading": "Model paragraph", "text": "*Estimados señores: Por medio de la presente, deseo presentar una queja formal respecto al servicio contratado el pasado 3 de marzo. El técnico no se presentó en la fecha acordada y, pese a mis tres llamadas, no recibí explicación alguna. Dado que el problema persiste, les agradecería que enviaran a un especialista esta semana o, de lo contrario, procederían al reembolso. Quedo a la espera de su pronta respuesta. Atentamente, …* Try rewriting it for a late delivery you invent yourself." }
+      ] } },
+    { "position": 7, "title": "Media, opinion & abstract topics", "kind": "vocab", "estimated_minutes": 9,
+      "grammar_note": "Vocabulary for discussing news and abstract ideas; note that *el hecho de que* and *poner en duda* often pull the following verb into the subjunctive.",
+      "body": { "items": [
+        { "term": "el medio de comunicación", "translation": "the media outlet", "ipa": "el ˈme.ðjo ðe ko.mu.ni.kaˈsjon", "example": "Cada medio de comunicación presenta la noticia a su manera." },
+        { "term": "una fuente fiable", "translation": "a reliable source", "ipa": "ˈu.na ˈfwen.te ˈfja.βle", "example": "Antes de compartir algo, verifico que venga de una fuente fiable." },
+        { "term": "estar sesgado", "translation": "to be biased", "ipa": "esˈtaɾ sesˈɣa.ðo", "example": "Ese reportaje está claramente sesgado a favor del gobierno." },
+        { "term": "poner en tela de juicio", "translation": "to call into question", "ipa": "poˈneɾ en ˈte.la ðe ˈxwi.sjo", "example": "Los expertos pusieron en tela de juicio las cifras oficiales." },
+        { "term": "el hecho de que", "translation": "the fact that", "ipa": "el ˈe.tʃo ðe ke", "example": "El hecho de que nadie protestara no significa que estuvieran de acuerdo." },
+        { "term": "a largo plazo", "translation": "in the long run / long-term", "ipa": "a ˈlaɾ.ɣo ˈpla.so", "example": "A largo plazo, esta política podría tener efectos imprevistos." }
+      ] } },
+    { "position": 8, "title": "Negotiating a raise", "kind": "roleplay", "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A performance review at a company in Guadalajara. You believe you deserve a 15% raise after a strong year. Open by summarizing your results, name your target figure, justify it with market data and specific achievements, handle a lower counteroffer, and either close a deal or agree on a concrete review date.",
+        "persona": "A friendly but budget-conscious HR manager who acknowledges your work, opens with a lower offer, and negotiates on non-salary perks like extra vacation and remote days",
+        "goal": "Reach a satisfactory agreement on pay or benefits, using conditional and subjunctive softeners to stay assertive yet diplomatic"
+      } },
+    { "position": 9, "title": "Debate: social media and society", "kind": "roleplay", "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A radio-style debate in Buenos Aires on whether social media does more harm than good to society. You argue that the benefits outweigh the harms. Open with a clear thesis, support it with two arguments and evidence, rebut a strong counterargument about misinformation and mental health, and close by conceding a nuance without abandoning your position.",
+        "persona": "An articulate host who plays devil's advocate, cites studies and biased sources, interrupts to demand nuance, and rewards well-structured reasoning",
+        "goal": "Sustain an abstract debate for several turns, defending a thesis with connectors and evidence while acknowledging complexity"
+      } },
+    { "position": 10, "title": "B2 checkpoint", "kind": "quiz", "estimated_minutes": 8,
+      "grammar_note": null,
+      "body": { "questions": [
+        { "prompt": "Si yo ___ más tiempo, aprendería otro idioma.", "options": ["tengo", "tuviera", "tendría", "tenga"], "answer": 1, "explanation": "An unreal 'if' clause takes si + imperfect subjunctive (tuviera), with the main clause in the conditional (aprendería)." },
+        { "prompt": "Reported speech: 'Trabajo en Quito' → Dijo que ___ en Quito.", "options": ["trabaja", "trabajaba", "trabajará", "trabaje"], "answer": 1, "explanation": "Backshifting a past report moves the present into the imperfect: trabaja → trabajaba." },
+        { "prompt": "Which sentence uses the impersonal/passive se correctly?", "options": ["Se venden departamentos en el centro", "Se vende departamentos en el centro", "Está vendido departamentos", "Se vendo departamentos"], "answer": 0, "explanation": "In the pasiva refleja the verb agrees with the plural noun: se venden departamentos." },
+        { "prompt": "'Habla como si lo ___ todo.' Choose the correct verb.", "options": ["sabe", "sabría", "supiera", "sepa"], "answer": 2, "explanation": "Como si always triggers the imperfect subjunctive: como si lo supiera todo." },
+        { "prompt": "Which connector best expresses consequence in a formal argument?", "options": ["por consiguiente", "de repente", "por si acaso", "mientras tanto"], "answer": 0, "explanation": "Por consiguiente = consequently/therefore; the others mark surprise, precaution, or simultaneity." },
+        { "prompt": "To sound tactful when raising an objection in a meeting, you would say…", "options": ["Quiero decir algo ya", "Quisiera plantear una duda", "Digo una cosa", "Habla tú"], "answer": 1, "explanation": "Quisiera (imperfect subjunctive of querer) softens the request, the polite B2 register; querer in the present sounds blunt." }
+      ] } }
+  ]
+}
