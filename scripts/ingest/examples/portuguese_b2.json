@@ -1,0 +1,171 @@
+{
+  "source": {
+    "id": "cefr",
+    "name": "CEFR (Council of Europe)",
+    "url": "https://www.coe.int/en/web/common-european-framework-reference-languages",
+    "license": "Council of Europe"
+  },
+  "course": {
+    "id": "aaaa0004-0000-4000-8000-000000000005",
+    "title": "Portuguese B2 — Upper Intermediate",
+    "description": "A CEFR B2 upper-intermediate track in Brazilian Portuguese: defend an argument, follow complex media, write formal correspondence, and negotiate with nuance.",
+    "language": "pt",
+    "dialect": "br",
+    "cefr_level": "B2",
+    "school": "language",
+    "goal_tag": "work",
+    "position": 13,
+    "prerequisite_ids": ["aaaa0004-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    {
+      "position": 1,
+      "title": "Connectors for building an argument",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "These formal connectors let you signal structure before the listener guesses it — open a concession with 'ainda que', pivot with 'em contrapartida', and land the point with 'vale ressaltar que'.",
+      "body": {
+        "items": [
+          {"term": "por um lado… por outro lado", "translation": "on one hand… on the other hand", "example": "Por um lado, o custo cai; por outro lado, a qualidade também pode cair."},
+          {"term": "vale ressaltar que", "translation": "it is worth stressing that", "ipa": "ˈva.li ʁe.sawˈtaʁ ki", "example": "Vale ressaltar que os dados ainda são preliminares."},
+          {"term": "tendo em vista que", "translation": "given that / considering that", "ipa": "ˈtẽ.du ẽj ˈvis.tɐ ki", "example": "Tendo em vista que o prazo é curto, sugiro dividir a equipe."},
+          {"term": "ainda que", "translation": "even though / even if", "ipa": "aˈĩ.dɐ ki", "example": "Ainda que ele discorde, precisa cumprir a decisão."},
+          {"term": "à medida que", "translation": "as / to the extent that", "ipa": "a meˈdʒi.dɐ ki", "example": "À medida que o projeto avança, os custos aumentam."},
+          {"term": "em contrapartida", "translation": "in contrast / in return", "ipa": "ẽj kõ.tɾa.paʁˈtʃi.dɐ", "example": "O salário é menor; em contrapartida, o horário é flexível."}
+        ]
+      }
+    },
+    {
+      "position": 2,
+      "title": "Hipóteses: imperfeito do subjuntivo e condicional",
+      "kind": "grammar",
+      "estimated_minutes": 12,
+      "grammar_note": "Se + imperfeito do subjuntivo pairs with the conditional: 'Se eu tivesse tempo, viajaria.' Build the subjunctive stem from the *eles* form of the pretérito perfeito.",
+      "body": {
+        "sections": [
+          {"heading": "Forming the imperfeito do subjuntivo", "text": "Take the *eles* form of the pretérito perfeito, drop -ram, and add -sse: *falaram → falasse*, *comeram → comesse*, *partiram → partisse*. The same trick tames the irregulars: *fizeram → fizesse*, *tiveram → tivesse*, *foram → fosse*, *puseram → pusesse*. Full set for *fazer*: *fizesse, fizesses, fizesse, fizéssemos, fizessem*."},
+          {"heading": "Unreal 'se' clauses", "text": "For situations that are hypothetical or contrary to fact, use *se* + imperfeito do subjuntivo in one clause and the *condicional* (-ia) in the other: *Se eu ganhasse na loteria, eu abriria uma empresa.* *Se a gente tivesse mais dados, tomaria uma decisão melhor.* Order is free: *Eu te ajudaria se pudesse.*"},
+          {"heading": "The conditional itself", "text": "The *condicional* adds -ia to the infinitive: *falaria, comeria, partiria*. Three verbs shorten the stem: *fazer → faria*, *dizer → diria*, *trazer → traria*. Beyond hypotheses, Brazilians use it to sound polite: *Você poderia repetir?* *Eu gostaria de reagendar a reunião.*"},
+          {"heading": "Real vs. unreal conditions", "text": "Don't confuse the two *se* patterns. Real, likely conditions use *se* + present + future/present: *Se chover, eu fico em casa.* Unreal or remote ones use *se* + imperfeito do subjuntivo + condicional: *Se chovesse agora, eu ficaria em casa.* The subjunctive is what signals 'this is only hypothetical'."}
+        ]
+      }
+    },
+    {
+      "position": 3,
+      "title": "A mídia e a imprensa",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "Vocabulary for talking critically about the news. Note that *notícia* is a piece of news while *notícias* (or *o jornal*) is the news as a whole.",
+      "body": {
+        "items": [
+          {"term": "a manchete", "translation": "the headline", "ipa": "a mɐ̃ˈʃe.tʃi", "example": "A manchete dá a entender algo que a matéria não confirma."},
+          {"term": "a cobertura", "translation": "the coverage", "ipa": "a ko.beʁˈtu.ɾɐ", "example": "A cobertura das eleições foi ao ar a noite inteira."},
+          {"term": "tendencioso", "translation": "biased / slanted", "ipa": "tẽ.dẽ.siˈo.zu", "example": "Achei o editorial bastante tendencioso."},
+          {"term": "a fonte", "translation": "the source", "ipa": "a ˈfõ.tʃi", "example": "O repórter se recusou a revelar a fonte da informação."},
+          {"term": "a checagem de fatos", "translation": "fact-checking", "ipa": "a ʃeˈka.ʒẽj dʒi ˈfa.tus", "example": "Antes de compartilhar, faça a checagem dos fatos."},
+          {"term": "o veículo de comunicação", "translation": "the media outlet", "example": "Cada veículo de comunicação deu um enfoque diferente ao caso."}
+        ]
+      }
+    },
+    {
+      "position": 4,
+      "title": "Debate: as redes sociais fazem mais mal do que bem?",
+      "kind": "roleplay",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A recorded panel debate on a Brazilian podcast about whether social media does more harm than good to society. Open with a clear thesis, back it with two concrete arguments, respond to a counterargument with evidence, concede one fair point, and close by restating your position without repeating yourself.",
+        "persona": "A sharp, respectful co-panelist who takes the opposite view and presses you for evidence whenever you generalize",
+        "goal": "Defend an abstract position for three exchanges, rebut at least one counterargument, and hold your line under pressure"
+      }
+    },
+    {
+      "position": 5,
+      "title": "Voz passiva e discurso indireto",
+      "kind": "grammar",
+      "estimated_minutes": 12,
+      "grammar_note": "Two tools for formal and reported speech: the passive shifts focus onto the action, and indirect speech backshifts tenses when you report what someone said.",
+      "body": {
+        "sections": [
+          {"heading": "Voz passiva analítica", "text": "Form the passive with *ser* + past participle, and mark the agent with *por*: *A equipe enviou o relatório* → *O relatório foi enviado pela equipe.* The participle agrees in gender and number: *As propostas foram aprovadas.* Use it when the action or its result matters more than who did it — common in news and reports."},
+          {"heading": "Passiva sintética com 'se'", "text": "Brazilian Portuguese often prefers a lighter passive built with *se* and a third-person verb, especially with no named agent: *Vendem-se casas.* *Alugam-se salas comerciais.* *Precisa-se de atendentes.* The verb agrees with the noun (*casas → vendem-se*), which is why you'll see the plural."},
+          {"heading": "Discurso indireto and tense backshift", "text": "When you report someone's words, drop the quotation marks, add *que*, and shift the tense back one step. Present → imperfect: *\"Estou cansado\"* → *Ele disse que estava cansado.* Future → conditional: *\"Vou viajar\"* → *Ela disse que iria viajar.* Pretérito perfeito → mais-que-perfeito: *\"Terminei\"* → *Ele disse que tinha terminado.*"},
+          {"heading": "Reporting verbs and pronoun shifts", "text": "Vary your reporting verbs beyond *dizer*: *afirmar* (to state), *alegar* (to claim), *ressaltar* (to stress), *negar* (to deny). Remember to adjust people and time words too: *\"Eu te ligo amanhã\"* becomes *Ela disse que me ligaria no dia seguinte.*"}
+        ]
+      }
+    },
+    {
+      "position": 6,
+      "title": "Negociação e reuniões de trabalho",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "Phrases for the negotiating table. *Abrir mão de* means to give something up voluntarily, and *meio-termo* is the compromise you both settle on.",
+      "body": {
+        "items": [
+          {"term": "chegar a um acordo", "translation": "to reach an agreement", "ipa": "ʃeˈɡaʁ a ũ aˈkoʁ.du", "example": "Depois de duas horas, chegamos a um acordo."},
+          {"term": "a contraproposta", "translation": "the counteroffer", "example": "Agradeço a oferta, mas gostaria de fazer uma contraproposta."},
+          {"term": "abrir mão de", "translation": "to give up / to waive", "ipa": "aˈbɾiʁ mɐ̃w dʒi", "example": "Estou disposto a abrir mão do bônus por mais dias de férias."},
+          {"term": "o prazo de entrega", "translation": "the delivery deadline", "example": "Se o prazo de entrega for menor, o preço sobe."},
+          {"term": "o meio-termo", "translation": "the middle ground / compromise", "ipa": "u ˈmej.u ˈteʁ.mu", "example": "Vamos buscar um meio-termo que funcione para os dois lados."},
+          {"term": "o ponto de partida", "translation": "the starting point", "example": "Essa proposta é só um ponto de partida para a conversa."}
+        ]
+      }
+    },
+    {
+      "position": 7,
+      "title": "Negociando um reajuste salarial",
+      "kind": "roleplay",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A one-on-one meeting with your manager to negotiate a raise. Open by framing your value with concrete results, name a specific figure or range in reais, respond to a lower counteroffer without backing down immediately, trade one concession for another, and confirm the agreed terms and next steps in writing.",
+        "persona": "A budget-conscious but fair manager who opens below your target and asks you to justify every number",
+        "goal": "Anchor a number, handle a counteroffer, reach a concrete agreement, and confirm the follow-up"
+      }
+    },
+    {
+      "position": 8,
+      "title": "Redação formal: o e-mail e a carta",
+      "kind": "writing",
+      "estimated_minutes": 14,
+      "grammar_note": "Formal Brazilian writing prizes impersonality and courtesy — lean on the passive, hedge requests with the conditional, and never open with 'oi'.",
+      "body": {
+        "sections": [
+          {"heading": "Register and salutations", "text": "Formal correspondence in Brazil opens with *Prezado(a) Senhor(a)* or *Prezada equipe*, and closes with *Atenciosamente* or, more formally, *Cordialmente* — followed by your full name. Address the reader as *o senhor / a senhora*, not *você*, and avoid contractions like *tá* and *pra*. Keep one idea per paragraph."},
+          {"heading": "An impersonal, courteous tone", "text": "Soften requests with the conditional and impersonal structures: *Gostaria de solicitar…*, *Seria possível…?*, *Solicito a gentileza de…* The passive keeps the tone neutral: *O documento foi anexado a este e-mail.* *Sua solicitação será analisada em até cinco dias úteis.* Avoid blunt imperatives such as *me manda o arquivo*."},
+          {"heading": "Connectors that carry formal argument", "text": "Structure the body with formal linkers: *Em primeiro lugar…*, *Além disso…*, *No entanto…*, *Por conseguinte…*, *Diante do exposto…* (given the above). Close the argument before the sign-off: *Diante do exposto, solicito a revisão da decisão. Coloco-me à disposição para esclarecimentos.*"},
+          {"heading": "Worked example: a complaint e-mail", "text": "Assunto: Solicitação de reembolso — pedido nº 4821. *Prezados Senhores, Escrevo a respeito do pedido nº 4821, entregue com defeito no dia 10 de julho. Conforme a nota fiscal em anexo, solicito o reembolso integral do valor pago. Diante do exposto, aguardo um retorno em até cinco dias úteis. Atenciosamente, Bruno dos Santos.* Now draft your own version to reschedule a meeting."}
+        ]
+      }
+    },
+    {
+      "position": 9,
+      "title": "Comentando uma reportagem polêmica",
+      "kind": "roleplay",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A live call-in radio segment discussing a controversial news report about a new urban policy. Summarize the report accurately using reported speech ('a reportagem afirma que…'), separate fact from the outlet's slant, give a nuanced opinion that avoids black-and-white claims, and question the reliability of the sources cited.",
+        "persona": "A radio host who plays devil's advocate and pushes you to justify whether the coverage was biased",
+        "goal": "Paraphrase a complex report, evaluate its sources critically, and defend a nuanced opinion on air"
+      }
+    },
+    {
+      "position": 10,
+      "title": "Checkpoint: B2 essentials",
+      "kind": "quiz",
+      "estimated_minutes": 7,
+      "grammar_note": null,
+      "body": {
+        "questions": [
+          {"prompt": "Complete: Se eu ___ mais tempo, terminaria o projeto hoje.", "options": ["tenho", "tivesse", "tiver", "tivesse tido"], "answer": 1, "explanation": "An unreal condition takes se + imperfeito do subjuntivo paired with the conditional: Se eu tivesse tempo, terminaria."},
+          {"prompt": "Turn to the passive: A equipe aprovou as propostas.", "options": ["As propostas aprovaram a equipe.", "As propostas foram aprovadas pela equipe.", "As propostas são aprovar pela equipe.", "A equipe foi aprovada pelas propostas."], "answer": 1, "explanation": "Passive = ser + past participle + por; the participle agrees with the subject: as propostas foram aprovadas."},
+          {"prompt": "Report this speech: Ela disse: \"Vou viajar amanhã.\"", "options": ["Ela disse que vou viajar amanhã.", "Ela disse que iria viajar no dia seguinte.", "Ela disse que viajaria ontem.", "Ela disse que vá viajar amanhã."], "answer": 1, "explanation": "Indirect speech backshifts future to conditional (vou → iria) and adjusts the time word (amanhã → no dia seguinte)."},
+          {"prompt": "Which connector best introduces a concession?", "options": ["Ainda que ele discorde, seguiremos o plano.", "Portanto ele discorde, seguiremos o plano.", "Porque ele discorde, seguiremos o plano.", "Assim que ele discorde, seguiremos o plano."], "answer": 0, "explanation": "Ainda que (even though) concedes a point and, like embora, requires the subjunctive: ainda que ele discorde."},
+          {"prompt": "In a negotiation, \"abrir mão de\" means to…", "options": ["demand more", "raise your voice", "give something up", "sign the contract"], "answer": 2, "explanation": "Abrir mão de = to give up or waive something voluntarily, e.g. abrir mão do bônus."},
+          {"prompt": "Which closing fits a formal Brazilian e-mail?", "options": ["Falou, abraço!", "Atenciosamente,", "Tá bom então, tchau", "Beijos e até mais"], "answer": 1, "explanation": "Atenciosamente (or Cordialmente) is the standard formal sign-off; the others are informal."}
+        ]
+      }
+    }
+  ]
+}
