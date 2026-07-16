@@ -1,0 +1,96 @@
+{
+  "source": {
+    "id": "openstax",
+    "name": "OpenStax Principles of Management",
+    "url": "https://openstax.org/details/books/principles-management",
+    "license": "CC BY 4.0"
+  },
+  "course": {
+    "id": "bbbb0003-0000-4000-8000-000000000005",
+    "title": "Principles of Management",
+    "description": "A working introduction to what managers actually do — planning, organizing, leading, and controlling — plus leadership, motivation, teams, structure, and decisions. Structure adapted from OpenStax Principles of Management (CC BY 4.0).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "business",
+    "goal_tag": "work",
+    "position": 5,
+    "prerequisite_ids": []
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 10, "body": { "questions": [
+      { "prompt": "The four classic functions of management are planning, organizing, leading, and…", "options": ["counting", "controlling", "consulting", "competing"], "answer": 1, "explanation": "Planning, organizing, leading, controlling — see 'What managers do'." },
+      { "prompt": "A manager who sets goals and decides how to reach them is doing which function?", "options": ["leading", "controlling", "planning", "organizing"], "answer": 2, "explanation": "Planning defines goals and the route to them." },
+      { "prompt": "A leader who invites the team to shape a decision is using a … style.", "options": ["autocratic", "participative", "laissez-faire", "coercive"], "answer": 1, "explanation": "Participative (democratic) leaders share decision-making — see 'Leadership styles'." },
+      { "prompt": "In Maslow's hierarchy, which need sits at the base?", "options": ["esteem", "self-actualization", "physiological", "belonging"], "answer": 2, "explanation": "Physiological needs come first — see 'Motivation'." },
+      { "prompt": "Grouping people into departments and assigning authority is part of…", "options": ["planning", "organizing", "leading", "controlling"], "answer": 1, "explanation": "Organizing builds the structure that carries out the plan." },
+      { "prompt": "Comparing results to the plan and correcting drift is the … function.", "options": ["leading", "controlling", "organizing", "staffing"], "answer": 1, "explanation": "Controlling measures performance against goals." },
+      { "prompt": "A team that must choose among options should first…", "options": ["pick the loudest idea", "define the problem clearly", "assign blame", "wait for the boss"], "answer": 1, "explanation": "Good decisions start by framing the actual problem — see 'Decision-making'." },
+      { "prompt": "When two coworkers disagree over goals, that is best called…", "options": ["motivation", "conflict", "delegation", "controlling"], "answer": 1, "explanation": "Conflict is a clash of goals, values, or methods — see 'Key terms'." }
+    ] } },
+    { "position": 2, "title": "What managers do: the four functions", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Remember P-O-L-C: Plan, Organize, Lead, Control.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Name and distinguish the four functions of management. Warm-up: from the diagnostic, which function is about *checking results against the plan*?" },
+      { "heading": "The idea", "text": "Management is getting work done through other people, and it splits into four linked functions. *Planning* sets goals and picks a route to reach them. *Organizing* arranges people, money, and tasks — who reports to whom, who owns what. *Leading* motivates and directs those people day to day. *Controlling* measures actual results, compares them to the plan, and corrects the gap. The four form a loop: control feeds back into the next round of planning." },
+      { "heading": "Worked example", "text": "A café owner wants to cut morning wait times (a *goal*, so: planning). She schedules two baristas at peak hours and defines their stations (organizing). She coaches them and keeps morale up during the rush (leading). At week's end she checks average wait time against her target and adjusts the schedule (controlling)." },
+      { "heading": "Your turn", "text": "Label each action by function: (1) writing next quarter's sales target, (2) drawing an org chart, (3) giving a struggling employee feedback, (4) reviewing the budget-vs-actual report. Answers: 1-planning, 2-organizing, 3-leading, 4-controlling." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: treating the functions as a one-time sequence rather than a repeating loop. Mistake: confusing organizing (structure) with controlling (measurement). Exit: (a) Which function closes the loop by feeding back into planning? (b) Getting work done *through* whom? Answers: controlling; other people." }
+    ] } },
+    { "position": 3, "title": "Leadership styles", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Style is not fixed — good leaders flex it to the situation.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Tell the main leadership styles apart and match a style to a situation. Warm-up: which style shares the decision with the team?" },
+      { "heading": "The idea", "text": "Leadership styles describe *how* a manager uses authority. An *autocratic* leader decides alone and directs — fast, but it can drain buy-in. A *participative* (democratic) leader involves the team in decisions — slower, but stronger commitment. A *laissez-faire* leader delegates almost fully and steps back — great for experts, risky for novices. Beyond style, *transactional* leaders trade rewards for performance, while *transformational* leaders inspire people toward a shared vision. No single style is best; the right one depends on the task, the people, and the time available." },
+      { "heading": "Worked example", "text": "During a fire drill, a manager barks clear orders — autocratic fits an emergency. Planning next year's product line, the same manager runs a workshop and weighs everyone's input — participative fits a complex, low-urgency choice. Leading a team of senior researchers, she sets the goal and gets out of the way — laissez-faire fits skilled self-starters." },
+      { "heading": "Your turn", "text": "Pick a style for each: (1) a crisis needing an instant call, (2) a team of experienced designers, (3) a decision the whole team must own, (4) rewarding a rep for hitting quota. Answers: 1-autocratic, 2-laissez-faire, 3-participative, 4-transactional." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: assuming participative always beats autocratic — urgency and expertise change the answer. Mistake: confusing laissez-faire (deliberate delegation) with simple neglect. Exit: (a) Which style trades rewards for performance? (b) Which inspires toward a shared vision? Answers: transactional; transformational." }
+    ] } },
+    { "position": 4, "title": "Motivation: Maslow and Herzberg", "kind": "reading", "estimated_minutes": 13, "grammar_note": "Maslow = a ladder of needs; Herzberg = two separate factors.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Explain Maslow's hierarchy and Herzberg's two-factor theory, and use them to read a workplace. Warm-up: which of Maslow's needs must be met first?" },
+      { "heading": "The idea", "text": "*Maslow's hierarchy* ranks human needs from the bottom up: physiological (food, rest), safety, belonging, esteem, and self-actualization. People tend to pursue higher needs once lower ones are reasonably met. *Herzberg's two-factor theory* splits work into *hygiene factors* (pay, conditions, job security) that cause dissatisfaction when missing but don't truly motivate, and *motivators* (achievement, recognition, growth, the work itself) that drive real engagement. The practical lesson: fixing bad pay stops complaints, but only meaningful work and recognition create motivation." },
+      { "heading": "Worked example", "text": "A firm raises salaries and repaints the office (hygiene factors). Complaints drop — but performance stays flat, because nothing added *achievement* or *recognition*. It then lets engineers own projects end-to-end and celebrates wins publicly (motivators). Engagement climbs. In Maslow's terms, the raise served safety needs while ownership served esteem and self-actualization." },
+      { "heading": "Your turn", "text": "Classify each by Herzberg (hygiene or motivator): (1) a bonus for good work vs a paycheck itself, (2) a challenging new assignment, (3) a clean, safe workspace, (4) public recognition. Answers: 1-paycheck is hygiene, 2-motivator, 3-hygiene, 4-motivator." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: assuming higher pay by itself motivates — Herzberg calls pay a hygiene factor. Mistake: treating Maslow's levels as rigid steps rather than overlapping priorities. Exit: (a) Herzberg's two categories? (b) The top of Maslow's hierarchy? Answers: hygiene factors and motivators; self-actualization." }
+    ] } },
+    { "position": 5, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "Which function measures results against the plan?", "options": ["planning", "organizing", "leading", "controlling"], "answer": 3, "explanation": "Controlling closes the loop." },
+      { "prompt": "Arranging who reports to whom is part of…", "options": ["organizing", "leading", "planning", "controlling"], "answer": 0, "explanation": "Organizing builds structure and authority." },
+      { "prompt": "A leader who decides alone in an emergency is being…", "options": ["participative", "autocratic", "laissez-faire", "transformational"], "answer": 1, "explanation": "Autocratic fits urgent, clear-cut calls." },
+      { "prompt": "In Herzberg's theory, salary is a…", "options": ["motivator", "hygiene factor", "need", "goal"], "answer": 1, "explanation": "Pay prevents dissatisfaction but doesn't motivate." },
+      { "prompt": "Self-actualization sits where in Maslow's hierarchy?", "options": ["at the base", "in the middle", "at the top", "outside it"], "answer": 2, "explanation": "It is the highest need." },
+      { "prompt": "A leader who inspires the team toward a shared vision is…", "options": ["transactional", "autocratic", "transformational", "laissez-faire"], "answer": 2, "explanation": "Transformational leadership lifts people toward a vision." }
+    ] } },
+    { "position": 6, "title": "Teams and organizational structure", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Structure = the org chart; a team = people working toward a shared goal.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Distinguish common organizational structures and describe what makes a team effective. Warm-up: what does an org chart actually show?" },
+      { "heading": "The idea", "text": "*Organizational structure* is how an organization divides and coordinates work. A *functional* structure groups people by specialty (marketing, finance, operations) — efficient, but silos can form. A *divisional* structure groups by product, region, or customer — responsive, but it duplicates roles. A *matrix* structure crosses the two, so a person may report to both a function and a project — flexible, but it creates two bosses. A *team* is a small group with complementary skills working toward a shared goal; teams thrive on clear goals, defined roles, mutual accountability, and trust." },
+      { "heading": "Worked example", "text": "A software company groups staff by function (all engineers together, all marketers together) and ships slowly across silos. It switches to a matrix: each engineer stays in the engineering function but also joins a product team led by a product manager. Now a feature has one team owning it end-to-end — at the cost of each engineer answering to two leaders." },
+      { "heading": "Your turn", "text": "Name the structure: (1) departments by specialty, (2) separate units per world region, (3) staff reporting to both a function and a project, (4) a group by customer segment. Answers: 1-functional, 2-divisional, 3-matrix, 4-divisional." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: calling any group a 'team' — without a shared goal and mutual accountability it's just a group. Mistake: assuming matrix means no hierarchy (it adds one). Exit: (a) Which structure gives a person two bosses? (b) One thing effective teams need besides skill? Answers: matrix; a shared goal / clear roles / trust." }
+    ] } },
+    { "position": 7, "title": "Decision-making", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Frame the problem before hunting for solutions.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Walk through a rational decision process and spot common decision traps. Warm-up: what should you define before generating options?" },
+      { "heading": "The idea", "text": "The *rational decision-making* process runs in steps: identify the problem, gather information, generate alternatives, weigh them against criteria, choose, act, and then evaluate the outcome. In reality managers face *bounded rationality* — limited time and information — so they often *satisfice*, picking the first option that is good enough rather than the theoretical best. Watch for traps: *confirmation bias* (favoring evidence that fits your hunch), *anchoring* (over-relying on the first number you hear), and *escalation of commitment* (pouring more resources into a failing choice to justify the past)." },
+      { "heading": "Worked example", "text": "A manager must pick a supplier. She defines the real problem (reliable delivery, not just low price), lists criteria (cost, lead time, quality), scores three vendors, and selects the best fit — then reviews on-time rates a month later. Contrast: a rival keeps a late supplier because 'we've already invested so much' — that's escalation of commitment." },
+      { "heading": "Your turn", "text": "Name the trap: (1) only reading reviews that praise your favorite option, (2) fixating on the first price quoted, (3) funding a doomed project to avoid admitting a loss, (4) settling for the first 'good enough' choice under time pressure. Answers: 1-confirmation bias, 2-anchoring, 3-escalation of commitment, 4-satisficing." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: jumping to solutions before framing the problem. Mistake: thinking real managers optimize perfectly — bounded rationality says otherwise. Exit: (a) What is the first step of the rational process? (b) Name the bias of over-weighting the first number. Answers: identify the problem; anchoring." }
+    ] } },
+    { "position": 8, "title": "Key terms", "kind": "vocab", "estimated_minutes": 8, "body": { "items": [
+      { "term": "controlling", "translation": "the function of measuring results and correcting deviations from the plan", "example": "Through controlling she caught the budget overrun early." },
+      { "term": "participative leadership", "translation": "a style in which the leader involves the team in decisions", "example": "His participative leadership won strong buy-in for the new process." },
+      { "term": "hygiene factor", "translation": "a job element (like pay or conditions) that causes dissatisfaction when poor but does not motivate", "example": "Fixing the broken air conditioning removed a hygiene factor complaint." },
+      { "term": "matrix structure", "translation": "an organizational design where a person reports to both a function and a project", "example": "In the matrix structure she answered to both engineering and the product lead." },
+      { "term": "satisficing", "translation": "choosing the first option that is good enough rather than the optimal one", "example": "Under a tight deadline the team resorted to satisficing." },
+      { "term": "conflict", "translation": "a clash of goals, values, or methods between people or groups", "example": "The conflict over priorities was resolved by clarifying the shared goal." }
+    ] } },
+    { "position": 9, "title": "Checkpoint 2", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "A structure that groups people by specialty is…", "options": ["divisional", "functional", "matrix", "flat"], "answer": 1, "explanation": "Functional groups by function/specialty." },
+      { "prompt": "Reporting to both a function and a project describes a … structure.", "options": ["functional", "divisional", "matrix", "team"], "answer": 2, "explanation": "The matrix creates dual reporting." },
+      { "prompt": "The first step of rational decision-making is to…", "options": ["choose an option", "identify the problem", "act", "evaluate results"], "answer": 1, "explanation": "You must frame the problem first." },
+      { "prompt": "Pouring more money into a failing project to justify past spending is…", "options": ["anchoring", "satisficing", "escalation of commitment", "confirmation bias"], "answer": 2, "explanation": "Escalation of commitment." },
+      { "prompt": "Limited time and information leading to 'good enough' choices is called…", "options": ["bounded rationality", "optimization", "controlling", "delegation"], "answer": 0, "explanation": "Bounded rationality, often via satisficing." },
+      { "prompt": "What turns a mere group into an effective team?", "options": ["a large size", "a shared goal and mutual accountability", "a single specialty", "a fixed office"], "answer": 1, "explanation": "Shared goals, roles, and accountability define a team." }
+    ] } },
+    { "position": 10, "title": "Applied project: lead a small team through a change", "kind": "writing", "estimated_minutes": 15, "body": { "sections": [
+      { "heading": "The task", "text": "Imagine you manage a five-person team that must adopt a new tool or process (for example, switching to a new scheduling system). Write a short plan for leading them through the change. You won't execute it — you'll design it deliberately, using the course's ideas." },
+      { "heading": "Milestones", "text": "1) State the change and a clear, measurable goal (planning). 2) Assign roles and decide who owns which part (organizing). 3) Choose a leadership style for the rollout and justify it (leading). 4) Name one motivator you'll use and one hygiene factor you'll protect (motivation). 5) Anticipate one likely conflict and how you'll address it, then say how you'll measure whether the change worked (controlling)." },
+      { "heading": "Self-check rubric", "text": "✔ The goal is specific and measurable. ✔ Roles are assigned, not vague. ✔ Your chosen leadership style fits the situation and you explained why. ✔ You used both a Herzberg motivator and a hygiene factor correctly. ✔ You planned a control measure to evaluate the outcome. If all five hold, you've applied planning, organizing, leading, motivation, and controlling to a real change." }
+    ] } }
+  ]
+}
