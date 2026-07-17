@@ -147,3 +147,20 @@ update public.courses set source_id='acm'      where id='bbbb0002-0000-4000-8000
 insert into public.course_standards (course_id, descriptor_id) values
   ('bbbb0002-0000-4000-8000-000000000009','acm.se')
 on conflict do nothing;
+
+-- ---- Certification sources (batch 7) ----
+insert into public.curriculum_sources (id, name, url, license, kind) values
+  ('comptia','CompTIA (published exam objectives)','https://www.comptia.org/certifications','Objectives referenced; content original','certification'),
+  ('aws','AWS Certification (published domains)','https://aws.amazon.com/certification/','Domains referenced; content original','certification'),
+  ('pmi','PMI — Project Management Institute','https://www.pmi.org/certifications','Outline referenced; content original','certification'),
+  ('google_career','Google Career Certificates','https://grow.google/certificates/','Topics referenced; content original','certification')
+on conflict (id) do nothing;
+update public.courses set source_id='comptia' where id in ('bbbb0002-0000-4000-8000-00000000000a','bbbb0002-0000-4000-8000-00000000000c') and source_id is null;
+update public.courses set source_id='aws'     where id='bbbb0002-0000-4000-8000-00000000000b' and source_id is null;
+update public.courses set source_id='pmi'     where id='bbbb0003-0000-4000-8000-000000000009' and source_id is null;
+update public.courses set source_id='google_career' where id='bbbb0003-0000-4000-8000-00000000000a' and source_id is null;
+insert into public.course_standards (course_id, descriptor_id) values
+  ('bbbb0002-0000-4000-8000-00000000000a','acm.sec'),
+  ('bbbb0002-0000-4000-8000-00000000000b','acm.se'),
+  ('bbbb0003-0000-4000-8000-00000000000a','acm.dm')
+on conflict do nothing;
