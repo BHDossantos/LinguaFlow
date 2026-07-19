@@ -1,0 +1,179 @@
+{
+  "source": {
+    "id": "cefr",
+    "name": "CEFR (Council of Europe)",
+    "url": "https://www.coe.int/en/web/common-european-framework-reference-languages",
+    "license": "Council of Europe"
+  },
+  "course": {
+    "id": "aaaa0006-0000-4000-8000-000000000001",
+    "title": "German A1 — First Steps",
+    "description": "A CEFR A1 starter course that teaches German for absolute beginners: greet people, introduce yourself, count, order food, and ask simple questions with confidence.",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": "A1",
+    "school": "language",
+    "goal_tag": "travel",
+    "position": 10,
+    "prerequisite_ids": []
+  },
+  "lessons": [
+    {
+      "position": 1,
+      "title": "Greetings & saying goodbye",
+      "kind": "vocab",
+      "estimated_minutes": 8,
+      "grammar_note": "German capitalizes every noun, not just names — that is why Guten Tag and Auf Wiedersehen are written with capitals mid-phrase.",
+      "body": {
+        "items": [
+          {"term": "Hallo", "translation": "hello", "ipa": "ˈhaloː", "example": "Hallo, wie geht es dir?"},
+          {"term": "Guten Morgen", "translation": "good morning", "ipa": "ˈɡuːtn̩ ˈmɔʁɡn̩", "example": "Guten Morgen! Hast du gut geschlafen?"},
+          {"term": "Guten Tag", "translation": "good day / hello (formal)", "ipa": "ˈɡuːtn̩ ˈtaːk", "example": "Guten Tag, Frau Meyer!"},
+          {"term": "Tschüss", "translation": "bye (informal)", "ipa": "tʃʏs", "example": "Tschüss, bis morgen!"},
+          {"term": "Auf Wiedersehen", "translation": "goodbye (formal)", "ipa": "aʊf ˈviːdɐˌzeːən", "example": "Auf Wiedersehen und einen schönen Tag!"},
+          {"term": "Bitte / Danke", "translation": "please / thank you", "ipa": "ˈbɪtə ˈdaŋkə", "example": "Einen Kaffee, bitte. — Danke schön!"}
+        ]
+      }
+    },
+    {
+      "position": 2,
+      "title": "Introducing yourself",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "Ich heiße means literally 'I am called'. In heißen the double-s ß is used after the long 'ei' sound; both ß and ss sound like a sharp English 's'.",
+      "body": {
+        "items": [
+          {"term": "Ich heiße…", "translation": "my name is…", "ipa": "ɪç ˈhaɪsə", "example": "Ich heiße Anna. Und du?"},
+          {"term": "Ich komme aus…", "translation": "I come from…", "ipa": "ɪç ˈkɔmə aʊs", "example": "Ich komme aus Spanien."},
+          {"term": "Ich wohne in…", "translation": "I live in…", "ipa": "ɪç ˈvoːnə ɪn", "example": "Ich wohne in Berlin."},
+          {"term": "Freut mich", "translation": "nice to meet you", "ipa": "fʁɔʏt mɪç", "example": "Freut mich, ich bin Tom."},
+          {"term": "Wie heißt du?", "translation": "what is your name?", "ipa": "viː haɪst duː", "example": "Wie heißt du? — Ich heiße Lena."},
+          {"term": "Ich spreche ein bisschen Deutsch", "translation": "I speak a little German", "ipa": "ɪç ˈʃpʁɛçə aɪn ˈbɪsçən dɔʏtʃ", "example": "Entschuldigung, ich spreche nur ein bisschen Deutsch."}
+        ]
+      }
+    },
+    {
+      "position": 3,
+      "title": "Personal pronouns & the verb sein",
+      "kind": "grammar",
+      "estimated_minutes": 10,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "The personal pronouns", "text": "German subject pronouns are: ich (I), du (you, informal), er/sie/es (he/she/it), wir (we), ihr (you all, informal), sie (they) and Sie (you, formal — always capitalized). Use du with friends, family and children; use Sie with strangers, older people and in shops or offices."},
+          {"heading": "sein — to be", "text": "sein is irregular and essential: ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie/Sie sind. Examples: Ich bin müde (I am tired), Du bist nett (you are nice), Wir sind aus Italien (we are from Italy)."},
+          {"heading": "Putting it together", "text": "Combine a pronoun and sein to say who or how you are: Ich bin Student (I am a student), Sie ist Ärztin (she is a doctor), Es ist kalt (it is cold). Note that German drops the article for jobs: Ich bin Lehrer, not 'ein Lehrer'."},
+          {"heading": "Formal vs informal", "text": "Sind Sie Herr Klein? asks 'Are you Mr. Klein?' politely, while Bist du Peter? is the informal version. Choosing du or Sie correctly is a core A1 skill in German-speaking countries."}
+        ]
+      }
+    },
+    {
+      "position": 4,
+      "title": "Numbers 0–20",
+      "kind": "vocab",
+      "estimated_minutes": 8,
+      "grammar_note": "From 13 to 19, German counts 'units first': dreizehn is literally 'three-ten'. This flip becomes even stronger above 20 (einundzwanzig = 'one-and-twenty').",
+      "body": {
+        "items": [
+          {"term": "null, eins, zwei, drei", "translation": "zero, one, two, three", "ipa": "nʊl aɪns tsvaɪ dʁaɪ", "example": "Meine Nummer ist null-eins-sieben."},
+          {"term": "vier, fünf, sechs", "translation": "four, five, six", "ipa": "fiːɐ̯ fʏnf zɛks", "example": "Ich hätte gern sechs Brötchen."},
+          {"term": "sieben, acht, neun, zehn", "translation": "seven, eight, nine, ten", "ipa": "ˈziːbn̩ axt nɔʏn tseːn", "example": "Der Zug fährt um zehn Uhr."},
+          {"term": "elf, zwölf, dreizehn", "translation": "eleven, twelve, thirteen", "ipa": "ɛlf tsvœlf ˈdʁaɪtseːn", "example": "Ich bin dreizehn Jahre alt."},
+          {"term": "vierzehn, fünfzehn, sechzehn", "translation": "fourteen, fifteen, sixteen", "ipa": "ˈfɪʁtseːn ˈfʏnftseːn ˈzɛçtseːn", "example": "Es ist jetzt fünfzehn Uhr."},
+          {"term": "siebzehn, achtzehn, neunzehn, zwanzig", "translation": "seventeen, eighteen, nineteen, twenty", "ipa": "ˈziːptseːn ˈaxtseːn ˈnɔʏntseːn ˈtsvantsɪç", "example": "Meine Schwester ist zwanzig."}
+        ]
+      }
+    },
+    {
+      "position": 5,
+      "title": "The verb haben & articles der/die/das",
+      "kind": "grammar",
+      "estimated_minutes": 10,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "haben — to have", "text": "haben is used constantly: ich habe, du hast, er/sie/es hat, wir haben, ihr habt, sie/Sie haben. Examples: Ich habe Hunger (I am hungry, literally 'I have hunger'), Hast du Zeit? (do you have time?), Wir haben ein Auto (we have a car)."},
+          {"heading": "The three genders", "text": "Every German noun has a gender, shown by its article: der for masculine (der Mann — the man), die for feminine (die Frau — the woman), das for neuter (das Kind — the child). The gender is not always logical, so learn each noun together with its article."},
+          {"heading": "The indefinite article", "text": "'a/an' is ein for masculine and neuter, and eine for feminine: ein Mann, ein Kind, eine Frau. So Ich habe einen Bruder und eine Schwester means 'I have a brother and a sister' — note the masculine ein becomes einen after haben."},
+          {"heading": "The plural die", "text": "Good news: in the plural all genders use die — die Männer, die Frauen, die Kinder. Learning the plural form is another thing to memorize with each noun, but the article is always die."}
+        ]
+      }
+    },
+    {
+      "position": 6,
+      "title": "At the café",
+      "kind": "roleplay",
+      "estimated_minutes": 9,
+      "grammar_note": null,
+      "body": {
+        "scenario": "You walk into a busy café in Vienna. Greet the waiter, order a coffee and a slice of cake, ask how much it costs, and pay. Use polite forms like Ich hätte gern… and Was kostet das?",
+        "persona": "A friendly but efficient waiter who speaks only German and lists the day's cakes",
+        "goal": "Order a drink and a cake, ask the price, and pay entirely in German"
+      }
+    },
+    {
+      "position": 7,
+      "title": "Food & drinks",
+      "kind": "vocab",
+      "estimated_minutes": 8,
+      "grammar_note": "Ich hätte gern (I would like) is the polite standard for ordering — softer than Ich will (I want), which can sound blunt to a waiter.",
+      "body": {
+        "items": [
+          {"term": "das Wasser", "translation": "water", "ipa": "das ˈvasɐ", "example": "Ein Glas Wasser, bitte."},
+          {"term": "der Kaffee", "translation": "coffee", "ipa": "deːɐ̯ ˈkafeː", "example": "Ich trinke gern Kaffee mit Milch."},
+          {"term": "das Brot / das Brötchen", "translation": "bread / bread roll", "ipa": "das bʁoːt ˈbʁøːtçən", "example": "Zum Frühstück esse ich ein Brötchen."},
+          {"term": "der Apfel", "translation": "apple", "ipa": "deːɐ̯ ˈapfl̩", "example": "Der Apfel ist rot und süß."},
+          {"term": "Ich hätte gern…", "translation": "I would like…", "ipa": "ɪç ˈhɛtə ɡɛʁn", "example": "Ich hätte gern ein Stück Kuchen."},
+          {"term": "die Rechnung, bitte", "translation": "the bill, please", "ipa": "diː ˈʁɛçnʊŋ ˈbɪtə", "example": "Die Rechnung, bitte. — Das macht acht Euro."}
+        ]
+      }
+    },
+    {
+      "position": 8,
+      "title": "Basic questions & word order",
+      "kind": "grammar",
+      "estimated_minutes": 10,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "The verb comes second", "text": "In a normal German statement the conjugated verb is always in second position. Ich trinke heute Tee and Heute trinke ich Tee both mean 'I drink tea today' — whatever comes first, the verb stays in slot two and the subject moves right after it."},
+          {"heading": "Yes/no questions", "text": "To ask a yes/no question, put the verb first: Trinkst du Kaffee? (Do you drink coffee?), Ist das Anna? (Is that Anna?), Hast du Zeit? (Do you have time?). The expected answers are ja (yes) or nein (no)."},
+          {"heading": "Question words (W-Fragen)", "text": "Most question words start with W: wer (who), was (what), wo (where), wann (when), wie (how), warum (why). The W-word leads and the verb follows: Wo wohnst du? (Where do you live?), Wie heißt du? (What is your name?)."},
+          {"heading": "Putting it together", "text": "Compare the three patterns: Du kommst aus Berlin (statement), Kommst du aus Berlin? (yes/no question), Woher kommst du? (W-question, 'where are you from?'). Master these three shapes and you can handle most A1 conversations."}
+        ]
+      }
+    },
+    {
+      "position": 9,
+      "title": "Listening: an introduction",
+      "kind": "listening",
+      "estimated_minutes": 9,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "The recording", "text": "Listen to Markus introduce himself: 'Hallo! Ich heiße Markus Schmidt. Ich bin dreißig Jahre alt und ich komme aus München. Ich wohne jetzt in Hamburg und arbeite als Ingenieur. Ich habe eine Schwester und einen Hund. Ich spreche Deutsch und ein bisschen Englisch.'"},
+          {"heading": "What did he say?", "text": "Markus tells us four key facts: his name (Markus Schmidt), his age (dreißig — thirty), his origin (aus München — from Munich) and where he lives now (in Hamburg). He also mentions his job, Ingenieur (engineer)."},
+          {"heading": "Listen for the details", "text": "He has one sister (eine Schwester) and a dog (einen Hund). He speaks German and 'ein bisschen Englisch' — a little English. Notice how he uses ich bin for age and state, ich komme for origin, and ich habe for what he owns."},
+          {"heading": "Your turn", "text": "Now adapt the text to yourself out loud: replace the name, age, city and job with your own. This simple self-introduction template — heißen, sein, kommen, wohnen, haben — is exactly what an A1 speaker needs to meet new people."}
+        ]
+      }
+    },
+    {
+      "position": 10,
+      "title": "A1 checkpoint",
+      "kind": "quiz",
+      "estimated_minutes": 7,
+      "grammar_note": null,
+      "body": {
+        "questions": [
+          {"prompt": "How do you say 'good morning' in German?", "options": ["Guten Abend", "Guten Morgen", "Gute Nacht", "Auf Wiedersehen"], "answer": 1, "explanation": "Guten Morgen is 'good morning'. Guten Abend is 'good evening' and Gute Nacht is 'good night'."},
+          {"prompt": "Complete: Ich ___ Anna und ich komme aus Berlin.", "options": ["heißt", "heiße", "heißen", "heißst"], "answer": 1, "explanation": "With ich the verb heißen takes the ending -e: ich heiße. The du form would be du heißt."},
+          {"prompt": "Which is the correct present-tense form of sein for 'we'?", "options": ["wir bin", "wir bist", "wir sind", "wir seid"], "answer": 2, "explanation": "sein for wir is sind: wir sind. Bin goes with ich, bist with du, and seid with ihr."},
+          {"prompt": "Which article goes with Frau (woman)?", "options": ["der", "die", "das", "den"], "answer": 1, "explanation": "Frau is feminine, so it takes die: die Frau. der is masculine and das is neuter."},
+          {"prompt": "How do you turn 'Du trinkst Kaffee' into a yes/no question?", "options": ["Du trinkst Kaffee?", "Trinkst du Kaffee?", "Kaffee du trinkst?", "Wo trinkst du Kaffee?"], "answer": 1, "explanation": "For a yes/no question the verb moves to the front: Trinkst du Kaffee? The last option is a W-question, not a yes/no question."},
+          {"prompt": "What does 'Ich habe Hunger' mean?", "options": ["I am tired", "I am hungry", "I have a dog", "I am thirsty"], "answer": 1, "explanation": "German expresses hunger with haben: Ich habe Hunger literally means 'I have hunger', i.e. 'I am hungry'."}
+        ]
+      }
+    }
+  ]
+}
