@@ -1,0 +1,96 @@
+{
+  "source": {
+    "id": "oer_commons",
+    "name": "OER Commons — Copywriting & Persuasive Writing",
+    "url": "https://www.oercommons.org",
+    "license": "CC BY"
+  },
+  "course": {
+    "id": "bbbb0003-0000-4000-8000-00000000000c",
+    "title": "Copywriting",
+    "description": "A practical, ethical introduction to writing copy that persuades without manipulating — audience, headlines, benefits, proven frameworks, and clear calls to action. Built from openly-licensed OER Commons material (CC BY).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "business",
+    "goal_tag": "work",
+    "position": 12,
+    "prerequisite_ids": []
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 10, "body": { "questions": [
+      { "prompt": "Copywriting is best described as writing that…", "options": ["wins literary awards", "drives a specific reader action", "fills a page with keywords", "sounds as clever as possible"], "answer": 1, "explanation": "Copy exists to move a reader to act — see 'Knowing your audience'." },
+      { "prompt": "A value proposition mainly answers…", "options": ["what the product is made of", "why this reader should choose you over the alternatives", "how big your company is", "what your logo looks like"], "answer": 1, "explanation": "It's the specific value a reader gets — see 'Knowing your audience'." },
+      { "prompt": "A good headline's first job is to…", "options": ["list every feature", "earn the reader's next few seconds of attention", "rhyme", "mention the price"], "answer": 1, "explanation": "Headlines buy attention for the sentence that follows — see 'Headlines'." },
+      { "prompt": "The difference between a feature and a benefit is…", "options": ["there is none", "a feature is what it does; a benefit is what the reader gets", "benefits are always cheaper", "features are only for software"], "answer": 1, "explanation": "Benefits translate features into reader outcomes — see 'Features vs benefits'." },
+      { "prompt": "In the AIDA framework, the 'A' at the start stands for…", "options": ["Action", "Attention", "Argument", "Audience"], "answer": 1, "explanation": "Attention, Interest, Desire, Action — see 'Persuasion frameworks'." },
+      { "prompt": "The PAS framework stands for…", "options": ["Price, Ask, Sell", "Problem, Agitate, Solution", "Product, Aim, Story", "Promise, Add, Simplify"], "answer": 1, "explanation": "Problem, Agitate, Solution — see 'Persuasion frameworks'." },
+      { "prompt": "A strong call to action is usually…", "options": ["vague and gentle", "specific about the one next step", "hidden at the bottom", "a wall of choices"], "answer": 1, "explanation": "One clear next step outperforms many — see 'Calls to action'." },
+      { "prompt": "Ethical persuasion means you…", "options": ["invent urgency that isn't real", "use honest claims the reader can verify", "hide the price until checkout", "pressure with fake scarcity"], "answer": 1, "explanation": "Persuade with truth, not dark patterns — a theme all course." }
+    ] } },
+    { "position": 2, "title": "Knowing your audience and the value proposition", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Write 'you', not 'we' — copy that centers the reader converts better.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Describe one reader precisely and state the value they get in a single sentence. Warm-up: from the diagnostic, what does a value proposition actually promise the reader?" },
+      { "heading": "The idea", "text": "Great copy is written *to one person*, not a crowd. Before writing a word, name that reader: what do they want, what are they stuck on, and what would make their day easier? The *value proposition* is your answer in one line — the specific outcome they get and why it beats their current option. It leads with *you* (the reader), not *we* (the company)." },
+      { "heading": "Worked example", "text": "Weak: 'We offer a comprehensive cloud-based scheduling platform with robust features.' Strong: 'Book a week of client meetings in five minutes — no back-and-forth emails.' The rewrite drops company-speak, names the reader's task, and promises a concrete result they can picture." },
+      { "heading": "Your turn", "text": "Rewrite each to lead with reader value: (1) 'We sell ergonomic office chairs.' (2) 'Our app has many budgeting tools.' (3) 'We are a full-service moving company.' Model answers: (1) 'Sit through back-to-back meetings without the afternoon backache.' (2) 'See exactly where your money goes — and where to save fifty dollars this month.' (3) 'Move across town without lifting a box or losing a Saturday.'" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: describing the product instead of the reader's outcome. Mistake: writing for 'everyone' so it lands with no one. Exit: (a) A value proposition should lead with which word — 'we' or 'you'? (b) Name one thing you must know about your reader before writing. Answers: you; what they want or are stuck on (either is fine)." }
+    ] } },
+    { "position": 3, "title": "Headlines that grab (honestly)", "kind": "reading", "estimated_minutes": 11, "grammar_note": "Numbers and concrete nouns beat vague adjectives in headlines.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Write a headline that earns attention without overpromising. Warm-up: what is a headline's very first job?" },
+      { "heading": "The idea", "text": "Most readers decide in a second whether to keep reading, and the headline is what they judge. A strong headline is *specific*, *reader-focused*, and *true* — it names a real benefit or curiosity gap the copy below actually delivers. Concrete words ('five minutes', 'no spreadsheets') beat empty intensifiers ('amazing', 'revolutionary'). Never write a headline the body can't honor; a clickbait promise you break costs you trust." },
+      { "heading": "Worked example", "text": "Weak: 'The Best Project Tool You'll Ever Use.' Strong: 'Ship your project a week early — without another status meeting.' The rewrite swaps a boast the reader can't verify for a specific, believable outcome, and it hints at the pain (status meetings) the tool removes." },
+      { "heading": "Your turn", "text": "Sharpen each headline: (1) 'Great Coffee, Delivered.' (2) 'Learn Spanish Fast!' (3) 'Our Software Saves Time.' Model answers: (1) 'Fresh-roasted beans on your doorstep every Friday.' (2) 'Order lunch in Spanish after two weeks of ten-minute lessons.' (3) 'Close the books in an afternoon, not a week.'" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: promising something the body can't deliver (clickbait). Mistake: hiding the benefit behind clever wordplay. Exit: (a) True or false: a headline can promise more than the copy delivers if it boosts clicks. (b) Which is stronger — 'amazing results' or 'cut prep time in half'? Answers: false; 'cut prep time in half'." }
+    ] } },
+    { "position": 4, "title": "Features vs benefits", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Bridge features to benefits with the phrase 'so you can…'.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Turn any feature into the benefit a reader actually cares about. Warm-up: in one line, how does a benefit differ from a feature?" },
+      { "heading": "The idea", "text": "A *feature* is a fact about the product; a *benefit* is what that fact does for the reader's life. Readers buy benefits, but writers default to features because features are easier to list. The fix is a simple bridge: state the feature, then add 'so you can…' and finish with the reader's outcome. Keep the feature — it's proof — but let the benefit lead." },
+      { "heading": "Worked example", "text": "Weak: 'Battery lasts 20 hours.' Strong: 'Twenty-hour battery, so you can fly coast to coast and still finish the movie on the way home.' The number stays as evidence, but the sentence now sells the freedom the number buys." },
+      { "heading": "Your turn", "text": "Add a 'so you can…' benefit to each feature: (1) '256-bit encryption.' (2) 'Offline mode.' (3) 'One-click export to PDF.' Model answers: (1) '256-bit encryption, so you can send client files knowing they can't be read in transit.' (2) 'Offline mode, so you can keep working through a dead-zone commute.' (3) 'One-click PDF export, so you can hand a clean report to your boss in seconds.'" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: listing features and assuming the reader will 'get it'. Mistake: dropping the feature entirely, leaving the benefit unproven. Exit: (a) Which does the reader buy — the feature or the benefit? (b) What three-word bridge turns a feature into a benefit? Answers: the benefit; 'so you can'." }
+    ] } },
+    { "position": 5, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "The strongest copy is written to…", "options": ["as many people as possible", "one specific reader", "search engines first", "the company's founders"], "answer": 1, "explanation": "Write to one person — see 'Knowing your audience'." },
+      { "prompt": "A value proposition should lead with…", "options": ["'we'", "'you'", "the price", "the company history"], "answer": 1, "explanation": "Center the reader's outcome." },
+      { "prompt": "The first job of a headline is to…", "options": ["list features", "earn the next few seconds of attention", "state the price", "name the company"], "answer": 1, "explanation": "It buys attention for the body." },
+      { "prompt": "'Twenty-hour battery, so you can fly coast to coast and still finish the movie' is an example of…", "options": ["a feature with no benefit", "a benefit built from a feature", "a call to action", "a misleading claim"], "answer": 1, "explanation": "The 'so you can' bridge turns a feature into a benefit." },
+      { "prompt": "A headline that promises more than the copy delivers is…", "options": ["smart marketing", "clickbait that costs trust", "always fine if it converts", "a value proposition"], "answer": 1, "explanation": "Broken promises erode trust." },
+      { "prompt": "Which is the stronger, more honest headline?", "options": ["'The Best Tool Ever'", "'Ship your project a week early'", "'Amazing Results Guaranteed'", "'You Won't Believe This'"], "answer": 1, "explanation": "Specific and verifiable beats vague hype." }
+    ] } },
+    { "position": 6, "title": "Persuasion frameworks: AIDA and PAS", "kind": "reading", "estimated_minutes": 13, "grammar_note": "Frameworks are scaffolding, not straitjackets — use them, then read it aloud.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Structure a short piece of copy with AIDA or PAS. Warm-up: what do the letters A-I-D-A stand for?" },
+      { "heading": "The idea", "text": "Frameworks give copy a reliable spine. *AIDA* moves the reader through *Attention* (a hook), *Interest* (why it's relevant to them), *Desire* (the benefit they'll feel), and *Action* (the next step). *PAS* is tighter: *Problem* (name the pain honestly), *Agitate* (show its real cost — without inventing fear), *Solution* (your fix). Both work because they follow how people actually decide. Ethics note: agitate a *true* problem, never a manufactured one." },
+      { "heading": "Worked example", "text": "Weak (no structure): 'Our planner has calendars, reminders, and notes. Buy it today.' Strong (PAS): 'Missing a deadline you forgot you had? [Problem] One slip can cost a client — and the scramble eats your whole evening. [Agitate] Our planner surfaces every due date the morning it matters, so nothing slips. See this week free. [Solution + Action]' The rewrite gives the reader a reason to care before the ask." },
+      { "heading": "Your turn", "text": "Label the AIDA stage of each line, then draft a missing one: (1) 'Tired of cold coffee by 9am?' (2) 'This mug keeps it hot for six hours.' (3) 'Imagine sipping a warm cup through your whole morning.' (4) '____'. Answers: (1) Attention, (2) Interest, (3) Desire, (4) Action — e.g. 'Order yours today and drink it warm tomorrow.'" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: agitating a fake or exaggerated problem to scare the reader (a dark pattern). Mistake: following the letters so rigidly the copy sounds robotic. Exit: (a) What does the 'S' in PAS stand for? (b) In AIDA, which stage is the ask? Answers: Solution; Action." }
+    ] } },
+    { "position": 7, "title": "Calls to action that convert", "kind": "reading", "estimated_minutes": 11, "grammar_note": "Start a CTA with a verb: 'Start', 'Get', 'Book', 'Try'.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Write a clear, honest call to action for one next step. Warm-up: how many actions should a single CTA ask for?" },
+      { "heading": "The idea", "text": "A *call to action* (CTA) tells the reader exactly what to do next. The best CTAs are *specific* (one step), *verb-first* ('Start your free trial', not 'Submit'), and *low-friction* — they set honest expectations about what happens after the click. Reducing choices helps: one clear action beats a menu. Real urgency ('doors close Friday' when they truly do) is fair; invented countdowns are not." },
+      { "heading": "Worked example", "text": "Weak: 'Click here to learn more or maybe sign up or contact us.' Strong: 'Start your free 14-day trial — no card required.' The rewrite picks one action, opens with a verb, and removes the reader's biggest hesitation instead of piling on options." },
+      { "heading": "Your turn", "text": "Rewrite each CTA to be single, verb-first, and honest: (1) 'Submit.' (2) 'Learn more or buy now or subscribe.' (3) 'Act fast, only 2 left! (there are hundreds)'. Model answers: (1) 'Get my free guide.' (2) 'Book a 15-minute demo.' (3) 'Order today for Friday delivery.' — drop the false-scarcity line entirely." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: offering several actions at once so the reader picks none. Mistake: faking scarcity or urgency (a dark pattern that burns trust). Exit: (a) How many actions should one CTA ask for? (b) True or false: inventing a fake countdown is acceptable if it lifts clicks. Answers: one; false." }
+    ] } },
+    { "position": 8, "title": "Key terms", "kind": "vocab", "estimated_minutes": 8, "body": { "items": [
+      { "term": "value proposition", "translation": "the specific value a reader gets and why it beats their alternatives, in one line", "example": "'Book a week of meetings in five minutes' is a value proposition, not a feature list." },
+      { "term": "benefit", "translation": "what a feature actually does for the reader's life", "example": "The benefit of a long battery is finishing the movie on the flight home." },
+      { "term": "headline", "translation": "the first line whose job is to earn the reader's next few seconds", "example": "A specific headline like 'Ship a week early' beats 'The Best Tool Ever'." },
+      { "term": "AIDA", "translation": "a framework: Attention, Interest, Desire, Action", "example": "She structured the landing page with AIDA, ending on a single clear action." },
+      { "term": "PAS", "translation": "a framework: Problem, Agitate, Solution", "example": "The email used PAS to name a real problem before offering the fix." },
+      { "term": "call to action", "translation": "a clear instruction telling the reader the one next step to take", "example": "'Start your free trial — no card required' is a strong call to action." }
+    ] } },
+    { "position": 9, "title": "Checkpoint 2", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "In AIDA, the stages in order are…", "options": ["Action, Interest, Desire, Attention", "Attention, Interest, Desire, Action", "Attention, Idea, Desire, Ask", "Audience, Interest, Deal, Action"], "answer": 1, "explanation": "Attention, Interest, Desire, Action." },
+      { "prompt": "The 'Agitate' step in PAS should always…", "options": ["exaggerate the problem to scare the reader", "describe a real, honest cost of the problem", "skip straight to the price", "invent a fake deadline"], "answer": 1, "explanation": "Agitate a true problem, never a manufactured one." },
+      { "prompt": "A strong CTA usually opens with…", "options": ["a noun", "a verb", "the price", "a disclaimer"], "answer": 1, "explanation": "Verb-first: 'Start', 'Get', 'Book'." },
+      { "prompt": "How many actions should a single call to action ask for?", "options": ["as many as possible", "one", "at least three", "none"], "answer": 1, "explanation": "One clear next step converts best." },
+      { "prompt": "Which is an ethical use of urgency?", "options": ["a fake countdown timer", "'only 2 left' when there are hundreds", "'doors close Friday' when they truly do", "hiding the price until checkout"], "answer": 2, "explanation": "Real deadlines are fair; invented ones are dark patterns." },
+      { "prompt": "The PAS framework is best summarized as…", "options": ["Price, Ask, Sell", "Problem, Agitate, Solution", "Promise, Add, Simplify", "Product, Aim, Story"], "answer": 1, "explanation": "Problem, Agitate, Solution." }
+    ] } },
+    { "position": 10, "title": "Applied project: write a landing-page hero and CTA", "kind": "writing", "estimated_minutes": 15, "body": { "sections": [
+      { "heading": "The task", "text": "Pick a real or imagined product and write the hero section of its landing page: one headline, one or two supporting lines that carry the value proposition and a benefit, and one call to action. Keep it honest — every claim should be something the product could truly deliver." },
+      { "heading": "Milestones", "text": "1) Name your one reader in a sentence (who they are, what they want). 2) Draft a specific, true headline. 3) Add a supporting line that turns a feature into a benefit with 'so you can…'. 4) Write one verb-first CTA for a single next step. 5) Edit for clarity and voice: read it aloud, cut every word that isn't pulling weight, and make sure it sounds like a person, not a brochure." },
+      { "heading": "Self-check rubric", "text": "✔ The headline is specific and something the copy can honestly deliver (no clickbait). ✔ The value proposition leads with the reader ('you'), not the company ('we'). ✔ At least one feature is bridged to a benefit. ✔ The CTA names one clear, verb-first step. ✔ No fake urgency, false scarcity, or manipulative claim anywhere. ✔ It reads cleanly aloud. If all six are true, you've written persuasive copy that respects the reader." }
+    ] } }
+  ]
+}
