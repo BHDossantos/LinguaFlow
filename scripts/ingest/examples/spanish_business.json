@@ -1,0 +1,171 @@
+{
+  "source": {
+    "id": "cefr",
+    "name": "CEFR (Council of Europe)",
+    "url": "https://www.coe.int/en/web/common-european-framework-reference-languages",
+    "license": "Council of Europe"
+  },
+  "course": {
+    "id": "aaaa0001-0000-4000-8000-000000000006",
+    "title": "Spanish for Business",
+    "description": "A CEFR B1-level Spanish-for-specific-purposes course for working professionals. Build the professional Spanish you need to introduce yourself, run and join meetings, negotiate, take a client call, and write clear business emails in a Latin-American workplace.",
+    "language": "es",
+    "dialect": "latam",
+    "cefr_level": "B1",
+    "school": "language",
+    "goal_tag": "work",
+    "position": 14,
+    "prerequisite_ids": ["aaaa0001-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    {
+      "position": 1,
+      "title": "Introducing yourself professionally",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "In business settings across Latin America, default to *usted* with people you have just met. Follow your name with your role and company, then hand the conversation back with a question — a warm but efficient exchange, not a monologue.",
+      "body": {
+        "items": [
+          {"term": "permítame presentarme", "translation": "allow me to introduce myself (formal)", "ipa": "peɾˈmi.ta.me pɾe.senˈtaɾ.me", "example": "Permítame presentarme: soy Andrea Rojas, del área de finanzas."},
+          {"term": "me desempeño como…", "translation": "I work as… / my role is…", "ipa": "me ðe.semˈpe.ɲo ˈko.mo", "example": "Me desempeño como gerente de proyectos en una empresa de logística."},
+          {"term": "estoy a cargo de…", "translation": "I'm in charge of…", "ipa": "esˈtoj a ˈkaɾ.ɣo ðe", "example": "Estoy a cargo de la relación con los clientes de la región norte."},
+          {"term": "represento a…", "translation": "I represent… (a company)", "ipa": "re.pɾeˈsen.to a", "example": "Represento a Andes Consulting; nos dedicamos a la transformación digital."},
+          {"term": "un gusto saludarlo", "translation": "a pleasure to meet you (formal, to a man; -la for a woman)", "ipa": "un ˈɡus.to sa.luˈðaɾ.lo", "example": "Un gusto saludarlo, licenciado; había escuchado mucho de su equipo."},
+          {"term": "aquí tiene mi tarjeta", "translation": "here is my (business) card", "ipa": "aˈki ˈtje.ne mi taɾˈxe.ta", "example": "Aquí tiene mi tarjeta; mi correo directo está al reverso."}
+        ]
+      }
+    },
+    {
+      "position": 2,
+      "title": "The formal register: usted at work",
+      "kind": "grammar",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "Why usted is the safe default", "text": "In a Latin-American workplace, *usted* is the respectful register you use with clients, senior colleagues, and anyone you have just met. Choosing *tú* too early can sound overly familiar. The rule of thumb: start every professional relationship in *usted* and only switch to *tú* if the other person invites it, often with *podemos tutearnos* (we can use tú with each other)."},
+          {"heading": "How the forms change", "text": "*Usted* takes the same verb ending as *él/ella* — the third person. So *tú tienes* becomes *usted tiene*, *¿tú qué opinas?* becomes *¿usted qué opina?*, and *¿me ayudas?* becomes *¿me ayuda usted?* The possessive shifts too: not *tu propuesta* but *su propuesta*. In the plural, everyone uses *ustedes* in Latin America: *¿ustedes ya revisaron el contrato?*"},
+          {"heading": "Softening what you ask for", "text": "Usted pairs naturally with polite framing. Instead of a bare command like *mándeme el archivo*, professionals wrap the request: *¿Me podría enviar el archivo, por favor?* or *¿Sería tan amable de enviarme el archivo?* The verb stays in the usted form, and the question plus *por favor* does the softening. This is the everyday texture of courteous business Spanish."},
+          {"heading": "Staying consistent", "text": "The most common slip is mixing registers mid-conversation — starting with *usted* and sliding into *tú* endings. Pick one and hold it. If you notice the other person consistently using *tú* with you and you feel the relationship warming, it is fine to mirror them. Until then, when in doubt, *usted* is never wrong in a professional context."}
+        ]
+      }
+    },
+    {
+      "position": 3,
+      "title": "Networking at a conference",
+      "kind": "roleplay",
+      "estimated_minutes": 11,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A coffee break at an industry conference in Mexico City. You are standing near someone you have never met, both holding badges. Introduce yourself using usted, explain your role and company in a sentence or two, find a shared professional interest, and exchange contact details before the next session begins.",
+        "persona": "A polite, busy regional director who meets many people at these events and appreciates those who are clear and get to the point",
+        "goal": "Introduce yourself in usted, ask at least two follow-up questions, discover one common professional interest, and agree to stay in touch — all in Spanish"
+      }
+    },
+    {
+      "position": 4,
+      "title": "Meeting vocabulary",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "Signpost your turn in a meeting with fixed chunks: *quisiera agregar algo* (I'd like to add something), *si me permite* (if I may), *para resumir* (to sum up). Learn them as whole phrases rather than word by word.",
+      "body": {
+        "items": [
+          {"term": "convocar una reunión", "translation": "to call / schedule a meeting", "ipa": "kom.boˈkaɾ ˈu.na re.uˈnjon", "example": "Vamos a convocar una reunión el jueves para revisar el presupuesto."},
+          {"term": "el orden del día", "translation": "the agenda", "ipa": "el ˈoɾ.ðen del ˈdi.a", "example": "El primer punto del orden del día es el informe de ventas."},
+          {"term": "tomar la palabra", "translation": "to take the floor / start speaking", "ipa": "toˈmaɾ la paˈla.βɾa", "example": "Si me permiten, quisiera tomar la palabra un momento."},
+          {"term": "llegar a un acuerdo", "translation": "to reach an agreement", "ipa": "ʝeˈɣaɾ a un aˈkweɾ.ðo", "example": "Espero que hoy podamos llegar a un acuerdo sobre las fechas."},
+          {"term": "los pendientes", "translation": "action items / open tasks", "ipa": "los penˈdjen.tes", "example": "Anoté tres pendientes; cada uno tiene un responsable y una fecha."},
+          {"term": "levantar la sesión", "translation": "to close / adjourn the meeting", "ipa": "le.βanˈtaɾ la seˈsjon", "example": "Si no hay más comentarios, levantamos la sesión. Gracias a todos."}
+        ]
+      }
+    },
+    {
+      "position": 5,
+      "title": "Leading the weekly meeting",
+      "kind": "roleplay",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "scenario": "You are leading your team's weekly meeting over video from an office in Bogotá. Open the meeting and present the agenda, move through two topics, gently redirect a colleague who keeps drifting off topic, and close by assigning clear pendientes with a responsible person and a deadline for each.",
+        "persona": "A friendly but talkative teammate with strong opinions who tends to dominate the discussion unless politely redirected",
+        "goal": "Open and structure the meeting, keep it on track courteously, and finish by assigning at least two action items with owners and dates — in Spanish"
+      }
+    },
+    {
+      "position": 6,
+      "title": "The language of negotiation",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "Negotiators soften offers with the conditional: *podríamos* (we could), *estaríamos dispuestos a* (we'd be willing to). The conditional signals flexibility and keeps the door open without committing you.",
+      "body": {
+        "items": [
+          {"term": "la propuesta", "translation": "the proposal / offer", "ipa": "la pɾoˈpwes.ta", "example": "Le enviaré la propuesta por correo para que la revise con calma."},
+          {"term": "estar dispuesto a…", "translation": "to be willing to…", "ipa": "esˈtaɾ disˈpwes.to a", "example": "Estaríamos dispuestos a bajar el precio si el pedido es mayor."},
+          {"term": "un punto medio", "translation": "a middle ground / compromise", "ipa": "un ˈpun.to ˈme.ðjo", "example": "Usted pide un diez por ciento y nosotros ofrecemos cinco; busquemos un punto medio."},
+          {"term": "el plazo de entrega", "translation": "the delivery deadline", "ipa": "el ˈpla.so ðe enˈtɾe.ɣa", "example": "El plazo de entrega es lo más importante para nosotros este trimestre."},
+          {"term": "no es negociable", "translation": "it's non-negotiable", "ipa": "no es ne.ɣoˈsja.βle", "example": "La fecha de lanzamiento no es negociable, pero podemos ser flexibles en el resto."},
+          {"term": "cerrar el trato", "translation": "to close the deal", "ipa": "seˈraɾ el ˈtɾa.to", "example": "Si acordamos el plazo hoy, podríamos cerrar el trato esta semana."}
+        ]
+      }
+    },
+    {
+      "position": 7,
+      "title": "Conditional, future, and subjunctive for business",
+      "kind": "grammar",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "The conditional for politeness", "text": "The conditional (*-ría*) is the workhorse of courteous Spanish. It turns blunt statements into diplomatic ones: *quiero una respuesta hoy* becomes *me gustaría tener una respuesta hoy*; *puede enviarlo* becomes *¿podría enviarlo?* Learn the polite set as chunks: *podría, sería, me gustaría, tendría, sería posible*. In a negotiation, *estaríamos dispuestos a…* offers movement without a firm commitment."},
+          {"heading": "The future for plans and commitments", "text": "Use the simple future (*-é, -ás, -á, -emos, -án*) to state what you will do — it sounds professional and reliable in writing and on calls. *Le enviaré la cotización mañana. Confirmaremos la fecha el lunes. El equipo revisará el contrato esta semana.* For nearer, more casual plans you can also use *ir a* + infinitive (*vamos a revisarlo*), but the simple future carries a slightly firmer, more formal tone in emails and proposals."},
+          {"heading": "The subjunctive in requests", "text": "When you ask, need, or hope that someone else do something, the que-clause goes into the subjunctive. *Le pido que revise el documento. Necesitamos que el proveedor confirme el precio. Espero que podamos avanzar hoy.* The pattern is fixed: [trigger like *pedir que, necesitar que, esperar que*] + *que* + different subject + subjunctive. This is how polished business Spanish frames a request without sounding like an order."},
+          {"heading": "Putting them together", "text": "Real messages blend all three. *Le agradecería que me confirmara la fecha; en cuanto la tenga, coordinaré con el equipo y le enviaré la agenda.* Here the conditional (*agradecería*) softens, the subjunctive (*confirmara*) carries the request, and the future (*coordinaré, enviaré*) states your commitments. Master this trio and you can be firm and gracious at the same time."}
+        ]
+      }
+    },
+    {
+      "position": 8,
+      "title": "A call with a client",
+      "kind": "roleplay",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A phone call with a client in Santiago who is unhappy that a shipment will arrive a week late. Greet them in usted, acknowledge the problem, explain the cause without making excuses, propose two concrete solutions, and negotiate a compromise on the deadline or a small concession to keep the relationship strong.",
+        "persona": "A firm but reasonable client who is frustrated about the delay and wants to hear a clear plan, not apologies",
+        "goal": "Handle the call in usted, calm the client, propose solutions, and close on a compromise both sides can accept — in Spanish"
+      }
+    },
+    {
+      "position": 9,
+      "title": "Writing business emails",
+      "kind": "writing",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "Subject line and structure", "text": "A professional email opens with a subject line (*asunto*) that names the topic and any action: *Cotización pendiente — se requiere aprobación antes del viernes.* Keep the body short: a greeting, one idea per paragraph, and a clear request or next step at the end. Readers skim, so put the most important sentence first rather than burying it. Sign off with your name, role, and contact details."},
+          {"heading": "Formal greetings and closings", "text": "Open formally with *Estimado señor Ramírez* / *Estimada señora Ramírez* — or *Estimados* for a group. With a known colleague, *Hola, Carla* is fine. Close with a standard, warm sign-off: *Quedo atento/a a sus comentarios*, *Saludos cordiales*, or *Muchas gracias de antemano*. These fixed phrases signal courtesy and are expected in Latin-American professional correspondence."},
+          {"heading": "Making requests politely", "text": "Business emails lean on the conditional and subjunctive to ask without commanding. *Le agradecería que me enviara el informe antes del martes.* *¿Sería posible reprogramar la reunión?* *Quedo a la espera de su confirmación.* Notice how *le agradecería que* + subjunctive (*enviara*) makes even a firm deadline sound gracious. State clearly what you need and by when — politeness should never blur the actual request."},
+          {"heading": "Following up", "text": "If you need a reply and have not heard back, a short, friendly nudge after a few days is normal: *Estimado Diego, retomo mi mensaje anterior por si tuvo oportunidad de revisarlo. Quedo atento a sus comentarios.* Keep follow-ups light and never accusing — assume the reader is simply busy. Before sending, reread once for tone and again for typos, and double-check every name, date, and figure."}
+        ]
+      }
+    },
+    {
+      "position": 10,
+      "title": "Checkpoint",
+      "kind": "quiz",
+      "estimated_minutes": 8,
+      "grammar_note": null,
+      "body": {
+        "questions": [
+          {"prompt": "You have just met a client. Which register should you use?", "options": ["tú, to sound friendly right away", "usted, the respectful default in business", "either one, it makes no difference", "vos, in every country"], "answer": 1, "explanation": "In a Latin-American workplace, *usted* is the safe, respectful default with clients and new contacts; switch to *tú* only if invited."},
+          {"prompt": "Choose the most polite way to ask a colleague to send a file.", "options": ["Mándeme el archivo.", "¿Me podría enviar el archivo, por favor?", "Archivo, ahora.", "Quiero el archivo ya."], "answer": 1, "explanation": "The conditional *podría* plus a question and *por favor* softens the request; the bare command sounds abrupt."},
+          {"prompt": "\"Los pendientes\" of a meeting are…", "options": ["the guests", "the open tasks / action items", "the minutes", "the snacks"], "answer": 1, "explanation": "*Los pendientes* are the outstanding tasks to follow up on after a meeting — the action items."},
+          {"prompt": "Complete the request: \"Necesitamos que el proveedor ___ el precio.\"", "options": ["confirma", "confirme", "confirmará", "confirmar"], "answer": 1, "explanation": "*Necesitar que* with a different subject triggers the subjunctive: *confirme*."},
+          {"prompt": "Which sentence best states a firm commitment in a proposal?", "options": ["Tal vez enviamos la cotización.", "Le enviaré la cotización mañana.", "Quiero que envíes la cotización.", "Enviar la cotización mañana."], "answer": 1, "explanation": "The simple future *enviaré* states a clear, reliable commitment — the right tone for a written proposal."},
+          {"prompt": "A polite email closing would be…", "options": ["Chao, nos vemos.", "Saludos cordiales.", "Ya sabes qué hacer.", "Adiós y suerte."], "answer": 1, "explanation": "*Saludos cordiales* is a standard, courteous sign-off for professional Spanish correspondence."}
+        ]
+      }
+    }
+  ]
+}
