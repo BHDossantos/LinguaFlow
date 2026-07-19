@@ -1,0 +1,97 @@
+{
+  "source": {
+    "id": "mit_ocw",
+    "name": "MIT OpenCourseWare 18.06 Linear Algebra",
+    "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/",
+    "license": "CC BY-NC-SA 4.0"
+  },
+  "course": {
+    "id": "bbbb0001-0000-4000-8000-00000000000b",
+    "title": "Linear Algebra",
+    "description": "A first pass through the language of vectors, matrices, and the transformations they encode — from adding arrows to reading off eigenvalues. Structure adapted from MIT OpenCourseWare 18.06 Linear Algebra (CC BY-NC-SA 4.0).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "math",
+    "goal_tag": "foundations",
+    "position": 11,
+    "prerequisite_ids": ["bbbb0001-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 10, "body": { "questions": [
+      { "prompt": "A vector is best described as…", "options": ["a single number", "a quantity with both magnitude and direction", "a square grid of numbers", "an equation"], "answer": 1, "explanation": "A vector carries magnitude and direction; a lone number is a scalar." },
+      { "prompt": "The sum [1,2] + [3,4] equals…", "options": ["[4,6]", "[3,8]", "[4,8]", "[2,6]"], "answer": 0, "explanation": "Add component by component: 1+3=4, 2+4=6." },
+      { "prompt": "The dot product [1,0] · [0,1] equals…", "options": ["1", "0", "[0,0]", "2"], "answer": 1, "explanation": "1·0 + 0·1 = 0; these vectors are perpendicular." },
+      { "prompt": "Multiplying a 2×3 matrix by a 3×2 matrix gives a matrix of size…", "options": ["3×3", "2×2", "2×3", "6×6"], "answer": 1, "explanation": "Inner dimensions cancel; the result keeps the outer 2 and 2." },
+      { "prompt": "The determinant of [[1,2],[3,4]] is…", "options": ["-2", "2", "10", "-10"], "answer": 0, "explanation": "ad − bc = 1·4 − 2·3 = 4 − 6 = −2." },
+      { "prompt": "A system of equations with no solution at all is called…", "options": ["consistent", "inconsistent", "dependent", "square"], "answer": 1, "explanation": "No solution means the equations are inconsistent (e.g. parallel lines)." },
+      { "prompt": "A square matrix has an inverse only when its determinant is…", "options": ["equal to 1", "positive", "nonzero", "even"], "answer": 2, "explanation": "A zero determinant means the matrix is singular and non-invertible." },
+      { "prompt": "The eigenvalues of a matrix A satisfy which equation?", "options": ["A + λI = 0", "det(A − λI) = 0", "A · λ = I", "trace(A) = 0"], "answer": 1, "explanation": "Eigenvalues are the roots of the characteristic equation det(A − λI) = 0." }
+    ] } },
+    { "position": 2, "title": "Vectors and vector operations", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Add and scale component by component; the dot product returns a single number, not a vector.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Add and scale vectors, compute a dot product, and find a vector's length. Warm-up: from the diagnostic, what does [1,2] + [3,4] equal, and why is the answer still a vector?" },
+      { "heading": "The idea", "text": "A vector is an ordered list of numbers, like [3,4], that you can picture as an arrow. Two operations do most of the work. Addition joins arrows tip to tail: you add matching components. Scalar multiplication stretches an arrow: you multiply every component by the same number. A third operation, the dot product, multiplies matching components and adds the results into one number that measures alignment. Worked example: [2,3] + [-1,4] = [1,7], because 2 + (-1) = 1 and 3 + 4 = 7." },
+      { "heading": "Worked examples", "text": "Scalar multiple: 2 · [3,-2] = [6,-4], scaling each component. Dot product: [1,0,-2] · [3,4,1] = 1·3 + 0·4 + (-2)·1 = 3 + 0 − 2 = 1. Length (magnitude): the length of [6,8] is sqrt(6^2 + 8^2) = sqrt(36 + 64) = sqrt(100) = 10. A dot product of 0 signals perpendicular vectors: [1,0,-2] · [3,4,1] came out to 1, so those two are close to — but not quite — at right angles." },
+      { "heading": "Your turn", "text": "Compute each. (1) [1,5] + [4,-2]. (2) 3 · [2,0,-1]. (3) [2,1] · [3,-4]. (4) the length of [5,12]. (5) [1,2,2] · [2,2,1]. Answers: (1) [5,3]; (2) [6,0,-3]; (3) 6 − 4 = 2; (4) sqrt(25 + 144) = sqrt(169) = 13; (5) 2 + 4 + 2 = 8." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: reporting a dot product as a vector — it is always a single number. Mistake: forgetting the square root when finding length. Exit: (a) Is [4,-2] + [1,5] a vector or a number? (b) What is the length of [3,4]? Answers: a vector, [5,3]; sqrt(9 + 16) = 5." }
+    ] } },
+    { "position": 3, "title": "Matrices and matrix multiplication", "kind": "reading", "estimated_minutes": 13, "grammar_note": "Row times column: entry (i,j) is row i of the left matrix dotted with column j of the right one. Order matters — AB rarely equals BA.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Multiply a matrix by a vector and a matrix by a matrix, and explain why order matters. Warm-up: if A is 2×3 and B is 3×2, what size is AB?" },
+      { "heading": "The idea", "text": "A matrix is a rectangular grid of numbers, and matrix multiplication is organized dot products. To find entry (i,j) of the product, dot row i of the left matrix with column j of the right one. The inner dimensions must match. Worked example — a matrix times a vector: [[2,0],[1,3]] · [1,2] takes row [2,0]·[1,2] = 2 and row [1,3]·[1,2] = 1 + 6 = 7, giving [2,7]." },
+      { "heading": "Worked examples", "text": "Let A = [[1,2],[3,4]] and B = [[5,6],[7,8]]. Then AB = [[1·5+2·7, 1·6+2·8],[3·5+4·7, 3·6+4·8]] = [[19,22],[43,50]]. Reverse the order: BA = [[5·1+6·3, 5·2+6·4],[7·1+8·3, 7·2+8·4]] = [[23,34],[31,46]]. Since [[19,22],[43,50]] is not [[23,34],[31,46]], AB ≠ BA — multiplication does not commute. One more: [[1,2],[0,1]] · [[3,1],[2,4]] = [[1·3+2·2, 1·1+2·4],[0·3+1·2, 0·1+1·4]] = [[7,9],[2,4]]." },
+      { "heading": "Your turn", "text": "Compute each. (1) [[1,0],[0,1]] · [[5,6],[7,8]]. (2) [[2,1],[1,2]] · [3,1]. (3) [[1,2],[3,4]] · [[1,0],[0,1]]. (4) [[2,0],[0,3]] · [[1,4],[5,2]]. (5) What size is the product of a 2×3 matrix and a 3×2 matrix? Answers: (1) [[5,6],[7,8]] (identity leaves it unchanged); (2) [2·3+1·1, 1·3+2·1] = [7,5]; (3) [[1,2],[3,4]]; (4) [[2·1+0·5, 2·4+0·2],[0·1+3·5, 0·4+3·2]] = [[2,8],[15,6]]; (5) 2×2." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: assuming AB = BA — it usually fails, as the example above shows. Mistake: multiplying entry-by-entry like addition; multiplication is row-by-column. Exit: (a) Does multiplying by the identity matrix change a matrix? (b) In AB, which vectors get dotted to make the top-left entry? Answers: no, it leaves it unchanged; row 1 of A with column 1 of B." }
+    ] } },
+    { "position": 4, "title": "Systems of linear equations and Gaussian elimination", "kind": "reading", "estimated_minutes": 13, "grammar_note": "Elimination adds a multiple of one row to another to create zeros, then you back-substitute from the bottom up.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Solve a system of linear equations by elimination and recognize when no solution exists. Warm-up: what does it mean for a system to be 'inconsistent'?" },
+      { "heading": "The idea", "text": "A linear system asks for values that satisfy several equations at once. Gaussian elimination clears one unknown at a time by adding a multiple of one equation to another, leaving a triangular system you solve bottom-up. Worked example: x + y = 5 and 2x + y = 8. Subtract the first equation from the second: (2x + y) − (x + y) = 8 − 5, so x = 3. Substitute back: 3 + y = 5, so y = 2. Check: 3 + 2 = 5 and 2·3 + 2 = 8. Both hold." },
+      { "heading": "Worked examples", "text": "A three-variable system: x + y + z = 6, 2x − y + z = 3, x + 2y − z = 2. Eliminate x. Row2 − 2·Row1 gives −3y − z = −9; Row3 − Row1 gives y − 2z = −4. From −3y − z = −9 we get 3y + z = 9. Solve the pair 3y + z = 9 and y − 2z = −4: substitute y = 2z − 4 into 3(2z − 4) + z = 9, so 7z − 12 = 9, giving z = 3. Then y = 2·3 − 4 = 2 and x = 6 − 2 − 3 = 1. Solution (x,y,z) = (1,2,3). Check the toughest row: 2·1 − 2 + 3 = 3. Correct." },
+      { "heading": "Your turn", "text": "Solve each. (1) x + y = 7, x − y = 1. (2) 2x + 3y = 13, x − y = -1. (3) How many solutions does x + y = 1, x + y = 3 have? (4) 3x = 9. (5) Back-substitute: x + y + z = 6, y + z = 5, z = 3. Answers: (1) add the equations, 2x = 8, x = 4, y = 3; (2) from x = y − 1, 2(y−1) + 3y = 13, 5y = 15, y = 3, x = 2; (3) none — the two left sides are equal but the right sides differ, so it is inconsistent; (4) x = 3; (5) z = 3, y = 5 − 3 = 2, x = 6 − 2 − 3 = 1." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: forgetting to apply a row operation to every term, including the right-hand side. Mistake: reading two parallel, contradictory equations as having a solution — they have none. Exit: (a) In x + y = 5, 2x + y = 8, what is x? (b) What word describes a system with no solution? Answers: x = 3; inconsistent." }
+    ] } },
+    { "position": 5, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "The scalar multiple 3 · [2,-1] equals…", "options": ["[5,2]", "[6,-3]", "[6,-1]", "[2,-3]"], "answer": 1, "explanation": "Multiply each component by 3: [6,-3]." },
+      { "prompt": "The dot product [1,2] · [3,4] equals…", "options": ["7", "11", "[3,8]", "10"], "answer": 1, "explanation": "1·3 + 2·4 = 3 + 8 = 11." },
+      { "prompt": "Multiplying [[1,2],[3,4]] by the identity [[1,0],[0,1]] gives…", "options": ["[[1,2],[3,4]]", "[[4,3],[2,1]]", "[[1,0],[0,1]]", "[[0,0],[0,0]]"], "answer": 0, "explanation": "The identity matrix leaves any matrix unchanged." },
+      { "prompt": "Matrix multiplication is, in general…", "options": ["commutative (AB = BA)", "not commutative (AB ≠ BA)", "always equal to addition", "undefined for square matrices"], "answer": 1, "explanation": "Order matters; AB and BA usually differ." },
+      { "prompt": "Gaussian elimination is a method for…", "options": ["finding eigenvalues", "solving systems of linear equations", "computing dot products", "drawing vectors"], "answer": 1, "explanation": "It reduces a system to triangular form for back-substitution." },
+      { "prompt": "For x + y = 5 and 2x + y = 8, the value of x is…", "options": ["2", "3", "5", "8"], "answer": 1, "explanation": "Subtracting the first from the second gives x = 3." }
+    ] } },
+    { "position": 6, "title": "Determinants and inverses", "kind": "reading", "estimated_minutes": 13, "grammar_note": "For [[a,b],[c,d]] the determinant is ad − bc, and the inverse is 1/(ad − bc) · [[d,-b],[-c,a]] — which only exists when ad − bc is nonzero.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Compute a 2×2 determinant, decide whether a matrix is invertible, and find its inverse. Warm-up: what must be true of a determinant for an inverse to exist?" },
+      { "heading": "The idea", "text": "The determinant of [[a,b],[c,d]] is ad − bc, a single number measuring how the matrix scales area. When it is nonzero, the matrix has an inverse that undoes it: A⁻¹ = 1/(ad − bc) · [[d,-b],[-c,a]]. When the determinant is zero, no inverse exists. Worked example: det[[2,1],[1,3]] = 2·3 − 1·1 = 6 − 1 = 5. Since 5 ≠ 0, the inverse is 1/5 · [[3,-1],[-1,2]]." },
+      { "heading": "Worked examples", "text": "Take A = [[3,2],[1,4]]. Its determinant is 3·4 − 2·1 = 12 − 2 = 10, so A⁻¹ = 1/10 · [[4,-2],[-1,3]]. Verify: A · [[4,-2],[-1,3]] = [[3·4+2·(-1), 3·(-2)+2·3],[1·4+4·(-1), 1·(-2)+4·3]] = [[10,0],[0,10]], which is 10 times the identity — dividing by 10 gives the identity, confirming the inverse. A singular case: det[[2,4],[1,2]] = 2·2 − 4·1 = 4 − 4 = 0, so [[2,4],[1,2]] has no inverse." },
+      { "heading": "Your turn", "text": "Compute each. (1) det[[1,0],[0,1]]. (2) det[[4,3],[2,1]]. (3) Is [[2,6],[1,3]] invertible? (4) Find the inverse of [[1,2],[0,1]]. (5) det[[5,0],[0,3]]. Answers: (1) 1·1 − 0·0 = 1; (2) 4·1 − 3·2 = 4 − 6 = −2; (3) det = 2·3 − 6·1 = 6 − 6 = 0, so no; (4) det = 1, inverse = [[1,-2],[0,1]] (check: [[1,2],[0,1]]·[[1,-2],[0,1]] = [[1,0],[0,1]]); (5) 5·3 − 0·0 = 15." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: computing ad + bc instead of ad − bc. Mistake: trying to invert a matrix whose determinant is 0. Exit: (a) What is det[[2,1],[1,3]]? (b) A matrix with determinant 0 has an inverse — true or false? Answers: 5; false." }
+    ] } },
+    { "position": 7, "title": "Eigenvalues and eigenvectors (introduction)", "kind": "reading", "estimated_minutes": 14, "grammar_note": "An eigenvector keeps its direction under A; the eigenvalue is the stretch factor. Solve det(A − λI) = 0 for λ, then solve (A − λI)v = 0 for v.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Find the eigenvalues of a 2×2 matrix and a matching eigenvector. Warm-up: what equation do the eigenvalues satisfy?" },
+      { "heading": "The idea", "text": "For a matrix A, an eigenvector v is a special direction that A merely stretches: A·v = λ·v, where the number λ is the eigenvalue. To find the eigenvalues, solve the characteristic equation det(A − λI) = 0. Worked example: for the diagonal matrix [[2,0],[0,3]], det(A − λI) = (2 − λ)(3 − λ) = 0, so the eigenvalues are 2 and 3, with eigenvectors [1,0] and [0,1] — the axes it simply scales." },
+      { "heading": "Worked examples", "text": "Let A = [[4,1],[2,3]]. Then det(A − λI) = (4 − λ)(3 − λ) − 1·2 = λ² − 7λ + 12 − 2 = λ² − 7λ + 10 = (λ − 5)(λ − 2), so the eigenvalues are 5 and 2. For λ = 5, solve (A − 5I)v = [[-1,1],[2,-2]]v = 0, giving v1 = v2, so v = [1,1]; check A·[1,1] = [4+1, 2+3] = [5,5] = 5·[1,1]. For λ = 2, (A − 2I)v = [[2,1],[2,1]]v = 0 gives v2 = −2v1, so v = [1,-2]; check A·[1,-2] = [4−2, 2−6] = [2,-4] = 2·[1,-2]. Note the eigenvalues 5 and 2 add to 7, which is the trace (4 + 3)." },
+      { "heading": "Your turn", "text": "Find eigenvalues (and eigenvectors where asked). (1) Eigenvalues of [[5,0],[0,2]]. (2) Eigenvalues of [[3,1],[0,3]]. (3) Eigenvalues and eigenvectors of [[0,1],[1,0]]. (4) For [[2,1],[1,2]], the eigenvalues are 1 and 3 — find an eigenvector for λ = 3. (5) What is the eigenvalue of the identity matrix [[1,0],[0,1]]? Answers: (1) 5 and 2 (diagonal entries); (2) 3 and 3 (triangular, both on the diagonal); (3) det(A − λI) = λ² − 1 = 0, so λ = 1 and −1, with eigenvectors [1,1] and [1,-1]; (4) (A − 3I) = [[-1,1],[1,-1]] gives v1 = v2, so [1,1] — check [[2,1],[1,2]]·[1,1] = [3,3] = 3·[1,1]; (5) 1 (every vector is an eigenvector)." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: forgetting the −λI before taking the determinant. Mistake: thinking an eigenvector can be the zero vector — it must be nonzero. Exit: (a) What equation gives the eigenvalues? (b) For a triangular matrix like [[3,1],[0,3]], where do you read off the eigenvalues? Answers: det(A − λI) = 0; straight off the diagonal (3 and 3)." }
+    ] } },
+    { "position": 8, "title": "Key terms", "kind": "vocab", "estimated_minutes": 8, "body": { "items": [
+      { "term": "vector", "translation": "an ordered list of numbers with magnitude and direction, like [3,4]", "example": "The vector [3,4] has length sqrt(9 + 16) = 5." },
+      { "term": "matrix", "translation": "a rectangular grid of numbers that can act on vectors", "example": "The 2×2 matrix [[1,2],[3,4]] sends the vector [1,0] to [1,3]." },
+      { "term": "determinant", "translation": "a single number ad − bc measuring how a 2×2 matrix scales area", "example": "det[[2,1],[1,3]] = 6 − 1 = 5." },
+      { "term": "inverse matrix", "translation": "the matrix that undoes another; it exists only when the determinant is nonzero", "example": "The inverse of [[1,2],[0,1]] is [[1,-2],[0,1]]." },
+      { "term": "linear independence", "translation": "a set of vectors where none is a combination of the others", "example": "[1,0] and [0,1] are linearly independent; [1,2] and [2,4] are not." },
+      { "term": "eigenvalue", "translation": "the factor λ by which a matrix stretches its eigenvector, from A·v = λ·v", "example": "[[2,0],[0,3]] has eigenvalues 2 and 3." }
+    ] } },
+    { "position": 9, "title": "Checkpoint 2", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "The determinant of [[2,1],[1,3]] is…", "options": ["5", "7", "6", "-5"], "answer": 0, "explanation": "2·3 − 1·1 = 6 − 1 = 5." },
+      { "prompt": "A square matrix has an inverse if and only if its determinant is…", "options": ["equal to 1", "nonzero", "positive", "an integer"], "answer": 1, "explanation": "A zero determinant means the matrix is singular." },
+      { "prompt": "The eigenvalues of the diagonal matrix [[2,0],[0,3]] are…", "options": ["0 and 0", "2 and 3", "5 and 6", "1 and 1"], "answer": 1, "explanation": "For a diagonal matrix, the eigenvalues are the diagonal entries." },
+      { "prompt": "For A = [[2,1],[1,2]], the eigenvalues are…", "options": ["2 and 2", "0 and 4", "1 and 3", "-1 and 1"], "answer": 2, "explanation": "det(A − λI) = (2−λ)² − 1 = 0 gives λ = 1 and λ = 3." },
+      { "prompt": "The equation det(A − λI) = 0 is called the…", "options": ["identity equation", "characteristic equation", "normal equation", "linear equation"], "answer": 1, "explanation": "Its roots are the eigenvalues of A." },
+      { "prompt": "The sum of a matrix's eigenvalues always equals its…", "options": ["determinant", "trace (sum of diagonal entries)", "largest entry", "rank"], "answer": 1, "explanation": "For [[4,1],[2,3]], eigenvalues 5 + 2 = 7 equal the trace 4 + 3." }
+    ] } },
+    { "position": 10, "title": "Applied project: model a situation with a system", "kind": "writing", "estimated_minutes": 15, "body": { "sections": [
+      { "heading": "The task", "text": "Choose a real situation with two unknown quantities, translate it into a system of two linear equations, and solve it by elimination. Then say in one sentence what the answer means back in the real world. Keep the numbers small enough to check by hand." },
+      { "heading": "Worked example to imitate", "text": "A café sells small and large coffees. On a morning it sold 12 cups for $46 total; a small costs $3 and a large costs $5. Let s = small cups and l = large cups. Then s + l = 12 and 3s + 5l = 46. From the first equation s = 12 − l; substitute: 3(12 − l) + 5l = 46, so 36 + 2l = 46, giving l = 5 and s = 7. Meaning: the café sold 7 small and 5 large coffees. Check: 7 + 5 = 12 and 3·7 + 5·5 = 21 + 25 = 46." },
+      { "heading": "Milestones", "text": "1) State your situation and name the two unknowns clearly. 2) Write the two equations, with units. 3) Solve by elimination or substitution, showing each step. 4) Substitute your answer back into both original equations to verify. 5) Interpret the solution in one plain sentence." },
+      { "heading": "Self-check rubric", "text": "✔ Both unknowns are defined in words. ✔ The two equations genuinely capture the situation. ✔ Your algebra is shown step by step, not just the final numbers. ✔ You checked the answer in both original equations. ✔ You explained what the numbers mean. If all five hold, you have modeled the world with linear algebra." }
+    ] } }
+  ]
+}
