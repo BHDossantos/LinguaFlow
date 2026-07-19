@@ -186,3 +186,7 @@ update public.courses set source_id='oer_commons' where id in ('bbbb0003-0000-40
 update public.courses set source_id='openstax'    where id in ('bbbb0004-0000-4000-8000-00000000001b','bbbb0001-0000-4000-8000-00000000000a','bbbb0004-0000-4000-8000-00000000001c') and source_id is null;
 insert into public.course_standards (course_id, descriptor_id)
 select c.id, d.id from public.courses c join public.standard_descriptors d on d.standard_id='cefr' and d.level=c.cefr_level where c.school='language' and c.cefr_level is not null on conflict do nothing;
+update public.courses set source_id='mit_ocw'     where id='bbbb0001-0000-4000-8000-00000000000b' and source_id is null;
+update public.courses set source_id='acm'         where id='bbbb0002-0000-4000-8000-000000000010' and source_id is null;
+update public.courses set source_id='oer_commons' where id in ('bbbb0003-0000-4000-8000-00000000000e','bbbb0004-0000-4000-8000-00000000001e','bbbb0004-0000-4000-8000-00000000001f') and source_id is null;
+insert into public.course_standards (course_id, descriptor_id) values ('bbbb0002-0000-4000-8000-000000000010','acm.se') on conflict do nothing;
