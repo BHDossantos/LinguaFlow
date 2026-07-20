@@ -1,6 +1,8 @@
 // English is the source dictionary. Its shape (`Dictionary`) is the contract
 // every other locale must satisfy — keep keys identical across files.
 
+// NOTE: intentionally no `as const` — leaf types must widen to `string` so
+// other locales (with different text) are assignable to `Dictionary`.
 const en = {
   nav: {
     how: "How it works",
@@ -81,7 +83,7 @@ const en = {
     privacy: "Privacy",
     terms: "Terms",
   },
-} as const;
+};
 
 export type Dictionary = typeof en;
 export default en;
