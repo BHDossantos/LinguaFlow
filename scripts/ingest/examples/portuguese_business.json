@@ -1,0 +1,171 @@
+{
+  "source": {
+    "id": "cefr",
+    "name": "CEFR (Council of Europe)",
+    "url": "https://www.coe.int/en/web/common-european-framework-reference-languages",
+    "license": "Council of Europe"
+  },
+  "course": {
+    "id": "aaaa0004-0000-4000-8000-000000000006",
+    "title": "Portuguese for Business",
+    "description": "A CEFR B1-level Brazilian Portuguese-for-specific-purposes course for working professionals. Build the professional Portuguese you need to introduce yourself, run and join meetings, negotiate, give a presentation, take a client call, and write clear business e-mails in a Brazilian workplace.",
+    "language": "pt",
+    "dialect": "br",
+    "cefr_level": "B1",
+    "school": "language",
+    "goal_tag": "work",
+    "position": 14,
+    "prerequisite_ids": ["aaaa0004-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    {
+      "position": 1,
+      "title": "Introducing yourself professionally",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "In a Brazilian workplace, *você* is the neutral default with colleagues, while *o senhor / a senhora* adds a layer of respect for clients, senior people, and first meetings. Give your name, then your role and company, and hand the conversation back with a question — warm but efficient, not a monologue.",
+      "body": {
+        "items": [
+          {"term": "gostaria de me apresentar", "translation": "I'd like to introduce myself", "ipa": "gos.taˈɾi.ɐ dʒi mi a.pɾe.zẽˈtaʁ", "example": "Gostaria de me apresentar: sou a Renata Alves, do setor financeiro."},
+          {"term": "trabalho como…", "translation": "I work as…", "ipa": "tɾaˈba.ʎu ˈko.mu", "example": "Trabalho como gerente de projetos numa empresa de logística."},
+          {"term": "sou responsável por…", "translation": "I'm in charge of…", "ipa": "so ʁes.põˈsa.vew puʁ", "example": "Sou responsável pelo relacionamento com os clientes da região Sul."},
+          {"term": "represento a…", "translation": "I represent… (a company)", "ipa": "ʁe.pɾeˈzẽ.tu a", "example": "Represento a Andrade Consultoria; atuamos com transformação digital."},
+          {"term": "é um prazer conhecê-lo", "translation": "it's a pleasure to meet you (formal, to a man; -la for a woman)", "ipa": "ɛ ũ pɾaˈzeʁ ko.ɲeˈse.lu", "example": "É um prazer conhecê-lo, doutor; ouvi falar muito da sua equipe."},
+          {"term": "aqui está o meu cartão", "translation": "here is my business card", "ipa": "aˈki esˈta u mew kaʁˈtɐ̃w", "example": "Aqui está o meu cartão; o meu e-mail direto está no verso."}
+        ]
+      }
+    },
+    {
+      "position": 2,
+      "title": "The formal register: o senhor, a senhora and você",
+      "kind": "grammar",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "Two levels of politeness", "text": "Brazilian business runs on two treatment forms. *Você* is the everyday professional register — friendly, neutral, used with most colleagues and peers. *O senhor* (to a man) and *a senhora* (to a woman) raise the respect a notch and are the safe choice with clients, senior executives, older people, and anyone you have just met. When in doubt, open with *o senhor / a senhora* and relax to *você* only once the other person clearly does."},
+          {"heading": "How the verbs behave", "text": "Both *você* and *o senhor / a senhora* take the same third-person verb form as *ele/ela*. So *você tem um minuto?* becomes *o senhor tem um minuto?*, and *você poderia confirmar?* becomes *a senhora poderia confirmar?* The verb does not change between them — only the pronoun signals the extra respect. The possessive is *o seu / a sua* for both: *a sua proposta*, *o seu contato*."},
+          {"heading": "Softening what you ask for", "text": "The respectful register pairs naturally with polite framing. Instead of a bare command like *me manda o arquivo*, professionals wrap the request as a question: *O senhor poderia me enviar o arquivo, por favor?* or *A senhora teria a gentileza de me enviar o arquivo?* The verb stays in the third person and the question plus *por favor* does the softening — this is the everyday texture of courteous business Portuguese."},
+          {"heading": "Staying consistent", "text": "The most common slip is drifting mid-conversation — starting with *o senhor* and sliding into *você* endings, or vice versa. Pick one treatment and hold it for that person. If a client keeps using *você* with you and the relationship is clearly warming, it is fine to mirror them. Until then, *o senhor / a senhora* is never wrong in a formal Brazilian context."}
+        ]
+      }
+    },
+    {
+      "position": 3,
+      "title": "Networking at a business event",
+      "kind": "roleplay",
+      "estimated_minutes": 11,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A coffee break at an industry event in São Paulo. You are standing near someone you have never met, both wearing name badges. Introduce yourself using o senhor / a senhora, explain your role and company in a sentence or two, find a shared professional interest, and exchange contacts before the next talk starts.",
+        "persona": "A polite, busy regional director who meets many people at these events and appreciates those who are clear and get to the point",
+        "goal": "Introduce yourself in the respectful register, ask at least two follow-up questions, discover one common professional interest, and agree to stay in touch — all in Portuguese"
+      }
+    },
+    {
+      "position": 4,
+      "title": "Meeting vocabulary",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "Signpost your turn in a meeting with fixed chunks: *gostaria de acrescentar algo* (I'd like to add something), *se me permite* (if I may), *para resumir* (to sum up). Learn them as whole phrases rather than word by word.",
+      "body": {
+        "items": [
+          {"term": "marcar uma reunião", "translation": "to schedule a meeting", "ipa": "maʁˈkaʁ ˈu.mɐ ʁe.uˈnjɐ̃w", "example": "Vamos marcar uma reunião na quinta para revisar o orçamento."},
+          {"term": "a pauta", "translation": "the agenda", "ipa": "a ˈpaw.tɐ", "example": "O primeiro ponto da pauta é o relatório de vendas."},
+          {"term": "pedir a palavra", "translation": "to ask for the floor", "ipa": "peˈdʒiʁ a paˈla.vɾɐ", "example": "Se me permitem, gostaria de pedir a palavra um instante."},
+          {"term": "chegar a um acordo", "translation": "to reach an agreement", "ipa": "ʃeˈɡaʁ a ũ aˈkoʁ.du", "example": "Espero que hoje a gente chegue a um acordo sobre os prazos."},
+          {"term": "os encaminhamentos", "translation": "action items / next steps", "ipa": "uz ẽ.kɐ.mi.ɲaˈmẽ.tus", "example": "Anotei três encaminhamentos, cada um com um responsável e um prazo."},
+          {"term": "encerrar a reunião", "translation": "to close / adjourn the meeting", "ipa": "ẽ.seˈʁaʁ a ʁe.uˈnjɐ̃w", "example": "Se não houver mais comentários, vamos encerrar a reunião. Obrigada a todos."}
+        ]
+      }
+    },
+    {
+      "position": 5,
+      "title": "Giving a presentation",
+      "kind": "roleplay",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "scenario": "You are presenting your team's quarterly results to leadership over video from an office in Belo Horizonte. Open by greeting the room and stating your topic, walk through two or three slides of numbers, highlight one win and one challenge, then take questions and close with clear next steps. Use the respectful register with the directors.",
+        "persona": "An attentive senior director who interrupts once with a pointed question about a number and expects a confident, specific answer",
+        "goal": "Open and structure the presentation, present the key figures clearly, field one tough question, and close with concrete next steps — in Portuguese"
+      }
+    },
+    {
+      "position": 6,
+      "title": "The language of negotiation",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "Negotiators soften offers with the conditional: *poderíamos* (we could), *estaríamos dispostos a* (we'd be willing to). The conditional signals flexibility and keeps the door open without committing you.",
+      "body": {
+        "items": [
+          {"term": "a proposta", "translation": "the proposal / offer", "ipa": "a pɾoˈpɔs.tɐ", "example": "Vou enviar a proposta por e-mail para o senhor analisar com calma."},
+          {"term": "estar disposto a…", "translation": "to be willing to…", "ipa": "esˈtaʁ dʒisˈpos.tu a", "example": "Estaríamos dispostos a reduzir o preço se o pedido for maior."},
+          {"term": "um meio-termo", "translation": "a middle ground / compromise", "ipa": "ũ ˌmej.uˈteʁ.mu", "example": "O senhor pede dez por cento e nós oferecemos cinco; vamos buscar um meio-termo."},
+          {"term": "o prazo de entrega", "translation": "the delivery deadline", "ipa": "u ˈpɾa.zu dʒi ẽˈtɾe.ɡɐ", "example": "O prazo de entrega é o que mais importa para nós neste trimestre."},
+          {"term": "não é negociável", "translation": "it's non-negotiable", "ipa": "nɐ̃w ɛ ne.ɡo.sjaˈvew", "example": "A data de lançamento não é negociável, mas podemos ser flexíveis no resto."},
+          {"term": "fechar negócio", "translation": "to close the deal", "ipa": "feˈʃaʁ neˈɡɔ.sju", "example": "Se acertarmos o prazo hoje, podemos fechar negócio ainda esta semana."}
+        ]
+      }
+    },
+    {
+      "position": 7,
+      "title": "Future, conditional, and subjunctive for business",
+      "kind": "grammar",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "The conditional for politeness", "text": "The conditional (*-ria*) is the workhorse of courteous Portuguese. It turns blunt statements into diplomatic ones: *quero uma resposta hoje* becomes *eu gostaria de uma resposta hoje*; *pode enviar?* becomes *o senhor poderia enviar?* Learn the polite set as chunks: *poderia, seria, gostaria, teria, seria possível*. In a negotiation, *estaríamos dispostos a…* offers movement without a firm commitment."},
+          {"heading": "The future for plans and commitments", "text": "Use the *futuro* (*-ei, -á, -emos, -ão*) to state what you will do — it sounds professional and reliable in writing and on calls. *Enviarei a cotação amanhã. Confirmaremos a data na segunda. A equipe revisará o contrato esta semana.* For nearer, more casual plans, Brazilians very often use *ir* + infinitive instead (*vou enviar amanhã*), which is more common in speech; the simple *futuro* carries a slightly firmer, more formal tone in e-mails and proposals."},
+          {"heading": "The subjunctive in requests", "text": "When you ask, need, or hope that someone else do something, the *que*-clause goes into the *subjuntivo*. *Peço que o senhor revise o documento. Precisamos que o fornecedor confirme o preço. Espero que possamos avançar hoje.* The pattern is fixed: [trigger like *pedir que, precisar que, esperar que*] + *que* + a different subject + subjunctive. This is how polished business Portuguese frames a request without sounding like an order."},
+          {"heading": "Putting them together", "text": "Real messages blend all three. *Eu agradeceria que o senhor me confirmasse a data; assim que eu a tiver, alinho com a equipe e enviarei a pauta.* Here the conditional (*agradeceria*) softens, the subjunctive (*confirmasse*) carries the request, and the future (*enviarei*) states your commitment. Master this trio and you can be firm and gracious at the same time."}
+        ]
+      }
+    },
+    {
+      "position": 8,
+      "title": "A call with a client",
+      "kind": "roleplay",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A phone call with a client in Recife who is unhappy that a shipment will arrive a week late. Greet them using o senhor / a senhora, acknowledge the problem, explain the cause without making excuses, propose two concrete solutions, and negotiate a compromise on the deadline or a small concession to keep the relationship strong.",
+        "persona": "A firm but reasonable client who is frustrated about the delay and wants to hear a clear plan, not apologies",
+        "goal": "Handle the call in the respectful register, calm the client, propose solutions, and close on a compromise both sides can accept — in Portuguese"
+      }
+    },
+    {
+      "position": 9,
+      "title": "Writing business e-mails",
+      "kind": "writing",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {"heading": "Subject line and structure", "text": "A professional e-mail opens with a subject (*assunto*) that names the topic and any action: *Proposta comercial — aprovação necessária até sexta.* Keep the body short: a greeting, one idea per paragraph, and a clear request or next step at the end. Readers skim, so put the most important sentence first rather than burying it. Sign off with your name, role, and contact details."},
+          {"heading": "Formal greetings and closings", "text": "Open formally with *Prezado senhor Ramos* / *Prezada senhora Ramos* — or *Prezados* for a group. With a known colleague, *Olá, Carla* is fine. Close with a standard, warm sign-off: *Fico à disposição*, *Atenciosamente*, or *Desde já, agradeço*. These fixed phrases signal courtesy and are expected in Brazilian professional correspondence."},
+          {"heading": "Making requests politely", "text": "Business e-mails lean on the conditional and subjunctive to ask without commanding. *Eu agradeceria que o senhor me enviasse o relatório até terça.* *Seria possível remarcar a reunião?* *Fico no aguardo da sua confirmação.* Notice how *agradeceria que* + subjunctive (*enviasse*) makes even a firm deadline sound gracious. State clearly what you need and by when — politeness should never blur the actual request."},
+          {"heading": "Following up", "text": "If you need a reply and have not heard back, a short, friendly nudge after a few days is normal: *Prezado Diego, retomo a minha mensagem anterior, caso o senhor tenha tido a oportunidade de vê-la. Fico à disposição.* Keep follow-ups light and never accusing — assume the reader is simply busy. Before sending, reread once for tone and again for typos, and double-check every name, date, and figure."}
+        ]
+      }
+    },
+    {
+      "position": 10,
+      "title": "Checkpoint",
+      "kind": "quiz",
+      "estimated_minutes": 8,
+      "grammar_note": null,
+      "body": {
+        "questions": [
+          {"prompt": "You have just met a client. Which treatment is the safe, respectful choice?", "options": ["tu, to sound friendly right away", "o senhor / a senhora, the respectful default with clients and new contacts", "either one, it makes no difference", "só o primeiro nome, sempre"], "answer": 1, "explanation": "In a Brazilian workplace, *o senhor / a senhora* is the safe, respectful default with clients and new contacts; you can relax to *você* only once they clearly do."},
+          {"prompt": "Choose the most polite way to ask a colleague to send a file.", "options": ["Me manda o arquivo.", "O senhor poderia me enviar o arquivo, por favor?", "Arquivo, agora.", "Quero o arquivo já."], "answer": 1, "explanation": "The conditional *poderia* plus a question and *por favor* softens the request; the bare command sounds abrupt."},
+          {"prompt": "\"Os encaminhamentos\" of a meeting are…", "options": ["the guests", "the action items / next steps", "the minutes", "the snacks"], "answer": 1, "explanation": "*Os encaminhamentos* are the tasks and next steps to follow up on after a meeting — the action items."},
+          {"prompt": "Complete the request: \"Precisamos que o fornecedor ___ o preço.\"", "options": ["confirma", "confirme", "confirmará", "confirmar"], "answer": 1, "explanation": "*Precisar que* with a different subject triggers the subjunctive: *confirme*."},
+          {"prompt": "Which sentence best states a firm commitment in a proposal?", "options": ["Talvez a gente envie a cotação.", "Enviarei a cotação amanhã.", "Quero que você envie a cotação.", "Enviar a cotação amanhã."], "answer": 1, "explanation": "The *futuro* *enviarei* states a clear, reliable commitment — the right tone for a written proposal."},
+          {"prompt": "A polite e-mail closing would be…", "options": ["Falou, até mais.", "Atenciosamente.", "Você já sabe o que fazer.", "Tchau e boa sorte."], "answer": 1, "explanation": "*Atenciosamente* is a standard, courteous sign-off for professional Portuguese correspondence."}
+        ]
+      }
+    }
+  ]
+}
