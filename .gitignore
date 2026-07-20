@@ -17,3 +17,7 @@ next-env.d.ts
 test-results
 playwright-report
 .playwright
+
+# Generated Supabase delivery bundles (sent to user, not source)
+noelia_update_*.sql
+noelia_ALL_IN_ONE.sql
