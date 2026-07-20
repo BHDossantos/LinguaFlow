@@ -225,3 +225,6 @@ select c.id, d.id from public.courses c join public.standard_descriptors d on d.
 -- ---- provenance (batch 21: backend-developer track) ----
 update public.courses set source_id='oer_commons' where id in ('bbbb0002-0000-4000-8000-000000000018','bbbb0002-0000-4000-8000-000000000019','bbbb0002-0000-4000-8000-00000000001a','bbbb0002-0000-4000-8000-00000000001b') and source_id is null;
 update public.courses set source_id='mit_ocw'     where id='bbbb0002-0000-4000-8000-00000000001c' and source_id is null;
+-- ---- provenance (batch 22: business depth) ----
+update public.courses set source_id='openstax'    where id in ('bbbb0003-0000-4000-8000-000000000015','bbbb0003-0000-4000-8000-000000000016','bbbb0003-0000-4000-8000-000000000019') and source_id is null;
+update public.courses set source_id='oer_commons' where id in ('bbbb0003-0000-4000-8000-000000000017','bbbb0003-0000-4000-8000-000000000018') and source_id is null;
