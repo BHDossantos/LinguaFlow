@@ -1,5 +1,85 @@
-// TEMPORARY: re-exports English until the ja translation is authored.
-// Replaced by a full translation of en.ts with identical keys.
-import en from "./en";
-const ja = en;
+import type { Dictionary } from "./en";
+
+const ja: Dictionary = {
+  nav: {
+    how: "使い方",
+    pricing: "料金プラン",
+    signIn: "ログイン",
+    language: "言語",
+  },
+  hero: {
+    eyebrow: "語学 · 数学 · 科学 · テクノロジー · ビジネス",
+    titleLine1: "学びたいことを、すべて。",
+    titleLine2: "声に出して。",
+    subtitle:
+      "Noeliaは、初日から本当に話せる語学学習として始まりました。そして今では、あらゆる分野を学べる総合プラットフォームへ。語学をマスターするのも、数学・科学・テクノロジー・ビジネスを深く学ぶのも、ここひとつで。ひとつの道筋で進めます。",
+    ctaPrimary: "無料で学びはじめる",
+    ctaSecondary: "使い方を見る",
+  },
+  stats: {
+    courses: "140+",
+    coursesLabel: "コース",
+    languages: "6",
+    languagesLabel: "世界の言語",
+    schools: "5",
+    schoolsLabel: "学びの分野",
+  },
+  how: {
+    title: "Noeliaの使い方",
+    step1Title: "学ぶ道を選ぶ",
+    step1Body:
+      "話せるようになりたい言語も、マスターしたい分野も。スペイン語から微積分、システム設計まで。どの道もレベルごとに整理された、わかりやすい順序で進みます。",
+    step2Title: "実践しながら学ぶ",
+    step2Body:
+      "すべてのレッスンは実践型。声に出せば単語ごとに採点され、問題を解き、クイズに答える。そして忘れてしまう直前に、ちょうどよく復習できます。",
+    step3Title: "人とつながって、さらに先へ",
+    step3Body:
+      "分単位でライブ講師とつながることも、実際の教室で先生のフィードバックを受けながら学ぶこともできます。ご家族も学びの様子を見守れます。",
+  },
+  schools: {
+    title: "5つの分野、ひとつのプラットフォーム",
+    subtitle: "どこから始めてもかまいません。すべては同じ、実践と復習を軸にした学習法の上に築かれています。",
+    languagesTitle: "語学",
+    languagesBody: "スペイン語、フランス語、イタリア語、ポルトガル語、英語、ドイツ語。A1からC1まで、ビジネス向けコースも。",
+    mathTitle: "数学",
+    mathBody: "算数から微積分、線形代数、微分方程式まで。",
+    scienceTitle: "科学",
+    scienceBody: "生物、化学、物理、心理学、そのほか数十分野。",
+    technologyTitle: "テクノロジー",
+    technologyBody: "プログラミング、データ、クラウド、セキュリティ、そしてバックエンド開発者向けの本格コースも。",
+    businessTitle: "ビジネス",
+    businessBody: "ファイナンス、マーケティング、マネジメント、法務、プロダクト。",
+  },
+  features: {
+    title: "すべてがひとつのアプリに",
+    selfStudy: "自主学習",
+    selfStudyBody: "適応型レッスンと間隔反復。",
+    speak: "初日から話せる",
+    speakBody: "発音を単語ごとに採点。",
+    academic: "学問としての深さ",
+    academicBody: "数学、科学、テクノロジー、ビジネス。",
+    instructor: "ライブ講師",
+    instructorBody: "分単位で、すぐにつながる。",
+    translate: "リアルタイム翻訳",
+    translateBody: "音声も、テキストも、外出先でも。",
+  },
+  audience: {
+    title: "あなたの学び方に合わせて",
+    selfTitle: "自分で学ぶ人へ",
+    selfBody: "1日10分。あなたのキューが、いつも次にやるべきことを知っています。",
+    classTitle: "教室で",
+    classBody: "先生が課題を出し、システムが数秒で採点、先生が確認します。",
+    familyTitle: "ご家族で",
+    familyBody: "保護者は、進み具合や成績、出席状況をそっと見守れます。うるさく言う必要はありません。",
+  },
+  cta: {
+    title: "最初のレッスンは、30秒後に。",
+    subtitle: "無料で始められます。クレジットカードは不要。どんなスマホでも使えます。",
+    button: "無料で学びはじめる",
+    pricing: "料金プラン",
+    privacy: "プライバシー",
+    terms: "利用規約",
+  },
+};
+
 export default ja;
