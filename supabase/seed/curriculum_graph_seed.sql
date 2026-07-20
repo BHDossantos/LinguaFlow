@@ -222,3 +222,6 @@ update public.courses set source_id='oer_commons' where id='bbbb0002-0000-4000-8
 update public.courses set source_id='oer_commons' where id in ('aaaa0006-0000-4000-8000-000000000003','aaaa0006-0000-4000-8000-000000000004','aaaa0006-0000-4000-8000-000000000005','aaaa0006-0000-4000-8000-000000000006') and source_id is null;
 insert into public.course_standards (course_id, descriptor_id)
 select c.id, d.id from public.courses c join public.standard_descriptors d on d.standard_id='cefr' and d.level=c.cefr_level where c.school='language' and c.cefr_level is not null on conflict do nothing;
+-- ---- provenance (batch 21: backend-developer track) ----
+update public.courses set source_id='oer_commons' where id in ('bbbb0002-0000-4000-8000-000000000018','bbbb0002-0000-4000-8000-000000000019','bbbb0002-0000-4000-8000-00000000001a','bbbb0002-0000-4000-8000-00000000001b') and source_id is null;
+update public.courses set source_id='mit_ocw'     where id='bbbb0002-0000-4000-8000-00000000001c' and source_id is null;
