@@ -1,5 +1,85 @@
-// TEMPORARY: re-exports English until the pt translation is authored.
-// Replaced by a full translation of en.ts with identical keys.
-import en from "./en";
-const pt = en;
+import type { Dictionary } from "./en";
+
+const pt: Dictionary = {
+  nav: {
+    how: "Como funciona",
+    pricing: "Preços",
+    signIn: "Entrar",
+    language: "Idioma",
+  },
+  hero: {
+    eyebrow: "Idiomas · Matemática · Ciências · Tecnologia · Negócios",
+    titleLine1: "Aprenda de tudo.",
+    titleLine2: "Em voz alta.",
+    subtitle:
+      "A Noelia começou com idiomas que você fala de verdade desde o primeiro dia — e hoje é uma plataforma de aprendizado completa. Domine um idioma ou mergulhe fundo em matemática, ciências, tecnologia e negócios. Um só lugar, um só caminho.",
+    ctaPrimary: "Comece a aprender de graça",
+    ctaSecondary: "Como funciona",
+  },
+  stats: {
+    courses: "140+",
+    coursesLabel: "cursos",
+    languages: "6",
+    languagesLabel: "idiomas do mundo",
+    schools: "5",
+    schoolsLabel: "escolas de conhecimento",
+  },
+  how: {
+    title: "Como a Noelia funciona",
+    step1Title: "Escolha seu caminho",
+    step1Body:
+      "Um idioma para falar ou uma matéria para dominar — do espanhol ao cálculo, passando por arquitetura de sistemas. Cada caminho é uma sequência clara, nível por nível.",
+    step2Title: "Aprenda na prática",
+    step2Body:
+      "Toda lição é ativa: fale em voz alta e receba nota palavra por palavra, resolva o problema, responda ao quiz — e revise tudo pouco antes de esquecer.",
+    step3Title: "Vá além com pessoas de verdade",
+    step3Body:
+      "Conecte-se a um instrutor ao vivo por minuto ou aprenda dentro de uma sala de aula real, com feedback do professor e acompanhamento da família.",
+  },
+  schools: {
+    title: "Cinco escolas, uma plataforma",
+    subtitle: "Comece por onde quiser. Tudo é construído sobre o mesmo método ativo e guiado por revisão.",
+    languagesTitle: "Idiomas",
+    languagesBody: "Espanhol, francês, italiano, português, inglês e alemão — do A1 ao C1, com trilhas de negócios.",
+    mathTitle: "Matemática",
+    mathBody: "Da aritmética ao cálculo, álgebra linear e equações diferenciais.",
+    scienceTitle: "Ciências",
+    scienceBody: "Biologia, química, física, psicologia e muito mais.",
+    technologyTitle: "Tecnologia",
+    technologyBody: "Programação, dados, nuvem, segurança e uma trilha completa de desenvolvedor backend.",
+    businessTitle: "Negócios",
+    businessBody: "Finanças, marketing, gestão, direito e produto.",
+  },
+  features: {
+    title: "Tudo em um só aplicativo",
+    selfStudy: "Autoestudo",
+    selfStudyBody: "Lições adaptativas + repetição espaçada.",
+    speak: "Fale desde o primeiro dia",
+    speakBody: "Pronúncia avaliada palavra por palavra.",
+    academic: "Profundidade acadêmica",
+    academicBody: "Matemática, ciências, tecnologia e negócios.",
+    instructor: "Instrutor ao vivo",
+    instructorBody: "Por minuto, conexão instantânea.",
+    translate: "Tradução em tempo real",
+    translateBody: "Voz, texto e onde você estiver.",
+  },
+  audience: {
+    title: "Feito para o seu jeito de aprender",
+    selfTitle: "Autodidatas",
+    selfBody: "Dez minutos por dia. Sua fila sempre sabe o que vem a seguir.",
+    classTitle: "Salas de aula",
+    classBody: "Os professores atribuem, o sistema corrige em segundos e os professores revisam.",
+    familyTitle: "Famílias",
+    familyBody: "Os pais acompanham o progresso, as notas e a frequência — sem precisar cobrar.",
+  },
+  cta: {
+    title: "Sua primeira lição está a 30 segundos de distância.",
+    subtitle: "Grátis para começar. Sem cartão de crédito. Funciona em qualquer celular.",
+    button: "Comece a aprender de graça",
+    pricing: "Preços",
+    privacy: "Privacidade",
+    terms: "Termos",
+  },
+};
+
 export default pt;
