@@ -1,5 +1,85 @@
-// TEMPORARY: re-exports English until the zh translation is authored.
-// Replaced by a full translation of en.ts with identical keys.
-import en from "./en";
-const zh = en;
+import type { Dictionary } from "./en";
+
+const zh: Dictionary = {
+  nav: {
+    how: "使用方法",
+    pricing: "价格",
+    signIn: "登录",
+    language: "语言",
+  },
+  hero: {
+    eyebrow: "语言 · 数学 · 科学 · 技术 · 商业",
+    titleLine1: "万物皆可学。",
+    titleLine2: "大声说出来。",
+    subtitle:
+      "Noelia 从「让你第一天就能开口说」的语言课起步，如今已成长为一个完整的学习平台。精通一门语言，或深入钻研数学、科学、技术与商业。一处入口，一条清晰路径。",
+    ctaPrimary: "免费开始学习",
+    ctaSecondary: "使用方法",
+  },
+  stats: {
+    courses: "140+",
+    coursesLabel: "门课程",
+    languages: "6",
+    languagesLabel: "种世界语言",
+    schools: "5",
+    schoolsLabel: "所学科学院",
+  },
+  how: {
+    title: "Noelia 如何运作",
+    step1Title: "选择你的路径",
+    step1Body:
+      "一门想开口说的语言，或一个想精通的学科——从西班牙语到微积分，再到系统设计。每条路径都是清晰的进阶序列，一级一级稳步向上。",
+    step2Title: "在实践中学习",
+    step2Body:
+      "每节课都让你主动参与：大声说出来，逐字获得发音评分；动手解题，作答测验——然后在你即将遗忘之前恰好复习。",
+    step3Title: "与真人一起走得更远",
+    step3Body:
+      "按分钟连线真人导师，或走进真实课堂，享受老师的反馈与家长的全程关注。",
+  },
+  schools: {
+    title: "五所学院，一个平台",
+    subtitle: "从任何一处起步。一切都建立在同一套主动式、以复习驱动的学习方法之上。",
+    languagesTitle: "语言",
+    languagesBody: "西班牙语、法语、意大利语、葡萄牙语、英语和德语——从 A1 到 C1，另设商务专项课程。",
+    mathTitle: "数学",
+    mathBody: "从算术一路进阶到微积分、线性代数与微分方程。",
+    scienceTitle: "科学",
+    scienceBody: "生物、化学、物理、心理学，以及数十门其他学科。",
+    technologyTitle: "技术",
+    technologyBody: "编程、数据、云计算、安全，以及完整的后端开发专项课程。",
+    businessTitle: "商业",
+    businessBody: "金融、市场营销、管理、法律与产品。",
+  },
+  features: {
+    title: "一个应用，包罗万象",
+    selfStudy: "自主学习",
+    selfStudyBody: "自适应课程 + 间隔重复记忆。",
+    speak: "第一天就开口",
+    speakBody: "发音逐字评分。",
+    academic: "学术深度",
+    academicBody: "数学、科学、技术与商业。",
+    instructor: "真人导师",
+    instructorBody: "按分钟计费，即刻连线。",
+    translate: "实时翻译",
+    translateBody: "语音、文字，随时随地。",
+  },
+  audience: {
+    title: "为你的学习方式而生",
+    selfTitle: "自学者",
+    selfBody: "每天十分钟。你的学习队列始终知道下一步该学什么。",
+    classTitle: "课堂",
+    classBody: "老师布置作业，系统数秒批改，老师随后点评。",
+    familyTitle: "家庭",
+    familyBody: "家长实时掌握孩子的进度、成绩与出勤——无需再三催促。",
+  },
+  cta: {
+    title: "距离你的第一节课，只需 30 秒。",
+    subtitle: "免费开始，无需信用卡，任何手机都能用。",
+    button: "免费开始学习",
+    pricing: "价格",
+    privacy: "隐私政策",
+    terms: "服务条款",
+  },
+};
+
 export default zh;
