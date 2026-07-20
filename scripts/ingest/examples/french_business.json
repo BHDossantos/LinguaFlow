@@ -1,0 +1,327 @@
+{
+  "source": {
+    "id": "cefr",
+    "name": "CEFR (Council of Europe)",
+    "url": "https://www.coe.int/en/web/common-european-framework-reference-languages",
+    "license": "Council of Europe"
+  },
+  "course": {
+    "id": "aaaa0002-0000-4000-8000-000000000006",
+    "title": "French for Business",
+    "description": "A CEFR B1 course in professional French: introduce yourself at work, run meetings, negotiate, and write polished business emails with confidence.",
+    "language": "fr",
+    "dialect": "fr",
+    "cefr_level": "B1",
+    "school": "language",
+    "goal_tag": "work",
+    "position": 14,
+    "prerequisite_ids": ["aaaa0002-0000-4000-8000-000000000003"]
+  },
+  "lessons": [
+    {
+      "position": 1,
+      "title": "Professional introductions",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "In a professional setting French stays formal by default: use *vous*, address people as *Madame* or *Monsieur* without their surname, and wait for the other person to switch to *tu* before you do.",
+      "body": {
+        "items": [
+          {
+            "term": "Permettez-moi de me présenter",
+            "translation": "Allow me to introduce myself",
+            "ipa": "pɛʁ.mɛ.te mwa də mə pʁe.zɑ̃.te",
+            "example": "Permettez-moi de me présenter : Julien Marchand, du service commercial."
+          },
+          {
+            "term": "Je travaille dans le secteur de…",
+            "translation": "I work in the … sector",
+            "ipa": "ʒə tʁa.vaj dɑ̃ lə sɛk.tœʁ də",
+            "example": "Je travaille dans le secteur de la logistique depuis cinq ans."
+          },
+          {
+            "term": "Je suis responsable de…",
+            "translation": "I am in charge of…",
+            "ipa": "ʒə sɥi ʁɛs.pɔ̃.sabl də",
+            "example": "Je suis responsable des relations avec nos clients européens."
+          },
+          {
+            "term": "Voici ma carte de visite",
+            "translation": "Here is my business card",
+            "ipa": "vwa.si ma kaʁt də vi.zit",
+            "example": "Voici ma carte de visite ; n'hésitez pas à me contacter."
+          },
+          {
+            "term": "Ravi de faire votre connaissance",
+            "translation": "Delighted to meet you",
+            "ipa": "ʁa.vi də fɛʁ vɔtʁ kɔ.nɛ.sɑ̃s",
+            "example": "Ravi de faire votre connaissance, Madame Lefèvre."
+          },
+          {
+            "term": "Dans quel domaine travaillez-vous ?",
+            "translation": "What field do you work in?",
+            "ipa": "dɑ̃ kɛl dɔ.mɛn tʁa.va.je vu",
+            "example": "Et vous, dans quel domaine travaillez-vous exactement ?"
+          }
+        ]
+      }
+    },
+    {
+      "position": 2,
+      "title": "Le vouvoiement — the formal register",
+      "kind": "grammar",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {
+            "heading": "When vous is expected",
+            "text": "In business, *vous* is the safe default with clients, suppliers, managers, and anyone you have just met. It marks respect and professional distance. Using *tu* too early can sound presumptuous, so let the more senior person or the host propose it: *On peut se tutoyer ?* Until then, stay with *vous*, even with colleagues you see every day."
+          },
+          {
+            "heading": "The forms to master",
+            "text": "*Vous* takes the same verb ending in the present, the future, and the conditional: *Vous travaillez, vous travaillerez, vous travailleriez.* Its object and possessive forms are *vous* and *votre / vos*: *Je vous envoie votre devis et vos factures.* Reflexive verbs use *vous* too: *Comment vous appelez-vous ? Vous vous occupez de ce dossier ?*"
+          },
+          {
+            "heading": "Politeness that comes with it",
+            "text": "Formal register is more than a pronoun. Frame requests softly: *Pourriez-vous…?* rather than *Vous pouvez…?*, and open with *Excusez-moi de vous déranger.* Add *Madame* or *Monsieur* to soften a direct question: *Vous avez une minute, Monsieur ?* These small cushions matter far more in French than a simple *please* tacked on at the end."
+          },
+          {
+            "heading": "Titles and names",
+            "text": "Address people as *Madame* or *Monsieur* alone — never followed by the surname in speech, unlike English. *Bonjour Madame* is correct; *Bonjour Madame Lefèvre* sounds oddly formal or even cold. Professional titles replace the name in some contexts: *Monsieur le Directeur, Madame la Présidente.* When in doubt, a plain *Madame / Monsieur* is always safe."
+          }
+        ]
+      }
+    },
+    {
+      "position": 3,
+      "title": "Networking at a conference",
+      "kind": "roleplay",
+      "estimated_minutes": 11,
+      "grammar_note": null,
+      "body": {
+        "scenario": "The coffee break at a professional conference in Paris. Approach someone you don't know, introduce yourself and your role, exchange a business card, and find one point in common that could lead to future contact.",
+        "persona": "A busy but friendly sector professional who is happy to chat for a few minutes and appreciates a confident, polite opener",
+        "goal": "Introduce yourself formally, say what you do, ask about the other person's field, and propose staying in touch — all using vous"
+      }
+    },
+    {
+      "position": 4,
+      "title": "Running a meeting",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "French meetings often use *on* for a collective *we*: *On commence ?* (Shall we start?), *On en reparle demain* (We'll come back to it tomorrow). It takes the *il/elle* verb form and feels warmer and less stiff than *nous*.",
+      "body": {
+        "items": [
+          {
+            "term": "l'ordre du jour",
+            "translation": "the agenda",
+            "ipa": "lɔʁdʁ dy ʒuʁ",
+            "example": "Le premier point à l'ordre du jour concerne le budget."
+          },
+          {
+            "term": "faire le point",
+            "translation": "to take stock / review where things stand",
+            "ipa": "fɛʁ lə pwɛ̃",
+            "example": "Avant de continuer, faisons le point sur le projet."
+          },
+          {
+            "term": "prendre la parole",
+            "translation": "to take the floor / start speaking",
+            "ipa": "pʁɑ̃dʁ la pa.ʁɔl",
+            "example": "Est-ce que quelqu'un souhaite prendre la parole ?"
+          },
+          {
+            "term": "le compte rendu",
+            "translation": "the minutes / meeting report",
+            "ipa": "lə kɔ̃t ʁɑ̃.dy",
+            "example": "Je vous enverrai le compte rendu de la réunion demain matin."
+          },
+          {
+            "term": "aborder un sujet",
+            "translation": "to bring up / address a topic",
+            "ipa": "a.bɔʁ.de œ̃ sy.ʒɛ",
+            "example": "Nous aborderons ce sujet à la prochaine réunion."
+          },
+          {
+            "term": "revenons à nos moutons",
+            "translation": "let's get back to the point",
+            "ipa": "ʁə.və.nɔ̃ a no mu.tɔ̃",
+            "example": "Bon, revenons à nos moutons : le calendrier de livraison."
+          }
+        ]
+      }
+    },
+    {
+      "position": 5,
+      "title": "Chairing the weekly meeting",
+      "kind": "roleplay",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "scenario": "You are chairing your team's weekly project meeting by video call. Open the meeting, go through two agenda points, invite a quiet colleague to speak, keep a talkative one on topic, and close with the next steps and deadlines.",
+        "persona": "A mixed team of French colleagues: one who dominates the discussion and one who stays silent unless invited to contribute",
+        "goal": "Structure the meeting with agenda vocabulary, use the futur to assign next steps (Marie enverra le devis, on se reverra jeudi), and close politely on time"
+      }
+    },
+    {
+      "position": 6,
+      "title": "Polite requests: conditionnel & subjonctif",
+      "kind": "grammar",
+      "estimated_minutes": 13,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {
+            "heading": "Conditionnel de politesse",
+            "text": "The conditional turns blunt demands into professional requests. Build it on the future stem plus imparfait endings: *vouloir → je voudrais*, *pouvoir → vous pourriez*, *aimer → j'aimerais*, *souhaiter → je souhaiterais*. Compare *Je veux votre réponse aujourd'hui* (abrupt) with *Je voudrais votre réponse aujourd'hui, si possible* (professional). *Pourriez-vous me confirmer le tarif ?* is the everyday workhorse of business French."
+          },
+          {
+            "heading": "Le subjonctif in requests",
+            "text": "When you ask someone else to do something, French often needs the subjunctive after *que*. Trigger phrases include *il faudrait que*, *j'aimerais que*, *je voudrais que*: *Il faudrait que vous signiez le contrat avant vendredi. J'aimerais que nous soyons d'accord sur le prix.* Note the irregulars you cannot avoid: *que vous soyez* (être), *que vous ayez* (avoir), *que nous fassions* (faire)."
+          },
+          {
+            "heading": "Le futur for plans and commitments",
+            "text": "Use the simple future for firm professional commitments and scheduling: *Je vous enverrai le contrat lundi. Nous confirmerons la date cette semaine. L'équipe livrera le projet fin mars.* It sounds more reliable and formal than the near future (*je vais envoyer*), which fits casual speech. In writing especially, the futur simple is the register clients expect."
+          },
+          {
+            "heading": "Putting it together",
+            "text": "A polished request often chains all three: a conditional to open, a subjunctive to specify, a future to commit. *Pourriez-vous vérifier le devis ? Il faudrait qu'il soit validé aujourd'hui, et je vous répondrai avant la fin de la journée.* This is the exact rhythm of professional French — soft opening, precise middle, confident close."
+          }
+        ]
+      }
+    },
+    {
+      "position": 7,
+      "title": "Negotiation & business email vocabulary",
+      "kind": "vocab",
+      "estimated_minutes": 9,
+      "grammar_note": "French business emails end with a fixed formula, not a casual *bye*. *Cordialement* is the reliable neutral sign-off; *Bien à vous* is warmer; the full *Je vous prie d'agréer, Madame, Monsieur, mes salutations distinguées* is reserved for very formal letters.",
+      "body": {
+        "items": [
+          {
+            "term": "faire une offre",
+            "translation": "to make an offer",
+            "ipa": "fɛʁ yn ɔfʁ",
+            "example": "Nous sommes prêts à faire une offre dès cette semaine."
+          },
+          {
+            "term": "un devis",
+            "translation": "a quote / estimate",
+            "ipa": "œ̃ də.vi",
+            "example": "Pourriez-vous m'envoyer un devis détaillé ?"
+          },
+          {
+            "term": "les conditions de paiement",
+            "translation": "the payment terms",
+            "ipa": "le kɔ̃.di.sjɔ̃ də pɛj.mɑ̃",
+            "example": "Discutons des conditions de paiement avant de signer."
+          },
+          {
+            "term": "trouver un compromis",
+            "translation": "to reach a compromise",
+            "ipa": "tʁu.ve œ̃ kɔ̃.pʁɔ.mi",
+            "example": "Je suis sûr que nous pouvons trouver un compromis."
+          },
+          {
+            "term": "sous réserve de",
+            "translation": "subject to / provided that",
+            "ipa": "su ʁe.zɛʁv də",
+            "example": "Nous acceptons, sous réserve de votre accord sur le délai."
+          },
+          {
+            "term": "en pièce jointe",
+            "translation": "attached (in an email)",
+            "ipa": "ɑ̃ pjɛs ʒwɛ̃t",
+            "example": "Vous trouverez le contrat en pièce jointe."
+          }
+        ]
+      }
+    },
+    {
+      "position": 8,
+      "title": "Writing a professional email",
+      "kind": "writing",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "sections": [
+          {
+            "heading": "Subject line and greeting",
+            "text": "Start with a clear *Objet* (subject): *Objet : Demande de devis — projet logistique.* Open with the person's title, not their name: *Madame,* or *Monsieur,* on its own line, or *Madame, Monsieur,* when you don't know who will read it. Avoid *Cher / Chère* with people you don't know well — it is warmer than English *Dear* and can feel too familiar in a first contact."
+          },
+          {
+            "heading": "Body: get to the point politely",
+            "text": "State your purpose in the first sentence with a set opener: *Je me permets de vous contacter au sujet de… / Suite à notre conversation téléphonique, je vous confirme…* Keep paragraphs short and requests conditional: *Pourriez-vous m'indiquer vos disponibilités ? Je vous serais reconnaissant de bien vouloir confirmer avant vendredi.* Reference attachments explicitly: *Vous trouverez notre proposition en pièce jointe.*"
+          },
+          {
+            "heading": "Closing formulas",
+            "text": "French sign-offs are graded by formality. Everyday professional email: *Cordialement,* or *Bien cordialement,* followed by your name. Slightly warmer: *Bien à vous,* Formal letters and first contact with senior people: *Je vous prie d'agréer, Madame, Monsieur, mes salutations distinguées.* Never mix registers — a casual body with a grand closing looks odd."
+          },
+          {
+            "heading": "A short model to imitate",
+            "text": "*Objet : Confirmation de rendez-vous. Madame, Je me permets de vous contacter afin de confirmer notre rendez-vous du 12 mars à 14 h. Pourriez-vous me préciser l'adresse exacte de vos bureaux ? Je vous en remercie par avance. Cordialement, Julien Marchand.* Notice the pattern: subject, greeting, purpose, polite request, thanks, sign-off — reusable for almost any business email."
+          }
+        ]
+      }
+    },
+    {
+      "position": 9,
+      "title": "Negotiating a deal by phone",
+      "kind": "roleplay",
+      "estimated_minutes": 12,
+      "grammar_note": null,
+      "body": {
+        "scenario": "A phone call with a client who finds your quote too high. Acknowledge their concern, defend your price with one clear argument, offer a compromise on either the price or the payment terms, and agree on the next step in writing.",
+        "persona": "A polite but firm client who pushes for a discount and will only agree if you offer something concrete in return",
+        "goal": "Negotiate using conditional requests (nous pourrions, il faudrait que), propose a real compromis, and close by confirming you will send a written devis"
+      }
+    },
+    {
+      "position": 10,
+      "title": "Checkpoint",
+      "kind": "quiz",
+      "estimated_minutes": 8,
+      "grammar_note": null,
+      "body": {
+        "questions": [
+          {
+            "prompt": "Which is the most professional way to ask a client for confirmation?",
+            "options": ["Vous confirmez ?", "Confirmez maintenant.", "Pourriez-vous me confirmer, s'il vous plaît ?", "Je veux une confirmation."],
+            "answer": 2,
+            "explanation": "The conditionnel de politesse *Pourriez-vous…?* plus *s'il vous plaît* is the standard polite business request; the others are too abrupt."
+          },
+          {
+            "prompt": "Complete: « Il faudrait que vous ___ le contrat avant vendredi. »",
+            "options": ["signez", "signiez", "signerez", "avez signé"],
+            "answer": 1,
+            "explanation": "*Il faudrait que* triggers the subjunctive: *que vous signiez*. The indicative *signez* is wrong after this expression."
+          },
+          {
+            "prompt": "In a business meeting, « l'ordre du jour » is…",
+            "options": ["the daily schedule of trains", "the meeting agenda", "the minutes", "the day's orders"],
+            "answer": 1,
+            "explanation": "*L'ordre du jour* is the agenda — the list of points to be discussed. The written record afterwards is *le compte rendu*."
+          },
+          {
+            "prompt": "Which sign-off best fits an everyday professional email?",
+            "options": ["Bisous", "Cordialement", "À plus", "Salut"],
+            "answer": 1,
+            "explanation": "*Cordialement* is the neutral professional standard. *Bisous*, *À plus*, and *Salut* are informal and inappropriate for business."
+          },
+          {
+            "prompt": "For a firm scheduling commitment to a client, which is most appropriate?",
+            "options": ["Je vais peut-être envoyer le contrat.", "Je vous enverrai le contrat lundi.", "J'enverrais le contrat.", "Envoyez le contrat lundi."],
+            "answer": 1,
+            "explanation": "The futur simple *je vous enverrai* states a reliable commitment. The conditional *enverrais* would mean *would send*, and the others are vague or a command."
+          },
+          {
+            "prompt": "« Nous acceptons, sous réserve de votre accord sur le délai. » This means the acceptance is…",
+            "options": ["unconditional", "cancelled", "conditional on their agreement about the deadline", "delayed by a week"],
+            "answer": 2,
+            "explanation": "*Sous réserve de* means *subject to / provided that*, so the acceptance depends on their agreement on the deadline."
+          }
+        ]
+      }
+    }
+  ]
+}
