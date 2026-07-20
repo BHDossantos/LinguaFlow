@@ -218,3 +218,7 @@ update public.courses set source_id='mit_ocw'  where id in ('bbbb0001-0000-4000-
 update public.courses set source_id='openstax'    where id in ('bbbb0001-0000-4000-8000-00000000000f','bbbb0003-0000-4000-8000-000000000014','bbbb0004-0000-4000-8000-000000000027') and source_id is null;
 update public.courses set source_id='mit_ocw'     where id='bbbb0001-0000-4000-8000-000000000010' and source_id is null;
 update public.courses set source_id='oer_commons' where id='bbbb0002-0000-4000-8000-000000000017' and source_id is null;
+-- ---- provenance + CEFR alignment (batch 20: German B1/B2/C1/Business) ----
+update public.courses set source_id='oer_commons' where id in ('aaaa0006-0000-4000-8000-000000000003','aaaa0006-0000-4000-8000-000000000004','aaaa0006-0000-4000-8000-000000000005','aaaa0006-0000-4000-8000-000000000006') and source_id is null;
+insert into public.course_standards (course_id, descriptor_id)
+select c.id, d.id from public.courses c join public.standard_descriptors d on d.standard_id='cefr' and d.level=c.cefr_level where c.school='language' and c.cefr_level is not null on conflict do nothing;
