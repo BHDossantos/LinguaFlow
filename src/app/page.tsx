@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase/server";
 import { LANGUAGES, languageLabel, type LanguageCode } from "@/lib/languages";
 import { TryIt } from "@/components/TryIt";
+import { getI18n } from "@/lib/i18n/server";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +17,10 @@ export default async function Home() {
   const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return <LoggedOutLanding />;
+  if (!user) {
+    const { t } = await getI18n();
+    return <LoggedOutLanding t={t} />;
+  }
 
   // First check onboarding — if no target language yet, push to /onboarding.
   const { data: target } = await supabase
@@ -514,7 +519,14 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
   );
 }
 
-function LoggedOutLanding() {
+function LoggedOutLanding({ t }: { t: Dictionary }) {
+  const schoolCards = [
+    { emoji: "🗣️", title: t.schools.languagesTitle, body: t.schools.languagesBody, bg: "bg-brand-100 dark:bg-brand-500/20" },
+    { emoji: "➗", title: t.schools.mathTitle, body: t.schools.mathBody, bg: "bg-violet-100 dark:bg-violet-500/20" },
+    { emoji: "🔬", title: t.schools.scienceTitle, body: t.schools.scienceBody, bg: "bg-emerald-100 dark:bg-emerald-500/20" },
+    { emoji: "💻", title: t.schools.technologyTitle, body: t.schools.technologyBody, bg: "bg-sky-100 dark:bg-sky-500/20" },
+    { emoji: "📈", title: t.schools.businessTitle, body: t.schools.businessBody, bg: "bg-amber-100 dark:bg-amber-500/20" },
+  ];
   return (
     <div className="space-y-16 pb-8 pt-4 sm:space-y-24 sm:pt-8">
       {/* Hero: copy left, live demo right on desktop */}
@@ -522,25 +534,24 @@ function LoggedOutLanding() {
         <div className="mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-2">
           <div className="text-center lg:text-left">
             <p className="animate-fade-up inline-block rounded-full bg-white/70 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-700 backdrop-blur dark:bg-white/10 dark:text-brand-100">
-              🗣️ Speak from day one
+              {t.hero.eyebrow}
             </p>
             <h1 className="animate-fade-up mt-5 text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl [animation-delay:60ms]">
-              Speak.
+              {t.hero.titleLine1}
               <br />
               <span className="bg-gradient-to-r from-brand-500 to-violet-500 bg-clip-text text-transparent">
-                Don't just tap.
+                {t.hero.titleLine2}
               </span>
             </h1>
             <p className="animate-fade-up mx-auto mt-5 max-w-md text-lg text-ink-500 dark:text-white/70 lg:mx-0 [animation-delay:120ms]">
-              Say a phrase, get scored word-by-word, fix it on the spot.
-              Lessons, roleplay, and live instructors — one app.
+              {t.hero.subtitle}
             </p>
             <div className="animate-fade-up mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start [animation-delay:180ms]">
               <Link href="/sign-in" className="btn-primary w-full px-8 py-3.5 text-lg shadow-lg shadow-brand-500/25 sm:w-auto">
-                Start learning free
+                {t.hero.ctaPrimary}
               </Link>
               <a href="#how" className="btn-ghost w-full px-8 py-3.5 sm:w-auto">
-                How it works
+                {t.hero.ctaSecondary}
               </a>
             </div>
             <div className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-2 lg:justify-start [animation-delay:240ms]">
@@ -564,122 +575,128 @@ function LoggedOutLanding() {
       {/* Honest proof points */}
       <section className="mx-auto grid max-w-3xl grid-cols-3 gap-3 text-center">
         <div className="card py-5">
-          <p className="text-3xl font-extrabold text-brand-600">5</p>
-          <p className="mt-1 text-xs text-ink-500">languages</p>
+          <p className="text-3xl font-extrabold text-brand-600">{t.stats.courses}</p>
+          <p className="mt-1 text-xs text-ink-500">{t.stats.coursesLabel}</p>
         </div>
         <div className="card py-5">
-          <p className="text-3xl font-extrabold text-brand-600">3×</p>
-          <p className="mt-1 text-xs text-ink-500">practice modes per word</p>
+          <p className="text-3xl font-extrabold text-brand-600">{t.stats.languages}</p>
+          <p className="mt-1 text-xs text-ink-500">{t.stats.languagesLabel}</p>
         </div>
         <div className="card py-5">
-          <p className="text-3xl font-extrabold text-brand-600">0s</p>
-          <p className="mt-1 text-xs text-ink-500">wait for feedback</p>
+          <p className="text-3xl font-extrabold text-brand-600">{t.stats.schools}</p>
+          <p className="mt-1 text-xs text-ink-500">{t.stats.schoolsLabel}</p>
         </div>
       </section>
 
       {/* How it works */}
       <section id="how" className="mx-auto max-w-5xl space-y-8">
-        <h2 className="text-center text-3xl font-bold sm:text-4xl">How Noelia works</h2>
+        <h2 className="text-center text-3xl font-bold sm:text-4xl">{t.how.title}</h2>
         <ol className="grid gap-4 sm:grid-cols-3">
           <li className="card space-y-2 p-6">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">1</span>
-            <p className="text-lg font-semibold">Learn it three ways</p>
-            <p className="text-sm text-ink-500">
-              Every word is drilled by recognizing, recalling, and listening —
-              then scheduled for review right before you'd forget it.
-            </p>
+            <p className="text-lg font-semibold">{t.how.step1Title}</p>
+            <p className="text-sm text-ink-500">{t.how.step1Body}</p>
           </li>
           <li className="card space-y-2 p-6">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">2</span>
-            <p className="text-lg font-semibold">Say it out loud</p>
-            <p className="text-sm text-ink-500">
-              Pronunciation is scored word-by-word in real time, and system
-              roleplay puts you in real scenes — cafés, interviews, travel.
-            </p>
+            <p className="text-lg font-semibold">{t.how.step2Title}</p>
+            <p className="text-sm text-ink-500">{t.how.step2Body}</p>
           </li>
           <li className="card space-y-2 p-6">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">3</span>
-            <p className="text-lg font-semibold">Level up with humans</p>
-            <p className="text-sm text-ink-500">
-              Connect to a live instructor per-minute, or learn inside a real
-              classroom with teacher feedback and family visibility.
-            </p>
+            <p className="text-lg font-semibold">{t.how.step3Title}</p>
+            <p className="text-sm text-ink-500">{t.how.step3Body}</p>
           </li>
         </ol>
       </section>
 
+      {/* Five schools */}
+      <section className="mx-auto max-w-5xl space-y-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold sm:text-4xl">{t.schools.title}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-ink-500 dark:text-white/70">{t.schools.subtitle}</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {schoolCards.map((s) => (
+            <div key={s.title} className="card p-6">
+              <span className={`grid h-11 w-11 place-items-center rounded-xl text-2xl ${s.bg}`}>{s.emoji}</span>
+              <p className="mt-3 font-semibold">{s.title}</p>
+              <p className="mt-1 text-sm text-ink-500">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Feature grid */}
-      <section className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="card p-6">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-amber-100 text-2xl dark:bg-amber-500/20">📚</span>
-          <p className="mt-3 font-semibold">Self-study</p>
-          <p className="mt-1 text-sm text-ink-500">Adaptive lessons + spaced repetition.</p>
-        </div>
-        <div className="card p-6">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-violet-100 text-2xl dark:bg-violet-500/20">💬</span>
-          <p className="mt-3 font-semibold">System roleplay</p>
-          <p className="mt-1 text-sm text-ink-500">Real conversations, no judgment.</p>
-        </div>
-        <div className="card p-6">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-100 text-2xl dark:bg-emerald-500/20">🧑‍🏫</span>
-          <p className="mt-3 font-semibold">Live instructor</p>
-          <p className="mt-1 text-sm text-ink-500">Per-minute, instant connect.</p>
-        </div>
-        <div className="card p-6">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-sky-100 text-2xl dark:bg-sky-500/20">🌐</span>
-          <p className="mt-3 font-semibold">Real-time translate</p>
-          <p className="mt-1 text-sm text-ink-500">Voice, text, and on the go.</p>
+      <section className="mx-auto max-w-5xl space-y-8">
+        <h2 className="text-center text-3xl font-bold sm:text-4xl">{t.features.title}</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="card p-6">
+            <span className="grid h-11 w-11 place-items-center rounded-xl bg-amber-100 text-2xl dark:bg-amber-500/20">📚</span>
+            <p className="mt-3 font-semibold">{t.features.selfStudy}</p>
+            <p className="mt-1 text-sm text-ink-500">{t.features.selfStudyBody}</p>
+          </div>
+          <div className="card p-6">
+            <span className="grid h-11 w-11 place-items-center rounded-xl bg-rose-100 text-2xl dark:bg-rose-500/20">🗣️</span>
+            <p className="mt-3 font-semibold">{t.features.speak}</p>
+            <p className="mt-1 text-sm text-ink-500">{t.features.speakBody}</p>
+          </div>
+          <div className="card p-6">
+            <span className="grid h-11 w-11 place-items-center rounded-xl bg-violet-100 text-2xl dark:bg-violet-500/20">🎓</span>
+            <p className="mt-3 font-semibold">{t.features.academic}</p>
+            <p className="mt-1 text-sm text-ink-500">{t.features.academicBody}</p>
+          </div>
+          <div className="card p-6">
+            <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-100 text-2xl dark:bg-emerald-500/20">🧑‍🏫</span>
+            <p className="mt-3 font-semibold">{t.features.instructor}</p>
+            <p className="mt-1 text-sm text-ink-500">{t.features.instructorBody}</p>
+          </div>
+          <div className="card p-6">
+            <span className="grid h-11 w-11 place-items-center rounded-xl bg-sky-100 text-2xl dark:bg-sky-500/20">🌐</span>
+            <p className="mt-3 font-semibold">{t.features.translate}</p>
+            <p className="mt-1 text-sm text-ink-500">{t.features.translateBody}</p>
+          </div>
         </div>
       </section>
 
       {/* Who it's for */}
       <section className="mx-auto max-w-5xl space-y-8">
-        <h2 className="text-center text-3xl font-bold sm:text-4xl">Made for how you learn</h2>
+        <h2 className="text-center text-3xl font-bold sm:text-4xl">{t.audience.title}</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="card p-6 text-center">
             <span className="text-4xl">🎧</span>
-            <p className="mt-2 text-lg font-semibold">Self-learners</p>
-            <p className="mt-1 text-sm text-ink-500">
-              Ten minutes a day. Your queue always knows what's next.
-            </p>
+            <p className="mt-2 text-lg font-semibold">{t.audience.selfTitle}</p>
+            <p className="mt-1 text-sm text-ink-500">{t.audience.selfBody}</p>
           </div>
           <div className="card p-6 text-center">
             <span className="text-4xl">🏫</span>
-            <p className="mt-2 text-lg font-semibold">Classrooms</p>
-            <p className="mt-1 text-sm text-ink-500">
-              Teachers assign, the system grades in seconds, teachers review.
-            </p>
+            <p className="mt-2 text-lg font-semibold">{t.audience.classTitle}</p>
+            <p className="mt-1 text-sm text-ink-500">{t.audience.classBody}</p>
           </div>
           <div className="card p-6 text-center">
             <span className="text-4xl">👨‍👩‍👧</span>
-            <p className="mt-2 text-lg font-semibold">Families</p>
-            <p className="mt-1 text-sm text-ink-500">
-              Parents follow progress, grades, and attendance — no nagging.
-            </p>
+            <p className="mt-2 text-lg font-semibold">{t.audience.familyTitle}</p>
+            <p className="mt-1 text-sm text-ink-500">{t.audience.familyBody}</p>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="hero-bg -mx-4 rounded-t-[2.5rem] px-4 py-14 text-center sm:-mx-6 sm:rounded-[2.5rem]">
-        <h2 className="text-3xl font-extrabold sm:text-4xl">
-          Your first phrase is 30 seconds away.
-        </h2>
-        <p className="mx-auto mt-3 max-w-sm text-ink-500 dark:text-white/70">
-          Free to start. No credit card. Works on any phone.
-        </p>
+        <h2 className="text-3xl font-extrabold sm:text-4xl">{t.cta.title}</h2>
+        <p className="mx-auto mt-3 max-w-sm text-ink-500 dark:text-white/70">{t.cta.subtitle}</p>
         <Link
           href="/sign-in"
           className="btn-primary mt-7 inline-block px-12 py-3.5 text-lg shadow-lg shadow-brand-500/25"
         >
-          Start learning free
+          {t.cta.button}
         </Link>
         <p className="mt-6 text-xs text-ink-500">
-          <Link href="/pricing" className="underline underline-offset-2">Pricing</Link>
+          <Link href="/pricing" className="underline underline-offset-2">{t.cta.pricing}</Link>
           {" · "}
-          <Link href="/legal/privacy" className="underline underline-offset-2">Privacy</Link>
+          <Link href="/legal/privacy" className="underline underline-offset-2">{t.cta.privacy}</Link>
           {" · "}
-          <Link href="/legal/terms" className="underline underline-offset-2">Terms</Link>
+          <Link href="/legal/terms" className="underline underline-offset-2">{t.cta.terms}</Link>
         </p>
       </section>
     </div>

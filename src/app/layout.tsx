@@ -4,7 +4,9 @@ import Link from "next/link";
 import { BottomNav } from "@/components/BottomNav";
 import { SideNav } from "@/components/SideNav";
 import { PageBeacon } from "@/components/PageBeacon";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { supabaseServer } from "@/lib/supabase/server";
+import { getI18n } from "@/lib/i18n/server";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://learnnoelia.com";
 
@@ -86,20 +88,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
 
   if (!authed) {
+    const { locale, t } = await getI18n();
     return (
-      <html lang="en">
+      <html lang={locale}>
         <body className="font-sans">
           <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
             <Logo />
-            <nav className="flex items-center gap-4 text-sm">
+            <nav className="flex items-center gap-2 text-sm sm:gap-4">
               <Link href="/#how" className="hidden text-ink-500 hover:text-brand-500 sm:block">
-                How it works
+                {t.nav.how}
               </Link>
               <Link href="/pricing" className="text-ink-500 hover:text-brand-500">
-                Pricing
+                {t.nav.pricing}
               </Link>
+              <LanguageSwitcher current={locale} />
               <Link href="/sign-in" className="btn-primary px-4 py-2 text-sm">
-                Sign in
+                {t.nav.signIn}
               </Link>
             </nav>
           </header>
