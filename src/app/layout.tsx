@@ -13,9 +13,9 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://learnnoelia.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
-  title: { default: "Noelia — Speak. Don't just tap.", template: "%s — Noelia" },
+  title: { default: "Noelia — Learn anything, out loud.", template: "%s — Noelia" },
   description:
-    "Say a phrase, get scored word-by-word, fix it on the spot. Adaptive lessons, system roleplay, and live instructors — one app.",
+    "The learning platform for languages and beyond — math, science, technology, and business. 140+ courses, active lessons, spoken practice, and live instructors, all in one app.",
   manifest: "/manifest.json",
   icons: {
     icon: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
@@ -23,18 +23,18 @@ export const metadata: Metadata = {
   },
   openGraph: {
     url: SITE_URL,
-    title: "Noelia — Speak. Don't just tap.",
+    title: "Noelia — Learn anything, out loud.",
     description:
-      "Say a phrase, get scored word-by-word, fix it on the spot. Free to start.",
+      "Languages, math, science, technology, and business — 140+ courses in one app. Free to start.",
     siteName: "Noelia",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Noelia — Speak. Don't just tap." }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Noelia — Learn anything, out loud." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Noelia — Speak. Don't just tap.",
+    title: "Noelia — Learn anything, out loud.",
     description:
-      "Say a phrase, get scored word-by-word, fix it on the spot. Free to start.",
+      "Languages, math, science, technology, and business — 140+ courses in one app. Free to start.",
     images: ["/og.png"],
   },
 };
