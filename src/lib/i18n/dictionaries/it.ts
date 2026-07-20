@@ -1,5 +1,85 @@
-// TEMPORARY: re-exports English until the it translation is authored.
-// Replaced by a full translation of en.ts with identical keys.
-import en from "./en";
-const it = en;
+import type { Dictionary } from "./en";
+
+const it: Dictionary = {
+  nav: {
+    how: "Come funziona",
+    pricing: "Prezzi",
+    signIn: "Accedi",
+    language: "Lingua",
+  },
+  hero: {
+    eyebrow: "Lingue · Matematica · Scienze · Tecnologia · Business",
+    titleLine1: "Impara tutto.",
+    titleLine2: "Ad alta voce.",
+    subtitle:
+      "Noelia è nata con le lingue che parli davvero fin dal primo giorno — e oggi è una piattaforma di apprendimento completa. Padroneggia una lingua o approfondisci matematica, scienze, tecnologia e business. Un solo posto, un solo percorso.",
+    ctaPrimary: "Inizia gratis",
+    ctaSecondary: "Come funziona",
+  },
+  stats: {
+    courses: "140+",
+    coursesLabel: "corsi",
+    languages: "6",
+    languagesLabel: "lingue del mondo",
+    schools: "5",
+    schoolsLabel: "aree di studio",
+  },
+  how: {
+    title: "Come funziona Noelia",
+    step1Title: "Scegli il tuo percorso",
+    step1Body:
+      "Una lingua da parlare o una materia da padroneggiare — dallo spagnolo all'analisi matematica al system design. Ogni percorso è una sequenza chiara, livello dopo livello.",
+    step2Title: "Impara facendo",
+    step2Body:
+      "Ogni lezione è attiva: pronuncia ad alta voce e ricevi una valutazione parola per parola, risolvi il problema, rispondi al quiz — poi ripassa proprio prima di dimenticare.",
+    step3Title: "Vai oltre con le persone",
+    step3Body:
+      "Collegati a un insegnante dal vivo al minuto oppure impara in una vera aula, con il feedback del docente e la visibilità per la famiglia.",
+  },
+  schools: {
+    title: "Cinque aree, una sola piattaforma",
+    subtitle: "Inizia da dove vuoi. Tutto si basa sullo stesso metodo attivo, guidato dal ripasso.",
+    languagesTitle: "Lingue",
+    languagesBody: "Spagnolo, francese, italiano, portoghese, inglese e tedesco — dall'A1 al C1, più percorsi business.",
+    mathTitle: "Matematica",
+    mathBody: "Dall'aritmetica all'analisi, all'algebra lineare e alle equazioni differenziali.",
+    scienceTitle: "Scienze",
+    scienceBody: "Biologia, chimica, fisica, psicologia e molto altro.",
+    technologyTitle: "Tecnologia",
+    technologyBody: "Programmazione, dati, cloud, sicurezza e un percorso completo da sviluppatore backend.",
+    businessTitle: "Business",
+    businessBody: "Finanza, marketing, management, diritto e product.",
+  },
+  features: {
+    title: "Tutto in un'unica app",
+    selfStudy: "Studio autonomo",
+    selfStudyBody: "Lezioni adattive + ripetizione dilazionata.",
+    speak: "Parla dal primo giorno",
+    speakBody: "Pronuncia valutata parola per parola.",
+    academic: "Profondità accademica",
+    academicBody: "Matematica, scienze, tecnologia e business.",
+    instructor: "Insegnante dal vivo",
+    instructorBody: "Al minuto, connessione immediata.",
+    translate: "Traduzione in tempo reale",
+    translateBody: "Voce, testo e ovunque tu sia.",
+  },
+  audience: {
+    title: "Pensata per come impari tu",
+    selfTitle: "Autodidatti",
+    selfBody: "Dieci minuti al giorno. La tua coda sa sempre qual è il prossimo passo.",
+    classTitle: "Aule",
+    classBody: "Gli insegnanti assegnano, il sistema valuta in pochi secondi, gli insegnanti correggono.",
+    familyTitle: "Famiglie",
+    familyBody: "I genitori seguono progressi, voti e presenze — senza dover insistere.",
+  },
+  cta: {
+    title: "La tua prima lezione è a 30 secondi da qui.",
+    subtitle: "Inizi gratis. Nessuna carta di credito. Funziona su qualsiasi telefono.",
+    button: "Inizia gratis",
+    pricing: "Prezzi",
+    privacy: "Privacy",
+    terms: "Termini",
+  },
+};
+
 export default it;

@@ -1,5 +1,85 @@
-// TEMPORARY: re-exports English until the fr translation is authored.
-// Replaced by a full translation of en.ts with identical keys.
-import en from "./en";
-const fr = en;
+import type { Dictionary } from "./en";
+
+const fr: Dictionary = {
+  nav: {
+    how: "Comment ça marche",
+    pricing: "Tarifs",
+    signIn: "Se connecter",
+    language: "Langue",
+  },
+  hero: {
+    eyebrow: "Langues · Maths · Sciences · Technologie · Business",
+    titleLine1: "Apprenez tout.",
+    titleLine2: "À voix haute.",
+    subtitle:
+      "Noelia est née avec des langues que vous parlez vraiment dès le premier jour, et c'est aujourd'hui une plateforme d'apprentissage complète. Maîtrisez une langue, ou plongez au cœur des maths, des sciences, de la technologie et du business. Un seul endroit, un seul parcours.",
+    ctaPrimary: "Commencer gratuitement",
+    ctaSecondary: "Comment ça marche",
+  },
+  stats: {
+    courses: "140+",
+    coursesLabel: "cours",
+    languages: "6",
+    languagesLabel: "langues du monde",
+    schools: "5",
+    schoolsLabel: "écoles thématiques",
+  },
+  how: {
+    title: "Comment fonctionne Noelia",
+    step1Title: "Choisissez votre parcours",
+    step1Body:
+      "Une langue à parler, ou une matière à maîtriser, de l'espagnol à l'analyse en passant par l'architecture des systèmes. Chaque parcours est une progression claire, niveau après niveau.",
+    step2Title: "Apprenez en pratiquant",
+    step2Body:
+      "Chaque leçon est active : dites-le à voix haute et recevez une note mot par mot, résolvez le problème, répondez au quiz, puis révisez juste avant d'oublier.",
+    step3Title: "Allez plus loin avec des humains",
+    step3Body:
+      "Connectez-vous à un formateur en direct à la minute, ou apprenez au sein d'une vraie classe avec les retours des enseignants et le suivi des familles.",
+  },
+  schools: {
+    title: "Cinq écoles, une seule plateforme",
+    subtitle: "Commencez où vous voulez. Tout repose sur la même méthode active, guidée par la révision.",
+    languagesTitle: "Langues",
+    languagesBody: "Espagnol, français, italien, portugais, anglais et allemand, du A1 au C1, avec des parcours business.",
+    mathTitle: "Mathématiques",
+    mathBody: "De l'arithmétique à l'analyse, l'algèbre linéaire et les équations différentielles.",
+    scienceTitle: "Sciences",
+    scienceBody: "Biologie, chimie, physique, psychologie et bien d'autres encore.",
+    technologyTitle: "Technologie",
+    technologyBody: "Code, données, cloud, sécurité et un parcours complet de développeur back-end.",
+    businessTitle: "Business",
+    businessBody: "Finance, marketing, management, droit et produit.",
+  },
+  features: {
+    title: "Tout dans une seule application",
+    selfStudy: "En autonomie",
+    selfStudyBody: "Leçons adaptatives et répétition espacée.",
+    speak: "Parlez dès le premier jour",
+    speakBody: "Prononciation notée mot par mot.",
+    academic: "Profondeur académique",
+    academicBody: "Maths, sciences, tech et business.",
+    instructor: "Formateur en direct",
+    instructorBody: "À la minute, mise en relation instantanée.",
+    translate: "Traduction en temps réel",
+    translateBody: "Voix, texte et en déplacement.",
+  },
+  audience: {
+    title: "Conçu pour votre façon d'apprendre",
+    selfTitle: "Autodidactes",
+    selfBody: "Dix minutes par jour. Votre file d'attente sait toujours ce qui vient ensuite.",
+    classTitle: "Classes",
+    classBody: "Les enseignants donnent les devoirs, le système corrige en quelques secondes, les enseignants relisent.",
+    familyTitle: "Familles",
+    familyBody: "Les parents suivent les progrès, les notes et la présence, sans avoir à insister.",
+  },
+  cta: {
+    title: "Votre première leçon est à 30 secondes d'ici.",
+    subtitle: "Gratuit pour commencer. Sans carte bancaire. Fonctionne sur tous les téléphones.",
+    button: "Commencer gratuitement",
+    pricing: "Tarifs",
+    privacy: "Confidentialité",
+    terms: "Conditions",
+  },
+};
+
 export default fr;
