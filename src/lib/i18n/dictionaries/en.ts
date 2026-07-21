@@ -83,6 +83,14 @@ const en = {
     privacy: "Privacy",
     terms: "Terms",
   },
+  trust: {
+    free: "Free to start",
+    noCard: "No credit card",
+    anyPhone: "Works on any phone",
+  },
+  marquee: {
+    eyebrow: "A few of the 140+ courses",
+  },
   // Signed-in app shell (sidebar + mobile nav). Keep labels short.
   app: {
     nav: {

@@ -80,6 +80,14 @@ const it: Dictionary = {
     privacy: "Privacy",
     terms: "Termini",
   },
+  trust: {
+    free: "Inizi gratis",
+    noCard: "Senza carta",
+    anyPhone: "Su qualsiasi telefono",
+  },
+  marquee: {
+    eyebrow: "Alcuni dei 140+ corsi",
+  },
   app: {
     nav: {
       home: "Home",

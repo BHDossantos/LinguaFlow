@@ -80,6 +80,14 @@ const fr: Dictionary = {
     privacy: "Confidentialité",
     terms: "Conditions",
   },
+  trust: {
+    free: "Gratuit au départ",
+    noCard: "Sans carte bancaire",
+    anyPhone: "Sur tous les téléphones",
+  },
+  marquee: {
+    eyebrow: "Quelques-uns des 140+ cours",
+  },
   app: {
     nav: {
       home: "Accueil",

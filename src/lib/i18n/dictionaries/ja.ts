@@ -80,6 +80,14 @@ const ja: Dictionary = {
     privacy: "プライバシー",
     terms: "利用規約",
   },
+  trust: {
+    free: "無料で開始",
+    noCard: "カード不要",
+    anyPhone: "どんなスマホでも",
+  },
+  marquee: {
+    eyebrow: "140以上のコースの一部",
+  },
   app: {
     nav: {
       home: "ホーム",

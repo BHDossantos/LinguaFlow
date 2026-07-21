@@ -80,6 +80,14 @@ const zh: Dictionary = {
     privacy: "隐私政策",
     terms: "服务条款",
   },
+  trust: {
+    free: "免费开始",
+    noCard: "无需信用卡",
+    anyPhone: "任何手机都能用",
+  },
+  marquee: {
+    eyebrow: "140+ 门课程中的一部分",
+  },
   app: {
     nav: {
       home: "首页",

@@ -353,7 +353,7 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
         data-testid="coach-entry"
       >
         <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-100 text-xl dark:bg-violet-500/20">🤖</span>
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-violet-100 text-xl dark:bg-violet-500/20">🎯</span>
           <div>
             <p className="font-semibold">Coach</p>
             <p className="text-xs text-ink-500">Ask anything…</p>
@@ -519,6 +519,27 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
   );
 }
 
+// A curated, honest sample of courses that actually exist in the catalog —
+// shown in the scrolling ticker to convey breadth across all five schools.
+const MARQUEE = [
+  { e: "🗣️", t: "Spanish A1" },
+  { e: "🇫🇷", t: "French for Business" },
+  { e: "🇩🇪", t: "German B2" },
+  { e: "➗", t: "Calculus I" },
+  { e: "📐", t: "Linear Algebra" },
+  { e: "🧮", t: "Differential Equations" },
+  { e: "🔬", t: "Organic Chemistry" },
+  { e: "🧠", t: "Neuroscience" },
+  { e: "💻", t: "Python Foundations" },
+  { e: "🐳", t: "Docker & Containers" },
+  { e: "🏗️", t: "System Design" },
+  { e: "🔐", t: "Cybersecurity" },
+  { e: "📊", t: "Business Analytics" },
+  { e: "💰", t: "Corporate Finance" },
+  { e: "⚖️", t: "Business Law & Ethics" },
+  { e: "🎨", t: "UX/UI Design" },
+];
+
 function LoggedOutLanding({ t }: { t: Dictionary }) {
   const schoolCards = [
     { emoji: "🗣️", title: t.schools.languagesTitle, body: t.schools.languagesBody, bg: "bg-brand-100 dark:bg-brand-500/20" },
@@ -539,7 +560,7 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
             <h1 className="animate-fade-up mt-5 text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl [animation-delay:60ms]">
               {t.hero.titleLine1}
               <br />
-              <span className="bg-gradient-to-r from-brand-500 to-violet-500 bg-clip-text text-transparent">
+              <span className="text-gradient-animate">
                 {t.hero.titleLine2}
               </span>
             </h1>
@@ -547,18 +568,24 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
               {t.hero.subtitle}
             </p>
             <div className="animate-fade-up mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start [animation-delay:180ms]">
-              <Link href="/sign-in" className="btn-primary w-full px-8 py-3.5 text-lg shadow-lg shadow-brand-500/25 sm:w-auto">
+              <Link href="/sign-in" className="btn-gradient w-full px-8 py-3.5 text-lg sm:w-auto">
                 {t.hero.ctaPrimary}
               </Link>
               <a href="#how" className="btn-ghost w-full px-8 py-3.5 sm:w-auto">
                 {t.hero.ctaSecondary}
               </a>
             </div>
-            <div className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-2 lg:justify-start [animation-delay:240ms]">
+            {/* Honest trust row — no fabricated numbers, just what's true today. */}
+            <div className="animate-fade-up mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-sm text-ink-500 dark:text-white/60 lg:justify-start [animation-delay:210ms]">
+              <span className="inline-flex items-center gap-1.5"><span className="text-green-500">✓</span> {t.trust.free}</span>
+              <span className="inline-flex items-center gap-1.5"><span className="text-green-500">✓</span> {t.trust.noCard}</span>
+              <span className="inline-flex items-center gap-1.5"><span className="text-green-500">✓</span> {t.trust.anyPhone}</span>
+            </div>
+            <div className="animate-fade-up mt-6 flex flex-wrap items-center justify-center gap-2 lg:justify-start [animation-delay:240ms]">
               {Object.entries(LANGUAGES).map(([code, l]) => (
                 <span
                   key={code}
-                  className="rounded-full bg-white/70 px-3 py-1 text-sm backdrop-blur dark:bg-white/10"
+                  className="rounded-full border border-black/5 bg-white/70 px-3 py-1 text-sm shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/10"
                 >
                   <span aria-hidden>{l.flag}</span> {l.label}
                 </span>
@@ -588,21 +615,40 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
         </div>
       </section>
 
+      {/* Live marquee of real courses — shows breadth at a glance */}
+      <section className="-mx-4 space-y-3 sm:-mx-6">
+        <p className="text-center text-xs font-semibold uppercase tracking-widest text-ink-500">
+          {t.marquee.eyebrow}
+        </p>
+        <div className="marquee-mask overflow-hidden">
+          <div className="marquee gap-3 py-1">
+            {[...MARQUEE, ...MARQUEE].map((c, i) => (
+              <span
+                key={i}
+                className="whitespace-nowrap rounded-full border border-black/5 bg-white px-4 py-2 text-sm font-medium shadow-sm dark:border-white/10 dark:bg-white/5"
+              >
+                <span aria-hidden className="mr-1.5">{c.e}</span>{c.t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* How it works */}
       <section id="how" className="mx-auto max-w-5xl space-y-8">
         <h2 className="text-center text-3xl font-bold sm:text-4xl">{t.how.title}</h2>
         <ol className="grid gap-4 sm:grid-cols-3">
-          <li className="card space-y-2 p-6">
+          <li className="card card-hover space-y-2 p-6">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">1</span>
             <p className="text-lg font-semibold">{t.how.step1Title}</p>
             <p className="text-sm text-ink-500">{t.how.step1Body}</p>
           </li>
-          <li className="card space-y-2 p-6">
+          <li className="card card-hover space-y-2 p-6">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">2</span>
             <p className="text-lg font-semibold">{t.how.step2Title}</p>
             <p className="text-sm text-ink-500">{t.how.step2Body}</p>
           </li>
-          <li className="card space-y-2 p-6">
+          <li className="card card-hover space-y-2 p-6">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-lg font-extrabold text-brand-600 dark:bg-white/10">3</span>
             <p className="text-lg font-semibold">{t.how.step3Title}</p>
             <p className="text-sm text-ink-500">{t.how.step3Body}</p>
@@ -618,7 +664,7 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {schoolCards.map((s) => (
-            <div key={s.title} className="card p-6">
+            <div key={s.title} className="card card-hover p-6">
               <span className={`grid h-11 w-11 place-items-center rounded-xl text-2xl ${s.bg}`}>{s.emoji}</span>
               <p className="mt-3 font-semibold">{s.title}</p>
               <p className="mt-1 text-sm text-ink-500">{s.body}</p>
@@ -631,27 +677,27 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
       <section className="mx-auto max-w-5xl space-y-8">
         <h2 className="text-center text-3xl font-bold sm:text-4xl">{t.features.title}</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          <div className="card p-6">
+          <div className="card card-hover p-6">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-amber-100 text-2xl dark:bg-amber-500/20">📚</span>
             <p className="mt-3 font-semibold">{t.features.selfStudy}</p>
             <p className="mt-1 text-sm text-ink-500">{t.features.selfStudyBody}</p>
           </div>
-          <div className="card p-6">
+          <div className="card card-hover p-6">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-rose-100 text-2xl dark:bg-rose-500/20">🗣️</span>
             <p className="mt-3 font-semibold">{t.features.speak}</p>
             <p className="mt-1 text-sm text-ink-500">{t.features.speakBody}</p>
           </div>
-          <div className="card p-6">
+          <div className="card card-hover p-6">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-violet-100 text-2xl dark:bg-violet-500/20">🎓</span>
             <p className="mt-3 font-semibold">{t.features.academic}</p>
             <p className="mt-1 text-sm text-ink-500">{t.features.academicBody}</p>
           </div>
-          <div className="card p-6">
+          <div className="card card-hover p-6">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-100 text-2xl dark:bg-emerald-500/20">🧑‍🏫</span>
             <p className="mt-3 font-semibold">{t.features.instructor}</p>
             <p className="mt-1 text-sm text-ink-500">{t.features.instructorBody}</p>
           </div>
-          <div className="card p-6">
+          <div className="card card-hover p-6">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-sky-100 text-2xl dark:bg-sky-500/20">🌐</span>
             <p className="mt-3 font-semibold">{t.features.translate}</p>
             <p className="mt-1 text-sm text-ink-500">{t.features.translateBody}</p>
@@ -663,17 +709,17 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
       <section className="mx-auto max-w-5xl space-y-8">
         <h2 className="text-center text-3xl font-bold sm:text-4xl">{t.audience.title}</h2>
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="card p-6 text-center">
+          <div className="card card-hover p-6 text-center">
             <span className="text-4xl">🎧</span>
             <p className="mt-2 text-lg font-semibold">{t.audience.selfTitle}</p>
             <p className="mt-1 text-sm text-ink-500">{t.audience.selfBody}</p>
           </div>
-          <div className="card p-6 text-center">
+          <div className="card card-hover p-6 text-center">
             <span className="text-4xl">🏫</span>
             <p className="mt-2 text-lg font-semibold">{t.audience.classTitle}</p>
             <p className="mt-1 text-sm text-ink-500">{t.audience.classBody}</p>
           </div>
-          <div className="card p-6 text-center">
+          <div className="card card-hover p-6 text-center">
             <span className="text-4xl">👨‍👩‍👧</span>
             <p className="mt-2 text-lg font-semibold">{t.audience.familyTitle}</p>
             <p className="mt-1 text-sm text-ink-500">{t.audience.familyBody}</p>
@@ -687,7 +733,7 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
         <p className="mx-auto mt-3 max-w-sm text-ink-500 dark:text-white/70">{t.cta.subtitle}</p>
         <Link
           href="/sign-in"
-          className="btn-primary mt-7 inline-block px-12 py-3.5 text-lg shadow-lg shadow-brand-500/25"
+          className="btn-gradient mt-7 inline-block px-12 py-3.5 text-lg"
         >
           {t.cta.button}
         </Link>
