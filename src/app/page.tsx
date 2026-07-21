@@ -546,6 +546,11 @@ const MARQUEE = [
 const SOURCES_ADAPTED = [
   { name: "MIT OpenCourseWare", emoji: "🏛️" },
   { name: "Harvard CS50", emoji: "🎓" },
+  { name: "Stanford Online", emoji: "🌲" },
+  { name: "University of Cambridge", emoji: "⚛️" },
+  { name: "Open Yale Courses", emoji: "📜" },
+  { name: "Johns Hopkins", emoji: "🏥" },
+  { name: "Carnegie Mellon", emoji: "🧩" },
   { name: "OpenStax · Rice University", emoji: "📖" },
   { name: "CK-12 Foundation", emoji: "🔬" },
   { name: "OER Commons", emoji: "🌐" },
