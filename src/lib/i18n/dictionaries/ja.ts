@@ -17,7 +17,7 @@ const ja: Dictionary = {
     ctaSecondary: "使い方を見る",
   },
   stats: {
-    courses: "140+",
+    courses: "150+",
     coursesLabel: "コース",
     languages: "6",
     languagesLabel: "世界の言語",
@@ -86,7 +86,7 @@ const ja: Dictionary = {
     anyPhone: "どんなスマホでも",
   },
   marquee: {
-    eyebrow: "140以上のコースの一部",
+    eyebrow: "150以上のコースの一部",
   },
   sources: {
     title: "世界水準のオープン教材をベースに",

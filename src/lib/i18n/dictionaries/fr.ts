@@ -17,7 +17,7 @@ const fr: Dictionary = {
     ctaSecondary: "Comment ça marche",
   },
   stats: {
-    courses: "140+",
+    courses: "150+",
     coursesLabel: "cours",
     languages: "6",
     languagesLabel: "langues du monde",
@@ -86,7 +86,7 @@ const fr: Dictionary = {
     anyPhone: "Sur tous les téléphones",
   },
   marquee: {
-    eyebrow: "Quelques-uns des 140+ cours",
+    eyebrow: "Quelques-uns des 150+ cours",
   },
   sources: {
     title: "Fondé sur des ressources académiques ouvertes de premier plan",

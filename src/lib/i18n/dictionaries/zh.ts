@@ -17,7 +17,7 @@ const zh: Dictionary = {
     ctaSecondary: "使用方法",
   },
   stats: {
-    courses: "140+",
+    courses: "150+",
     coursesLabel: "门课程",
     languages: "6",
     languagesLabel: "种世界语言",
@@ -86,7 +86,7 @@ const zh: Dictionary = {
     anyPhone: "任何手机都能用",
   },
   marquee: {
-    eyebrow: "140+ 门课程中的一部分",
+    eyebrow: "150+ 门课程中的一部分",
   },
   sources: {
     title: "基于世界一流的开放课程资源",

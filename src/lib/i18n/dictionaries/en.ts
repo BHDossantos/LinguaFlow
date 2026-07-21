@@ -20,7 +20,7 @@ const en = {
     ctaSecondary: "How it works",
   },
   stats: {
-    courses: "140+",
+    courses: "150+",
     coursesLabel: "courses",
     languages: "6",
     languagesLabel: "world languages",
@@ -89,7 +89,7 @@ const en = {
     anyPhone: "Works on any phone",
   },
   marquee: {
-    eyebrow: "A few of the 140+ courses",
+    eyebrow: "A few of the 150+ courses",
   },
   sources: {
     title: "Built on world-class open courseware",
