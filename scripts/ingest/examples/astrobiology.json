@@ -1,0 +1,755 @@
+{
+  "source": {
+    "id": "edinburgh",
+    "name": "University of Edinburgh — Open.Ed",
+    "url": "https://open.ed.ac.uk",
+    "license": "CC BY 4.0"
+  },
+  "course": {
+    "id": "bbbb0004-0000-4000-8000-00000000002b",
+    "title": "Astrobiology: Life in the Universe",
+    "description": "A tour of the one scientific question that touches biology, chemistry, geology, and astronomy at once: is there life beyond Earth, and how would we know? Structure adapted from the University of Edinburgh's Open.Ed materials (CC BY 4.0); all explanations original.",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "science",
+    "goal_tag": "foundations",
+    "position": 41,
+    "prerequisite_ids": []
+  },
+  "lessons": [
+    {
+      "position": 1,
+      "title": "Diagnostic: where are you now?",
+      "kind": "quiz",
+      "estimated_minutes": 10,
+      "body": {
+        "questions": [
+          {
+            "prompt": "Astrobiology is best described as the study of...",
+            "options": [
+              "only intelligent aliens",
+              "the origin, spread, and future of life in the universe",
+              "the history of astronomy",
+              "how to build spacecraft"
+            ],
+            "answer": 1,
+            "explanation": "The field asks how life begins, where it can survive, and whether it exists elsewhere - see 'What astrobiology is'."
+          },
+          {
+            "prompt": "Life on Earth is built mainly from six elements. Which set names them?",
+            "options": [
+              "hydrogen, helium, lithium, carbon, neon, iron",
+              "carbon, hydrogen, nitrogen, oxygen, phosphorus, sulfur",
+              "silicon, iron, magnesium, oxygen, carbon, sodium",
+              "carbon, oxygen, gold, calcium, sulfur, chlorine"
+            ],
+            "answer": 1,
+            "explanation": "The memory word is CHNOPS - see 'What is life?'."
+          },
+          {
+            "prompt": "The 'habitable zone' around a star is the region where...",
+            "options": [
+              "a planet is closest to the star",
+              "liquid water can persist on a planet's surface",
+              "no radiation reaches the planet",
+              "life definitely exists"
+            ],
+            "answer": 1,
+            "explanation": "It is the band of orbits where surface temperatures allow liquid water - see 'Habitability'."
+          },
+          {
+            "prompt": "An organism thriving in boiling, acidic, or frozen conditions is called...",
+            "options": [
+              "a eukaryote",
+              "an extremophile",
+              "a photosynthesizer",
+              "a fossil"
+            ],
+            "answer": 1,
+            "explanation": "Extremophiles push the known limits of life - see 'Extremophiles'."
+          },
+          {
+            "prompt": "Which world in our Solar System is a leading target because of a subsurface ocean under its ice?",
+            "options": [
+              "Mercury",
+              "the Moon",
+              "Jupiter's moon Europa",
+              "Venus"
+            ],
+            "answer": 2,
+            "explanation": "Europa's cracked ice shell likely hides a salty ocean - see 'The search close to home'."
+          },
+          {
+            "prompt": "The transit method detects an exoplanet by measuring...",
+            "options": [
+              "a tiny periodic dip in a star's brightness",
+              "radio messages from the planet",
+              "the planet's magnetic field",
+              "the color of the planet"
+            ],
+            "answer": 0,
+            "explanation": "When a planet crosses in front of its star, it blocks a sliver of light - see 'Exoplanets'."
+          },
+          {
+            "prompt": "A 'biosignature' is...",
+            "options": [
+              "a signed permission form",
+              "any measurable sign that could indicate life",
+              "a type of telescope",
+              "a fossilized footprint only"
+            ],
+            "answer": 1,
+            "explanation": "It is evidence - chemical, physical, or otherwise - that hints at biology - see 'Biosignatures'."
+          },
+          {
+            "prompt": "The Drake equation is a way to...",
+            "options": [
+              "prove aliens exist",
+              "estimate how many communicating civilizations might be in our galaxy",
+              "measure the age of the universe",
+              "calculate a rocket's fuel"
+            ],
+            "answer": 1,
+            "explanation": "It multiplies a chain of factors to frame the question - see 'The Drake equation'."
+          }
+        ]
+      }
+    },
+    {
+      "position": 2,
+      "title": "What astrobiology is and the big questions",
+      "kind": "reading",
+      "estimated_minutes": 12,
+      "grammar_note": "Astrobiology is a bridge discipline: it borrows evidence from astronomy, geology, chemistry, and biology, so a good answer usually cites more than one of them.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "State what astrobiology studies, name its three guiding questions, and explain why it must combine several sciences. Warm-up: from the diagnostic, is astrobiology only about intelligent aliens, or something broader?"
+          },
+          {
+            "heading": "The idea",
+            "text": "Astrobiology is the study of the origin, distribution, and future of life in the universe. It rests on three big questions. First, how does life begin from non-living chemistry? Second, where can life survive, and what are its physical limits? Third, is there life beyond Earth, and if so how would we detect and recognize it? Because each question spans several fields, astrobiology is deliberately cross-disciplinary. Astronomy tells us where planets are and what stars they orbit. Geology reconstructs the conditions of the early Earth. Chemistry describes how molecules assemble. Biology defines what a living system does. No single field answers the whole question alone."
+          },
+          {
+            "heading": "Worked examples",
+            "text": "Consider the claim 'Mars once could have hosted life.' To weigh it you draw on geology (dried river channels and clay minerals showing past liquid water), chemistry (organic molecules found in rocks), and biology (what microbes need to metabolize). None of those alone settles the matter, but together they build a case. A second example: to ask whether a distant planet might be habitable, you first need astronomy to find the planet and measure its orbit, then chemistry to interpret its atmosphere. The pattern is the same each time - the interesting questions sit at the seams between disciplines."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) Name the three big questions of astrobiology. 2) Which field would you use to learn whether an ancient Martian lake once held water? 3) True or false: astrobiology is only concerned with radio messages from intelligent civilizations. 4) Give one reason the field must be cross-disciplinary. 5) Which comes first when studying a distant world, finding the planet or reading its atmosphere? Answers: 1) How life begins; where life can survive; whether life exists elsewhere. 2) Geology (with help from chemistry). 3) False - that is only a small part of the third question. 4) Each question needs evidence from more than one science, e.g. astronomy plus chemistry. 5) Finding the planet - you cannot study an atmosphere you have not yet located."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: equating astrobiology with the search for intelligent aliens, when most of the field studies microbes and chemistry. Mistake: expecting one discipline to answer a question that needs several. Exit: (a) In one sentence, what does astrobiology study? (b) Name two sciences it combines. Answers: the origin, distribution, and future of life in the universe; any two of astronomy, geology, chemistry, biology."
+          }
+        ]
+      }
+    },
+    {
+      "position": 3,
+      "title": "What is life? Definitions, chemistry, and CHNOPS",
+      "kind": "reading",
+      "estimated_minutes": 14,
+      "grammar_note": "There is no single agreed definition of life; scientists use a working checklist of properties instead, so 'is it alive?' is often answered as 'how many of these traits does it show?'",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "List the working properties biologists use to describe life, explain why carbon and liquid water are central, and recall the six main elements summarized by CHNOPS. Warm-up: can you name a property that a rock lacks but a bacterium has?"
+          },
+          {
+            "heading": "The idea",
+            "text": "Life has no tidy one-line definition, so scientists use a working checklist: living systems take in energy and use it (metabolism), maintain an internal boundary and order, respond to their surroundings, grow, and reproduce with inheritance that can change over generations. Darwinian evolution - reproduction with variation and selection - is often treated as the sharpest single marker. Earth life is carbon-based because carbon forms four stable bonds and links into long, varied chains, the backbone of proteins, sugars, and genetic molecules. Liquid water is the usual solvent: it dissolves many substances and stays liquid across a useful temperature range. Six elements dominate biological molecules, and their initials spell CHNOPS: Carbon, Hydrogen, Nitrogen, Oxygen, Phosphorus, and Sulfur."
+          },
+          {
+            "heading": "Worked examples",
+            "text": "Is a flame alive? It consumes fuel and grows, but it does not reproduce with inheritance or maintain organized structure, so it fails the checklist. Is a virus alive? It carries genetic material and evolves, but it cannot metabolize on its own and needs a host to copy itself, so it sits in a gray zone. Why CHNOPS and not, say, gold? Gold is chemically inert and rare in cells; CHNOPS elements form the versatile bonds that build proteins (C, H, N, O, S) and the phosphate backbone of genetic molecules (P). Why carbon over silicon, which also bonds four ways? Carbon's bonds are stable yet reactive enough to build and rebuild molecules at ordinary temperatures, while silicon's tend to be less flexible in water."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) What does CHNOPS stand for? 2) Give two properties from the working checklist of life. 3) Why is a flame not considered alive despite growing? 4) Which single element supplies the phosphate backbone of genetic molecules? 5) Name the usual solvent of Earth life and one reason it is useful. Answers: 1) Carbon, Hydrogen, Nitrogen, Oxygen, Phosphorus, Sulfur. 2) Any two of: metabolism, maintaining a boundary and order, responding to surroundings, growth, reproduction with inheritance. 3) It does not reproduce with heritable variation or keep organized structure. 4) Phosphorus. 5) Liquid water, because it dissolves many substances and stays liquid over a useful temperature range."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: insisting there is one crisp definition of life; scientists use a checklist and still debate edge cases like viruses. Mistake: forgetting phosphorus and sulfur when listing life's key elements. Exit: (a) Which property is often called the sharpest single marker of life? (b) Why is carbon so well suited to biology? Answers: reproduction with heritable variation (Darwinian evolution); carbon forms four stable bonds and builds long, varied molecules."
+          }
+        ]
+      }
+    },
+    {
+      "position": 4,
+      "title": "The origin of life on Earth",
+      "kind": "reading",
+      "estimated_minutes": 14,
+      "grammar_note": "Abiogenesis means life arising from non-living chemistry; it is a set of competing, testable hypotheses, not a single settled story.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Describe conditions on the early Earth, outline the main abiogenesis hypotheses, and say what the Miller-Urey experiment did and did not show. Warm-up: roughly how old is the Earth, and did life appear early or late in its history?"
+          },
+          {
+            "heading": "The idea",
+            "text": "Earth formed about 4.5 billion years ago, and the earliest widely accepted traces of life appear by around 3.5 billion years ago - life got started relatively quickly. The young Earth was hot, volcanic, bombarded by impacts, and had little or no atmospheric oxygen. Abiogenesis is the arising of life from non-living matter, and several hypotheses compete to explain it. The 'primordial soup' idea says organic building blocks accumulated in surface waters energized by lightning and ultraviolet light. The 'hydrothermal vent' idea places the origin at the seafloor, where mineral-rich hot water met cold ocean and provided energy gradients and catalytic surfaces. The 'RNA world' idea proposes that RNA, which can both store information and speed up reactions, came before modern DNA and proteins. These are not mutually exclusive, and each makes predictions that laboratory and field work can test."
+          },
+          {
+            "heading": "Worked examples",
+            "text": "In 1953 the Miller-Urey experiment sealed a mix of simple gases with water, ran electric sparks through it to mimic lightning, and produced amino acids - the building blocks of proteins. That showed the building blocks can form from simple ingredients and energy; it did not create life, and later work revised the likely gas mixture. A hydrothermal-vent argument runs like this: vents supply a steady chemical energy gradient and mineral surfaces that can concentrate and catalyze reactions, so life might begin without sunlight at all. An RNA-world argument runs: because a molecule that both carries information and catalyzes reactions could copy itself, RNA offers a plausible bridge from chemistry to biology before DNA and proteins divided those jobs."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) What does abiogenesis mean? 2) About how long after Earth formed do the earliest accepted traces of life appear? 3) What did the Miller-Urey experiment produce, and what did it not produce? 4) Name two competing hypotheses for where life began. 5) Why is the RNA-world idea attractive? Answers: 1) Life arising from non-living chemistry. 2) Within roughly a billion years - Earth is about 4.5 billion years old and traces appear by about 3.5 billion years ago. 3) It produced amino acids (building blocks); it did not produce living organisms. 4) Any two of: primordial soup, hydrothermal vents, RNA world. 5) RNA can both store information and catalyze reactions, so it could copy itself before DNA and proteins existed."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: saying Miller-Urey 'created life' - it made building blocks, not a living cell. Mistake: treating the hypotheses as rivals that cannot overlap, when a real origin may have combined several settings. Exit: (a) Was the early Earth rich in oxygen? (b) Name the hypothesis that puts life's start at the seafloor. Answers: no, it had little or no atmospheric oxygen; the hydrothermal-vent hypothesis."
+          }
+        ]
+      }
+    },
+    {
+      "position": 5,
+      "title": "Extremophiles and the limits of life",
+      "kind": "reading",
+      "estimated_minutes": 13,
+      "grammar_note": "Each extremophile name pairs a condition with '-phile' (lover): thermophile loves heat, halophile loves salt, and so on. Learn the roots and the names decode themselves.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Define an extremophile, match the main types to their conditions, and explain why they widen where we look for life. Warm-up: if microbes thrive in boiling acid on Earth, what does that suggest about harsh worlds elsewhere?"
+          },
+          {
+            "heading": "The idea",
+            "text": "An extremophile is an organism that thrives in conditions once thought lethal. Thermophiles and hyperthermophiles live in scalding water, some above 100 degrees Celsius near vents. Psychrophiles grow in ice and near-freezing brine. Halophiles need very salty water. Acidophiles and alkaliphiles live at extreme pH. Barophiles withstand crushing deep-sea pressure. Radiation-resistant microbes survive doses that would kill most cells. These organisms matter to astrobiology for a simple reason: they prove that life's tolerances are far wider than everyday experience suggests. If a microbe flourishes in a place resembling Mars, an ice moon, or a deep vent, then such places elsewhere cannot be ruled out as habitats. Extremophiles turn 'that world is too harsh for life' into a question rather than a verdict."
+          },
+          {
+            "heading": "Worked examples",
+            "text": "Deinococcus radiodurans survives radiation doses thousands of times higher than a human lethal dose by repairing its damaged genetic material quickly. Tardigrades, tiny animals, can dry out almost completely and endure extreme cold, heat, and even the vacuum of space for a time, resuming activity when rewetted. Microbes at deep-sea hydrothermal vents build entire food webs on chemical energy from vent fluids, with no sunlight at all - a model for how an ice-covered ocean moon might host life. Each case stretches the map of where we are willing to search."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) Define an extremophile in one sentence. 2) Which type loves very salty water? 3) Which type lives in scalding water near vents? 4) Why do vent food webs matter for icy moons? 5) Name one organism famous for surviving high radiation. Answers: 1) An organism that thrives in conditions once thought lethal to life. 2) A halophile. 3) A thermophile or hyperthermophile. 4) They run on chemical energy without sunlight, showing a sunless ocean under ice could still support life. 5) Deinococcus radiodurans (tardigrades also endure extremes)."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: assuming life needs sunlight; vent communities run entirely on chemical energy. Mistake: reading '-phile' as merely tolerating a condition, when many extremophiles require it to thrive. Exit: (a) What does the existence of extremophiles do to the list of places worth searching? (b) Which extremophile type withstands crushing pressure? Answers: it widens the list, turning 'too harsh' into an open question; barophiles."
+          }
+        ]
+      }
+    },
+    {
+      "position": 6,
+      "title": "Checkpoint 1",
+      "kind": "quiz",
+      "estimated_minutes": 8,
+      "body": {
+        "questions": [
+          {
+            "prompt": "Astrobiology is cross-disciplinary mainly because...",
+            "options": [
+              "its questions each need evidence from several sciences",
+              "biologists refuse to work alone",
+              "astronomy has no data",
+              "it studies only chemistry"
+            ],
+            "answer": 0,
+            "explanation": "Origin, habitability, and detection each draw on more than one field."
+          },
+          {
+            "prompt": "The six most important elements in Earth's biology are summarized by...",
+            "options": [
+              "DNA",
+              "CHNOPS",
+              "H2O",
+              "ATP"
+            ],
+            "answer": 1,
+            "explanation": "Carbon, Hydrogen, Nitrogen, Oxygen, Phosphorus, Sulfur."
+          },
+          {
+            "prompt": "Which single trait is often treated as the sharpest marker of life?",
+            "options": [
+              "growth",
+              "movement",
+              "reproduction with heritable variation",
+              "warmth"
+            ],
+            "answer": 2,
+            "explanation": "Darwinian evolution - reproduction with variation and selection - is the classic dividing line."
+          },
+          {
+            "prompt": "The Miller-Urey experiment is best summarized as...",
+            "options": [
+              "it created a living cell",
+              "it produced amino acids from simple gases and energy",
+              "it detected life on Mars",
+              "it disproved abiogenesis"
+            ],
+            "answer": 1,
+            "explanation": "It made building blocks, not life itself."
+          },
+          {
+            "prompt": "A hyperthermophile is an organism adapted to...",
+            "options": [
+              "extreme cold",
+              "very high salt",
+              "scalding temperatures",
+              "high radiation"
+            ],
+            "answer": 2,
+            "explanation": "Thermo- means heat; hyper- means very high."
+          },
+          {
+            "prompt": "Deep-sea vent ecosystems are important to astrobiology because they show that life can run on...",
+            "options": [
+              "sunlight only",
+              "chemical energy without sunlight",
+              "radio waves",
+              "pure oxygen"
+            ],
+            "answer": 1,
+            "explanation": "Chemical energy gradients power vent food webs, a model for sunless ocean moons."
+          }
+        ]
+      }
+    },
+    {
+      "position": 7,
+      "title": "Habitability and the habitable zone",
+      "kind": "reading",
+      "estimated_minutes": 14,
+      "grammar_note": "The habitable zone is defined by liquid water at the surface, but a planet inside it can still be uninhabitable, and a moon outside it can still be habitable. Location is necessary, not sufficient.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Define the habitable zone, estimate its distance from a star's brightness, and explain why the zone alone does not guarantee life. Warm-up: why is liquid water, not just water, the key requirement?"
+          },
+          {
+            "heading": "The idea",
+            "text": "The habitable zone is the band of orbits around a star where a rocky planet could hold liquid water on its surface - not so close that water boils away, not so far that it freezes. For a Sun-like star the zone runs roughly from about 0.95 to 1.4 times the Earth-Sun distance (the astronomical unit, AU). A star's brightness scales the zone: a brighter star pushes it outward, a dimmer star pulls it inward. A useful rule is that the distance for Earth-like warmth scales with the square root of the star's luminosity. But sitting in the zone is only a starting point. Venus orbits near the inner edge yet a runaway greenhouse effect made its surface hot enough to melt lead. Factors beyond distance matter too: atmosphere, a stable climate, a magnetic field, and the right chemistry all shape true habitability."
+          },
+          {
+            "heading": "Worked examples",
+            "text": "Scaling by luminosity: if a star is 4 times as luminous as the Sun, the Earth-equivalent distance is the square root of 4, which is 2, so a planet would need to orbit near 2 AU to receive Earth-like warmth. If a star is one quarter as luminous, the square root of 0.25 is 0.5, so the comfortable orbit sits near 0.5 AU, much closer in. Applying the rough Sun-like zone of 0.95 to 1.4 AU: Earth at 1.0 AU sits comfortably inside; Mars at about 1.5 AU sits near or just beyond the outer edge, consistent with its cold, thin-aired present. Venus at about 0.72 AU is inside the inner edge, and its runaway greenhouse shows that being 'in range' by distance is not enough."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) In one sentence, what defines the habitable zone? 2) A star 9 times as luminous as the Sun: near what distance is Earth-like warmth? 3) Does being in the habitable zone guarantee life? 4) Why is Venus a cautionary example? 5) Name two factors beyond orbital distance that affect habitability. Answers: 1) The band of orbits where a rocky planet can hold liquid surface water. 2) The square root of 9 is 3, so near 3 AU. 3) No - it is necessary, not sufficient. 4) It lies near the inner edge yet a runaway greenhouse left it searing hot. 5) Any two of: atmosphere, stable climate, magnetic field, chemistry."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: assuming any planet in the habitable zone is habitable; Venus disproves that. Mistake: forgetting the zone moves with the star's brightness rather than sitting at a fixed distance. Exit: (a) Using the square-root rule, where is Earth-like warmth for a star 16 times as luminous as the Sun? (b) Why 'liquid' water specifically? Answers: the square root of 16 is 4, so near 4 AU; because life's chemistry needs water in liquid form as a solvent, not as ice or vapor."
+          }
+        ]
+      }
+    },
+    {
+      "position": 8,
+      "title": "The search for life in the Solar System",
+      "kind": "reading",
+      "estimated_minutes": 14,
+      "grammar_note": "'Follow the water' is the guiding strategy: missions target places with past or present liquid water, because that is where Earth-based reasoning says life is most plausible.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Explain why Mars, Europa, and Enceladus are prime targets and match each to its evidence for water. Warm-up: what single ingredient does the 'follow the water' strategy chase?"
+          },
+          {
+            "heading": "The idea",
+            "text": "Within our own Solar System, three targets stand out. Mars was warmer and wetter long ago: dried river valleys, lakebed minerals, and clays record past liquid water, and rovers have found organic molecules in ancient rocks. Jupiter's moon Europa has a cracked icy crust that almost certainly covers a global salty ocean, kept liquid by tidal flexing as Jupiter's gravity kneads the moon. Saturn's moon Enceladus is even more inviting: geysers at its south pole jet water vapor and ice grains into space from a subsurface ocean, and those plumes carry salts and organic molecules that a passing spacecraft can sample directly. The common thread is liquid water plus a source of energy and the right chemistry. That is why the search strategy is often summarized as 'follow the water.'"
+          },
+          {
+            "heading": "Worked examples",
+            "text": "Mars evidence chain: orbiters map clay minerals that form in water; rovers photograph rounded pebbles shaped by ancient streams; instruments detect organic carbon in mudstones. None proves life, but together they show a once-habitable world worth sampling. Europa reasoning: its surface is young and fractured with few craters, implying the ice is resurfaced from below; tidal heating supplies the energy to keep an ocean liquid despite the cold. Enceladus reasoning: the Cassini spacecraft flew through its plumes and measured water, salts, and organic molecules, plus hints of chemical energy - meaning a robotic mission could test an alien ocean without landing or drilling, simply by flying through the spray."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) What ingredient does 'follow the water' chase? 2) Give one piece of evidence that Mars once had liquid water. 3) What keeps Europa's ocean from freezing solid? 4) Why are Enceladus's plumes so convenient for a mission? 5) Which of the three lets you sample an ocean without drilling? Answers: 1) Liquid water. 2) Any of: dried river valleys, lakebed clays, water-formed minerals, organic molecules in ancient rock. 3) Tidal flexing (tidal heating) from Jupiter's gravity. 4) They jet ocean material into space, where a spacecraft can fly through and sample it directly. 5) Enceladus."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: reading 'organic molecules found on Mars' as proof of life; organics can form without biology. Mistake: assuming ocean moons are frozen solid because they are far from the Sun; tidal heating keeps them liquid. Exit: (a) What heats the oceans of Europa and Enceladus? (b) Name the moon whose geysers let a spacecraft sample its ocean in flight. Answers: tidal flexing driven by the giant planet's gravity; Enceladus."
+          }
+        ]
+      }
+    },
+    {
+      "position": 9,
+      "title": "Exoplanets and how we detect them",
+      "kind": "reading",
+      "estimated_minutes": 14,
+      "grammar_note": "Most exoplanets are found indirectly: we rarely see the planet itself, only its effect on the star's light or motion. Transit reads brightness; radial velocity reads a wobble.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Explain the transit and radial-velocity methods, state what each measures, and say why they favor different kinds of planets. Warm-up: if a planet is far too faint to see directly, what visible thing could still betray it?"
+          },
+          {
+            "heading": "The idea",
+            "text": "An exoplanet is a planet orbiting another star. Because planets are dim next to their stars, most are found indirectly. The transit method watches a star's brightness and looks for a small, regular dip that repeats each time a planet crosses in front - the deeper the dip, the bigger the planet relative to its star, and the spacing between dips gives the orbital period. The radial-velocity method watches the star's light for a rhythmic shift caused by the star being tugged in a small circle as the planet orbits: as the star moves toward us its light shifts slightly blue, and away it shifts slightly red. That wobble reveals the planet's period and a measure of its mass. Transit favors planets whose orbit happens to pass between us and the star; radial velocity favors massive, close-in planets that tug hardest."
+          },
+          {
+            "heading": "Worked examples",
+            "text": "Transit sizing: Jupiter has about one tenth of the Sun's diameter, so it would block about one hundredth (one tenth squared) of the star's light - a dip of roughly one percent. Earth blocks far less, under a hundredth of a percent, which is why small planets need very sensitive instruments. Period from transits: if dips recur every 365 days, the orbit takes a year. Radial velocity: a massive planet close to its star makes the star wobble faster and wider, giving a large, easily measured signal, while a small, distant planet produces a wobble almost too tiny to detect. Used together the two methods are powerful - transit gives size, radial velocity gives mass, and mass divided by volume gives density, hinting at whether a planet is rocky or gassy."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) What does the transit method measure? 2) What does the radial-velocity method measure? 3) A planet blocks about 1 percent of its star's light; is it more like Earth or Jupiter? 4) Which method favors massive, close-in planets? 5) Why is combining both methods useful? Answers: 1) A small periodic dip in the star's brightness as the planet crosses in front. 2) A rhythmic shift in the star's light from the star's wobble, giving period and mass. 3) More like Jupiter - Earth blocks far less than 1 percent. 4) Radial velocity. 5) Transit gives size and radial velocity gives mass, and together they yield density, hinting rocky versus gassy."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: thinking we usually photograph exoplanets directly; almost all are found by their effect on the star. Mistake: assuming a deep transit means a large orbit - depth reflects the planet's size, spacing reflects the orbit. Exit: (a) Which method reads a star's wobble? (b) What do you get by combining a planet's mass and size? Answers: radial velocity; its density, which suggests whether it is rocky or gaseous."
+          }
+        ]
+      }
+    },
+    {
+      "position": 10,
+      "title": "Checkpoint 2",
+      "kind": "quiz",
+      "estimated_minutes": 8,
+      "body": {
+        "questions": [
+          {
+            "prompt": "For a star 25 times as luminous as the Sun, the square-root rule puts Earth-like warmth near...",
+            "options": [
+              "5 AU",
+              "25 AU",
+              "2.5 AU",
+              "0.2 AU"
+            ],
+            "answer": 0,
+            "explanation": "The square root of 25 is 5, so about 5 AU."
+          },
+          {
+            "prompt": "Venus shows that being in the habitable zone by distance...",
+            "options": [
+              "guarantees oceans",
+              "does not guarantee habitability",
+              "means no atmosphere",
+              "means life is present"
+            ],
+            "answer": 1,
+            "explanation": "A runaway greenhouse left Venus searing despite its orbit near the inner edge."
+          },
+          {
+            "prompt": "What keeps the subsurface oceans of Europa and Enceladus liquid?",
+            "options": [
+              "sunlight",
+              "tidal heating from the giant planet's gravity",
+              "volcanic lava from the Sun",
+              "radio energy"
+            ],
+            "answer": 1,
+            "explanation": "Gravitational flexing generates internal heat far from the Sun."
+          },
+          {
+            "prompt": "A spacecraft could sample Enceladus's ocean without drilling because...",
+            "options": [
+              "the ocean is on the surface",
+              "geysers jet ocean material into space",
+              "the moon has no ice",
+              "it rains on the surface"
+            ],
+            "answer": 1,
+            "explanation": "Plumes carry water, salts, and organics into space to be sampled in flight."
+          },
+          {
+            "prompt": "The transit method identifies a planet by detecting...",
+            "options": [
+              "a periodic dip in the star's brightness",
+              "the planet's radio signal",
+              "a change in the star's color only",
+              "the planet's shadow on Earth"
+            ],
+            "answer": 0,
+            "explanation": "The planet blocks a sliver of starlight once per orbit."
+          },
+          {
+            "prompt": "Combining transit and radial-velocity data lets astronomers estimate a planet's...",
+            "options": [
+              "exact color",
+              "density, and so whether it is rocky or gassy",
+              "surface language",
+              "magnetic name"
+            ],
+            "answer": 1,
+            "explanation": "Transit gives size, radial velocity gives mass, and mass over volume gives density."
+          }
+        ]
+      }
+    },
+    {
+      "position": 11,
+      "title": "Biosignatures and how we would recognize life",
+      "kind": "reading",
+      "estimated_minutes": 14,
+      "grammar_note": "A biosignature is only as strong as its alternatives are weak. Before calling any signal 'life', you must rule out non-living ways to produce it - this is the false-positive problem.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Define a biosignature, give examples for a distant atmosphere, and explain why context and false positives matter. Warm-up: if you could measure only a planet's air, what gas might hint at life?"
+          },
+          {
+            "heading": "The idea",
+            "text": "A biosignature is any measurable feature that could indicate the presence of life. For a planet too far to visit, the most promising biosignatures are chemical clues in its atmosphere, read by splitting its light into a spectrum. Life can push an atmosphere out of chemical balance. On Earth, oxygen and methane are both present even though they react with each other and should disappear over time; their steady coexistence is sustained by living processes. So a distant atmosphere holding gases that should not persist together is a hint. But every candidate has non-living explanations. Oxygen can build up without life when ultraviolet light splits water and the light hydrogen escapes to space. That is the false-positive problem: a signal that looks biological but has a geological or photochemical cause. This is why a convincing claim needs multiple lines of evidence and careful attention to context - the star, the planet's history, and what else its spectrum shows."
+          },
+          {
+            "heading": "Worked examples",
+            "text": "Disequilibrium reasoning: oxygen and methane together are a classic pairing because they consume each other, so finding both in large amounts suggests something keeps replenishing them. On Earth, that something is life. A false positive to rule out: a planet bathed in strong ultraviolet light around an active star can accumulate oxygen abiotically as water splits and hydrogen escapes, so oxygen alone is not proof. A context check: before trusting any atmospheric biosignature, astronomers ask what kind of star the planet orbits, whether the planet is rocky and in the habitable zone, and whether other gases fit a living or a lifeless story. The lesson is that a single molecule is a hint, never a verdict."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) Define a biosignature in one sentence. 2) How do we read the atmosphere of a planet we cannot visit? 3) Why is the coexistence of oxygen and methane interesting? 4) Give one non-living way oxygen can build up. 5) What is the false-positive problem? Answers: 1) Any measurable feature that could indicate life. 2) By splitting its light into a spectrum and reading which gases absorb light. 3) They react and should vanish, so their steady presence suggests something keeps replenishing them, possibly life. 4) Ultraviolet light splits water and the light hydrogen escapes, leaving oxygen behind. 5) A signal that looks biological but actually has a non-living cause."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: treating a single gas such as oxygen as proof of life, ignoring abiotic sources. Mistake: reading a spectrum without asking about the star and planet context. Exit: (a) Why do scientists prefer several biosignatures over one? (b) Name a gas pair whose coexistence hints at biology. Answers: because any one signal can have a non-living explanation, so multiple lines reduce false positives; oxygen and methane."
+          }
+        ]
+      }
+    },
+    {
+      "position": 12,
+      "title": "The Drake equation and the Fermi paradox",
+      "kind": "reading",
+      "estimated_minutes": 15,
+      "grammar_note": "The Drake equation is a framework for organizing our ignorance, not a precise forecast. Its early terms are known, its later terms are guesses, so its output is a range, not a number.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Write out the Drake equation, explain what each factor means, and state the Fermi paradox. Warm-up: if life were common, why might we still see no sign of anyone?"
+          },
+          {
+            "heading": "The idea",
+            "text": "The Drake equation estimates N, the number of communicating civilizations in our galaxy now, as a product of factors: N = R* times fp times ne times fl times fi times fc times L. Here R* is the rate at which suitable stars form, fp is the fraction with planets, ne is the number of habitable planets per such system, fl is the fraction where life actually begins, fi is the fraction of those where intelligence arises, fc is the fraction that develop technology we could detect, and L is how long such a civilization stays detectable. The early factors are increasingly well measured; the later ones, especially fl, fi, and L, are deeply uncertain, so the equation yields a wide range rather than a single answer. The Fermi paradox is the tension between two ideas: the galaxy is old and vast with billions of stars, so life might be common, yet we have found no clear evidence of anyone. As the question goes, 'where is everybody?'"
+          },
+          {
+            "heading": "Worked examples",
+            "text": "An optimistic estimate: suppose R* is 2 stars per year, fp is 1, ne is 0.5, fl is 0.5, fi is 0.1, fc is 0.5, and L is 10,000 years. Multiply: 2 times 1 times 0.5 times 0.5 times 0.1 times 0.5 is 0.025, times 10,000 gives N of about 250 civilizations. A pessimistic estimate keeps the early factors but sets fi to 0.0001 and L to 200 years: 2 times 1 times 0.5 times 0.5 times 0.0001 times 0.5 is 0.000025, times 200 gives N of about 0.005 - effectively meaning we may be alone. The same equation spans from hundreds to essentially none, purely from the uncertain factors. Possible resolutions of the Fermi paradox include: life is rare (small fl or fi), civilizations are short-lived (small L), they exist but are hard to detect, or they simply have not reached us yet."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) Write the Drake equation. 2) Which factor captures how long a civilization stays detectable? 3) Compute N for R*=1, fp=1, ne=1, fl=0.1, fi=0.01, fc=1, L=1000. 4) State the Fermi paradox in one sentence. 5) Give one proposed resolution of the paradox. Answers: 1) N = R* x fp x ne x fl x fi x fc x L. 2) L, the detectable lifetime. 3) 1 x 1 x 1 x 0.1 x 0.01 x 1 x 1000 = 1. 4) If life could be common in a vast old galaxy, why do we see no sign of anyone? 5) Any of: life is rare, civilizations are short-lived, they are hard to detect, or they have not reached us yet."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: reading the Drake equation's output as a firm prediction; it is a structured estimate with hugely uncertain terms. Mistake: thinking the Fermi paradox proves we are alone - it only highlights a puzzle. Exit: (a) Which Drake factors are most uncertain? (b) What everyday question sums up the Fermi paradox? Answers: fl, fi, and L (life beginning, intelligence arising, and detectable lifetime); 'where is everybody?'"
+          }
+        ]
+      }
+    },
+    {
+      "position": 13,
+      "title": "The future of the search: SETI and coming missions",
+      "kind": "reading",
+      "estimated_minutes": 13,
+      "grammar_note": "The search runs on two tracks at once: look for simple life nearby (missions and telescopes) and listen for technology far away (SETI). They test different Drake factors and neither replaces the other.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Distinguish the two main search strategies, name upcoming targets and tools, and match each approach to what it could find. Warm-up: would a microbe on Enceladus be found by a telescope listening for radio signals, or by a spacecraft?"
+          },
+          {
+            "heading": "The idea",
+            "text": "The search for life runs on two complementary tracks. The first looks for simple life or its chemical traces nearby: robotic missions to Mars and the ocean moons, and large telescopes that read exoplanet atmospheres for biosignatures. The second, called SETI (the search for extraterrestrial intelligence), listens for signals such as radio or laser pulses that only technology could produce. Missions like a return of Martian samples to Earth, an orbiter and lander studying Europa's ice, and a spacecraft flying through Enceladus's plumes aim at nearby biology. Powerful space and ground telescopes aim at distant atmospheres. SETI surveys aim at the rare, dramatic possibility of a technological neighbor. Each track tests a different part of the Drake chain: nearby searches probe whether life begins at all (fl), while SETI probes whether intelligence and technology arise and endure (fi, fc, L)."
+          },
+          {
+            "heading": "Worked examples",
+            "text": "Matching tool to target: a microbe frozen in Martian rock would be found by a rover or by returned samples, not by a radio survey. A biosignature gas around a distant rocky planet would be caught by a telescope splitting starlight into a spectrum, not by a lander. A deliberate radio beacon from a distant civilization would be caught by SETI listening across many frequencies, not by a plume flythrough. A key principle guides all of it: extraordinary claims require extraordinary evidence, so any first detection would demand independent confirmation before being accepted. The two tracks reinforce each other - finding even simple life nearby would raise our estimate of fl, making the whole galaxy look more promising."
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) Name the two main tracks of the search. 2) What does SETI listen for? 3) Which track would detect a microbe on Enceladus? 4) Which Drake factors does SETI mainly test? 5) Why would finding simple life nearby matter for the wider search? Answers: 1) Searching for nearby simple life or its traces, and SETI for distant technology. 2) Signals such as radio or laser pulses that only technology could make. 3) The nearby-missions track (a spacecraft), not SETI. 4) fi, fc, and L - intelligence, technology, and detectable lifetime. 5) It would raise our estimate of fl, the fraction of worlds where life begins, making life seem more common."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: assuming SETI and mission-based searches compete; they test different questions and both are needed. Mistake: expecting a single measurement to settle the question, when a first detection would demand independent confirmation. Exit: (a) Which track would read a distant planet's atmosphere? (b) What standard must any first claim of life meet? Answers: the telescope and biosignature track; independent confirmation, because extraordinary claims require extraordinary evidence."
+          }
+        ]
+      }
+    },
+    {
+      "position": 14,
+      "title": "Capstone: reasoning about a world's habitability",
+      "kind": "reading",
+      "estimated_minutes": 15,
+      "grammar_note": "A good habitability argument is a chain, not a single fact: energy, liquid solvent, the right elements, stability over time, and a way to detect any life. Weakness in any link weakens the whole claim.",
+      "body": {
+        "sections": [
+          {
+            "heading": "What you'll be able to do",
+            "text": "Combine every idea in the course into a structured judgment about whether a given world could host and reveal life. Warm-up: from earlier lessons, why is 'it has water' not by itself a complete habitability argument?"
+          },
+          {
+            "heading": "The framework to apply",
+            "text": "Assess any world with a five-link chain. Link 1, energy: is there sunlight, chemical energy, or tidal heating to power life? Link 2, solvent: is there liquid water (or at least strong evidence of it), not just ice or vapor? Link 3, ingredients: are the CHNOPS elements plausibly available? Link 4, stability: have the conditions lasted long enough for life to begin and persist, given the star and the planet's history? Link 5, detectability: if life were present, what biosignature could we actually measure, and what false positives must we rule out? A strong case needs every link; a broken link does not prove lifelessness, but it does weaken or complicate the claim."
+          },
+          {
+            "heading": "Two worked judgments",
+            "text": "Enceladus: energy yes, from tidal heating; solvent yes, a confirmed subsurface ocean feeding plumes; ingredients yes, since plumes carry salts and organic molecules; stability plausible if tidal heating is long-lived; detectability excellent, because a spacecraft can fly through the plume and sample it directly. Every link holds reasonably well, so Enceladus scores as a high-priority target. Now a distant exoplanet with only an oxygen line in its spectrum: energy likely, from its star; solvent unknown without more data; ingredients unknown; stability depends on the star's activity; detectability weak, because oxygen alone is a known false positive (ultraviolet light can split water and let hydrogen escape). Here the chain has several open or broken links, so the honest verdict is 'interesting but unproven - gather more evidence.'"
+          },
+          {
+            "heading": "Your turn",
+            "text": "1) List the five links in the habitability chain. 2) For Europa, which link is satisfied by tidal heating? 3) Why does an oxygen-only spectrum give a weak case? 4) Does a broken link prove a world is lifeless? 5) Which link asks about false positives? Answers: 1) Energy, solvent, ingredients, stability, detectability. 2) The energy link. 3) Oxygen alone has a known abiotic source (ultraviolet splitting of water), so it is a false-positive risk without corroboration. 4) No - it weakens or complicates the claim but does not disprove life. 5) The detectability link."
+          },
+          {
+            "heading": "Common mistakes and exit ticket",
+            "text": "Mistake: stopping at 'there is water' and declaring a world habitable, skipping energy, stability, and detectability. Mistake: treating a single strong biosignature as conclusive rather than demanding corroboration. Exit: (a) Name the five links in order. (b) Using the framework, why is Enceladus rated so highly? Answers: energy, solvent, ingredients, stability, detectability; because it plausibly satisfies every link, and its plumes make any life unusually easy to sample."
+          }
+        ]
+      }
+    },
+    {
+      "position": 15,
+      "title": "Comprehensive final quiz",
+      "kind": "quiz",
+      "estimated_minutes": 12,
+      "body": {
+        "questions": [
+          {
+            "prompt": "Astrobiology's three big questions concern the origin of life, its limits and distribution, and...",
+            "options": [
+              "the price of telescopes",
+              "whether life exists beyond Earth and how to detect it",
+              "the history of astronomy alone",
+              "how to terraform Mars"
+            ],
+            "answer": 1,
+            "explanation": "Origin, habitability and distribution, and detection are the three anchors."
+          },
+          {
+            "prompt": "CHNOPS stands for carbon, hydrogen, nitrogen, oxygen, phosphorus, and...",
+            "options": [
+              "silicon",
+              "sodium",
+              "sulfur",
+              "selenium"
+            ],
+            "answer": 2,
+            "explanation": "The S is sulfur; phosphorus supplies the genetic backbone and sulfur helps build proteins."
+          },
+          {
+            "prompt": "The Miller-Urey experiment demonstrated that...",
+            "options": [
+              "life exists on Mars",
+              "amino acids can form from simple gases and energy",
+              "DNA came before RNA",
+              "oxygen was abundant on early Earth"
+            ],
+            "answer": 1,
+            "explanation": "It produced building blocks, not life, from a spark-driven gas mixture."
+          },
+          {
+            "prompt": "Vent ecosystems and radiation-resistant microbes matter to astrobiology because they show that...",
+            "options": [
+              "life needs sunlight",
+              "life's tolerances are wider than everyday experience suggests",
+              "all life is identical",
+              "Earth is unique"
+            ],
+            "answer": 1,
+            "explanation": "Extremophiles widen the range of places worth searching."
+          },
+          {
+            "prompt": "For a star 100 times as luminous as the Sun, the square-root rule puts Earth-like warmth near...",
+            "options": [
+              "10 AU",
+              "100 AU",
+              "50 AU",
+              "1 AU"
+            ],
+            "answer": 0,
+            "explanation": "The square root of 100 is 10, so about 10 AU."
+          },
+          {
+            "prompt": "Europa and Enceladus keep liquid oceans despite being far from the Sun because of...",
+            "options": [
+              "greenhouse gases",
+              "tidal heating",
+              "nuclear reactors",
+              "sunlight focused by ice"
+            ],
+            "answer": 1,
+            "explanation": "Gravitational flexing from the giant planet generates internal heat."
+          },
+          {
+            "prompt": "The transit method gives a planet's size, while the radial-velocity method gives its...",
+            "options": [
+              "color",
+              "mass",
+              "temperature",
+              "name"
+            ],
+            "answer": 1,
+            "explanation": "Together they yield density, hinting rocky versus gaseous."
+          },
+          {
+            "prompt": "Oxygen alone is a weak biosignature because...",
+            "options": [
+              "it is invisible in spectra",
+              "it can build up without life when ultraviolet light splits water",
+              "it never occurs in atmospheres",
+              "it destroys telescopes"
+            ],
+            "answer": 1,
+            "explanation": "That abiotic route is a classic false positive, so corroboration is required."
+          },
+          {
+            "prompt": "In the Drake equation, the factor L represents...",
+            "options": [
+              "the number of stars",
+              "how long a civilization stays detectable",
+              "the luminosity of the star",
+              "the number of planets"
+            ],
+            "answer": 1,
+            "explanation": "L, the detectable lifetime, is one of the most uncertain factors."
+          },
+          {
+            "prompt": "Computing N for R*=1, fp=1, ne=1, fl=0.1, fi=0.01, fc=1, L=1000 gives...",
+            "options": [
+              "1",
+              "10",
+              "100",
+              "0.1"
+            ],
+            "answer": 0,
+            "explanation": "1 x 1 x 1 x 0.1 x 0.01 x 1 x 1000 = 1."
+          },
+          {
+            "prompt": "The Fermi paradox points out the tension between...",
+            "options": [
+              "oxygen and methane",
+              "many chances for life yet no clear sign of anyone",
+              "transit and radial velocity",
+              "mass and size"
+            ],
+            "answer": 1,
+            "explanation": "'Where is everybody?' captures the puzzle."
+          },
+          {
+            "prompt": "In the five-link habitability framework, the link that asks what we could actually measure and what false positives to exclude is...",
+            "options": [
+              "energy",
+              "solvent",
+              "ingredients",
+              "detectability"
+            ],
+            "answer": 3,
+            "explanation": "Detectability weighs the biosignature and its non-living alternatives."
+          }
+        ]
+      }
+    }
+  ]
+}
