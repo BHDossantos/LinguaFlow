@@ -88,6 +88,12 @@ const zh: Dictionary = {
   marquee: {
     eyebrow: "140+ 门课程中的一部分",
   },
+  sources: {
+    title: "基于世界一流的开放课程资源",
+    adaptedLabel: "课程结构改编自",
+    alignedLabel: "对标公认标准",
+    note: "每门课程都注明来源。课程结构改编自开放许可的学术资料，绝非照搬。",
+  },
   app: {
     nav: {
       home: "首页",

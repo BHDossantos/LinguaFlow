@@ -228,3 +228,8 @@ update public.courses set source_id='mit_ocw'     where id='bbbb0002-0000-4000-8
 -- ---- provenance (batch 22: business depth) ----
 update public.courses set source_id='openstax'    where id in ('bbbb0003-0000-4000-8000-000000000015','bbbb0003-0000-4000-8000-000000000016','bbbb0003-0000-4000-8000-000000000019') and source_id is null;
 update public.courses set source_id='oer_commons' where id in ('bbbb0003-0000-4000-8000-000000000017','bbbb0003-0000-4000-8000-000000000018') and source_id is null;
+-- ---- Harvard CS50 source + provenance (adapted structure, original prose) ----
+insert into public.curriculum_sources (id, name, url, license, kind) values
+  ('harvard_cs50','Harvard University CS50 — Introduction to Computer Science','https://cs50.harvard.edu/x/','CC BY-NC-SA 4.0','open_courseware')
+on conflict (id) do nothing;
+update public.courses set source_id='harvard_cs50' where id='bbbb0002-0000-4000-8000-00000000001d' and source_id is null;

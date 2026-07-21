@@ -540,6 +540,26 @@ const MARQUEE = [
   { e: "🎨", t: "UX/UI Design" },
 ];
 
+// Genuine, cited provenance — these are the sources actually recorded in the
+// curriculum graph (curriculum_sources). Course *structure* is adapted from
+// their openly-licensed materials; we never copy their text.
+const SOURCES_ADAPTED = [
+  { name: "MIT OpenCourseWare", emoji: "🏛️" },
+  { name: "OpenStax · Rice University", emoji: "📖" },
+  { name: "CK-12 Foundation", emoji: "🔬" },
+  { name: "OER Commons", emoji: "🌐" },
+  // "Harvard CS50" is added together with the genuine CS50-adapted course so
+  // the claim is true at deploy time (see supabase/seed/curriculum/cs50_*).
+];
+const SOURCES_ALIGNED = [
+  { name: "CEFR · Council of Europe", emoji: "🇪🇺" },
+  { name: "Common Core", emoji: "➗" },
+  { name: "Google Career Certificates", emoji: "💼" },
+  { name: "CompTIA", emoji: "🔐" },
+  { name: "AWS", emoji: "☁️" },
+  { name: "PMI", emoji: "📋" },
+];
+
 function LoggedOutLanding({ t }: { t: Dictionary }) {
   const schoolCards = [
     { emoji: "🗣️", title: t.schools.languagesTitle, body: t.schools.languagesBody, bg: "bg-brand-100 dark:bg-brand-500/20" },
@@ -631,6 +651,44 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
               </span>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Academic credibility — genuine, cited sources */}
+      <section className="mx-auto max-w-4xl">
+        <div className="card border-brand-500/10 bg-gradient-to-b from-brand-50/60 to-white p-6 dark:from-white/[0.06] dark:to-transparent sm:p-8">
+          <h2 className="text-center text-2xl font-bold sm:text-3xl">{t.sources.title}</h2>
+          <div className="mt-6">
+            <p className="text-center text-[11px] font-semibold uppercase tracking-widest text-ink-500">
+              {t.sources.adaptedLabel}
+            </p>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-2.5">
+              {SOURCES_ADAPTED.map((s) => (
+                <span
+                  key={s.name}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-black/5 bg-white px-4 py-2 text-sm font-semibold shadow-sm dark:border-white/10 dark:bg-white/5"
+                >
+                  <span aria-hidden>{s.emoji}</span> {s.name}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="mt-6">
+            <p className="text-center text-[11px] font-semibold uppercase tracking-widest text-ink-500">
+              {t.sources.alignedLabel}
+            </p>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+              {SOURCES_ALIGNED.map((s) => (
+                <span
+                  key={s.name}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5 text-xs font-medium text-ink-500 dark:bg-white/5 dark:text-white/70"
+                >
+                  <span aria-hidden>{s.emoji}</span> {s.name}
+                </span>
+              ))}
+            </div>
+          </div>
+          <p className="mx-auto mt-6 max-w-xl text-center text-xs text-ink-500">{t.sources.note}</p>
         </div>
       </section>
 

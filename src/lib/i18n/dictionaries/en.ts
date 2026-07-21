@@ -91,6 +91,12 @@ const en = {
   marquee: {
     eyebrow: "A few of the 140+ courses",
   },
+  sources: {
+    title: "Built on world-class open courseware",
+    adaptedLabel: "Course structure adapted from",
+    alignedLabel: "Aligned to recognized standards",
+    note: "Every course credits its source. Structure is adapted from openly-licensed academic materials — never copied.",
+  },
   // Signed-in app shell (sidebar + mobile nav). Keep labels short.
   app: {
     nav: {

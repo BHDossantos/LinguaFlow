@@ -88,6 +88,12 @@ const ja: Dictionary = {
   marquee: {
     eyebrow: "140以上のコースの一部",
   },
+  sources: {
+    title: "世界水準のオープン教材をベースに",
+    adaptedLabel: "教材構成の参照元",
+    alignedLabel: "公認基準に準拠",
+    note: "すべてのコースが出典を明記。構成はオープンライセンス教材を参考にしており、複製はしていません。",
+  },
   app: {
     nav: {
       home: "ホーム",

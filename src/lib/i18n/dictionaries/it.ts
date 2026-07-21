@@ -88,6 +88,12 @@ const it: Dictionary = {
   marquee: {
     eyebrow: "Alcuni dei 140+ corsi",
   },
+  sources: {
+    title: "Costruito su materiali accademici aperti di alto livello",
+    adaptedLabel: "Struttura adattata da",
+    alignedLabel: "Allineato a standard riconosciuti",
+    note: "Ogni corso cita la sua fonte. La struttura è adattata da materiali con licenza aperta, mai copiata.",
+  },
   app: {
     nav: {
       home: "Home",
