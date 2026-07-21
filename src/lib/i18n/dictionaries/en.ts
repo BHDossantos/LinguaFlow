@@ -83,6 +83,33 @@ const en = {
     privacy: "Privacy",
     terms: "Terms",
   },
+  // Signed-in app shell (sidebar + mobile nav). Keep labels short.
+  app: {
+    nav: {
+      home: "Home",
+      myLearning: "My Learning",
+      calendar: "Calendar",
+      messages: "Messages",
+      progress: "Progress",
+      community: "Community",
+      library: "Library",
+      shortcuts: "Shortcuts",
+      notes: "Notes",
+      flashcards: "Flashcards",
+      practice: "Practice",
+      tutor: "Tutor",
+      workspaces: "Workspaces",
+      teach: "Teach",
+      school: "School",
+      family: "Family",
+      settings: "Settings",
+      viewProfile: "View profile",
+      inbox: "Inbox",
+      discover: "Discover",
+      coach: "Coach",
+      profile: "Profile",
+    },
+  },
 };
 
 export type Dictionary = typeof en;

@@ -1,30 +1,34 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
+
+type NavLabels = Dictionary["app"]["nav"];
 
 // Desktop sidebar (per the product design mock — dark panel). Mobile keeps
-// BottomNav; this renders only at lg+.
-const MAIN = [
-  { href: "/", label: "Home", icon: "🏠" },
-  { href: "/learn", label: "My Learning", icon: "📚" },
-  { href: "/calendar", label: "Calendar", icon: "🗓️" },
-  { href: "/inbox", label: "Messages", icon: "✉️" },
-  { href: "/profile", label: "Progress", icon: "📈" },
-  { href: "/community", label: "Community", icon: "👥" },
-  { href: "/learn?scope=all", label: "Library", icon: "🗂️" },
+// BottomNav; this renders only at lg+. Labels come from the active locale so
+// the shell is translated for signed-in users too.
+const MAIN: { href: string; key: keyof NavLabels; icon: string }[] = [
+  { href: "/", key: "home", icon: "🏠" },
+  { href: "/learn", key: "myLearning", icon: "📚" },
+  { href: "/calendar", key: "calendar", icon: "🗓️" },
+  { href: "/inbox", key: "messages", icon: "✉️" },
+  { href: "/profile", key: "progress", icon: "📈" },
+  { href: "/community", key: "community", icon: "👥" },
+  { href: "/learn?scope=all", key: "library", icon: "🗂️" },
 ];
 
-const SHORTCUTS = [
-  { href: "/notes", label: "Notes", icon: "📝" },
-  { href: "/review", label: "Flashcards", icon: "🔁" },
-  { href: "/practice", label: "Practice", icon: "💬" },
-  { href: "/coach", label: "Tutor", icon: "🎯" },
+const SHORTCUTS: { href: string; key: keyof NavLabels; icon: string }[] = [
+  { href: "/notes", key: "notes", icon: "📝" },
+  { href: "/review", key: "flashcards", icon: "🔁" },
+  { href: "/practice", key: "practice", icon: "💬" },
+  { href: "/coach", key: "tutor", icon: "🎯" },
 ];
 
-const WORKSPACES = [
-  { href: "/teach", label: "Teach", icon: "🎓" },
-  { href: "/school", label: "School", icon: "🏫" },
-  { href: "/family", label: "Family", icon: "👨‍👩‍👧" },
+const WORKSPACES: { href: string; key: keyof NavLabels; icon: string }[] = [
+  { href: "/teach", key: "teach", icon: "🎓" },
+  { href: "/school", key: "school", icon: "🏫" },
+  { href: "/family", key: "family", icon: "👨‍👩‍👧" },
 ];
 
 function Item({
@@ -75,10 +79,12 @@ export function SideNav({
   userName,
   version,
   unreadCount,
+  labels,
 }: {
   userName?: string;
   version?: string;
   unreadCount?: number;
+  labels: NavLabels;
 }) {
   const pathname = usePathname();
   // usePathname has no search params, so "/learn?scope=all" (Library) never
@@ -98,20 +104,22 @@ export function SideNav({
       {MAIN.map((it) => (
         <Item
           key={it.href}
-          {...it}
+          href={it.href}
+          icon={it.icon}
+          label={labels[it.key]}
           active={isActive(it.href)}
           badge={it.href === "/inbox" ? unreadCount : undefined}
         />
       ))}
 
-      <SectionLabel>Shortcuts</SectionLabel>
+      <SectionLabel>{labels.shortcuts}</SectionLabel>
       {SHORTCUTS.map((it) => (
-        <Item key={it.href} {...it} active={isActive(it.href)} />
+        <Item key={it.href} href={it.href} icon={it.icon} label={labels[it.key]} active={isActive(it.href)} />
       ))}
 
-      <SectionLabel>Workspaces</SectionLabel>
+      <SectionLabel>{labels.workspaces}</SectionLabel>
       {WORKSPACES.map((it) => (
-        <Item key={it.href} {...it} active={isActive(it.href)} />
+        <Item key={it.href} href={it.href} icon={it.icon} label={labels[it.key]} active={isActive(it.href)} />
       ))}
 
       <div className="mt-auto pt-4">
@@ -119,7 +127,7 @@ export function SideNav({
           href="/settings"
           className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white"
         >
-          ⚙️ Settings
+          ⚙️ {labels.settings}
         </Link>
         {version && (
           <p className="px-3 pt-1 text-[9px] tracking-wide text-white/30">build {version}</p>
@@ -134,7 +142,7 @@ export function SideNav({
             </span>
             <span className="min-w-0">
               <span className="block truncate text-sm font-medium text-white">{userName}</span>
-              <span className="block text-[11px] text-white/50">View profile</span>
+              <span className="block text-[11px] text-white/50">{labels.viewProfile}</span>
             </span>
           </Link>
         )}

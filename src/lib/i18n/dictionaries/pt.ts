@@ -80,6 +80,32 @@ const pt: Dictionary = {
     privacy: "Privacidade",
     terms: "Termos",
   },
+  app: {
+    nav: {
+      home: "Início",
+      myLearning: "Meu aprendizado",
+      calendar: "Calendário",
+      messages: "Mensagens",
+      progress: "Progresso",
+      community: "Comunidade",
+      library: "Biblioteca",
+      shortcuts: "Atalhos",
+      notes: "Notas",
+      flashcards: "Flashcards",
+      practice: "Prática",
+      tutor: "Tutor",
+      workspaces: "Espaços",
+      teach: "Ensinar",
+      school: "Escola",
+      family: "Família",
+      settings: "Configurações",
+      viewProfile: "Ver perfil",
+      inbox: "Caixa de entrada",
+      discover: "Descobrir",
+      coach: "Coach",
+      profile: "Perfil",
+    },
+  },
 };
 
 export default pt;

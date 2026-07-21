@@ -114,30 +114,38 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     );
   }
 
+  const { locale, t } = await getI18n();
+  const nav = t.app.nav;
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className="font-sans">
         <SideNav
           userName={userName}
           version={process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? "dev"}
           unreadCount={unreadCount}
+          labels={nav}
         />
         <main className="min-h-screen px-4 pb-24 pt-6 lg:pl-64 lg:pr-8 lg:pb-10">
           <div className="mx-auto max-w-screen-sm lg:max-w-4xl">
             {/* Mobile top bar — the desktop sidebar replaces it at lg+ */}
             <div className="mb-4 flex items-center justify-between lg:hidden">
               <Logo />
-              <div className="flex gap-3 text-xs text-ink-500">
-                <Link href="/inbox" className="hover:text-brand-500">Inbox</Link>
-                <Link href="/family" className="hover:text-brand-500">Family</Link>
-                <Link href="/teach" className="hover:text-brand-500">Teach</Link>
-                <Link href="/school" className="hover:text-brand-500">School</Link>
+              <div className="flex items-center gap-3 text-xs text-ink-500">
+                <Link href="/inbox" className="hover:text-brand-500">{nav.inbox}</Link>
+                <Link href="/family" className="hover:text-brand-500">{nav.family}</Link>
+                <Link href="/teach" className="hover:text-brand-500">{nav.teach}</Link>
+                <Link href="/school" className="hover:text-brand-500">{nav.school}</Link>
+                <LanguageSwitcher current={locale} />
               </div>
+            </div>
+            {/* Desktop language switcher — top-right of the content column */}
+            <div className="mb-4 hidden justify-end lg:flex">
+              <LanguageSwitcher current={locale} />
             </div>
             {children}
           </div>
         </main>
-        <BottomNav />
+        <BottomNav labels={nav} />
         <PageBeacon />
       </body>
     </html>

@@ -80,6 +80,32 @@ const zh: Dictionary = {
     privacy: "隐私政策",
     terms: "服务条款",
   },
+  app: {
+    nav: {
+      home: "首页",
+      myLearning: "我的学习",
+      calendar: "日历",
+      messages: "消息",
+      progress: "进度",
+      community: "社区",
+      library: "课程库",
+      shortcuts: "快捷方式",
+      notes: "笔记",
+      flashcards: "记忆卡",
+      practice: "练习",
+      tutor: "辅导",
+      workspaces: "工作区",
+      teach: "教学",
+      school: "学校",
+      family: "家庭",
+      settings: "设置",
+      viewProfile: "查看资料",
+      inbox: "收件箱",
+      discover: "发现",
+      coach: "教练",
+      profile: "个人资料",
+    },
+  },
 };
 
 export default zh;

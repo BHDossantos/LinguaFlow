@@ -80,6 +80,32 @@ const ja: Dictionary = {
     privacy: "プライバシー",
     terms: "利用規約",
   },
+  app: {
+    nav: {
+      home: "ホーム",
+      myLearning: "学習",
+      calendar: "カレンダー",
+      messages: "メッセージ",
+      progress: "進捗",
+      community: "コミュニティ",
+      library: "ライブラリ",
+      shortcuts: "ショートカット",
+      notes: "ノート",
+      flashcards: "単語カード",
+      practice: "練習",
+      tutor: "チューター",
+      workspaces: "ワークスペース",
+      teach: "指導",
+      school: "スクール",
+      family: "ファミリー",
+      settings: "設定",
+      viewProfile: "プロフィールを見る",
+      inbox: "受信箱",
+      discover: "見つける",
+      coach: "コーチ",
+      profile: "プロフィール",
+    },
+  },
 };
 
 export default ja;

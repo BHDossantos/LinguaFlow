@@ -80,6 +80,32 @@ const fr: Dictionary = {
     privacy: "Confidentialité",
     terms: "Conditions",
   },
+  app: {
+    nav: {
+      home: "Accueil",
+      myLearning: "Mon apprentissage",
+      calendar: "Calendrier",
+      messages: "Messages",
+      progress: "Progrès",
+      community: "Communauté",
+      library: "Bibliothèque",
+      shortcuts: "Raccourcis",
+      notes: "Notes",
+      flashcards: "Cartes",
+      practice: "Pratique",
+      tutor: "Tuteur",
+      workspaces: "Espaces",
+      teach: "Enseigner",
+      school: "École",
+      family: "Famille",
+      settings: "Paramètres",
+      viewProfile: "Voir le profil",
+      inbox: "Boîte de réception",
+      discover: "Découvrir",
+      coach: "Coach",
+      profile: "Profil",
+    },
+  },
 };
 
 export default fr;

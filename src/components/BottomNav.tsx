@@ -1,18 +1,21 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { Dictionary } from "@/lib/i18n/dictionaries/en";
+
+type NavLabels = Dictionary["app"]["nav"];
 
 // Five tabs, per the product design: Home, Discover, Coach, Community, Profile.
 // (Practice lives one tap inside Community, Home cards, and lesson deep links.)
-const items = [
-  { href: "/", label: "Home", icon: "🏠" },
-  { href: "/learn", label: "Discover", icon: "🔍" },
-  { href: "/coach", label: "Coach", icon: "🤖" },
-  { href: "/community", label: "Community", icon: "👥" },
-  { href: "/profile", label: "Profile", icon: "👤" },
+const items: { href: string; key: keyof NavLabels; icon: string }[] = [
+  { href: "/", key: "home", icon: "🏠" },
+  { href: "/learn", key: "discover", icon: "🔍" },
+  { href: "/coach", key: "coach", icon: "🎯" },
+  { href: "/community", key: "community", icon: "👥" },
+  { href: "/profile", key: "profile", icon: "👤" },
 ];
 
-export function BottomNav() {
+export function BottomNav({ labels }: { labels: NavLabels }) {
   const pathname = usePathname();
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-black/5 dark:border-white/10 bg-white/90 dark:bg-[#0b1020]/90 backdrop-blur lg:hidden">
@@ -28,7 +31,7 @@ export function BottomNav() {
                 }`}
               >
                 <span className="text-lg leading-none">{it.icon}</span>
-                {it.label}
+                {labels[it.key]}
               </Link>
             </li>
           );
