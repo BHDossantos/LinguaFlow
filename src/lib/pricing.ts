@@ -6,6 +6,25 @@
 
 export type TierId = "bronze" | "silver" | "gold" | "platinum";
 export type Interval = "monthly" | "annual";
+export type Currency = "usd" | "eur";
+
+export const CURRENCY_SYMBOL: Record<Currency, string> = { usd: "$", eur: "€" };
+
+// Eurozone members (countries that actually use the euro) → price in EUR.
+// Everyone else defaults to USD. Matched against Vercel's x-vercel-ip-country.
+export const EUROZONE = new Set([
+  "AT", "BE", "HR", "CY", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LV", "LT",
+  "LU", "MT", "NL", "PT", "SK", "SI", "ES", "AD", "MC", "SM", "VA",
+]);
+
+export function currencyForCountry(country: string | null | undefined): Currency {
+  return country && EUROZONE.has(country.toUpperCase()) ? "eur" : "usd";
+}
+
+/** Swap the "$" placeholders in a display string for the active symbol. */
+export function withCurrency(text: string, currency: Currency): string {
+  return currency === "usd" ? text : text.split("$").join(CURRENCY_SYMBOL[currency]);
+}
 
 export type Tier = {
   id: TierId;
@@ -83,31 +102,38 @@ export const TIERS: Tier[] = [
   },
 ];
 
-/** Env var name holding the Stripe price ID for a tier + interval. */
-export function priceEnvKey(tier: TierId, interval: Interval): string {
-  return `STRIPE_${tier.toUpperCase()}_${interval.toUpperCase()}_PRICE_ID`;
+/**
+ * Env var holding the Stripe price ID for a tier + interval + currency.
+ * USD keeps the original names (e.g. STRIPE_SILVER_MONTHLY_PRICE_ID); EUR adds
+ * an _EUR segment (STRIPE_SILVER_MONTHLY_EUR_PRICE_ID).
+ */
+export function priceEnvKey(tier: TierId, interval: Interval, currency: Currency): string {
+  const cur = currency === "eur" ? "_EUR" : "";
+  return `STRIPE_${tier.toUpperCase()}_${interval.toUpperCase()}${cur}_PRICE_ID`;
 }
 
 /**
- * Resolve the configured Stripe price ID for a tier+interval, if any.
- * Back-compat: Silver monthly falls back to the original STRIPE_PREMIUM_PRICE_ID
- * so an existing single-price setup keeps working.
+ * Resolve the configured Stripe price ID for a tier+interval+currency, if any.
+ * Back-compat: USD Silver monthly falls back to the original
+ * STRIPE_PREMIUM_PRICE_ID so an existing single-price setup keeps working.
  */
-export function resolvePriceId(tier: TierId, interval: Interval): string | undefined {
-  const direct = process.env[priceEnvKey(tier, interval)];
+export function resolvePriceId(tier: TierId, interval: Interval, currency: Currency = "usd"): string | undefined {
+  const direct = process.env[priceEnvKey(tier, interval, currency)];
   if (direct) return direct;
-  if (tier === "silver" && interval === "monthly") return process.env.STRIPE_PREMIUM_PRICE_ID;
+  if (currency === "usd" && tier === "silver" && interval === "monthly") {
+    return process.env.STRIPE_PREMIUM_PRICE_ID;
+  }
   return undefined;
 }
 
-/** Which tiers currently have a live checkout (used to gate the buttons). */
-export function liveTierMap(): Record<TierId, { monthly: boolean; annual: boolean }> {
+/** Which tiers currently have a live checkout in this currency (gates buttons). */
+export function liveTierMap(currency: Currency = "usd"): Record<TierId, { monthly: boolean; annual: boolean }> {
   const hasStripe = !!process.env.STRIPE_SECRET_KEY;
   const map = {} as Record<TierId, { monthly: boolean; annual: boolean }>;
   for (const t of TIERS) {
     map[t.id] = {
-      monthly: hasStripe && !!resolvePriceId(t.id, "monthly"),
-      annual: hasStripe && !!resolvePriceId(t.id, "annual"),
+      monthly: hasStripe && !!resolvePriceId(t.id, "monthly", currency),
+      annual: hasStripe && !!resolvePriceId(t.id, "annual", currency),
     };
   }
   return map;

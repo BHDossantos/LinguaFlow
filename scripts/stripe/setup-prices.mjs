@@ -25,6 +25,10 @@ const TIERS = [
   { id: "platinum", name: "Noelia Platinum — Mastery",   monthly: 7999, annual: 69900 },
 ];
 
+// Charge the same numeric amount in each currency (near-parity, common for
+// SaaS). Add more currencies here if needed.
+const CURRENCIES = ["usd", "eur"];
+
 const envLines = [];
 for (const t of TIERS) {
   const product = await stripe.products.create({
@@ -36,15 +40,18 @@ for (const t of TIERS) {
     { interval: "month", amount: t.monthly, tag: "MONTHLY" },
     { interval: "year", amount: t.annual, tag: "ANNUAL" },
   ]) {
-    const price = await stripe.prices.create({
-      product: product.id,
-      unit_amount: amount,
-      currency: "usd",
-      recurring: { interval },
-      metadata: { tier: t.id },
-    });
-    console.error(`  ✓ ${tag}: ${price.id}`);
-    envLines.push(`STRIPE_${t.id.toUpperCase()}_${tag}_PRICE_ID=${price.id}`);
+    for (const currency of CURRENCIES) {
+      const price = await stripe.prices.create({
+        product: product.id,
+        unit_amount: amount,
+        currency,
+        recurring: { interval },
+        metadata: { tier: t.id },
+      });
+      const curSeg = currency === "eur" ? "_EUR" : "";
+      console.error(`  ✓ ${tag} ${currency.toUpperCase()}: ${price.id}`);
+      envLines.push(`STRIPE_${t.id.toUpperCase()}_${tag}${curSeg}_PRICE_ID=${price.id}`);
+    }
   }
 }
 

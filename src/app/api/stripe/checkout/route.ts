@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getStripe } from "@/lib/stripe";
-import { resolvePriceId, type Interval, type TierId } from "@/lib/pricing";
+import { resolvePriceId, type Currency, type Interval, type TierId } from "@/lib/pricing";
 
 export const runtime = "nodejs";
 
 const VALID_TIERS: TierId[] = ["bronze", "silver", "gold", "platinum"];
 const VALID_INTERVALS: Interval[] = ["monthly", "annual"];
+const VALID_CURRENCIES: Currency[] = ["usd", "eur"];
 
 // Creates a Stripe Checkout session for a subscription tier.
 // Body: { tier?: "bronze"|"silver"|"gold"|"platinum", interval?: "monthly"|"annual" }
@@ -23,8 +24,11 @@ export async function POST(req: Request) {
   const interval = (VALID_INTERVALS.includes(body.interval as Interval)
     ? body.interval
     : "monthly") as Interval;
+  const currency = (VALID_CURRENCIES.includes(body.currency as Currency)
+    ? body.currency
+    : "usd") as Currency;
 
-  const priceId = resolvePriceId(tier, interval);
+  const priceId = resolvePriceId(tier, interval, currency);
   if (!process.env.STRIPE_SECRET_KEY || !priceId) {
     return NextResponse.json({ offline: true }, { status: 503 });
   }

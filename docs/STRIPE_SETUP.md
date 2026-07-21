@@ -20,21 +20,26 @@ From the repo root:
 STRIPE_SECRET_KEY=sk_test_xxx node scripts/stripe/setup-prices.mjs
 ```
 
-It creates all 8 prices (Bronze/Silver/Gold/Platinum × monthly/annual) and prints
-the env vars, e.g.:
+It creates all 16 prices (Bronze/Silver/Gold/Platinum × monthly/annual × USD+EUR)
+and prints the env vars, e.g.:
 
 ```
-STRIPE_BRONZE_MONTHLY_PRICE_ID=price_...
+STRIPE_BRONZE_MONTHLY_PRICE_ID=price_...        # USD
+STRIPE_BRONZE_MONTHLY_EUR_PRICE_ID=price_...    # EUR
 STRIPE_BRONZE_ANNUAL_PRICE_ID=price_...
+STRIPE_BRONZE_ANNUAL_EUR_PRICE_ID=price_...
 STRIPE_SILVER_MONTHLY_PRICE_ID=price_...
-STRIPE_SILVER_ANNUAL_PRICE_ID=price_...
-STRIPE_GOLD_MONTHLY_PRICE_ID=price_...
-STRIPE_GOLD_ANNUAL_PRICE_ID=price_...
-STRIPE_PLATINUM_MONTHLY_PRICE_ID=price_...
-STRIPE_PLATINUM_ANNUAL_PRICE_ID=price_...
+STRIPE_SILVER_MONTHLY_EUR_PRICE_ID=price_...
+... (Silver/Gold/Platinum, monthly+annual, USD+EUR)
 ```
 
 Run it **once** per environment (running again makes duplicate products).
+
+**Currency:** eurozone visitors automatically see EUR and check out against the
+`*_EUR_*` price IDs; everyone else sees USD. Detection uses Vercel's
+`x-vercel-ip-country` header; `?cur=eur` / `?cur=usd` on `/pricing` forces one
+for testing. If you only set USD price IDs, eurozone users simply see USD — the
+EUR keys are optional but recommended.
 
 > Prefer the dashboard? Create one Product per tier with two recurring Prices
 > (monthly + annual) at the amounts in `docs/PRICING.md`, and copy each price ID

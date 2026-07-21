@@ -1,17 +1,20 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { TIERS, type Interval, type TierId } from "@/lib/pricing";
+import { TIERS, CURRENCY_SYMBOL, type Currency, type Interval, type TierId } from "@/lib/pricing";
 
 export function PricingTiers({
   live,
   currentTier,
   signedIn,
+  currency,
 }: {
   live: Record<TierId, { monthly: boolean; annual: boolean }>;
   currentTier: TierId | null;
   signedIn: boolean;
+  currency: Currency;
 }) {
+  const sym = CURRENCY_SYMBOL[currency];
   const [interval, setInterval] = useState<Interval>("annual");
   const [busy, setBusy] = useState<TierId | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +30,7 @@ export function PricingTiers({
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ tier, interval }),
+        body: JSON.stringify({ tier, interval, currency }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.status === 401) {
@@ -96,14 +99,14 @@ export function PricingTiers({
               </div>
               <p className="mt-0.5 text-sm text-ink-500">{t.tagline}</p>
               <p className="mt-3">
-                <span className="text-3xl font-extrabold">${price}</span>
+                <span className="text-3xl font-extrabold">{sym}{price}</span>
                 <span className="text-sm font-medium text-ink-500">
                   {interval === "monthly" ? "/mo" : "/yr"}
                 </span>
               </p>
               {interval === "annual" && (
                 <p className="text-[11px] text-green-600">
-                  ${(t.monthly * 12 - t.annual).toFixed(0)} saved vs monthly
+                  {sym}{(t.monthly * 12 - t.annual).toFixed(0)} saved vs monthly
                 </p>
               )}
 

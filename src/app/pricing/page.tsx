@@ -1,16 +1,29 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { supabaseServer } from "@/lib/supabase/server";
 import { PricingTiers } from "./PricingTiers";
-import { liveTierMap, TUTORING, SCHOOL_PLANS, type TierId } from "@/lib/pricing";
+import {
+  liveTierMap, TUTORING, SCHOOL_PLANS,
+  CURRENCY_SYMBOL, currencyForCountry, withCurrency,
+  type Currency, type TierId,
+} from "@/lib/pricing";
 
 export const metadata = { title: "Pricing" };
 export const dynamic = "force-dynamic";
 
 export default async function PricingPage(props: {
-  searchParams: Promise<{ upgraded?: string }>;
+  searchParams: Promise<{ upgraded?: string; cur?: string }>;
 }) {
-  const { upgraded } = await props.searchParams;
-  const live = liveTierMap();
+  const { upgraded, cur } = await props.searchParams;
+
+  // Currency by region: eurozone visitors see EUR, everyone else USD.
+  // `?cur=eur|usd` overrides for testing.
+  const h = await headers();
+  const currency: Currency =
+    cur === "eur" ? "eur" : cur === "usd" ? "usd"
+    : currencyForCountry(h.get("x-vercel-ip-country"));
+  const sym = CURRENCY_SYMBOL[currency];
+  const live = liveTierMap(currency);
 
   let signedIn = false;
   let currentTier: TierId | null = null;
@@ -54,7 +67,7 @@ export default async function PricingPage(props: {
         <div className="card flex flex-col items-center gap-3 border-brand-500/20 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-brand-600">Free · Explorer</p>
-            <p className="mt-1 text-2xl font-extrabold">$0</p>
+            <p className="mt-1 text-2xl font-extrabold">{sym}0</p>
             <p className="mt-1 text-sm text-ink-500">
               One track at a time, a few lessons a day — try any language or subject, no card needed.
             </p>
@@ -66,7 +79,7 @@ export default async function PricingPage(props: {
       {/* Consumer tiers */}
       <section className="space-y-6">
         <h2 className="text-center text-2xl font-bold">For learners</h2>
-        <PricingTiers live={live} currentTier={currentTier} signedIn={signedIn} />
+        <PricingTiers live={live} currentTier={currentTier} signedIn={signedIn} currency={currency} />
       </section>
 
       {/* Live tutoring */}
@@ -85,7 +98,7 @@ export default async function PricingPage(props: {
               {TUTORING.instant.map((o) => (
                 <li key={o.label} className="flex justify-between">
                   <span>{o.label}</span>
-                  <span className="font-semibold">${o.perMin.toFixed(2)}/min <span className="text-ink-500">(${o.perHr}/hr)</span></span>
+                  <span className="font-semibold">{sym}{o.perMin.toFixed(2)}/min <span className="text-ink-500">({sym}{o.perHr}/hr)</span></span>
                 </li>
               ))}
             </ul>
@@ -97,8 +110,8 @@ export default async function PricingPage(props: {
                 <li key={b.minutes} className="flex justify-between">
                   <span>{b.minutes} minutes</span>
                   <span className="font-semibold">
-                    ${b.price}
-                    <span className="text-ink-500"> (${(b.price / b.minutes).toFixed(2)}/min)</span>
+                    {sym}{b.price}
+                    <span className="text-ink-500"> ({sym}{(b.price / b.minutes).toFixed(2)}/min)</span>
                   </span>
                 </li>
               ))}
@@ -130,7 +143,7 @@ export default async function PricingPage(props: {
             >
               <p className="text-xs font-bold uppercase tracking-widest text-brand-600">{p.name}</p>
               <p className="mt-2">
-                <span className="text-3xl font-extrabold">{p.price}</span>
+                <span className="text-3xl font-extrabold">{withCurrency(p.price, currency)}</span>
                 {p.unit && <span className="text-sm font-medium text-ink-500"> {p.unit}</span>}
               </p>
               <p className="mt-1 text-sm text-ink-500">{p.best}</p>
@@ -138,7 +151,7 @@ export default async function PricingPage(props: {
                 {p.features.map((f) => (
                   <li key={f} className="flex gap-1.5">
                     <span className="text-brand-500">✓</span>
-                    <span className="text-ink-700 dark:text-white/80">{f}</span>
+                    <span className="text-ink-700 dark:text-white/80">{withCurrency(f, currency)}</span>
                   </li>
                 ))}
               </ul>
