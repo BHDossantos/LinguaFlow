@@ -824,6 +824,10 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
           {" · "}
           <Link href="/legal/terms" className="underline underline-offset-2">{t.cta.terms}</Link>
         </p>
+        {/* Build stamp — lets us confirm at a glance which deploy is live. */}
+        <p className="mt-3 text-[10px] tracking-wide text-ink-500/60">
+          build {process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? "dev"}
+        </p>
       </section>
     </div>
   );
