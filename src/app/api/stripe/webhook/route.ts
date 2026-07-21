@@ -58,11 +58,15 @@ export async function POST(req: Request) {
       const periodEnd = (sub as any).current_period_end
         ? new Date((sub as any).current_period_end * 1000).toISOString()
         : null;
+      // Which package this is — set in subscription metadata at checkout.
+      const validTiers = ["bronze", "silver", "gold", "platinum"];
+      const tier = validTiers.includes(sub.metadata?.tier ?? "") ? sub.metadata!.tier : null;
       const db = admin();
       if (userId) {
         await db.from("subscriptions").upsert({
           user_id: userId,
           status,
+          tier,
           stripe_customer_id: String(sub.customer ?? ""),
           stripe_subscription_id: sub.id,
           current_period_end: periodEnd,
@@ -70,10 +74,9 @@ export async function POST(req: Request) {
         });
       } else {
         // Older subscriptions without metadata: match by subscription id.
-        await db
-          .from("subscriptions")
-          .update({ status, current_period_end: periodEnd, updated_at: new Date().toISOString() })
-          .eq("stripe_subscription_id", sub.id);
+        const patch: Record<string, unknown> = { status, current_period_end: periodEnd, updated_at: new Date().toISOString() };
+        if (tier) patch.tier = tier;
+        await db.from("subscriptions").update(patch).eq("stripe_subscription_id", sub.id);
       }
       break;
     }
