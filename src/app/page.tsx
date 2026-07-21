@@ -545,11 +545,10 @@ const MARQUEE = [
 // their openly-licensed materials; we never copy their text.
 const SOURCES_ADAPTED = [
   { name: "MIT OpenCourseWare", emoji: "🏛️" },
+  { name: "Harvard CS50", emoji: "🎓" },
   { name: "OpenStax · Rice University", emoji: "📖" },
   { name: "CK-12 Foundation", emoji: "🔬" },
   { name: "OER Commons", emoji: "🌐" },
-  // "Harvard CS50" is added together with the genuine CS50-adapted course so
-  // the claim is true at deploy time (see supabase/seed/curriculum/cs50_*).
 ];
 const SOURCES_ALIGNED = [
   { name: "CEFR · Council of Europe", emoji: "🇪🇺" },
