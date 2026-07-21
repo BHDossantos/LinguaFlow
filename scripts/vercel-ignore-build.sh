@@ -1,38 +1,40 @@
 #!/usr/bin/env bash
 # Vercel "Ignored Build Step" command.
-# Exit 1 => build the app.  Exit 0 => skip the deploy.
+#   exit 1  => BUILD the app.
+#   exit 0  => SKIP the deploy.
 #
-# Content-only pushes (course seed SQL, ingestion interchange JSON, docs,
-# the daily-agent files) do not change the deployed Next.js app, so they
-# must NOT spend a Vercel deployment. This skips the build when a commit
-# touches ONLY those paths, and builds normally for real code changes.
+# CRITICAL: this must FAIL OPEN. A previous version (set -euo pipefail + a
+# HEAD^ fallback) could exit non-1 on a shallow-clone git hiccup — and Vercel
+# treats any non-1 exit as "skip" — which silently blocked real code deploys and
+# left production stale for days. So: no `set -e`, always exit exactly 0 or 1,
+# default to BUILD, and SKIP only when we can see the complete, accurate diff and
+# every changed file is content/docs (course seed SQL, ingestion interchange
+# JSON, docs, daily-agent files) — things that don't change the deployed app.
 
-set -euo pipefail
-
-# Range of commits in this push. Fall back to last commit if unavailable.
-BASE="${VERCEL_GIT_PREVIOUS_SHA:-HEAD^}"
+BASE="${VERCEL_GIT_PREVIOUS_SHA:-}"
 HEAD="${VERCEL_GIT_COMMIT_SHA:-HEAD}"
 
-# All files changed in the range (fallback: last commit).
-if ! CHANGED="$(git diff --name-only "$BASE" "$HEAD" 2>/dev/null)"; then
-  CHANGED="$(git diff --name-only HEAD^ HEAD 2>/dev/null || true)"
-fi
-
-# No detectable changes → be safe and build.
-if [ -z "$CHANGED" ]; then
-  echo "No diff detected — building."
+# We can only skip safely with a real, complete diff, which needs the previous
+# deployed commit to exist in this (often shallow) clone. If it doesn't, BUILD.
+if [ -z "$BASE" ] || ! git cat-file -e "${BASE}^{commit}" 2>/dev/null; then
+  echo "No reliable base commit to diff against — building."
   exit 1
 fi
 
-# If EVERY changed file is under a content/docs-only path, skip the build.
-# grep -qvE prints nothing (and exits 1) when all lines match the ignore
-# pattern; that means "nothing outside the ignore set" → skip.
+CHANGED="$(git diff --name-only "$BASE" "$HEAD" 2>/dev/null)"
+if [ -z "$CHANGED" ]; then
+  echo "Empty or failed diff — building."
+  exit 1
+fi
+
+# If ANY changed file is outside the content/docs set, build. Only skip when the
+# entire diff is content/docs.
 IGNORE='^(supabase/|scripts/ingest/examples/|docs/|\.claude/)'
 if echo "$CHANGED" | grep -qvE "$IGNORE"; then
   echo "Code changed — building:"
   echo "$CHANGED" | grep -vE "$IGNORE" | sed 's/^/  /'
   exit 1
-else
-  echo "Content/docs-only push — skipping deploy."
-  exit 0
 fi
+
+echo "Content/docs-only change — skipping deploy."
+exit 0
