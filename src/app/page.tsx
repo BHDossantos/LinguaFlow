@@ -551,6 +551,14 @@ const SOURCES_ADAPTED = [
   { name: "Open Yale Courses", emoji: "📜" },
   { name: "Johns Hopkins", emoji: "🏥" },
   { name: "Carnegie Mellon", emoji: "🧩" },
+  { name: "University of Michigan", emoji: "🔷" },
+  { name: "Caltech", emoji: "🚀" },
+  { name: "TU Delft", emoji: "⚙️" },
+  { name: "University of Edinburgh", emoji: "🔭" },
+  { name: "The Open University", emoji: "📡" },
+];
+// Open textbooks & libraries — shown as a smaller secondary row.
+const SOURCES_LIBRARIES = [
   { name: "OpenStax · Rice University", emoji: "📖" },
   { name: "CK-12 Foundation", emoji: "🔬" },
   { name: "OER Commons", emoji: "🌐" },
@@ -671,6 +679,16 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
                 <span
                   key={s.name}
                   className="inline-flex items-center gap-1.5 rounded-full border border-black/5 bg-white px-4 py-2 text-sm font-semibold shadow-sm dark:border-white/10 dark:bg-white/5"
+                >
+                  <span aria-hidden>{s.emoji}</span> {s.name}
+                </span>
+              ))}
+            </div>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+              {SOURCES_LIBRARIES.map((s) => (
+                <span
+                  key={s.name}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-black/[0.03] px-3 py-1.5 text-xs font-medium text-ink-500 dark:bg-white/5 dark:text-white/70"
                 >
                   <span aria-hidden>{s.emoji}</span> {s.name}
                 </span>

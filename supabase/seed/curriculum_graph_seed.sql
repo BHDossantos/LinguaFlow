@@ -246,3 +246,16 @@ update public.courses set source_id='yale'      where id='bbbb0003-0000-4000-800
 update public.courses set source_id='stanford'  where id='bbbb0002-0000-4000-8000-00000000001e' and source_id is null;
 update public.courses set source_id='jhsph'     where id='bbbb0004-0000-4000-8000-000000000029' and source_id is null;
 update public.courses set source_id='cmu_oli'   where id='bbbb0001-0000-4000-8000-000000000011' and source_id is null;
+-- ---- Batch 24: more top-university open sources + provenance ----
+insert into public.curriculum_sources (id, name, url, license, kind) values
+  ('umich','University of Michigan (open.umich.edu)','https://open.umich.edu','CC BY 3.0','open_courseware'),
+  ('caltech','Caltech — Learning From Data','https://work.caltech.edu/telecourse','Open courseware','open_courseware'),
+  ('tudelft','TU Delft OpenCourseWare','https://ocw.tudelft.nl','CC BY-NC-SA 4.0','open_courseware'),
+  ('edinburgh','University of Edinburgh — Open.Ed','https://open.ed.ac.uk','CC BY 4.0','open_courseware'),
+  ('open_university','The Open University — OpenLearn','https://www.open.edu/openlearn','CC BY-NC-SA 4.0','open_courseware')
+on conflict (id) do nothing;
+update public.courses set source_id='umich'          where id='bbbb0003-0000-4000-8000-00000000001b' and source_id is null;
+update public.courses set source_id='caltech'        where id='bbbb0002-0000-4000-8000-00000000001f' and source_id is null;
+update public.courses set source_id='tudelft'        where id='bbbb0004-0000-4000-8000-00000000002a' and source_id is null;
+update public.courses set source_id='edinburgh'      where id='bbbb0004-0000-4000-8000-00000000002b' and source_id is null;
+update public.courses set source_id='open_university' where id='bbbb0004-0000-4000-8000-00000000002c' and source_id is null;
