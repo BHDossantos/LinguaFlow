@@ -25,6 +25,15 @@ improvement, and pushes it. This is the "gets smarter every day" system.
    dead link, crash on empty state) and fix it.
 4. **Content gap:** find a school/level with thin coverage; author ONE new
    course via the ingestion pipeline (see `scripts/ingest/README.md`).
+4b. **Top-university open courseware (standing task):** whenever you can find a
+   genuinely **open-licensed** course from a top-ranked university that we don't
+   yet have, add it — automatically. Follow `docs/UNIVERSITY_SOURCES.md` exactly:
+   verify the open license first, adapt only the topic structure with 100%
+   original prose, run it through the pipeline, register the source in
+   `curriculum_graph_seed.sql`, set `source_id`, and only then add the
+   university's name to `SOURCES_ADAPTED` in `src/app/page.tsx`. Never put a
+   university on the landing strip before a real course from it exists. If the
+   license is unclear or restrictive, skip it — do not guess.
 5. **Design fidelity:** compare one screen to `docs/PRD.md` Volume 2/3; close a
    gap.
 6. **Standards coverage:** align any course still missing `course_standards`.

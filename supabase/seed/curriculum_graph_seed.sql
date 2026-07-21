@@ -233,3 +233,16 @@ insert into public.curriculum_sources (id, name, url, license, kind) values
   ('harvard_cs50','Harvard University CS50 — Introduction to Computer Science','https://cs50.harvard.edu/x/','CC BY-NC-SA 4.0','open_courseware')
 on conflict (id) do nothing;
 update public.courses set source_id='harvard_cs50' where id='bbbb0002-0000-4000-8000-00000000001d' and source_id is null;
+-- ---- Batch 23: additional top-university open sources + provenance ----
+insert into public.curriculum_sources (id, name, url, license, kind) values
+  ('yale','Open Yale Courses','https://oyc.yale.edu','CC BY-NC-SA 3.0','open_courseware'),
+  ('stanford','Stanford Online','https://online.stanford.edu','CC BY-NC-SA 4.0','open_courseware'),
+  ('cambridge','University of Cambridge — Isaac Physics','https://isaacphysics.org','Open educational use','open_courseware'),
+  ('jhsph','Johns Hopkins Bloomberg School of Public Health OpenCourseWare','https://ocw.jhsph.edu','CC BY-NC-SA 3.0','open_courseware'),
+  ('cmu_oli','Carnegie Mellon Open Learning Initiative','https://oli.cmu.edu','CC BY-NC-SA 4.0','open_courseware')
+on conflict (id) do nothing;
+update public.courses set source_id='cambridge' where id='bbbb0004-0000-4000-8000-000000000028' and source_id is null;
+update public.courses set source_id='yale'      where id='bbbb0003-0000-4000-8000-00000000001a' and source_id is null;
+update public.courses set source_id='stanford'  where id='bbbb0002-0000-4000-8000-00000000001e' and source_id is null;
+update public.courses set source_id='jhsph'     where id='bbbb0004-0000-4000-8000-000000000029' and source_id is null;
+update public.courses set source_id='cmu_oli'   where id='bbbb0001-0000-4000-8000-000000000011' and source_id is null;
