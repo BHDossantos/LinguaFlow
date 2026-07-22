@@ -68,14 +68,19 @@ Legend: ✅ built · ◐ partial · ○ planned · 🔑 needs `ANTHROPIC_API_KEY
 
 Run `supabase/migrations/0030_mastery_engine.sql` in Supabase to enable it.
 
-## Phase 2 — next (no API key needed)
+## Phase 2 — in progress (no API key needed)
 
-1. **Concepts/skills tables** + tag lessons → concepts (unlocks prerequisite
+1. ✅ **Mastery map UI** — course page shows an evidence-based
+   mastered/proficient/developing/review breakdown per course; the home
+   dashboard shows a Skills-Mastery snapshot with a remediation nudge. Both read
+   `skill_states` and degrade gracefully pre-migration.
+2. ○ **Concepts/skills tables** + tag lessons → concepts (unlocks prerequisite
    back-routing: "you're failing limits because of algebra").
-2. **Mastery map UI** on the course page + teacher dashboard (data now exists).
-3. **Item bank** (`questions`) with distractor rationale + Bloom + stats.
-4. **Full lesson sequence** with a real mastery gate before "advance".
-5. **North-star metric** job (below) from `mastery_events`.
+3. ○ **Teacher mastery view** — per-student mastery + misconceptions (needs an
+   RLS policy letting classroom teachers read their students' skill states).
+4. ○ **Item bank** (`questions`) with distractor rationale + Bloom + stats.
+5. ○ **Full lesson sequence** with a real mastery gate before "advance".
+6. ○ **North-star metric** job (below) from `mastery_events`.
 
 ## Phase 3 — needs the key / infra 🔑☁️👤
 
