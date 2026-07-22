@@ -2,6 +2,7 @@
 import { rateCardForUser, type RateInput } from "@/lib/srs-server";
 import { supabaseServer } from "@/lib/supabase/server";
 import { XP } from "@/lib/gamification";
+import { recordMasteryEvent } from "@/lib/mastery";
 
 export async function rateCardAction(input: RateInput) {
   const result = await rateCardForUser(input);
@@ -27,6 +28,15 @@ export async function completeLessonAction(lessonId: string, score: number) {
       completed_at: new Date().toISOString(),
       score,
     });
+
+  // Feed the mastery engine: this lesson's score becomes evidence toward a
+  // skill state (introduced → developing → proficient → mastered). Best-effort.
+  await recordMasteryEvent({
+    skillId: lessonId,
+    skillKind: "lesson",
+    eventType: "lesson_complete",
+    score: typeof score === "number" ? (score > 1 ? score / 100 : score) : undefined,
+  });
 
   if (lesson?.course_id) {
     await supabase
