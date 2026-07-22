@@ -17,6 +17,10 @@ const MODES = [
   { id: "socratic", label: "🧭 Socratic", hint: "guides you with questions, never spoils the answer" },
   { id: "practice", label: "✏️ Practice", hint: "generates problems and drills" },
   { id: "review", label: "🔁 Review", hint: "targets your weak spots" },
+  { id: "example", label: "📌 Example", hint: "shows worked examples" },
+  { id: "different", label: "🔄 Differently", hint: "re-explains another way" },
+  { id: "challenge", label: "🔥 Challenge", hint: "harder transfer problems" },
+  { id: "exam", label: "🎓 Exam coach", hint: "exam-style prep and timing" },
 ] as const;
 type ModeId = (typeof MODES)[number]["id"];
 
