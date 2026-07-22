@@ -20,7 +20,7 @@ Legend: ✅ built · ◐ partial · ○ planned · 🔑 needs `ANTHROPIC_API_KEY
 
 | # | Vision area | Status | What exists / next step |
 |---|-------------|--------|-------------------------|
-| 1 | Onboarding + diagnostic | ◐ | Onboarding with multi-language select, goals, a placement assessment. **Next:** expand to the full adaptive diagnostic (confidence + response time + misconception discriminators) producing a saved learner model. |
+| 1 | Onboarding + diagnostic | ✅/◐ 🔑 | Onboarding (multi-language, goals, placement) + a full **adaptive diagnostic** at /diagnostic that saves a learner model (level, mastered/developing, gaps, misconceptions, recommendation) and seeds misconceptions. Runs at go-live. |
 | 2 | Knowledge-graph curriculum | ◐ | `courses→lessons`, `curriculum_sources`, `standards`, `standard_descriptors`, `course_standards`, `courses.prerequisite_ids`. **Missing:** sub-lesson `concepts`/`skills`/`learning_objectives`. **Next:** add those tables; the mastery engine already carries `skill_kind` for them. |
 | 3 | Sourcing + quality control | ◐ | Ingestion pipeline (`scripts/ingest`), source credit + licenses, `docs/UNIVERSITY_SOURCES.md` allowlist. **Missing:** formal per-lesson quality score + 👤 expert sign-off workflow. |
 | 4 | Lesson experience (objective→mastery check) | ◐ | Lessons render vocab/quiz/reading/roleplay; SRS review. **Next:** enforce the full sequence (prior-knowledge activation, guided→independent→transfer, reflection, **mastery gate**). |
