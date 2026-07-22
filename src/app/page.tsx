@@ -178,6 +178,23 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
   const todayXp = (todayEvents ?? []).reduce((a, e) => a + e.amount, 0);
   const goalPct = Math.min(100, Math.round((todayXp / Math.max(1, goalXp)) * 100));
 
+  // Mastery snapshot from the mastery engine (best-effort; empty until migrated).
+  let masteredSkills = 0;
+  let developingSkills = 0;
+  let reviewSkills = 0;
+  try {
+    const { data: sks } = await supabase
+      .from("skill_states").select("status").eq("user_id", userId);
+    for (const s of sks ?? []) {
+      if (s.status === "mastered") masteredSkills++;
+      else if (s.status === "proficient" || s.status === "developing" || s.status === "fragile") developingSkills++;
+      else if (s.status === "needs_remediation" || s.status === "decaying") reviewSkills++;
+    }
+  } catch {
+    // mastery tables not migrated yet — hide the card.
+  }
+  const hasMastery = masteredSkills + developingSkills + reviewSkills > 0;
+
   // 2. Classrooms I'm in → upcoming meetings + recent announcements.
   const { data: classroomLinks } = await supabase
     .from("classroom_members")
@@ -342,6 +359,35 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
           <p className="text-xs text-ink-500">{activeToday ? "kept alive — nice" : "practice to keep it"}</p>
         </div>
       </section>
+
+      {/* Mastery snapshot — evidence-based, not just "completed" */}
+      {hasMastery && (
+        <section className="card" data-testid="mastery-snapshot">
+          <div className="flex items-baseline justify-between">
+            <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Skills mastery</p>
+            <Link href="/profile" className="text-xs font-semibold text-brand-600 hover:text-brand-700">Details ›</Link>
+          </div>
+          <div className="mt-2 grid grid-cols-3 gap-2 text-center">
+            <div>
+              <p className="text-xl font-bold text-green-600">{masteredSkills}</p>
+              <p className="text-[11px] text-ink-500">mastered</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-amber-600">{developingSkills}</p>
+              <p className="text-[11px] text-ink-500">developing</p>
+            </div>
+            <div>
+              <p className={"text-xl font-bold " + (reviewSkills > 0 ? "text-red-600" : "text-ink-400")}>{reviewSkills}</p>
+              <p className="text-[11px] text-ink-500">to review</p>
+            </div>
+          </div>
+          {reviewSkills > 0 && (
+            <Link href="/review" className="mt-2 block text-center text-xs font-semibold text-red-600 hover:text-red-700">
+              {reviewSkills} skill{reviewSkills === 1 ? "" : "s"} need review → practice now
+            </Link>
+          )}
+        </section>
+      )}
 
       {/* Weekly challenge */}
       <WeeklyChallenge userId={userId} />

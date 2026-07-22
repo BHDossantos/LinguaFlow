@@ -85,6 +85,24 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
   const doneIds = new Set((progress ?? []).map((p) => p.lesson_id));
   const scoreById = new Map((progress ?? []).map((p) => [p.lesson_id, p.score as number | null]));
   const list = lessons ?? [];
+
+  // Evidence-based mastery from the mastery engine (skill_states), when the
+  // tables are migrated. Falls back to the score-derived label otherwise.
+  const skillStatusById = new Map<string, string>();
+  try {
+    const ids = list.map((l) => l.id);
+    if (ids.length) {
+      const { data: states } = await supabase
+        .from("skill_states")
+        .select("skill_id,status")
+        .eq("user_id", user.id)
+        .eq("skill_kind", "lesson")
+        .in("skill_id", ids);
+      for (const s of states ?? []) skillStatusById.set(s.skill_id as string, s.status as string);
+    }
+  } catch {
+    // mastery tables not migrated yet — silently fall back.
+  }
   const doneCount = list.filter((l) => doneIds.has(l.id)).length;
   const pct = list.length ? Math.round((doneCount / list.length) * 100) : 0;
   // The "next" lesson is the first incomplete one.
@@ -154,16 +172,39 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
   // The last quiz in the whole path is the final checkpoint.
   const finalQuizId = [...list].reverse().find((l) => l.kind === "quiz")?.id ?? null;
 
-  // Khan-style mastery status per lesson, derived from the recorded score.
+  // Evidence-based mastery labels (skill_states) with a score-derived fallback.
+  const STATE_LABEL: Record<string, { label: string; cls: string }> = {
+    mastered: { label: "Mastered", cls: "bg-green-100 text-green-700" },
+    proficient: { label: "Proficient", cls: "bg-green-50 text-green-700" },
+    developing: { label: "Developing", cls: "bg-amber-50 text-amber-700" },
+    fragile: { label: "Fragile", cls: "bg-amber-50 text-amber-700" },
+    introduced: { label: "Introduced", cls: "bg-black/5 text-ink-500" },
+    decaying: { label: "Review needed", cls: "bg-red-50 text-red-700" },
+    needs_remediation: { label: "Review needed", cls: "bg-red-50 text-red-700" },
+  };
   const masteryOf = (id: string): { label: string; cls: string } | null => {
+    const st = skillStatusById.get(id);
+    if (st && STATE_LABEL[st]) return STATE_LABEL[st];
     if (!doneIds.has(id)) return null;
     const score = scoreById.get(id);
     if (score == null) return { label: "Completed", cls: "bg-brand-50 text-brand-700" };
     if (score >= 90) return { label: "Mastered", cls: "bg-green-100 text-green-700" };
     if (score >= 80) return { label: "Proficient", cls: "bg-green-50 text-green-700" };
-    if (score >= 60) return { label: "Familiar", cls: "bg-amber-50 text-amber-700" };
-    return { label: "Attempted", cls: "bg-black/5 text-ink-500" };
+    if (score >= 60) return { label: "Developing", cls: "bg-amber-50 text-amber-700" };
+    return { label: "Review needed", cls: "bg-red-50 text-red-700" };
   };
+
+  // Course-level mastery summary for the header (counts across all lessons).
+  const masterySummary = { mastered: 0, proficient: 0, developing: 0, review: 0 };
+  for (const l of list) {
+    const m = masteryOf(l.id);
+    if (!m) continue;
+    if (m.label === "Mastered") masterySummary.mastered++;
+    else if (m.label === "Proficient") masterySummary.proficient++;
+    else if (m.label === "Developing" || m.label === "Fragile") masterySummary.developing++;
+    else if (m.label === "Review needed") masterySummary.review++;
+  }
+  const masteredPct = list.length ? Math.round((masterySummary.mastered / list.length) * 100) : 0;
 
   // Inline score curve chart (no dependencies) for the "My Progress" panel.
   const W = 300;
@@ -411,6 +452,33 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         {/* Skills Mastery (top 5) */}
         <div className="card">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">Skills Mastery</p>
+          {/* Evidence-based breakdown across the whole course */}
+          <div className="mb-2">
+            <div className="flex items-baseline justify-between text-xs">
+              <span className="font-semibold">{masteredPct}% mastered</span>
+              <span className="text-ink-500">{list.length} skills</span>
+            </div>
+            <div className="mt-1 flex h-2 w-full overflow-hidden rounded-full bg-black/5 dark:bg-white/10">
+              {masterySummary.mastered > 0 && (
+                <div className="h-full bg-green-500" style={{ width: `${(masterySummary.mastered / list.length) * 100}%` }} />
+              )}
+              {masterySummary.proficient > 0 && (
+                <div className="h-full bg-green-300" style={{ width: `${(masterySummary.proficient / list.length) * 100}%` }} />
+              )}
+              {masterySummary.developing > 0 && (
+                <div className="h-full bg-amber-400" style={{ width: `${(masterySummary.developing / list.length) * 100}%` }} />
+              )}
+              {masterySummary.review > 0 && (
+                <div className="h-full bg-red-400" style={{ width: `${(masterySummary.review / list.length) * 100}%` }} />
+              )}
+            </div>
+            <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-ink-500">
+              <span>🟢 {masterySummary.mastered} mastered</span>
+              <span>🟩 {masterySummary.proficient} proficient</span>
+              <span>🟡 {masterySummary.developing} developing</span>
+              {masterySummary.review > 0 && <span>🔴 {masterySummary.review} to review</span>}
+            </div>
+          </div>
           <ul className="space-y-1.5">
             {list.slice(0, 5).map((l) => {
               const m = masteryOf(l.id);
