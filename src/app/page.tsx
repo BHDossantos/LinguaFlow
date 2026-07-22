@@ -349,7 +349,7 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
       {/* Coach entry */}
       <Link
         href="/coach"
-        className="card flex items-center justify-between hover:border-brand-500/30"
+        className="card card-hover flex items-center justify-between"
         data-testid="coach-entry"
       >
         <div className="flex items-center gap-3">
@@ -369,7 +369,7 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
           </h2>
           <div className="grid gap-2">
             {recommended.map((c) => (
-              <Link key={c.id} href={`/learn/${c.id}`} className="card flex items-center justify-between">
+              <Link key={c.id} href={`/learn/${c.id}`} className="card card-hover flex items-center justify-between">
                 <div>
                   <p className="font-medium">{c.title}</p>
                   <p className="text-xs text-ink-500">
@@ -384,15 +384,15 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
       )}
 
       <section className="grid grid-cols-3 gap-2">
-        <Link href="/review" className="card flex flex-col items-start">
+        <Link href="/review" className="card card-hover flex flex-col items-start">
           <p className="text-2xl font-bold">{dueReviews ?? 0}</p>
           <p className="text-xs text-ink-500">Reviews due</p>
         </Link>
-        <Link href="/assignments" className="card flex flex-col items-start">
+        <Link href="/assignments" className="card card-hover flex flex-col items-start">
           <p className="text-2xl font-bold">{openRows.length}</p>
           <p className="text-xs text-ink-500">Open tasks</p>
         </Link>
-        <Link href="/inbox" className="card flex flex-col items-start">
+        <Link href="/inbox" className="card card-hover flex flex-col items-start">
           <p className={"text-2xl font-bold " + ((unreadNotifs ?? 0) > 0 ? "text-brand-600" : "")}>
             {unreadNotifs ?? 0}
           </p>
@@ -502,16 +502,16 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
       )}
 
       <section className="grid grid-cols-2 gap-2">
-        <Link href="/learn" className="card flex items-center gap-2">
+        <Link href="/learn" className="card card-hover flex items-center gap-2">
           <span>📚</span><span className="text-sm font-medium">Lessons</span>
         </Link>
-        <Link href="/practice" className="card flex items-center gap-2">
+        <Link href="/practice" className="card card-hover flex items-center gap-2">
           <span>💬</span><span className="text-sm font-medium">System roleplay</span>
         </Link>
-        <Link href="/translate" className="card flex items-center gap-2">
+        <Link href="/translate" className="card card-hover flex items-center gap-2">
           <span>🌐</span><span className="text-sm font-medium">Translate</span>
         </Link>
-        <Link href="/tutors" className="card flex items-center gap-2">
+        <Link href="/tutors" className="card card-hover flex items-center gap-2">
           <span>🧑‍🏫</span><span className="text-sm font-medium">Live tutors</span>
         </Link>
       </section>
