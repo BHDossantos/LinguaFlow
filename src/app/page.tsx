@@ -392,6 +392,20 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
       {/* Weekly challenge */}
       <WeeklyChallenge userId={userId} />
 
+      {/* Diagnostic entry — find your level */}
+      {!hasMastery && (
+        <Link href="/diagnostic" className="card card-hover flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-100 text-xl dark:bg-emerald-500/20">🎯</span>
+            <div>
+              <p className="font-semibold">Find your level</p>
+              <p className="text-xs text-ink-500">A 5-minute check-up personalizes your path</p>
+            </div>
+          </div>
+          <span className="text-ink-500">›</span>
+        </Link>
+      )}
+
       {/* Coach entry */}
       <Link
         href="/coach"
