@@ -259,3 +259,7 @@ update public.courses set source_id='caltech'        where id='bbbb0002-0000-400
 update public.courses set source_id='tudelft'        where id='bbbb0004-0000-4000-8000-00000000002a' and source_id is null;
 update public.courses set source_id='edinburgh'      where id='bbbb0004-0000-4000-8000-00000000002b' and source_id is null;
 update public.courses set source_id='open_university' where id='bbbb0004-0000-4000-8000-00000000002c' and source_id is null;
+-- ---- provenance (batch 25) ----
+update public.courses set source_id='mit_ocw'     where id in ('bbbb0001-0000-4000-8000-000000000012','bbbb0002-0000-4000-8000-000000000020') and source_id is null;
+update public.courses set source_id='oer_commons' where id='bbbb0002-0000-4000-8000-000000000021' and source_id is null;
+update public.courses set source_id='openstax'    where id in ('bbbb0004-0000-4000-8000-00000000002d','bbbb0003-0000-4000-8000-00000000001c') and source_id is null;
