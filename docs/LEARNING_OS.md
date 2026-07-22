@@ -24,7 +24,7 @@ Legend: ✅ built · ◐ partial · ○ planned · 🔑 needs `ANTHROPIC_API_KEY
 | 2 | Knowledge-graph curriculum | ◐ | `courses→lessons`, `curriculum_sources`, `standards`, `standard_descriptors`, `course_standards`, `courses.prerequisite_ids`. **Missing:** sub-lesson `concepts`/`skills`/`learning_objectives`. **Next:** add those tables; the mastery engine already carries `skill_kind` for them. |
 | 3 | Sourcing + quality control | ◐ | Ingestion pipeline (`scripts/ingest`), source credit + licenses, `docs/UNIVERSITY_SOURCES.md` allowlist. **Missing:** formal per-lesson quality score + 👤 expert sign-off workflow. |
 | 4 | Lesson experience (objective→mastery check) | ◐ | Lessons render vocab/quiz/reading/roleplay; SRS review. **Next:** enforce the full sequence (prior-knowledge activation, guided→independent→transfer, reflection, **mastery gate**). |
-| 5 | AI tutor (Socratic, hint ladder, modes) | ◐ 🔑 | `/coach` + tutor modes + graceful offline banners today. **Next:** hint-ladder orchestration, screen-context passing, tutor memory (see tables below). |
+| 5 | AI tutor (Socratic, hint ladder, modes) | ✅/◐ 🔑 | Socratic tutor with teaching guardrails, 6-level hint ladder, 8 modes, mastery+misconception context, and tutor-memory logging (`tutor_conversations`). Runs the moment the key is set. **Next:** pass live screen context from each lesson page. |
 | 6 | Adaptive engine + skill-state model | ✅ (foundation) | **Shipped:** `skill_states`, `mastery_events`, `misconceptions` + `src/lib/mastery.ts`, wired into lesson completion. **Next:** prerequisite back-routing + next-item selection. |
 | 7 | Practice + memory (spaced/interleaved) | ✅/◐ | `srs_cards`, `srs_reviews`, daily review queue exist. **Next:** interleaving + delayed mastery checks feeding `mastery_events`. |
 | 8 | Assessment system + item bank | ◐ | Quizzes embedded in lessons; `assignments`, `submissions`, `teacher_reviews`, `integrity_checks`. **Missing:** first-class `questions` item bank with distractor rationale, Bloom level, stats. |
@@ -32,7 +32,7 @@ Legend: ✅ built · ◐ partial · ○ planned · 🔑 needs `ANTHROPIC_API_KEY
 | 10 | Course formats | ◐ | Self-paced + classrooms + live meetings (LiveKit) + exam-mastery tier. Cohorts/bootcamps later. |
 | 11 | Language module | ✅/◐ 🔑 | Vocab/grammar/listening/reading/roleplay + `pronunciation_attempts` + scenarios. Speech scoring depth needs 🔑. |
 | 12 | STEM + coding lab | ○ ☁️ | Interactive graphs, code runner, sandboxes — a dedicated build. |
-| 13 | Note/document intelligence (Quizlet-style) | ○ 🔑 | Upload → flashcards/quiz/summary. Needs 🔑 + parsing. |
+| 13 | Note/document intelligence (Quizlet-style) | ◐ 🔑 | `/study` turns pasted notes into flashcards/quiz/summary, grounded in the source. **Next:** file upload (PDF/DOCX) + save to a library. |
 | 14 | Teacher platform | ✅/◐ | `classrooms`, assignments, auto/teacher grading, attendance, announcements, at-risk signals via analytics. **Next:** mastery-map + misconception views (now that the data exists). |
 | 15 | Parent/guardian | ✅/◐ | `guardians` + `/parent/[studentId]` weekly view. **Next:** safety/content controls surface. |
 | 16 | Social/collaborative | ◐ | `/community`, `discussions`, moderation basics. |
