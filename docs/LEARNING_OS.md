@@ -76,8 +76,7 @@ Run `supabase/migrations/0030_mastery_engine.sql` in Supabase to enable it.
    `skill_states` and degrade gracefully pre-migration.
 2. ○ **Concepts/skills tables** + tag lessons → concepts (unlocks prerequisite
    back-routing: "you're failing limits because of algebra").
-3. ○ **Teacher mastery view** — per-student mastery + misconceptions (needs an
-   RLS policy letting classroom teachers read their students' skill states).
+3. ✅ **Teacher mastery view** — per-student mastered/developing/to-review + at-risk flags + clustered misconceptions on the classroom page (RLS: migration 0031 lets teachers read only their own students).
 4. ○ **Item bank** (`questions`) with distractor rationale + Bloom + stats.
 5. ○ **Full lesson sequence** with a real mastery gate before "advance".
 6. ○ **North-star metric** job (below) from `mastery_events`.

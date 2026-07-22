@@ -135,6 +135,42 @@ export default async function ClassroomPage(
           .order("due_at", { ascending: true, nullsFirst: false })
           .limit(10);
 
+  // Teacher-only class mastery overview (spec §14). Reads students' skill_states
+  // and misconceptions — enabled by migration 0031's teacher-read RLS. Best-effort.
+  let masteryRows: { userId: string; name: string; mastered: number; developing: number; review: number }[] = [];
+  let commonMisconceptions: { tag: string; count: number }[] = [];
+  if (canManage && studentCount > 0) {
+    const studentIds = inClassroom.filter((p) => p.role === "student").map((p) => p.user_id);
+    const nameById = new Map(inClassroom.map((p) => [p.user_id, p.name]));
+    try {
+      const [{ data: states }, { data: misc }] = await Promise.all([
+        supabase.from("skill_states").select("user_id,status").in("user_id", studentIds),
+        supabase.from("misconceptions").select("user_id,tag").eq("status", "open").in("user_id", studentIds),
+      ]);
+      const agg = new Map<string, { mastered: number; developing: number; review: number }>();
+      for (const id of studentIds) agg.set(id, { mastered: 0, developing: 0, review: 0 });
+      for (const s of states ?? []) {
+        const a = agg.get(s.user_id as string);
+        if (!a) continue;
+        if (s.status === "mastered") a.mastered++;
+        else if (["proficient", "developing", "fragile"].includes(s.status as string)) a.developing++;
+        else if (["needs_remediation", "decaying"].includes(s.status as string)) a.review++;
+      }
+      masteryRows = studentIds
+        .map((id) => ({ userId: id, name: nameById.get(id) ?? id.slice(0, 8), ...agg.get(id)! }))
+        .sort((a, b) => b.review - a.review || b.mastered - a.mastered);
+      const tagCount = new Map<string, number>();
+      for (const m of misc ?? []) tagCount.set(m.tag as string, (tagCount.get(m.tag as string) ?? 0) + 1);
+      commonMisconceptions = [...tagCount.entries()]
+        .map(([tag, count]) => ({ tag, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 6);
+    } catch {
+      // migration 0031 not applied yet — panel stays hidden.
+    }
+  }
+  const anyMasteryData = masteryRows.some((r) => r.mastered + r.developing + r.review > 0);
+
   return (
     <div className="space-y-5">
       <Link href={`/school/${params.orgId}`} className="text-sm text-brand-500">
@@ -196,6 +232,63 @@ export default async function ClassroomPage(
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {canManage && anyMasteryData && (
+        <section className="space-y-2" data-testid="class-mastery">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
+            Class mastery
+          </h2>
+          {masteryRows.some((r) => r.review > 0) && (
+            <div className="card border-red-200 bg-red-50/60 dark:bg-red-500/10">
+              <p className="text-xs font-semibold text-red-700">Needs attention</p>
+              <p className="mt-0.5 text-xs text-red-700/80">
+                {masteryRows
+                  .filter((r) => r.review > 0)
+                  .map((r) => `${r.name} (${r.review})`)
+                  .join(" · ")}
+              </p>
+            </div>
+          )}
+          <div className="card overflow-x-auto p-0">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-black/5 text-left text-[11px] uppercase tracking-wider text-ink-500 dark:border-white/10">
+                  <th className="px-3 py-2">Student</th>
+                  <th className="px-3 py-2 text-center">🟢 Mastered</th>
+                  <th className="px-3 py-2 text-center">🟡 Developing</th>
+                  <th className="px-3 py-2 text-center">🔴 To review</th>
+                </tr>
+              </thead>
+              <tbody>
+                {masteryRows.map((r) => (
+                  <tr key={r.userId} className="border-b border-black/5 last:border-0 dark:border-white/10">
+                    <td className="px-3 py-2 font-medium">{r.name}</td>
+                    <td className="px-3 py-2 text-center">{r.mastered}</td>
+                    <td className="px-3 py-2 text-center">{r.developing}</td>
+                    <td className={"px-3 py-2 text-center " + (r.review > 0 ? "font-semibold text-red-600" : "text-ink-400")}>
+                      {r.review}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {commonMisconceptions.length > 0 && (
+            <div className="card">
+              <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+                Common misconceptions
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {commonMisconceptions.map((m) => (
+                  <span key={m.tag} className="rounded-full bg-amber-50 px-2.5 py-1 text-xs text-amber-800 dark:bg-amber-500/15">
+                    {m.tag} <span className="font-semibold">×{m.count}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       )}
 
