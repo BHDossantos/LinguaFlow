@@ -111,19 +111,19 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
   // Prerequisites (recommendation, not a hard lock): which are finished?
   const prereqIds: string[] = (course as any).prerequisite_ids ?? [];
   let prereqs: { id: string; title: string; done: boolean }[] = [];
+  const prereqLessonsByCourse = new Map<string, string[]>();
   if (prereqIds.length > 0) {
     const [{ data: pcs }, { data: plessons }] = await Promise.all([
       supabase.from("courses").select("id,title").in("id", prereqIds),
       supabase.from("lessons").select("id,course_id").in("course_id", prereqIds),
     ]);
-    const lessonsByCourse = new Map<string, string[]>();
     for (const l of plessons ?? []) {
-      const arr = lessonsByCourse.get(l.course_id) ?? [];
+      const arr = prereqLessonsByCourse.get(l.course_id) ?? [];
       arr.push(l.id);
-      lessonsByCourse.set(l.course_id, arr);
+      prereqLessonsByCourse.set(l.course_id, arr);
     }
     prereqs = (pcs ?? []).map((c) => {
-      const ids = lessonsByCourse.get(c.id) ?? [];
+      const ids = prereqLessonsByCourse.get(c.id) ?? [];
       return { id: c.id, title: c.title, done: ids.length > 0 && ids.every((id) => doneIds.has(id)) };
     });
   }
@@ -205,6 +205,31 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
     else if (m.label === "Review needed") masterySummary.review++;
   }
   const masteredPct = list.length ? Math.round((masterySummary.mastered / list.length) * 100) : 0;
+
+  // Prerequisite BACK-ROUTING (spec §6): if the learner is struggling here AND a
+  // prerequisite course is itself weakly mastered, the real gap is likely earlier
+  // — recommend reviewing the prerequisite instead of grinding this course.
+  let backRoute: { id: string; title: string; masteredPct: number } | null = null;
+  if (masterySummary.review > 0 && prereqs.length > 0) {
+    try {
+      const allPrereqLessonIds = prereqs.flatMap((p) => prereqLessonsByCourse.get(p.id) ?? []);
+      if (allPrereqLessonIds.length) {
+        const { data: pstates } = await supabase
+          .from("skill_states").select("skill_id,status").eq("user_id", user.id).in("skill_id", allPrereqLessonIds);
+        const masteredSet = new Set((pstates ?? []).filter((s: any) => s.status === "mastered").map((s: any) => s.skill_id));
+        let weakest: { id: string; title: string; masteredPct: number } | null = null;
+        for (const p of prereqs) {
+          const ids = prereqLessonsByCourse.get(p.id) ?? [];
+          if (!ids.length) continue;
+          const pct = Math.round((ids.filter((id) => masteredSet.has(id)).length / ids.length) * 100);
+          if (pct < 60 && (!weakest || pct < weakest.masteredPct)) weakest = { id: p.id, title: p.title, masteredPct: pct };
+        }
+        backRoute = weakest;
+      }
+    } catch {
+      // mastery tables not migrated — skip back-routing.
+    }
+  }
 
   // Inline score curve chart (no dependencies) for the "My Progress" panel.
   const W = 300;
@@ -346,6 +371,21 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
         <Link href="/notes" className="pb-2 text-ink-500 hover:text-ink-900">Notes</Link>
         <Link href="/coach" className="pb-2 text-ink-500 hover:text-ink-900">Tutor</Link>
       </div>
+
+      {backRoute && (
+        <div className="card border-red-200 bg-red-50 text-sm text-red-800 dark:border-red-500/30 dark:bg-red-500/10">
+          <p className="font-semibold">💡 The gap might be earlier</p>
+          <p className="mt-1">
+            You&apos;re hitting friction here, and you&apos;ve mastered only{" "}
+            <span className="font-semibold">{backRoute.masteredPct}%</span> of{" "}
+            <span className="font-semibold">{backRoute.title}</span> — a prerequisite. Shoring
+            that up first is usually faster than grinding this course.
+          </p>
+          <Link href={`/learn/${backRoute.id}`} className="mt-2 inline-block font-semibold underline">
+            Review {backRoute.title} →
+          </Link>
+        </div>
+      )}
 
       {missingPrereqs.length > 0 && doneCount === 0 && (
         <div className="card border-amber-200 bg-amber-50 text-sm text-amber-800">
