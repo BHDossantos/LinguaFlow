@@ -28,7 +28,7 @@ Legend: ✅ built · ◐ partial · ○ planned · 🔑 needs `ANTHROPIC_API_KEY
 | 6 | Adaptive engine + skill-state model | ✅ (foundation) | **Shipped:** `skill_states`, `mastery_events`, `misconceptions` + `src/lib/mastery.ts`, wired into lesson completion. **Next:** prerequisite back-routing + next-item selection. |
 | 7 | Practice + memory (spaced/interleaved) | ✅/◐ | `srs_cards`, `srs_reviews`, daily review queue exist. **Next:** interleaving + delayed mastery checks feeding `mastery_events`. |
 | 8 | Assessment system + item bank | ◐ | Quizzes embedded in lessons; `assignments`, `submissions`, `teacher_reviews`, `integrity_checks`. **Missing:** first-class `questions` item bank with distractor rationale, Bloom level, stats. |
-| 9 | Project-based learning + portfolio | ○ | Career tracks exist. **Next:** `projects`, `project_submissions`, `rubrics`, portfolio page. |
+| 9 | Project-based learning + portfolio | ✅/◐ | /projects (8 seeded briefs across schools, deliverables + rubric + submit) and /portfolio (verified skills + submissions + certs). migration 0034. **Next:** mentor/AI review + richer rubric scoring. |
 | 10 | Course formats | ◐ | Self-paced + classrooms + live meetings (LiveKit) + exam-mastery tier. Cohorts/bootcamps later. |
 | 11 | Language module | ✅/◐ 🔑 | Vocab/grammar/listening/reading/roleplay + `pronunciation_attempts` + scenarios. Speech scoring depth needs 🔑. |
 | 12 | STEM + coding lab | ○ ☁️ | Interactive graphs, code runner, sandboxes — a dedicated build. |
