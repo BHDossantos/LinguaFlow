@@ -42,7 +42,7 @@ Legend: ✅ built · ◐ partial · ○ planned · 🔑 needs `ANTHROPIC_API_KEY
 | 20 | Credentialing | ◐ | `/certificates/[courseId]`. **Next:** competency-gated issuance + verify URL + Open Badges. |
 | 21 | Career engine | ◐ | `/career` tracks, skill-gap framing, interview practice. **Next:** wire skill-gap to real `skill_states`. |
 | 22 | Search + NL discovery | ◐ 🔑 | `/search` across courses/lessons/discussions. NL requests need 🔑. |
-| 23 | Core screens | ✅/◐ | Home, My Learning, Practice, Coach, Community, Calendar, Progress, Career, Messages, Settings all exist. **Next:** Projects, Portfolio, Daily Plan. |
+| 23 | Core screens | ✅/◐ | Home, My Learning, Practice, Coach, Community, Calendar, Progress, Career, Messages, Settings, **Daily Plan (/plan)**, **Projects (/projects)**, **Portfolio (/portfolio)**, **Study tools (/study)**, **Diagnostic (/diagnostic)** all exist. |
 | 24 | Data model | ◐ | Most core entities exist (see migrations). **Shipped this pass:** skill_states, mastery_events, misconceptions. Still to add: concepts, skills, learning_objectives, questions, projects, rubrics, credentials. |
 | 25 | Technical architecture | ✅ | Next.js + TS + Tailwind + Supabase (Postgres/RLS/Auth/Storage) + Stripe + LiveKit + web-push. Modular monolith — correct for this stage. |
 | 26 | AI architecture (safety→retrieval→gen→checks) | ○ 🔑 ☁️ | Design the tutor orchestration + guardrail + eval pipeline when the key lands. |
