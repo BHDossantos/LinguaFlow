@@ -562,6 +562,9 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
       )}
 
       <section className="grid grid-cols-2 gap-2">
+        <Link href="/plan" className="card card-hover flex items-center gap-2">
+          <span>🗺️</span><span className="text-sm font-medium">Today's plan</span>
+        </Link>
         <Link href="/learn" className="card card-hover flex items-center gap-2">
           <span>📚</span><span className="text-sm font-medium">Lessons</span>
         </Link>
