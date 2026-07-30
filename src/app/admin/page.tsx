@@ -72,6 +72,29 @@ export default async function AdminPage() {
   }
   const top = [...courseCounts.values()].sort((a, b) => b.n - a.n).slice(0, 5);
 
+  // North-star: verified skills mastered per active learner (spec §27). Proxy
+  // until delayed-retention checks accumulate. Best-effort — hidden pre-migration.
+  const d30 = new Date(now - 30 * 86_400_000).toISOString();
+  let outcomes: { masteredTotal: number; learnersWithMastery: number; events30d: number; openMisc: number; perLearner: number } | null = null;
+  try {
+    const [{ data: mastered }, { count: events30d }, { count: openMisc }] = await Promise.all([
+      admin.from("skill_states").select("user_id").eq("status", "mastered"),
+      admin.from("mastery_events").select("id", { count: "exact", head: true }).gte("created_at", d30),
+      admin.from("misconceptions").select("id", { count: "exact", head: true }).eq("status", "open"),
+    ]);
+    const masteredTotal = (mastered ?? []).length;
+    const learnersWithMastery = new Set((mastered ?? []).map((m: any) => m.user_id)).size;
+    outcomes = {
+      masteredTotal,
+      learnersWithMastery,
+      events30d: events30d ?? 0,
+      openMisc: openMisc ?? 0,
+      perLearner: learnersWithMastery ? Math.round((masteredTotal / learnersWithMastery) * 10) / 10 : 0,
+    };
+  } catch {
+    // mastery tables not migrated yet.
+  }
+
   const Metric = ({ label, value }: { label: string; value: string | number }) => (
     <div className="card py-3 text-center">
       <p className="text-2xl font-extrabold">{value}</p>
@@ -102,6 +125,25 @@ export default async function AdminPage() {
         <Metric label="active streaks" value={streakers} />
         <Metric label="avg streak length" value={`${avgStreak}d`} />
       </section>
+
+      {outcomes && (
+        <section className="space-y-2">
+          <div className="card border-brand-500/20 bg-gradient-to-br from-brand-50 to-white text-center dark:from-white/[0.06] dark:to-transparent">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-500">
+              North star · skills mastered per learner
+            </p>
+            <p className="mt-1 text-4xl font-extrabold text-brand-600">{outcomes.perLearner}</p>
+            <p className="text-xs text-ink-500">
+              The number to grow — verified mastery, not minutes watched.
+            </p>
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            <Metric label="skills mastered" value={outcomes.masteredTotal} />
+            <Metric label="mastery events (30d)" value={outcomes.events30d} />
+            <Metric label="open misconceptions" value={outcomes.openMisc} />
+          </div>
+        </section>
+      )}
 
       <section className="card">
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">
