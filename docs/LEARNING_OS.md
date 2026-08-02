@@ -39,7 +39,7 @@ Legend: ✅ built · ◐ partial · ○ planned · 🔑 needs `ANTHROPIC_API_KEY
 | 17 | Motivation (no dark patterns) | ✅ | Streaks + **streak freezes**, daily goal (XP-measured), badges, weekly challenge. Already avoids one-miss punishment. |
 | 18 | Accessibility (WCAG 2.2 AA) | ◐ | Reduced-motion, semantic HTML, theming. **Next:** full audit (captions, keyboard, screen-reader pass). |
 | 19 | AI safety + privacy | ◐ 👤 | RLS tenant isolation, role-based access, rate limits, `audit`/`error_log`, `integrity_checks`. **Next:** guardian consent gates, retention/export/delete, prompt-injection guardrails. Get 👤 legal review before claiming GDPR/COPPA/FERPA. |
-| 20 | Credentialing | ◐ | `/certificates/[courseId]`. **Next:** competency-gated issuance + verify URL + Open Badges. |
+| 20 | Credentialing | ✅/◐ | Certificates now issue **verifiable credentials** with a public /verify/[code] URL + mastery %; migration 0035. **Next:** Open Badges export. |
 | 21 | Career engine | ◐ | `/career` tracks, skill-gap framing, interview practice. **Next:** wire skill-gap to real `skill_states`. |
 | 22 | Search + NL discovery | ◐ 🔑 | `/search` across courses/lessons/discussions. NL requests need 🔑. |
 | 23 | Core screens | ✅/◐ | Home, My Learning, Practice, Coach, Community, Calendar, Progress, Career, Messages, Settings, **Daily Plan (/plan)**, **Projects (/projects)**, **Portfolio (/portfolio)**, **Study tools (/study)**, **Diagnostic (/diagnostic)** all exist. |
