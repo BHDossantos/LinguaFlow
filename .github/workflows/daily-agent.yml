@@ -1,0 +1,85 @@
+name: Daily course & improvement agent
+
+# Runs Noelia's autonomous daily agent: adds a few new courses via the ingestion
+# pipeline and makes one safe verified improvement, then commits + pushes.
+# Durable — runs on GitHub's schedule, independent of any Claude session.
+#
+# It STAYS DORMANT until the ANTHROPIC_API_KEY repository secret is set (i.e. at
+# go-live). Add these repo secrets to activate:
+#   - ANTHROPIC_API_KEY  (required — the model key)
+# The built-in GITHUB_TOKEN handles the commit/push (contents: write below).
+
+on:
+  schedule:
+    - cron: "17 8 * * *"     # daily ~08:17 UTC
+  workflow_dispatch: {}       # allow manual runs from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-agent
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: claude/language-learning-app-vfwbQ
+          fetch-depth: 0
+
+      # secrets can't be used in `if:`, so gate via an env-backed shell check.
+      - name: Check for API key
+        id: guard
+        env:
+          KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "No ANTHROPIC_API_KEY secret yet — skipping until go-live."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.guard.outputs.run == 'true'
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        if: steps.guard.outputs.run == 'true'
+        run: npm ci
+
+      - name: Run the daily agent (headless Claude Code)
+        if: steps.guard.outputs.run == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          # Feed the repo's daily playbook as the prompt; the agent authors
+          # courses + one safe improvement and verifies the build itself.
+          claude -p "$(cat .claude/daily-improve.md)" \
+            --permission-mode acceptEdits \
+            --allowedTools "Bash,Read,Edit,Write" || true
+
+      - name: Verify build before publishing
+        if: steps.guard.outputs.run == 'true'
+        run: |
+          npx tsc --noEmit
+          npm run build
+
+      - name: Commit & push
+        if: steps.guard.outputs.run == 'true'
+        run: |
+          git config user.name "Noelia Daily Agent"
+          git config user.email "noreply@anthropic.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "chore(daily-agent): automated courses + improvement"
+            git pull --rebase origin claude/language-learning-app-vfwbQ || true
+            git push origin claude/language-learning-app-vfwbQ
+          else
+            echo "No changes this run."
+          fi
