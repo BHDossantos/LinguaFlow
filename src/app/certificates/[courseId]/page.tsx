@@ -43,6 +43,39 @@ export default async function CertificatePage(props: {
   const ref = `NOE-${user.id.slice(0, 8)}-${course.id.slice(0, 8)}`.toUpperCase();
   const lang = (LANGUAGES as any)[course.language];
 
+  // Mastery achieved on this course (best-effort) — recorded as evidence.
+  let masteryPct: number | null = null;
+  try {
+    const lessonIds = lessons.map((l) => l.id);
+    const { data: states } = await supabase
+      .from("skill_states").select("status").eq("user_id", user.id)
+      .eq("skill_kind", "lesson").in("skill_id", lessonIds);
+    if (states && states.length) {
+      const mastered = states.filter((s: any) => s.status === "mastered").length;
+      masteryPct = Math.round((mastered / lessons.length) * 100);
+    }
+  } catch {}
+
+  // Issue the verifiable credential (idempotent by user+course). Best-effort:
+  // needs migration 0035; the certificate still renders if it isn't applied.
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://learnnoelia.com";
+  try {
+    await supabase.from("credentials").upsert(
+      {
+        code: ref,
+        user_id: user.id,
+        course_id: course.id,
+        learner_name: profile?.display_name ?? "Learner",
+        course_title: course.title,
+        cefr_level: course.cefr_level,
+        skills_verified: [course.title],
+        mastery_pct: masteryPct,
+      },
+      { onConflict: "user_id,course_id", ignoreDuplicates: false },
+    );
+  } catch {}
+  const verifyUrl = `${siteUrl}/verify/${ref}`;
+
   return (
     <div className="space-y-4">
       <Link href="/profile" className="text-sm text-brand-500 print:hidden">← Profile</Link>
@@ -66,10 +99,21 @@ export default async function CertificatePage(props: {
         <p className="mt-4 text-sm text-ink-500">
           {completedOn.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}
         </p>
+        {typeof masteryPct === "number" && masteryPct > 0 && (
+          <p className="mt-1 text-xs font-semibold text-brand-600">{masteryPct}% of skills mastered</p>
+        )}
         <p className="mt-6 text-[10px] tracking-widest text-ink-500">
           Noelia · learnnoelia.com · ref {ref}
         </p>
+        <p className="mt-1 text-[10px] tracking-wide text-ink-500 print:block">
+          Verify at {verifyUrl}
+        </p>
       </div>
+
+      <p className="text-center text-xs text-ink-500 print:hidden">
+        Anyone can confirm this credential at{" "}
+        <Link href={`/verify/${ref}`} className="text-brand-600 underline">/verify/{ref}</Link>
+      </p>
 
       <PrintTrigger />
     </div>

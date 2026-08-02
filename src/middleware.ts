@@ -15,6 +15,7 @@ function isPublic(pathname: string) {
     pathname.startsWith("/api/stripe/webhook") ||
     pathname === "/api/track" ||
     pathname.startsWith("/legal/") ||
+    pathname.startsWith("/verify/") ||
     pathname === "/manifest.json" ||
     pathname === "/sw.js" ||
     pathname === "/sitemap.xml" ||
