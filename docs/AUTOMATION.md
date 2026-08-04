@@ -5,8 +5,7 @@ and makes one safe, verified change, then commits and pushes. Two layers:
 
 ## 1. Durable (survives everything) — GitHub Actions
 
-`.github/workflows/daily-agent.yml` runs on GitHub's own schedule (daily ~08:17
-UTC), independent of any Claude session. It executes the playbook in
+`.github/workflows/daily-agent.yml` runs on GitHub's own schedule (every 8 hours), independent of any Claude session. It executes the playbook in
 `.claude/daily-improve.md`, verifies `tsc` + `build`, then commits & pushes.
 
 **It stays dormant until you flip it on at go-live** — add one repository secret:
