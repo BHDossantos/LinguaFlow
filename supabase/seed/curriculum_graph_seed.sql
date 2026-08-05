@@ -267,3 +267,6 @@ update public.courses set source_id='openstax'    where id in ('bbbb0004-0000-40
 update public.courses set source_id='oer_commons' where id in ('bbbb0003-0000-4000-8000-00000000001d','bbbb0002-0000-4000-8000-000000000022','bbbb0002-0000-4000-8000-000000000023') and source_id is null;
 update public.courses set source_id='openstax'    where id='bbbb0004-0000-4000-8000-00000000002e' and source_id is null;
 update public.courses set source_id='mit_ocw'     where id='bbbb0001-0000-4000-8000-000000000013' and source_id is null;
+-- ---- provenance (batch 27) ----
+update public.courses set source_id='oer_commons' where id in ('bbbb0003-0000-4000-8000-00000000001e','bbbb0002-0000-4000-8000-000000000024','bbbb0002-0000-4000-8000-000000000025') and source_id is null;
+update public.courses set source_id='mit_ocw'     where id in ('bbbb0004-0000-4000-8000-00000000002f','bbbb0001-0000-4000-8000-000000000014') and source_id is null;
