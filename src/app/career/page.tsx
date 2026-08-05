@@ -22,7 +22,7 @@ export default async function CareerPage() {
       .select("lesson_id")
       .eq("user_id", user.id)
       .not("completed_at", "is", null),
-    supabase.from("lessons").select("id,course_id,course:courses(id,title,language)"),
+    supabase.from("lessons").select("id,title,course_id,course:courses(id,title,language)"),
   ]);
 
   // Certificates = fully completed courses (same rule as the profile page).
@@ -40,6 +40,28 @@ export default async function CareerPage() {
 
   const primary = (targets ?? []).find((t) => t.active) ?? (targets ?? [])[0];
   const bestLevel = primary?.cefr_level ?? "A1";
+
+  // Verified skills from the mastery engine (spec §21). Best-effort — empty
+  // until the mastery tables are migrated and the learner has activity.
+  let verifiedSkills: string[] = [];
+  let gapCount = 0;
+  try {
+    const { data: states } = await supabase
+      .from("skill_states").select("skill_id,status").eq("user_id", user.id).eq("skill_kind", "lesson");
+    const masteredIds = (states ?? []).filter((s: any) => s.status === "mastered").map((s: any) => s.skill_id);
+    gapCount = (states ?? []).filter((s: any) => ["needs_remediation", "decaying", "developing"].includes(s.status)).length;
+    if (masteredIds.length) {
+      const titleById = new Map((allLessons ?? []).map((l: any) => [l.id, l.title]));
+      // Fall back to a lessons query for titles not in the joined set.
+      verifiedSkills = masteredIds.map((id: string) => titleById.get(id)).filter(Boolean).slice(0, 12) as string[];
+      if (verifiedSkills.length === 0) {
+        const { data: ls } = await supabase.from("lessons").select("title").in("id", masteredIds.slice(0, 12));
+        verifiedSkills = (ls ?? []).map((l: any) => l.title);
+      }
+    }
+  } catch {
+    // mastery tables not migrated — skip the section.
+  }
 
   return (
     <div className="space-y-5">
@@ -75,6 +97,30 @@ export default async function CareerPage() {
           </p>
         </div>
       </section>
+
+      {/* Verified skills from the mastery engine */}
+      {verifiedSkills.length > 0 && (
+        <section className="card space-y-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">Verified skills</h2>
+            <Link href="/portfolio" className="text-xs font-semibold text-brand-600">Portfolio →</Link>
+          </div>
+          <p className="text-xs text-ink-500">Skills you&apos;ve demonstrated mastery of — not just completed.</p>
+          <div className="flex flex-wrap gap-1.5">
+            {verifiedSkills.map((s) => (
+              <span key={s} className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-500/15">
+                ✓ {s}
+              </span>
+            ))}
+          </div>
+          {gapCount > 0 && (
+            <p className="text-xs text-ink-500">
+              {gapCount} skill{gapCount === 1 ? "" : "s"} still developing —{" "}
+              <Link href="/plan" className="text-brand-600 underline">close the gap in today&apos;s plan</Link>.
+            </p>
+          )}
+        </section>
+      )}
 
       {/* Tracks */}
       <section className="space-y-2">
