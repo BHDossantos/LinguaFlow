@@ -41,6 +41,19 @@ export function StudyToolsClient() {
     }
   }
 
+  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    // Text-based files read client-side (no upload). PDF/DOCX support is coming.
+    if (!/\.(txt|md|markdown|csv|rtf|text)$/i.test(file.name) && !file.type.startsWith("text/")) {
+      setError("For now, upload a .txt or .md file (or paste the text). PDF/DOCX support is coming.");
+      return;
+    }
+    setError(null);
+    const text = await file.text();
+    setSource((prev) => (prev ? prev + "\n\n" : "") + text.slice(0, 16000));
+  }
+
   return (
     <div className="space-y-4">
       <textarea
@@ -50,6 +63,10 @@ export function StudyToolsClient() {
         rows={8}
         className="w-full rounded-xl border border-black/10 bg-white p-3 text-sm dark:bg-white/5"
       />
+      <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-brand-600 hover:text-brand-700">
+        📎 Upload a .txt or .md file
+        <input type="file" accept=".txt,.md,.markdown,.csv,.rtf,text/*" onChange={onFile} className="sr-only" />
+      </label>
       <div className="flex flex-wrap items-center gap-2">
         {OUTPUTS.map((o) => (
           <button
