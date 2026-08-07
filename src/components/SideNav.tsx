@@ -47,6 +47,7 @@ function Item({
   return (
     <Link
       href={href}
+      aria-current={active ? "page" : undefined}
       className={`relative flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm ${
         active
           ? "bg-white/10 font-semibold text-white"
@@ -93,7 +94,7 @@ export function SideNav({
     pathname === href || (href !== "/" && !href.includes("?") && pathname.startsWith(href));
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col gap-1 overflow-y-auto border-r border-white/10 bg-[#0e1022] px-3 py-5 lg:flex">
+    <aside aria-label="Primary" className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col gap-1 overflow-y-auto border-r border-white/10 bg-[#0e1022] px-3 py-5 lg:flex">
       <Link href="/" className="mb-4 flex items-center gap-2 px-2">
         <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-violet-500 font-bold text-white">
           N

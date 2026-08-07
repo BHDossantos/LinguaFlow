@@ -92,6 +92,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     return (
       <html lang={locale}>
         <body className="font-sans">
+          <a href="#main" className="skip-link">Skip to content</a>
           <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
             <Logo />
             <nav className="flex items-center gap-2 text-sm sm:gap-4">
@@ -107,7 +108,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </Link>
             </nav>
           </header>
-          <main className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">{children}</main>
+          <main id="main" className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">{children}</main>
           <PageBeacon />
         </body>
       </html>
@@ -119,13 +120,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale}>
       <body className="font-sans">
+        <a href="#main" className="skip-link">Skip to content</a>
         <SideNav
           userName={userName}
           version={process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? "dev"}
           unreadCount={unreadCount}
           labels={nav}
         />
-        <main className="min-h-screen px-4 pb-24 pt-6 lg:pl-64 lg:pr-8 lg:pb-10">
+        <main id="main" className="min-h-screen px-4 pb-24 pt-6 lg:pl-64 lg:pr-8 lg:pb-10">
           <div className="mx-auto max-w-screen-sm lg:max-w-4xl">
             {/* Mobile top bar — the desktop sidebar replaces it at lg+ */}
             <div className="mb-4 flex items-center justify-between lg:hidden">
