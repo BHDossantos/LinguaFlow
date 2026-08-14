@@ -41,17 +41,34 @@ export function StudyToolsClient() {
     }
   }
 
+  const [reading, setReading] = useState(false);
   async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    // Text-based files read client-side (no upload). PDF/DOCX support is coming.
-    if (!/\.(txt|md|markdown|csv|rtf|text)$/i.test(file.name) && !file.type.startsWith("text/")) {
-      setError("For now, upload a .txt or .md file (or paste the text). PDF/DOCX support is coming.");
-      return;
-    }
     setError(null);
-    const text = await file.text();
-    setSource((prev) => (prev ? prev + "\n\n" : "") + text.slice(0, 16000));
+    const isText = /\.(txt|md|markdown|csv|rtf|text)$/i.test(file.name) || file.type.startsWith("text/");
+    try {
+      setReading(true);
+      let text = "";
+      if (isText) {
+        // Plain text reads instantly in the browser, no upload.
+        text = (await file.text()).slice(0, 16000);
+      } else {
+        // PDF/DOCX are extracted server-side.
+        const fd = new FormData();
+        fd.append("file", file);
+        const r = await fetch("/api/extract", { method: "POST", body: fd });
+        const data = await r.json();
+        if (!r.ok) { setError(data.error ?? "Could not read that file."); return; }
+        text = data.text;
+      }
+      setSource((prev) => (prev ? prev + "\n\n" : "") + text);
+    } catch {
+      setError("Could not read that file — try another.");
+    } finally {
+      setReading(false);
+      e.target.value = "";
+    }
   }
 
   return (
@@ -64,8 +81,14 @@ export function StudyToolsClient() {
         className="w-full rounded-xl border border-black/10 bg-white p-3 text-sm dark:bg-white/5"
       />
       <label className="inline-flex cursor-pointer items-center gap-2 text-sm text-brand-600 hover:text-brand-700">
-        📎 Upload a .txt or .md file
-        <input type="file" accept=".txt,.md,.markdown,.csv,.rtf,text/*" onChange={onFile} className="sr-only" />
+        📎 {reading ? "Reading file…" : "Upload a PDF, Word doc, or text file"}
+        <input
+          type="file"
+          accept=".txt,.md,.markdown,.csv,.rtf,.pdf,.docx,text/*,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          onChange={onFile}
+          disabled={reading}
+          className="sr-only"
+        />
       </label>
       <div className="flex flex-wrap items-center gap-2">
         {OUTPUTS.map((o) => (
