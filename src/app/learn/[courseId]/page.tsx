@@ -594,41 +594,59 @@ export default async function CoursePage(props: { params: Promise<{ courseId: st
               {mod.lessons.map((l, j) => {
                 const done = doneIds.has(l.id);
                 const isNext = l.id === nextId;
+                const locked = !done && !isNext; // must finish earlier lessons first
                 const score = scoreById.get(l.id);
                 const isQuiz = l.kind === "quiz";
+                const inner = (
+                  <>
+                    <span className="text-xs font-semibold text-ink-500">
+                      {mod.num}.{j + 1}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-medium">{l.title}</span>
+                      <span className="block text-[11px] capitalize text-ink-500 sm:hidden">
+                        {l.kind} · ~{l.estimated_minutes ?? 10} min
+                      </span>
+                      {done && typeof score === "number" && (
+                        <span className="block text-[11px] text-ink-500">
+                          Scored {Math.round(score)}
+                        </span>
+                      )}
+                      {locked && (
+                        <span className="block text-[11px] text-ink-500">Finish the lesson before this one</span>
+                      )}
+                    </span>
+                    <span className="hidden text-xs capitalize text-ink-500 sm:block">
+                      {KIND_ICON[l.kind] ?? (isQuiz ? "★" : "📘")} {l.kind}
+                    </span>
+                    <span className="hidden text-xs text-ink-500 sm:block">
+                      ~{l.estimated_minutes ?? 10} min
+                    </span>
+                    <span className="text-right text-sm" aria-hidden>
+                      {done ? "✅" : isNext ? "▶" : "🔒"}
+                      {isQuiz ? (l.id === finalQuizId ? " 🏆" : " ⭐") : ""}
+                    </span>
+                  </>
+                );
+                const gridCls = "card grid grid-cols-[2.5rem_minmax(0,1fr)_3.5rem] items-center gap-2 py-2.5 sm:grid-cols-[2.5rem_minmax(0,1fr)_6rem_4.5rem_3.5rem]";
                 return (
                   <li key={l.id} className="pb-1.5">
-                    <Link
-                      href={`/learn/${course.id}/${l.id}`}
-                      className={`card grid grid-cols-[2.5rem_minmax(0,1fr)_3.5rem] items-center gap-2 py-2.5 sm:grid-cols-[2.5rem_minmax(0,1fr)_6rem_4.5rem_3.5rem] ${
-                        isNext ? "border-brand-500/40 shadow-md" : done ? "opacity-90" : ""
-                      }`}
-                    >
-                      <span className="text-xs font-semibold text-ink-500">
-                        {mod.num}.{j + 1}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block truncate text-sm font-medium">{l.title}</span>
-                        <span className="block text-[11px] capitalize text-ink-500 sm:hidden">
-                          {l.kind} · ~{l.estimated_minutes ?? 10} min
-                        </span>
-                        {done && typeof score === "number" && (
-                          <span className="block text-[11px] text-ink-500">
-                            Scored {Math.round(score)}
-                          </span>
-                        )}
-                      </span>
-                      <span className="hidden text-xs capitalize text-ink-500 sm:block">
-                        {KIND_ICON[l.kind] ?? (isQuiz ? "★" : "📘")} {l.kind}
-                      </span>
-                      <span className="hidden text-xs text-ink-500 sm:block">
-                        ~{l.estimated_minutes ?? 10} min
-                      </span>
-                      <span className="text-right text-sm" aria-hidden>
-                        {done ? "✅" : isNext ? "▶" : "○"}
-                        {isQuiz ? (l.id === finalQuizId ? " 🏆" : " ⭐") : ""}
-                      </span>
-                    </Link>
+                    {locked ? (
+                      <div
+                        className={`${gridCls} cursor-not-allowed opacity-50`}
+                        aria-disabled="true"
+                        title="Finish the lesson you're on first"
+                      >
+                        {inner}
+                      </div>
+                    ) : (
+                      <Link
+                        href={`/learn/${course.id}/${l.id}`}
+                        className={`${gridCls} ${isNext ? "border-brand-500/40 shadow-md" : done ? "opacity-90" : ""}`}
+                      >
+                        {inner}
+                      </Link>
+                    )}
                   </li>
                 );
               })}

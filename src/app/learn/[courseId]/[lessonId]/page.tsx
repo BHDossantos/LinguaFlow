@@ -1,6 +1,7 @@
 import { supabaseServer } from "@/lib/supabase/server";
 import { LessonPlayer } from "@/components/LessonPlayer";
 import { requireOnboardedUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -40,6 +41,15 @@ export default async function LessonPage(
   if (!lesson || !course) return <p>Lesson not found.</p>;
 
   const doneIds = new Set((progress ?? []).map((p) => p.lesson_id));
+
+  // Sequential gate (spec §4): you can only open a lesson you've completed or the
+  // single next-up one. Trying to skip ahead by URL bounces you to the next lesson.
+  const ordered = lessons ?? [];
+  const firstIncomplete = ordered.find((l) => !doneIds.has(l.id))?.id ?? null;
+  const allowed = doneIds.has(params.lessonId) || params.lessonId === firstIncomplete;
+  if (!allowed) {
+    redirect(firstIncomplete ? `/learn/${params.courseId}/${firstIncomplete}` : `/learn/${params.courseId}`);
+  }
   const outline = (lessons ?? []).map((l) => ({
     id: l.id,
     position: l.position,
