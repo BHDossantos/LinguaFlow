@@ -85,6 +85,17 @@ export default async function SettingsPage({
 
       <RemindersToggle />
 
+      <section className="card space-y-2">
+        <p className="text-sm font-medium">Your data</p>
+        <p className="text-xs text-ink-500">
+          Download everything Noelia stores about you — profile, progress, mastery,
+          projects, and credentials — as a JSON file.
+        </p>
+        <a href="/api/export" download className="btn-ghost block w-full text-center">
+          Export my data
+        </a>
+      </section>
+
       <section className="space-y-2">
         <SignOutButton />
         <DeleteAccountButton />
