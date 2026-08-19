@@ -583,6 +583,12 @@ async function Dashboard({ userId, primaryLang, metaName }: { userId: string; pr
         <Link href="/portfolio" className="card card-hover flex items-center gap-2">
           <span>📂</span><span className="text-sm font-medium">Portfolio</span>
         </Link>
+        <Link href="/playground" className="card card-hover flex items-center gap-2">
+          <span>⌨️</span><span className="text-sm font-medium">Code lab</span>
+        </Link>
+        <Link href="/study" className="card card-hover flex items-center gap-2">
+          <span>🃏</span><span className="text-sm font-medium">Study tools</span>
+        </Link>
       </section>
     </div>
   );
