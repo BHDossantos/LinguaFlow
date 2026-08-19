@@ -16,6 +16,7 @@ function isPublic(pathname: string) {
     pathname === "/api/track" ||
     pathname.startsWith("/legal/") ||
     pathname.startsWith("/verify/") ||
+    pathname.startsWith("/api/badge/") ||
     pathname === "/manifest.json" ||
     pathname === "/sw.js" ||
     pathname === "/sitemap.xml" ||

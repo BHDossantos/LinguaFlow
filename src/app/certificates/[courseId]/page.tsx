@@ -113,6 +113,8 @@ export default async function CertificatePage(props: {
       <p className="text-center text-xs text-ink-500 print:hidden">
         Anyone can confirm this credential at{" "}
         <Link href={`/verify/${ref}`} className="text-brand-600 underline">/verify/{ref}</Link>
+        {" · "}
+        <a href={`/api/badge/${ref}`} className="text-brand-600 underline">Open Badge</a>
       </p>
 
       <PrintTrigger />

@@ -48,6 +48,12 @@ export default async function VerifyPage(props: { params: Promise<{ code: string
             Issued {new Date(cred.issued_at).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}
           </p>
           <p className="mt-4 text-[10px] tracking-widest text-ink-500">Noelia · learnnoelia.com · {cred.code}</p>
+          <a
+            href={`/api/badge/${cred.code}`}
+            className="mt-3 inline-block text-xs font-semibold text-brand-600 underline"
+          >
+            Download as an Open Badge ↓
+          </a>
         </div>
       )}
 
