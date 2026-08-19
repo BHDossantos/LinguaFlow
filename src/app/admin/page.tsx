@@ -95,6 +95,19 @@ export default async function AdminPage() {
     // mastery tables not migrated yet.
   }
 
+  // Item analysis: the questions learners get wrong most (min exposures).
+  let hardestQuestions: { prompt: string; rate: number; exposures: number }[] = [];
+  try {
+    const { data: qs } = await admin
+      .from("question_stats").select("prompt,exposures,correct").gte("exposures", 5);
+    hardestQuestions = (qs ?? [])
+      .map((r: any) => ({ prompt: r.prompt ?? "(question)", exposures: r.exposures, rate: Math.round((r.correct / Math.max(1, r.exposures)) * 100) }))
+      .sort((a, b) => a.rate - b.rate)
+      .slice(0, 8);
+  } catch {
+    // question_stats not migrated yet.
+  }
+
   const Metric = ({ label, value }: { label: string; value: string | number }) => (
     <div className="card py-3 text-center">
       <p className="text-2xl font-extrabold">{value}</p>
@@ -162,6 +175,25 @@ export default async function AdminPage() {
           </ul>
         )}
       </section>
+
+      {hardestQuestions.length > 0 && (
+        <section className="card">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-ink-500">
+            Hardest questions (item analysis)
+          </p>
+          <ul className="space-y-1.5 text-sm">
+            {hardestQuestions.map((q, i) => (
+              <li key={i} className="flex items-start justify-between gap-3">
+                <span className="min-w-0 flex-1 truncate">{q.prompt}</span>
+                <span className={`shrink-0 font-semibold ${q.rate < 50 ? "text-red-600" : "text-amber-600"}`}>
+                  {q.rate}% <span className="font-normal text-ink-500">({q.exposures})</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-2 text-[11px] text-ink-500">Low correct-rate items are candidates to rewrite or re-teach.</p>
+        </section>
+      )}
 
       <p className="text-xs text-ink-500">
         Conversion metrics appear here once Stripe is wired. Activation = users

@@ -12,6 +12,24 @@ export async function rateCardAction(input: RateInput) {
   return result;
 }
 
+// Item analysis (spec §8): record one quiz answer's correctness into the
+// aggregate question_stats. Fire-and-forget; needs migration 0036.
+export async function logQuizAnswer(lessonId: string, qIndex: number, prompt: string, correct: boolean) {
+  try {
+    const supabase = await supabaseServer();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    await supabase.rpc("bump_question_stat", {
+      p_lesson: lessonId,
+      p_index: qIndex,
+      p_prompt: (prompt ?? "").slice(0, 300),
+      p_correct: correct,
+    });
+  } catch {
+    // stats table not migrated — ignore.
+  }
+}
+
 export async function completeLessonAction(lessonId: string, score: number) {
   const supabase = await supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();

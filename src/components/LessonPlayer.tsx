@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
-import { rateCardAction, completeLessonAction } from "@/app/learn/[courseId]/[lessonId]/actions";
+import { rateCardAction, completeLessonAction, logQuizAnswer } from "@/app/learn/[courseId]/[lessonId]/actions";
 import { PronouncePractice } from "@/components/PronouncePractice";
 import { Celebrate } from "@/components/Celebrate";
 import { XP } from "@/lib/gamification";
@@ -851,7 +851,10 @@ function QuizLesson({
   function pick(idx: number) {
     if (picked !== null) return;
     setPicked(idx);
-    if (idx === q.answer) setCorrectCount((c) => c + 1);
+    const isCorrect = idx === q.answer;
+    if (isCorrect) setCorrectCount((c) => c + 1);
+    // Feed item analysis (fire-and-forget).
+    void logQuizAnswer(lessonId, i, (q as any).prompt ?? "", isCorrect);
   }
 
   function retake() {
