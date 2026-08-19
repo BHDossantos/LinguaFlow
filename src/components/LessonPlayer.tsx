@@ -105,6 +105,9 @@ export function LessonPlayer({
         courseId={courseId}
         lessonId={lesson.id}
         streakDays={streakDays}
+        // Checkpoint/final quizzes gate progress; a course's opening diagnostic
+        // quiz does not (placement should never trap a new learner).
+        gate={outline.length === 0 ? true : outline[0]?.id !== lesson.id}
       />
     );
   } else {
@@ -824,14 +827,17 @@ type QuizQuestion = {
 
 // Quick quiz: answer each question, get instant feedback + explanation,
 // finish with a percentage score that feeds lesson_progress and XP.
+const QUIZ_PASS = 70;
+
 function QuizLesson({
-  questions, title, courseId, lessonId, streakDays = null,
+  questions, title, courseId, lessonId, streakDays = null, gate = false,
 }: {
   questions: QuizQuestion[];
   title: string;
   courseId: string;
   lessonId: string;
   streakDays?: number | null;
+  gate?: boolean;
 }) {
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
@@ -848,13 +854,21 @@ function QuizLesson({
     if (idx === q.answer) setCorrectCount((c) => c + 1);
   }
 
+  function retake() {
+    setI(0); setPicked(null); setCorrectCount(0); setDone(false);
+  }
+
   function next() {
     if (i + 1 >= total) {
       const finalCorrect = correctCount;
       const score = Math.round((finalCorrect / Math.max(1, total)) * 100);
-      startTransition(async () => {
-        try { await completeLessonAction(lessonId, score); } catch {}
-      });
+      // Mastery gate: a gated checkpoint quiz only marks the lesson complete —
+      // and thus unlocks the next lesson — when the learner reaches the pass mark.
+      if (!gate || score >= QUIZ_PASS) {
+        startTransition(async () => {
+          try { await completeLessonAction(lessonId, score); } catch {}
+        });
+      }
       setDone(true);
     } else {
       setI(i + 1);
@@ -866,11 +880,29 @@ function QuizLesson({
 
   if (done) {
     const score = Math.round((correctCount / total) * 100);
+    const passed = !gate || score >= QUIZ_PASS;
+    if (!passed) {
+      return (
+        <div className="mx-auto max-w-md">
+          <div className="card space-y-3 py-8 text-center border-amber-200 bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10">
+            <p className="text-5xl font-extrabold tracking-tight text-amber-600" data-testid="quiz-score">{score}%</p>
+            <p className="text-sm text-amber-800">
+              You need {QUIZ_PASS}% to unlock the next lesson. {correctCount} of {total} correct.
+            </p>
+            <p className="text-xs text-ink-500">Review the material, then try again — this is how mastery sticks.</p>
+            <div className="flex justify-center gap-2 pt-1">
+              <button onClick={retake} className="btn-primary">Retake quiz</button>
+              <Link href={`/learn/${courseId}`} className="btn-ghost">Review the course</Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="mx-auto max-w-md">
         <div className="card space-y-3 py-8 text-center">
           <Celebrate xp={XP.lessonComplete} />
-          <h1 className="text-xl font-bold">Quiz complete 🎉</h1>
+          <h1 className="text-xl font-bold">Quiz passed 🎉</h1>
           <p className="text-6xl font-extrabold tracking-tight text-brand-600" data-testid="quiz-score">
             {score}%
           </p>
