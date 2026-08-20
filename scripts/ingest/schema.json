@@ -40,11 +40,11 @@
         "properties": {
           "position": { "type": "integer" },
           "title": { "type": "string" },
-          "kind": { "type": "string", "enum": ["vocab", "grammar", "listening", "reading", "speaking", "roleplay", "writing", "quiz"] },
+          "kind": { "type": "string", "enum": ["vocab", "grammar", "listening", "reading", "speaking", "roleplay", "writing", "quiz", "code"] },
           "estimated_minutes": { "type": "integer" },
           "grammar_note": { "type": ["string", "null"] },
           "body": {
-            "description": "vocab: {items:[{term,translation,ipa?,example}]} | quiz: {questions:[{prompt,options[4],answer,explanation}]} | roleplay: {scenario,persona,goal} | reading/grammar/writing/etc: {sections:[{heading,text}]}"
+            "description": "vocab: {items:[{term,translation,ipa?,example}]} | quiz: {questions:[{prompt,options[4],answer,explanation}]} | roleplay: {scenario,persona,goal} | code: {prompt,starter,tests:[{label,expr}],instructions?,solution?} | reading/grammar/writing/etc: {sections:[{heading,text}]}"
           }
         }
       }

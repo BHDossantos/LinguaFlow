@@ -34,6 +34,29 @@ External source → connector → interchange JSON → build-sql.mjs → seed SQ
 | AWS / Microsoft Learn / Google Cloud | certification tracks | vendor | objectives |
 | Khan Academy | subject sequencing | — | **inspiration only, never scraped** |
 
+## Lesson kinds
+
+`vocab`, `grammar`, `listening`, `reading`, `speaking`, `roleplay`, `writing`,
+`quiz`, and `code`.
+
+A **`code`** lesson is an interactive, auto-graded coding exercise (runs in a
+sandboxed browser worker — no server round-trip). Body shape:
+
+```json
+{
+  "prompt": "Write square(n) that returns n times itself.",
+  "starter": "function square(n) {\n  // your code here\n}\n",
+  "tests": [ { "label": "square(2) === 4", "expr": "square(2) === 4" } ],
+  "instructions": "optional extra guidance",
+  "solution": "optional reference (revealed only after 3 failed runs)"
+}
+```
+
+Each test's `expr` is a JavaScript boolean expression evaluated in the same scope
+as the learner's code, so it can call the functions they defined. The lesson only
+completes — and unlocks the next one under the sequential gate — once **every**
+test returns `true`. Author tests so the starter template does *not* already pass.
+
 ## Golden rules
 
 1. Only openly licensed **structure/objectives**. Prose is written fresh.

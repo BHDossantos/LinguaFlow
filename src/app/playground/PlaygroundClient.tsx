@@ -1,7 +1,8 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { createRunnerUrl, runInSandbox, type CodeTest } from "@/lib/code-runner";
 
-type Test = { label: string; expr: string };
+type Test = CodeTest;
 type Challenge = { id: string; title: string; prompt: string; starter: string; tests: Test[] };
 
 // Each test's `expr` is a JS boolean expression evaluated in the same scope as
@@ -55,30 +56,6 @@ const CHALLENGES: Challenge[] = [
   },
 ];
 
-// Worker source: runs the learner's code + evaluates each test expression in the
-// same scope. No DOM/network access; a timeout on the main thread kills runaways.
-const WORKER_SRC = `
-self.onmessage = (e) => {
-  const { code, tests } = e.data;
-  const logs = [];
-  const sandboxConsole = { log: (...a) => logs.push(a.map(x => {
-    try { return typeof x === 'string' ? x : JSON.stringify(x); } catch { return String(x); }
-  }).join(' ')) };
-  const body =
-    'const console = arguments[0];\\n' + code + '\\nreturn [' +
-    tests.map(t => '(function(){ try { return (' + t.expr + ') === true; } catch (err) { return String(err && err.message || err); } })()').join(',') +
-    '];';
-  let results;
-  try {
-    const fn = new Function(body);
-    results = fn(sandboxConsole);
-  } catch (err) {
-    results = tests.map(() => String(err && err.message || err));
-  }
-  self.postMessage({ results, logs });
-};
-`;
-
 export function PlaygroundClient() {
   const [idx, setIdx] = useState(0);
   const ch = CHALLENGES[idx];
@@ -87,10 +64,10 @@ export function PlaygroundClient() {
   const [results, setResults] = useState<(boolean | string)[] | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
   const workerUrl = useMemo(
-    () => (typeof window !== "undefined" ? URL.createObjectURL(new Blob([WORKER_SRC], { type: "text/javascript" })) : ""),
+    () => (typeof window !== "undefined" ? createRunnerUrl() : ""),
     [],
   );
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (workerUrl) URL.revokeObjectURL(workerUrl); }, [workerUrl]);
 
   function selectChallenge(n: number) {
     setIdx(n);
@@ -99,21 +76,13 @@ export function PlaygroundClient() {
     setLogs([]);
   }
 
-  function run() {
+  async function run() {
     if (running || !workerUrl) return;
     setRunning(true); setResults(null); setLogs([]);
-    const worker = new Worker(workerUrl);
-    const done = (res: (boolean | string)[] | null, lg: string[]) => {
-      if (timer.current) clearTimeout(timer.current);
-      worker.terminate();
-      setResults(res);
-      setLogs(lg);
-      setRunning(false);
-    };
-    worker.onmessage = (e) => done(e.data.results, e.data.logs ?? []);
-    worker.onerror = () => done(ch.tests.map(() => "error"), []);
-    timer.current = setTimeout(() => done(ch.tests.map(() => "timed out (infinite loop?)"), []), 3000);
-    worker.postMessage({ code, tests: ch.tests });
+    const { results: res, logs: lg } = await runInSandbox(workerUrl, code, ch.tests);
+    setResults(res);
+    setLogs(lg);
+    setRunning(false);
   }
 
   const allPass = results !== null && results.every((r) => r === true);

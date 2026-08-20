@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { rateCardAction, completeLessonAction, logQuizAnswer } from "@/app/learn/[courseId]/[lessonId]/actions";
 import { PronouncePractice } from "@/components/PronouncePractice";
 import { Celebrate } from "@/components/Celebrate";
 import { XP } from "@/lib/gamification";
+import { createRunnerUrl, runInSandbox, type CodeTest } from "@/lib/code-runner";
 
 type Lesson = {
   id: string;
@@ -92,6 +93,10 @@ export function LessonPlayer({
     );
   } else if (lesson.kind === "roleplay") {
     content = <RoleplayLesson body={lesson.body} title={lesson.title} courseId={courseId} />;
+  } else if (lesson.kind === "code") {
+    content = (
+      <CodeLesson body={lesson.body} title={lesson.title} courseId={courseId} lessonId={lesson.id} />
+    );
   } else if (lesson.kind === "quiz") {
     // Malformed questions (no prompt/options) are skipped rather than crashing
     // or dead-ending the quiz.
@@ -814,6 +819,164 @@ function RoleplayLesson({
       </Link>
       <Link href={`/tutors`} className="btn-ghost block text-center">Or do this with a live instructor</Link>
       <Link href={`/learn/${courseId}`} className="block text-center text-sm text-ink-500">Back to course</Link>
+    </div>
+  );
+}
+
+// A coding lesson (spec §12): author gives a prompt, a starter template, and a
+// set of hidden tests. The learner writes JavaScript, runs it against the tests
+// in a sandboxed worker, and the lesson only completes — and thus unlocks the
+// next one under the sequential gate — once every test passes. Runs entirely in
+// the browser; nothing is sent to a server to be graded.
+function CodeLesson({
+  body, title, courseId, lessonId,
+}: {
+  body: any;
+  title: string;
+  courseId: string;
+  lessonId: string;
+}) {
+  const prompt: string = typeof body?.prompt === "string" ? body.prompt : "";
+  const instructions: string | null =
+    typeof body?.instructions === "string" && body.instructions.trim() ? body.instructions : null;
+  const starter: string = typeof body?.starter === "string" ? body.starter : "";
+  const solution: string | null =
+    typeof body?.solution === "string" && body.solution.trim() ? body.solution : null;
+  const tests: CodeTest[] = (Array.isArray(body?.tests) ? body.tests : []).filter(
+    (t: any) => t && typeof t.label === "string" && typeof t.expr === "string",
+  );
+
+  const [code, setCode] = useState(starter);
+  const [running, setRunning] = useState(false);
+  const [results, setResults] = useState<(boolean | string)[] | null>(null);
+  const [logs, setLogs] = useState<string[]>([]);
+  const [attempts, setAttempts] = useState(0);
+  const [showSolution, setShowSolution] = useState(false);
+  const [done, setDone] = useState(false);
+  const [pending, startTransition] = useTransition();
+
+  const workerUrl = useMemo(
+    () => (typeof window !== "undefined" ? createRunnerUrl() : ""),
+    [],
+  );
+  useEffect(() => () => { if (workerUrl) URL.revokeObjectURL(workerUrl); }, [workerUrl]);
+
+  const allPass = results !== null && tests.length > 0 && results.every((r) => r === true);
+
+  async function run() {
+    if (running || !workerUrl) return;
+    setRunning(true); setResults(null); setLogs([]);
+    const { results: res, logs: lg } = await runInSandbox(workerUrl, code, tests);
+    setResults(res);
+    setLogs(lg);
+    setAttempts((a) => a + 1);
+    setRunning(false);
+    if (res.length > 0 && res.every((r) => r === true)) {
+      startTransition(async () => {
+        try { await completeLessonAction(lessonId, 100); } catch {}
+      });
+      setDone(true);
+    }
+  }
+
+  if (done) {
+    return (
+      <div className="space-y-3">
+        <Celebrate xp={XP.lessonComplete} />
+        <h1 className="text-xl font-bold">Challenge solved 🎉</h1>
+        <p className="text-sm text-ink-500">
+          {pending ? "Saving your progress…" : `All ${tests.length} tests passed in ${attempts} ${attempts === 1 ? "run" : "runs"}.`}
+        </p>
+        <Link href={`/learn/${courseId}`} className="btn-primary inline-block">Continue</Link>
+      </div>
+    );
+  }
+
+  if (tests.length === 0) {
+    return <p>This coding lesson has no tests configured.</p>;
+  }
+
+  const passCount = results ? results.filter((r) => r === true).length : 0;
+
+  return (
+    <div className="space-y-4">
+      <h1 className="text-xl font-bold">{title}</h1>
+
+      <div className="card">
+        <p className="text-sm leading-relaxed text-ink-700">{prompt}</p>
+        {instructions && (
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-ink-500">{instructions}</p>
+        )}
+      </div>
+
+      <textarea
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        spellCheck={false}
+        rows={12}
+        className="w-full rounded-xl border border-black/10 bg-[#0e1022] p-3 font-mono text-sm text-white"
+        aria-label="Code editor"
+      />
+
+      <div className="flex flex-wrap items-center gap-2">
+        <button onClick={run} disabled={running} className="btn-primary px-5 py-2 text-sm">
+          {running ? "Running…" : "▶ Run & check"}
+        </button>
+        <button onClick={() => { setCode(starter); setResults(null); setLogs([]); }} className="btn-ghost px-4 py-2 text-sm">
+          Reset
+        </button>
+        {solution && attempts >= 3 && !allPass && (
+          <button onClick={() => setShowSolution((s) => !s)} className="btn-ghost px-4 py-2 text-sm">
+            {showSolution ? "Hide solution" : "Show solution"}
+          </button>
+        )}
+        {results && (
+          <span className={`text-sm font-semibold ${allPass ? "text-green-600" : "text-ink-500"}`}>
+            {passCount} / {tests.length} passing
+          </span>
+        )}
+      </div>
+
+      {results && (
+        <div className="card space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Tests</p>
+          {tests.map((t, i) => {
+            const r = results[i];
+            const ok = r === true;
+            return (
+              <div key={i} className="flex items-start gap-2 text-sm">
+                <span aria-hidden>{ok ? "✅" : "❌"}</span>
+                <span className="font-mono text-xs">{t.label}</span>
+                {typeof r === "string" && <span className="text-xs text-red-600">— {r}</span>}
+              </div>
+            );
+          })}
+          {!allPass && (
+            <p className="pt-1 text-xs text-ink-500">
+              Keep going — the lesson unlocks once every test passes.
+            </p>
+          )}
+        </div>
+      )}
+
+      {logs.length > 0 && (
+        <div className="card">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Console</p>
+          <pre className="mt-1 overflow-x-auto whitespace-pre-wrap text-xs text-ink-700">{logs.join("\n")}</pre>
+        </div>
+      )}
+
+      {showSolution && solution && (
+        <details className="card" open>
+          <summary className="cursor-pointer text-sm font-medium">Reference solution</summary>
+          <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg bg-[#0e1022] p-3 font-mono text-xs text-white">{solution}</pre>
+          <p className="mt-2 text-xs text-ink-500">Compare it with your approach, then make yours pass.</p>
+        </details>
+      )}
+
+      <Link href={`/learn/${courseId}`} className="block text-center text-sm text-ink-500">
+        Back to course
+      </Link>
     </div>
   );
 }

@@ -10,7 +10,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join, basename } from "node:path";
 
-const KINDS = new Set(["vocab","grammar","listening","reading","speaking","roleplay","writing","quiz"]);
+const KINDS = new Set(["vocab","grammar","listening","reading","speaking","roleplay","writing","quiz","code"]);
 const SCHOOLS = new Set(["language","math","technology","business","science"]);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -56,6 +56,14 @@ lessons.forEach((l, i) => {
     if (!Array.isArray(b.items) || b.items.length === 0) die(`lesson[${i}] vocab needs items[]`);
   } else if (l.kind === "roleplay") {
     if (!b.scenario || !b.goal) die(`lesson[${i}] roleplay needs scenario+goal`);
+  } else if (l.kind === "code") {
+    if (typeof b.prompt !== "string" || !b.prompt.trim()) die(`lesson[${i}] code needs a prompt`);
+    if (typeof b.starter !== "string") die(`lesson[${i}] code needs a starter string`);
+    if (!Array.isArray(b.tests) || b.tests.length === 0) die(`lesson[${i}] code needs tests[]`);
+    b.tests.forEach((t, j) => {
+      if (typeof t.label !== "string" || !t.label.trim()) die(`lesson[${i}] test${j}: label required`);
+      if (typeof t.expr !== "string" || !t.expr.trim()) die(`lesson[${i}] test${j}: expr required`);
+    });
   } else {
     if (!Array.isArray(b.sections) || b.sections.length === 0) die(`lesson[${i}] ${l.kind} needs sections[]`);
   }
