@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { requireUser } from "@/lib/auth";
@@ -117,9 +118,14 @@ export default async function AdminPage() {
 
   return (
     <div className="space-y-5">
-      <header>
-        <h1 className="text-2xl font-bold">Admin — metrics</h1>
-        <p className="text-sm text-ink-500">Live from the database. Last 7 days unless noted.</p>
+      <header className="flex items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">Admin — metrics</h1>
+          <p className="text-sm text-ink-500">Live from the database. Last 7 days unless noted.</p>
+        </div>
+        <Link href="/admin/experiments" className="shrink-0 text-sm text-brand-500 hover:underline">
+          Experiments →
+        </Link>
       </header>
 
       <section className="grid grid-cols-3 gap-2">

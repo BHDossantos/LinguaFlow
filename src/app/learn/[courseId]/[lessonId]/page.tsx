@@ -1,6 +1,7 @@
 import { supabaseServer } from "@/lib/supabase/server";
 import { LessonPlayer } from "@/components/LessonPlayer";
 import { requireOnboardedUser } from "@/lib/auth";
+import { assignVariant } from "@/lib/experiments";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -58,6 +59,9 @@ export default async function LessonPage(
     completed: doneIds.has(l.id),
   }));
 
+  // Live experiment (spec §28): does a motivational nudge lift mastery?
+  const nudgeVariant = await assignVariant("lesson_nudge");
+
   return (
     <LessonPlayer
       lesson={lesson}
@@ -67,6 +71,7 @@ export default async function LessonPage(
       outline={outline}
       courseTitle={course.title}
       streakDays={stats?.streak_days ?? 0}
+      nudgeVariant={nudgeVariant}
     />
   );
 }

@@ -77,6 +77,7 @@ function lessonNumber(modules: ModuleGroup[], lessonId: string): string | null {
 
 export function LessonPlayer({
   lesson, courseId, language, dialect, outline = [], courseTitle = "", streakDays = null,
+  nudgeVariant = null,
 }: {
   lesson: Lesson;
   courseId: string;
@@ -85,6 +86,7 @@ export function LessonPlayer({
   outline?: OutlineLesson[];
   courseTitle?: string;
   streakDays?: number | null;
+  nudgeVariant?: string | null;
 }) {
   let content: React.ReactNode;
   if (lesson.kind === "vocab") {
@@ -139,8 +141,20 @@ export function LessonPlayer({
   const hasOutline = outline.length > 0;
   const hasVocabPanel = vocabItems.length > 0;
 
-  // No desktop chrome to render — behave exactly as before.
-  if (!hasOutline && !hasVocabPanel) return <>{content}</>;
+  // Experiment "lesson_nudge" (spec §28): the treatment variant shows a short
+  // encouragement banner at the top of the lesson; control shows nothing.
+  const nudge =
+    nudgeVariant === "treatment" ? (
+      <div className="mb-3 rounded-xl border border-brand-500/20 bg-brand-50 px-3 py-2 text-sm text-ink-700 dark:bg-brand-500/10">
+        <span aria-hidden>✨</span>{" "}
+        {streakDays && streakDays > 0
+          ? `You're on a ${streakDays}-day streak — finish this lesson to keep it going.`
+          : "One lesson at a time is how mastery is built. You've got this."}
+      </div>
+    ) : null;
+
+  // No desktop chrome to render — behave exactly as before (plus the nudge).
+  if (!hasOutline && !hasVocabPanel) return <>{nudge}{content}</>;
 
   const isQuiz = lesson.kind === "quiz";
   const modules = buildModules(outline);
@@ -208,6 +222,7 @@ export function LessonPlayer({
             Lesson {lessonNo}
           </p>
         )}
+        {nudge}
         {content}
         {/* Footer nav: previous / position / next through the outline. */}
         {!isQuiz && currentIdx >= 0 && (
