@@ -1,11 +1,19 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { rateCardAction, completeLessonAction, logQuizAnswer } from "@/app/learn/[courseId]/[lessonId]/actions";
 import { PronouncePractice } from "@/components/PronouncePractice";
 import { Celebrate } from "@/components/Celebrate";
 import { XP } from "@/lib/gamification";
-import { createRunnerUrl, runInSandbox, type CodeTest } from "@/lib/code-runner";
+import {
+  createRunnerUrl,
+  runInSandbox,
+  createPythonRunner,
+  normalizeLanguage,
+  LANGUAGE_LABEL,
+  type CodeTest,
+  type PythonRunner,
+} from "@/lib/code-runner";
 
 type Lesson = {
   id: string;
@@ -845,9 +853,11 @@ function CodeLesson({
   const tests: CodeTest[] = (Array.isArray(body?.tests) ? body.tests : []).filter(
     (t: any) => t && typeof t.label === "string" && typeof t.expr === "string",
   );
+  const lang = normalizeLanguage(body?.language);
 
   const [code, setCode] = useState(starter);
   const [running, setRunning] = useState(false);
+  const [loadingRuntime, setLoadingRuntime] = useState(false);
   const [results, setResults] = useState<(boolean | string)[] | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
   const [attempts, setAttempts] = useState(0);
@@ -855,18 +865,39 @@ function CodeLesson({
   const [done, setDone] = useState(false);
   const [pending, startTransition] = useTransition();
 
+  // JavaScript runs in a throwaway Blob worker; Python reuses one Pyodide
+  // worker (heavy to load, so kept alive across runs).
   const workerUrl = useMemo(
-    () => (typeof window !== "undefined" ? createRunnerUrl() : ""),
-    [],
+    () => (lang === "javascript" && typeof window !== "undefined" ? createRunnerUrl() : ""),
+    [lang],
   );
-  useEffect(() => () => { if (workerUrl) URL.revokeObjectURL(workerUrl); }, [workerUrl]);
+  const pyRunner = useRef<PythonRunner | null>(null);
+  useEffect(() => {
+    return () => {
+      if (workerUrl) URL.revokeObjectURL(workerUrl);
+      pyRunner.current?.dispose();
+    };
+  }, [workerUrl]);
 
   const allPass = results !== null && tests.length > 0 && results.every((r) => r === true);
 
   async function run() {
-    if (running || !workerUrl) return;
+    if (running) return;
     setRunning(true); setResults(null); setLogs([]);
-    const { results: res, logs: lg } = await runInSandbox(workerUrl, code, tests);
+    let res: (boolean | string)[];
+    let lg: string[];
+    if (lang === "python") {
+      if (!pyRunner.current) pyRunner.current = createPythonRunner();
+      const out = await pyRunner.current.run(code, tests, {
+        onLoadStart: () => setLoadingRuntime(true),
+      });
+      res = out.results; lg = out.logs;
+      setLoadingRuntime(false);
+    } else {
+      if (!workerUrl) { setRunning(false); return; }
+      const out = await runInSandbox(workerUrl, code, tests);
+      res = out.results; lg = out.logs;
+    }
     setResults(res);
     setLogs(lg);
     setAttempts((a) => a + 1);
@@ -900,7 +931,12 @@ function CodeLesson({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-bold">{title}</h1>
+      <div className="flex items-center gap-2">
+        <h1 className="text-xl font-bold">{title}</h1>
+        <span className="rounded-full bg-black/5 px-2.5 py-0.5 text-[11px] font-semibold text-ink-500">
+          {LANGUAGE_LABEL[lang]}
+        </span>
+      </div>
 
       <div className="card">
         <p className="text-sm leading-relaxed text-ink-700">{prompt}</p>
@@ -920,7 +956,7 @@ function CodeLesson({
 
       <div className="flex flex-wrap items-center gap-2">
         <button onClick={run} disabled={running} className="btn-primary px-5 py-2 text-sm">
-          {running ? "Running…" : "▶ Run & check"}
+          {loadingRuntime ? "Loading Python…" : running ? "Running…" : "▶ Run & check"}
         </button>
         <button onClick={() => { setCode(starter); setResults(null); setLogs([]); }} className="btn-ghost px-4 py-2 text-sm">
           Reset
@@ -936,6 +972,12 @@ function CodeLesson({
           </span>
         )}
       </div>
+
+      {loadingRuntime && (
+        <div className="card border-brand-500/20 bg-brand-50 text-sm text-ink-700">
+          Downloading the Python runtime — this happens once and can take a few seconds. It then runs instantly in your browser.
+        </div>
+      )}
 
       {results && (
         <div className="card space-y-1">

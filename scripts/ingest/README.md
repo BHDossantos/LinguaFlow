@@ -44,6 +44,7 @@ sandboxed browser worker — no server round-trip). Body shape:
 
 ```json
 {
+  "language": "javascript",
   "prompt": "Write square(n) that returns n times itself.",
   "starter": "function square(n) {\n  // your code here\n}\n",
   "tests": [ { "label": "square(2) === 4", "expr": "square(2) === 4" } ],
@@ -52,10 +53,17 @@ sandboxed browser worker — no server round-trip). Body shape:
 }
 ```
 
-Each test's `expr` is a JavaScript boolean expression evaluated in the same scope
-as the learner's code, so it can call the functions they defined. The lesson only
-completes — and unlocks the next one under the sequential gate — once **every**
-test returns `true`. Author tests so the starter template does *not* already pass.
+`language` is `"javascript"` (default) or `"python"`. Each test's `expr` is a
+boolean expression in that language, evaluated in the same scope as the learner's
+code, so it can call the functions they defined. A test passes only when its
+expression is exactly `true` / `True`. The lesson completes — and unlocks the
+next one under the sequential gate — once **every** test passes. Author tests so
+the starter template does *not* already pass.
+
+- **JavaScript** runs in a sandboxed Web Worker (instant, offline).
+- **Python** runs via Pyodide (CPython in WebAssembly), fetched once from the
+  jsDelivr CDN by the learner's browser on first run — no server, no install.
+  Use Python comparisons in `expr` (e.g. `square(2) == 4`).
 
 ## Golden rules
 

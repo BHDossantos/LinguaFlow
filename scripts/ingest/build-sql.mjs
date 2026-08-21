@@ -12,6 +12,7 @@ import { dirname, join, basename } from "node:path";
 
 const KINDS = new Set(["vocab","grammar","listening","reading","speaking","roleplay","writing","quiz","code"]);
 const SCHOOLS = new Set(["language","math","technology","business","science"]);
+const CODE_LANGS = new Set(["javascript","python"]);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 function die(msg) { console.error(`✗ ${msg}`); process.exit(1); }
@@ -59,6 +60,8 @@ lessons.forEach((l, i) => {
   } else if (l.kind === "code") {
     if (typeof b.prompt !== "string" || !b.prompt.trim()) die(`lesson[${i}] code needs a prompt`);
     if (typeof b.starter !== "string") die(`lesson[${i}] code needs a starter string`);
+    if (b.language != null && !CODE_LANGS.has(String(b.language).toLowerCase()))
+      die(`lesson[${i}] code language invalid: ${b.language} (use javascript or python)`);
     if (!Array.isArray(b.tests) || b.tests.length === 0) die(`lesson[${i}] code needs tests[]`);
     b.tests.forEach((t, j) => {
       if (typeof t.label !== "string" || !t.label.trim()) die(`lesson[${i}] test${j}: label required`);
