@@ -113,7 +113,16 @@ def _run(user_code, exprs):
         for ex in exprs:
             try:
                 val = eval(ex, ns)
-                results.append(True if val is True else False)
+                # Coerce to a Python bool so numpy/pandas scalar comparisons
+                # (which return numpy.bool_, not True) grade correctly. An
+                # ambiguous value (e.g. a multi-element array) is flagged, not
+                # silently passed.
+                try:
+                    ok = bool(val)
+                except Exception:
+                    results.append('test did not return a yes/no value')
+                    continue
+                results.append(True if ok else False)
             except Exception as e:
                 results.append(type(e).__name__ + ': ' + str(e))
         return {'results': results, 'logs': buf.getvalue().splitlines()}
@@ -134,10 +143,15 @@ function ensurePyodide() {
   return pyReady;
 }
 self.onmessage = async (e) => {
-  const { code, tests } = e.data;
+  const { code, tests, packages } = e.data;
   const exprs = (tests || []).map((t) => t.expr);
   try {
     const py = await ensurePyodide();
+    if (Array.isArray(packages) && packages.length) {
+      // loadPackage is cached by Pyodide, so re-calling per run is cheap after
+      // the first download (numpy/pandas ship prebuilt in the distribution).
+      await py.loadPackage(packages);
+    }
     py.globals.set('USER_CODE', code);
     py.globals.set('EXPRS_JSON', JSON.stringify(exprs));
     const outStr = py.runPython('json.dumps(_run(USER_CODE, json.loads(EXPRS_JSON)))');
@@ -177,10 +191,13 @@ export function createPythonRunner() {
     run(
       code: string,
       tests: CodeTest[],
-      opts?: { onLoadStart?: () => void },
+      opts?: { onLoadStart?: () => void; packages?: string[] },
     ): Promise<RunResult> {
       if (!loaded && opts?.onLoadStart) opts.onLoadStart();
-      const timeoutMs = loaded ? 15000 : 60000;
+      const pkgs = opts?.packages;
+      // First load downloads Pyodide (~10 MB); extra packages (pandas etc.) add
+      // a few MB more, so allow more headroom before that first success.
+      const timeoutMs = loaded ? 20000 : pkgs && pkgs.length ? 120000 : 60000;
       return new Promise((resolve) => {
         if (!worker) spawn();
         const w = worker!;
@@ -206,7 +223,7 @@ export function createPythonRunner() {
           kill();
           finish(tests.map(() => "timed out (infinite loop or slow first load?)"), []);
         }, timeoutMs);
-        w.postMessage({ code, tests });
+        w.postMessage({ code, tests, packages: pkgs ?? [] });
       });
     },
     dispose: kill,

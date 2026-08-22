@@ -1,0 +1,130 @@
+{
+  "source": {
+    "id": "pdsh",
+    "name": "Python Data Science Handbook by Jake VanderPlas",
+    "url": "https://jakevdp.github.io/PythonDataScienceHandbook/",
+    "license": "CC BY-NC-ND 3.0 (text), MIT (code)"
+  },
+  "course": {
+    "id": "bbbb0002-0000-4000-8000-000000000028",
+    "title": "Data Analysis with Python (pandas)",
+    "description": "Analyze real data in your browser with numpy and pandas — arrays, DataFrames, selection, filtering, and grouping — every skill practiced against automated tests, no setup required. Structure informed by the open Python Data Science Handbook by Jake VanderPlas (CC BY-NC-ND 3.0 text, MIT code).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "technology",
+    "goal_tag": "foundations",
+    "position": 28,
+    "prerequisite_ids": ["bbbb0002-0000-4000-8000-000000000027"]
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "What is the primary two-dimensional data structure in pandas?", "options": ["Series", "DataFrame", "ndarray", "list"], "answer": 1, "explanation": "A DataFrame is a table of rows and columns; a Series is a single column (1-D)." },
+      { "prompt": "The numpy library is mainly used for…", "options": ["building web servers", "fast numerical arrays and math", "styling web pages", "managing databases"], "answer": 1, "explanation": "numpy provides efficient N-dimensional arrays and vectorized math — the foundation most data tools build on." },
+      { "prompt": "For a DataFrame df, what does df.shape give you?", "options": ["only the number of columns", "a (rows, columns) tuple", "only the number of rows", "the memory used"], "answer": 1, "explanation": "df.shape is a tuple: (number of rows, number of columns)." },
+      { "prompt": "How do you select the column named 'score' from a DataFrame df?", "options": ["df.score()", "df['score']", "df->score", "df::score"], "answer": 1, "explanation": "df['score'] returns that column as a Series (df.score also works when the name is a valid identifier)." },
+      { "prompt": "The pandas groupby operation is used to…", "options": ["sort rows alphabetically", "aggregate values within categories", "delete duplicate rows", "rename columns"], "answer": 1, "explanation": "groupby splits rows into groups by a key and lets you aggregate (sum, mean, count) within each group." },
+      { "prompt": "The mean (average) of the numbers 2 and 4 is…", "options": ["2", "3", "4", "6"], "answer": 1, "explanation": "(2 + 4) / 2 = 3." }
+    ] } },
+    { "position": 2, "title": "numpy arrays and pandas structures", "kind": "reading", "estimated_minutes": 12, "grammar_note": "A numpy array holds one data type and supports vectorized math (arr * 2 doubles every element). A pandas Series is a labeled 1-D array; a DataFrame is a dict-like collection of Series sharing an index.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Explain what numpy arrays and pandas Series/DataFrames are, and why vectorized operations beat Python loops for data. Warm-up: if arr is a numpy array [1, 2, 3], what does arr * 2 produce?" },
+      { "heading": "The idea", "text": "numpy provides the ndarray: a fixed-type, N-dimensional array with fast, vectorized operations — arr * 2 multiplies every element at once, no loop. pandas builds two structures on top of it. A Series is a one-dimensional labeled array (like a single column). A DataFrame is a two-dimensional table: a set of columns (each a Series) sharing a row index. You create a DataFrame from a dict of columns: pd.DataFrame({'name': [...], 'score': [...]}). Inspect it with df.shape (rows, columns), df.columns (the column labels), df.head() (first rows), and df.describe() (summary statistics)." },
+      { "heading": "Worked examples", "text": "import numpy as np; a = np.array([1, 2, 3]); a * 2 gives array([2, 4, 6]); a.mean() gives 2.0; a.sum() gives 6. import pandas as pd; df = pd.DataFrame({'name': ['Ana', 'Ben'], 'score': [90, 80]}); df.shape is (2, 2); list(df.columns) is ['name', 'score']; df['score'].sum() is 170; df['score'].mean() is 85.0. Selecting one row by position: df.iloc[0]['name'] is 'Ana'." },
+      { "heading": "Your turn", "text": "Predict each result. 1) np.array([2, 4, 6]).sum(). 2) np.array([2, 4, 6]).mean(). 3) For df above, df.shape. 4) df['score'].max(). 5) list(df.columns). Answers: 1) 12. 2) 4.0. 3) (2, 2). 4) 90. 5) ['name', 'score']." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: looping element-by-element in Python when a vectorized numpy/pandas operation is both shorter and far faster. Mistake: confusing df.shape[0] (rows) with df.shape[1] (columns). Exit: (a) What does df.shape return? (b) What structure is a single DataFrame column? Answers: a (rows, columns) tuple; a Series." }
+    ] } },
+    { "position": 3, "title": "Code: numpy basics", "kind": "code", "estimated_minutes": 12, "body": {
+      "language": "python",
+      "packages": ["numpy"],
+      "prompt": "Write array_mean(nums) that returns the mean (average) of a list of numbers using numpy, as a float.",
+      "instructions": "Use numpy — it is already importable as `import numpy as np`. The first run downloads the Python runtime and numpy once; after that it is instant.",
+      "starter": "import numpy as np\n\ndef array_mean(nums):\n    # use numpy to return the mean as a float\n    pass\n",
+      "tests": [
+        { "label": "array_mean([1,2,3,4]) == 2.5", "expr": "round(array_mean([1,2,3,4]), 2) == 2.5" },
+        { "label": "array_mean([10]) == 10", "expr": "round(array_mean([10]), 2) == 10.0" },
+        { "label": "array_mean([2,4,6]) == 4.0", "expr": "round(array_mean([2,4,6]), 1) == 4.0" },
+        { "label": "returns a float", "expr": "isinstance(array_mean([1,2]), float)" }
+      ],
+      "solution": "import numpy as np\n\ndef array_mean(nums):\n    return float(np.mean(nums))\n"
+    } },
+    { "position": 4, "title": "Building and inspecting DataFrames", "kind": "reading", "estimated_minutes": 12, "grammar_note": "df['col'] returns a Series (one column). df[['a','b']] with a LIST returns a DataFrame (those columns). One bracket vs. two changes the result type.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Create a DataFrame from a dictionary and inspect its size, columns, and values. Warm-up: how many rows and columns does pd.DataFrame({'a': [1,2,3], 'b': [4,5,6]}) have?" },
+      { "heading": "The idea", "text": "The most common way to build a DataFrame is from a dict whose keys are column names and whose values are equal-length lists: pd.DataFrame({'name': ['Ana', 'Ben', 'Cara'], 'score': [90, 80, 70]}). The row index defaults to 0, 1, 2. Inspect it: df.shape is (3, 2); df.columns lists the labels; df['score'] is the score Series; df['score'].sum() adds it up. Select rows by position with df.iloc[0] (first row) or by a boolean condition (next lesson)." },
+      { "heading": "Worked examples", "text": "df = pd.DataFrame({'name': ['Ana', 'Ben', 'Cara'], 'score': [90, 80, 70]}). df.shape is (3, 2). list(df.columns) is ['name', 'score']. df['score'].sum() is 240. df['score'].mean() is 80.0. df.iloc[0]['name'] is 'Ana'. df.iloc[-1]['score'] is 70. Adding a column is assignment: df['passed'] = df['score'] >= 80 creates a boolean column [True, True, False]." },
+      { "heading": "Your turn", "text": "For that df: 1) What is df.shape? 2) What is df['score'].sum()? 3) What is df.iloc[1]['name']? 4) What is list(df.columns)? 5) What does df['score'].max() give? Answers: 1) (3, 2). 2) 240. 3) 'Ben'. 4) ['name', 'score']. 5) 90." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: giving columns of different lengths — pandas raises an error. Mistake: expecting df['a'] (a Series) when you wanted df[['a']] (a one-column DataFrame). Exit: (a) How do you build a DataFrame from columns? (b) What does df['score'].sum() return? Answers: pd.DataFrame({...}) from a dict of equal-length lists; the total of the score column." }
+    ] } },
+    { "position": 5, "title": "Code: make a DataFrame", "kind": "code", "estimated_minutes": 13, "body": {
+      "language": "python",
+      "packages": ["pandas"],
+      "prompt": "Write make_df() that returns a pandas DataFrame with columns 'name' and 'score' and exactly these three rows: (Ana, 90), (Ben, 80), (Cara, 70).",
+      "instructions": "pandas is importable as `import pandas as pd`. Build the DataFrame from a dict of columns.",
+      "starter": "import pandas as pd\n\ndef make_df():\n    # return a DataFrame with columns name, score and 3 rows\n    pass\n",
+      "tests": [
+        { "label": "columns are ['name','score']", "expr": "list(make_df().columns) == ['name', 'score']" },
+        { "label": "shape is (3, 2)", "expr": "make_df().shape == (3, 2)" },
+        { "label": "score column sums to 240", "expr": "make_df()['score'].sum() == 240" },
+        { "label": "first name is Ana", "expr": "make_df().iloc[0]['name'] == 'Ana'" },
+        { "label": "last score is 70", "expr": "make_df().iloc[2]['score'] == 70" }
+      ],
+      "solution": "import pandas as pd\n\ndef make_df():\n    return pd.DataFrame({\n        \"name\": [\"Ana\", \"Ben\", \"Cara\"],\n        \"score\": [90, 80, 70],\n    })\n"
+    } },
+    { "position": 6, "title": "Selecting and filtering rows", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Boolean indexing: df[df['score'] >= 80] keeps rows where the condition is True. The condition itself, df['score'] >= 80, is a boolean Series.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Filter a DataFrame to the rows that meet a condition, and count or aggregate them. Warm-up: what kind of value does df['score'] >= 80 produce?" },
+      { "heading": "The idea", "text": "A comparison on a column gives a boolean Series: df['score'] >= 80 is [True, True, False] for scores [90, 80, 70]. Passing that Series back in brackets keeps only the True rows: df[df['score'] >= 80] is a DataFrame of the high scorers. Combine conditions with & (and) and | (or), wrapping each in parentheses: df[(df['score'] >= 80) & (df['name'] != 'Ben')]. Count matches with .sum() on the boolean Series (True counts as 1) or len() on the filtered frame." },
+      { "heading": "Worked examples", "text": "df has scores [90, 55, 80, 70]. mask = df['score'] >= 80 is [True, False, True, False]. mask.sum() is 2 (two qualify). df[mask] is the two-row frame of the 90 and 80 rows. int((df['score'] >= 80).sum()) is 2. The average of the whole score column is df['score'].mean(); the average of just the high scorers is df[df['score'] >= 80]['score'].mean()." },
+      { "heading": "Your turn", "text": "For scores [90, 55, 80, 70]: 1) What is (df['score'] >= 80).sum()? 2) How many rows in df[df['score'] < 80]? 3) What does df['score'].mean() give? 4) Write the mask for scores above 60. Answers: 1) 2. 2) 2. 3) 73.75. 4) df['score'] > 60." },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: using Python's `and`/`or` between Series — pandas needs & and | with parentheses around each condition. Mistake: forgetting that a boolean Series sums to the count of True. Exit: (a) What does df[df['score'] >= 80] return? (b) How do you count the rows that match a condition? Answers: the rows where the condition is True; sum the boolean Series or take len() of the filtered frame." }
+    ] } },
+    { "position": 7, "title": "Code: filter a DataFrame", "kind": "code", "estimated_minutes": 14, "body": {
+      "language": "python",
+      "packages": ["pandas"],
+      "prompt": "Write high_scorers(data) that returns, as an int, how many rows of the DataFrame have a 'score' of 80 or more.",
+      "instructions": "A sample DataFrame `df` is provided so you can experiment. Your function must work for any DataFrame with a 'score' column. Return a plain int.",
+      "starter": "import pandas as pd\n\ndf = pd.DataFrame({\n    \"name\": [\"Ana\", \"Ben\", \"Cara\", \"Dan\"],\n    \"score\": [90, 55, 80, 70],\n})\n\ndef high_scorers(data):\n    # return how many rows have score >= 80, as an int\n    pass\n",
+      "tests": [
+        { "label": "high_scorers(df) == 2", "expr": "high_scorers(df) == 2" },
+        { "label": "one qualifying row", "expr": "high_scorers(pd.DataFrame({'name': ['x'], 'score': [100]})) == 1" },
+        { "label": "none qualify", "expr": "high_scorers(pd.DataFrame({'name': ['x', 'y'], 'score': [10, 20]})) == 0" },
+        { "label": "returns an int", "expr": "isinstance(high_scorers(df), int)" }
+      ],
+      "solution": "import pandas as pd\n\ndf = pd.DataFrame({\n    \"name\": [\"Ana\", \"Ben\", \"Cara\", \"Dan\"],\n    \"score\": [90, 55, 80, 70],\n})\n\ndef high_scorers(data):\n    return int((data[\"score\"] >= 80).sum())\n"
+    } },
+    { "position": 8, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "np.array([2, 4, 6]).mean() evaluates to…", "options": ["12", "4.0", "6", "2.0"], "answer": 1, "explanation": "(2 + 4 + 6) / 3 = 4.0." },
+      { "prompt": "For df with columns name, score and 3 rows, df.shape is…", "options": ["(2, 3)", "(3, 2)", "3", "(3, 3)"], "answer": 1, "explanation": "shape is (rows, columns) = (3, 2)." },
+      { "prompt": "df['score'] >= 80 produces…", "options": ["a single True/False", "a boolean Series", "an integer count", "a new DataFrame"], "answer": 1, "explanation": "Comparing a column to a value gives a boolean Series, one True/False per row." },
+      { "prompt": "To count rows where a boolean Series mask is True, you can use…", "options": ["mask.count()", "mask.sum()", "mask.len()", "mask.rows()"], "answer": 1, "explanation": "True counts as 1, so mask.sum() gives the number of matching rows." },
+      { "prompt": "df['score'].sum() for scores [90, 80, 70] is…", "options": ["240", "80", "3", "70"], "answer": 0, "explanation": "90 + 80 + 70 = 240." },
+      { "prompt": "Which correctly builds a DataFrame?", "options": ["pd.DataFrame(name, score)", "pd.DataFrame({'name': [...], 'score': [...]})", "pd.table(name, score)", "pd.frame([...])"], "answer": 1, "explanation": "Pass a dict of column-name -> equal-length list to pd.DataFrame." }
+    ] } },
+    { "position": 9, "title": "Code: group and aggregate", "kind": "code", "estimated_minutes": 14, "body": {
+      "language": "python",
+      "packages": ["pandas"],
+      "prompt": "Write total_by_region(data) that returns a dict mapping each region to the sum of its 'amount', using groupby.",
+      "instructions": "A sample DataFrame `df` with 'region' and 'amount' columns is provided. Group by region, sum the amount, and return a plain dict (hint: .to_dict()).",
+      "starter": "import pandas as pd\n\ndf = pd.DataFrame({\n    \"region\": [\"East\", \"West\", \"East\", \"West\", \"East\"],\n    \"amount\": [10, 20, 30, 5, 15],\n})\n\ndef total_by_region(data):\n    # return {region: total amount} using groupby\n    pass\n",
+      "tests": [
+        { "label": "totals are East 55, West 25", "expr": "total_by_region(df) == {'East': 55, 'West': 25}" },
+        { "label": "East total is 55", "expr": "total_by_region(df)['East'] == 55" },
+        { "label": "keys are the regions", "expr": "sorted(total_by_region(df).keys()) == ['East', 'West']" },
+        { "label": "returns a dict", "expr": "isinstance(total_by_region(df), dict)" }
+      ],
+      "solution": "import pandas as pd\n\ndf = pd.DataFrame({\n    \"region\": [\"East\", \"West\", \"East\", \"West\", \"East\"],\n    \"amount\": [10, 20, 30, 5, 15],\n})\n\ndef total_by_region(data):\n    return data.groupby(\"region\")[\"amount\"].sum().to_dict()\n"
+    } },
+    { "position": 10, "title": "Capstone: analyze an orders table", "kind": "code", "estimated_minutes": 16, "body": {
+      "language": "python",
+      "packages": ["pandas"],
+      "prompt": "Write summary(data) that returns a dict with 'total_revenue' (sum of price*qty across all rows, as int), 'num_orders' (row count, as int), and 'top_product' (the product with the highest total revenue, as a string).",
+      "instructions": "A sample orders DataFrame `df` is provided (columns: product, price, qty). Compute revenue per row, then aggregate. Hint: group a revenue Series by data['product'] and use .idxmax() for the top product.",
+      "starter": "import pandas as pd\n\ndf = pd.DataFrame({\n    \"product\": [\"A\", \"B\", \"A\", \"C\", \"B\"],\n    \"price\":   [10, 5, 10, 20, 5],\n    \"qty\":     [1, 4, 2, 1, 3],\n})\n\ndef summary(data):\n    # return {'total_revenue': int, 'num_orders': int, 'top_product': str}\n    pass\n",
+      "tests": [
+        { "label": "total_revenue == 85", "expr": "summary(df)['total_revenue'] == 85" },
+        { "label": "num_orders == 5", "expr": "summary(df)['num_orders'] == 5" },
+        { "label": "top_product == 'B'", "expr": "summary(df)['top_product'] == 'B'" },
+        { "label": "total_revenue is an int", "expr": "isinstance(summary(df)['total_revenue'], int)" }
+      ],
+      "solution": "import pandas as pd\n\ndf = pd.DataFrame({\n    \"product\": [\"A\", \"B\", \"A\", \"C\", \"B\"],\n    \"price\":   [10, 5, 10, 20, 5],\n    \"qty\":     [1, 4, 2, 1, 3],\n})\n\ndef summary(data):\n    rev = data[\"price\"] * data[\"qty\"]\n    totals = rev.groupby(data[\"product\"]).sum()\n    return {\n        \"total_revenue\": int(rev.sum()),\n        \"num_orders\": int(len(data)),\n        \"top_product\": str(totals.idxmax()),\n    }\n"
+    } }
+  ]
+}

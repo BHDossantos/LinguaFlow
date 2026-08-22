@@ -869,6 +869,9 @@ function CodeLesson({
     (t: any) => t && typeof t.label === "string" && typeof t.expr === "string",
   );
   const lang = normalizeLanguage(body?.language);
+  const packages: string[] = Array.isArray(body?.packages)
+    ? body.packages.filter((p: any) => typeof p === "string")
+    : [];
 
   const [code, setCode] = useState(starter);
   const [running, setRunning] = useState(false);
@@ -905,6 +908,7 @@ function CodeLesson({
       if (!pyRunner.current) pyRunner.current = createPythonRunner();
       const out = await pyRunner.current.run(code, tests, {
         onLoadStart: () => setLoadingRuntime(true),
+        packages,
       });
       res = out.results; lg = out.logs;
       setLoadingRuntime(false);
@@ -990,7 +994,7 @@ function CodeLesson({
 
       {loadingRuntime && (
         <div className="card border-brand-500/20 bg-brand-50 text-sm text-ink-700">
-          Downloading the Python runtime — this happens once and can take a few seconds. It then runs instantly in your browser.
+          Downloading the Python runtime{packages.length ? ` and ${packages.join(", ")}` : ""} — this happens once and can take a few seconds. It then runs instantly in your browser.
         </div>
       )}
 

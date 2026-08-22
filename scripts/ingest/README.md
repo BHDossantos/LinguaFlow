@@ -63,7 +63,12 @@ the starter template does *not* already pass.
 - **JavaScript** runs in a sandboxed Web Worker (instant, offline).
 - **Python** runs via Pyodide (CPython in WebAssembly), fetched once from the
   jsDelivr CDN by the learner's browser on first run — no server, no install.
-  Use Python comparisons in `expr` (e.g. `square(2) == 4`).
+  Use Python comparisons in `expr` (e.g. `square(2) == 4`); numpy/pandas scalar
+  comparisons are graded correctly.
+  - Add `"packages": ["numpy", "pandas"]` (python only) to load prebuilt
+    Pyodide packages before the code runs — enables real data-science lessons.
+    Provide any sample data (e.g. a DataFrame) in the `starter` so tests can call
+    the learner's function against it.
 
 ## Golden rules
 

@@ -62,6 +62,12 @@ lessons.forEach((l, i) => {
     if (typeof b.starter !== "string") die(`lesson[${i}] code needs a starter string`);
     if (b.language != null && !CODE_LANGS.has(String(b.language).toLowerCase()))
       die(`lesson[${i}] code language invalid: ${b.language} (use javascript or python)`);
+    if (b.packages != null) {
+      if (!Array.isArray(b.packages) || !b.packages.every((p) => typeof p === "string" && p.trim()))
+        die(`lesson[${i}] code packages must be an array of strings`);
+      if (String(b.language).toLowerCase() !== "python")
+        die(`lesson[${i}] code packages are only supported for python lessons`);
+    }
     if (!Array.isArray(b.tests) || b.tests.length === 0) die(`lesson[${i}] code needs tests[]`);
     b.tests.forEach((t, j) => {
       if (typeof t.label !== "string" || !t.label.trim()) die(`lesson[${i}] test${j}: label required`);
