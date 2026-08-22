@@ -76,21 +76,41 @@ export default async function AdminPage() {
   // North-star: verified skills mastered per active learner (spec §27). Proxy
   // until delayed-retention checks accumulate. Best-effort — hidden pre-migration.
   const d30 = new Date(now - 30 * 86_400_000).toISOString();
-  let outcomes: { masteredTotal: number; learnersWithMastery: number; events30d: number; openMisc: number; perLearner: number } | null = null;
+  let outcomes: {
+    masteredTotal: number; learnersWithMastery: number; events30d: number; openMisc: number; perLearner: number;
+    retainedTotal: number; learnersRetained: number; perLearnerRetained: number;
+  } | null = null;
   try {
-    const [{ data: mastered }, { count: events30d }, { count: openMisc }] = await Promise.all([
-      admin.from("skill_states").select("user_id").eq("status", "mastered"),
+    const [{ data: mastered }, { count: events30d }, { count: openMisc }, { data: retainedEv }] = await Promise.all([
+      admin.from("skill_states").select("user_id,skill_id").eq("status", "mastered"),
       admin.from("mastery_events").select("id", { count: "exact", head: true }).gte("created_at", d30),
       admin.from("misconceptions").select("id", { count: "exact", head: true }).eq("status", "open"),
+      // Passing delayed retention checks — a skill that survived a 14-day gap.
+      admin.from("mastery_events").select("user_id,skill_id").eq("event_type", "retention").gte("score", 0.8),
     ]);
     const masteredTotal = (mastered ?? []).length;
     const learnersWithMastery = new Set((mastered ?? []).map((m: any) => m.user_id)).size;
+
+    // True north-star: mastered AND retained. A skill counts only if it is
+    // currently mastered and has passed a delayed retention check.
+    const masteredPairs = new Set((mastered ?? []).map((m: any) => `${m.user_id}:${m.skill_id}`));
+    const retainedPairs = new Set<string>();
+    for (const r of retainedEv ?? []) {
+      const key = `${r.user_id}:${r.skill_id}`;
+      if (masteredPairs.has(key)) retainedPairs.add(key);
+    }
+    const retainedTotal = retainedPairs.size;
+    const learnersRetained = new Set([...retainedPairs].map((k) => k.split(":")[0])).size;
+
     outcomes = {
       masteredTotal,
       learnersWithMastery,
       events30d: events30d ?? 0,
       openMisc: openMisc ?? 0,
       perLearner: learnersWithMastery ? Math.round((masteredTotal / learnersWithMastery) * 10) / 10 : 0,
+      retainedTotal,
+      learnersRetained,
+      perLearnerRetained: learnersRetained ? Math.round((retainedTotal / learnersRetained) * 10) / 10 : 0,
     };
   } catch {
     // mastery tables not migrated yet.
@@ -149,12 +169,16 @@ export default async function AdminPage() {
         <section className="space-y-2">
           <div className="card border-brand-500/20 bg-gradient-to-br from-brand-50 to-white text-center dark:from-white/[0.06] dark:to-transparent">
             <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-500">
-              North star · skills mastered per learner
+              North star · skills mastered <em>and retained</em> per learner
             </p>
-            <p className="mt-1 text-4xl font-extrabold text-brand-600">{outcomes.perLearner}</p>
+            <p className="mt-1 text-4xl font-extrabold text-brand-600">{outcomes.perLearnerRetained}</p>
             <p className="text-xs text-ink-500">
-              The number to grow — verified mastery, not minutes watched.
+              Retained = survived a delayed check ≥14 days after mastery. The real number — not minutes watched.
             </p>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Metric label="skills retained" value={outcomes.retainedTotal} />
+            <Metric label="mastered / learner" value={outcomes.perLearner} />
           </div>
           <div className="grid grid-cols-3 gap-2">
             <Metric label="skills mastered" value={outcomes.masteredTotal} />

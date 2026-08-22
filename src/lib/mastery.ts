@@ -10,7 +10,7 @@ export type SkillStatus =
 export type MasteryEvent = {
   skillId: string;
   skillKind?: "lesson" | "concept" | "skill";
-  eventType: "lesson_complete" | "quiz" | "review" | "diagnostic" | "transfer";
+  eventType: "lesson_complete" | "quiz" | "review" | "diagnostic" | "transfer" | "retention";
   score?: number;          // 0..1
   correct?: boolean;
   attempts?: number;
