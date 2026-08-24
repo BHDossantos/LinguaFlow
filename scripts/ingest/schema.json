@@ -44,7 +44,7 @@
           "estimated_minutes": { "type": "integer" },
           "grammar_note": { "type": ["string", "null"] },
           "body": {
-            "description": "vocab: {items:[{term,translation,ipa?,example}]} | quiz: {questions:[{prompt,options[4],answer,explanation}]} | roleplay: {scenario,persona,goal} | code: {prompt,starter,tests:[{label,expr}],language?:'javascript'|'python',packages?:string[] (python only, e.g. ['numpy','pandas']),instructions?,solution?} | reading/grammar/writing/etc: {sections:[{heading,text}]}"
+            "description": "vocab: {items:[{term,translation,ipa?,example}]} | quiz: {questions:[{prompt,options[4],answer,explanation}]} | roleplay: {scenario,persona,goal} | code (js/python): {prompt,starter,tests:[{label,expr}],language?:'javascript'|'python',packages?:string[] (python only),instructions?,solution?} | code (sql): {prompt,language:'sql',schema:'DDL+seed',solution:'reference query',starter?,ordered?:bool,instructions?} | reading/grammar/writing/etc: {sections:[{heading,text}]}"
           }
         }
       }

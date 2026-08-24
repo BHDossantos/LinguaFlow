@@ -39,17 +39,20 @@ export function createRunnerUrl(): string {
 export type RunResult = { results: (boolean | string)[]; logs: string[] };
 
 // A `code` lesson/challenge names its language; the runner picks JS (a Blob
-// worker) or Python (Pyodide). Anything unknown falls back to JavaScript.
-export type CodeLanguage = "javascript" | "python";
+// worker), Python (Pyodide), or SQL (sql.js). Anything unknown falls back to JS.
+export type CodeLanguage = "javascript" | "python" | "sql";
 
 export function normalizeLanguage(lang: unknown): CodeLanguage {
   const s = String(lang ?? "").toLowerCase();
-  return s === "python" || s === "py" ? "python" : "javascript";
+  if (s === "python" || s === "py") return "python";
+  if (s === "sql" || s === "sqlite") return "sql";
+  return "javascript";
 }
 
 export const LANGUAGE_LABEL: Record<CodeLanguage, string> = {
   javascript: "JavaScript",
   python: "Python",
+  sql: "SQL",
 };
 
 // Run `code` against `tests` in a fresh worker and resolve with per-test
@@ -231,3 +234,118 @@ export function createPythonRunner() {
 }
 
 export type PythonRunner = ReturnType<typeof createPythonRunner>;
+
+// ---------------------------------------------------------------------------
+// SQL support via sql.js (SQLite compiled to WebAssembly, ~1.5 MB).
+//
+// A SQL `code` lesson provides a `schema` (DDL + seed rows) and a reference
+// `solution` query. The learner writes a query; we run both against a fresh
+// in-memory database and compare result sets. Like the Python runner, one
+// worker is kept alive so sql.js loads once and is reused.
+
+export const SQLJS_VERSION = "1.13.0";
+const SQLJS_BASE = `https://cdn.jsdelivr.net/npm/sql.js@${SQLJS_VERSION}/dist/`;
+
+export type SqlResult = { columns: string[]; values: unknown[][] };
+
+const SQL_WORKER_SRC = `
+let sqlReady = null;
+function ensureSql() {
+  if (!sqlReady) {
+    importScripts('${SQLJS_BASE}sql-wasm.js');
+    sqlReady = initSqlJs({ locateFile: (f) => '${SQLJS_BASE}' + f });
+  }
+  return sqlReady;
+}
+self.onmessage = async (e) => {
+  const { schema, query, solution } = e.data;
+  try {
+    const SQL = await ensureSql();
+    const runOn = (sqlText) => {
+      const db = new SQL.Database();
+      try {
+        if (schema) db.run(schema);
+        const res = db.exec(sqlText);
+        const last = res.length ? res[res.length - 1] : { columns: [], values: [] };
+        return { columns: last.columns || [], values: last.values || [] };
+      } finally {
+        db.close();
+      }
+    };
+    const actual = runOn(query);
+    const expected = solution ? runOn(solution) : null;
+    self.postMessage({ ok: true, actual, expected });
+  } catch (err) {
+    self.postMessage({ ok: false, error: String((err && err.message) || err) });
+  }
+};
+`;
+
+export type SqlRunResult =
+  | { ok: true; actual: SqlResult; expected: SqlResult | null }
+  | { ok: false; error: string };
+
+// Reusable SQL runner. run() executes the learner's query (and, when given, the
+// reference solution) against a fresh DB seeded by `schema`. Keeps one worker.
+export function createSqlRunner() {
+  let worker: Worker | null = null;
+  let url = "";
+  let loaded = false;
+
+  function spawn() {
+    url = URL.createObjectURL(new Blob([SQL_WORKER_SRC], { type: "text/javascript" }));
+    worker = new Worker(url);
+  }
+  function kill() {
+    if (worker) worker.terminate();
+    if (url) URL.revokeObjectURL(url);
+    worker = null; url = ""; loaded = false;
+  }
+
+  return {
+    hasLoaded: () => loaded,
+    run(
+      schema: string,
+      query: string,
+      solution?: string | null,
+      opts?: { onLoadStart?: () => void },
+    ): Promise<SqlRunResult> {
+      if (!loaded && opts?.onLoadStart) opts.onLoadStart();
+      const timeoutMs = loaded ? 15000 : 45000;
+      return new Promise((resolve) => {
+        if (!worker) spawn();
+        const w = worker!;
+        let timer: ReturnType<typeof setTimeout>;
+        const finish = (r: SqlRunResult) => {
+          clearTimeout(timer);
+          w.onmessage = null; w.onerror = null;
+          resolve(r);
+        };
+        w.onmessage = (ev: MessageEvent) => {
+          loaded = true;
+          finish(ev.data as SqlRunResult);
+        };
+        w.onerror = () => { kill(); finish({ ok: false, error: "could not start the SQL engine" }); };
+        timer = setTimeout(() => { kill(); finish({ ok: false, error: "timed out (slow first load or heavy query?)" }); }, timeoutMs);
+        w.postMessage({ schema, query, solution: solution ?? null });
+      });
+    },
+    dispose: kill,
+  };
+}
+
+export type SqlRunner = ReturnType<typeof createSqlRunner>;
+
+// Compare two SQL result sets. Column names are ignored (learners may alias);
+// only the grid of values matters. Unordered by default (rows compared as a
+// multiset); pass ordered=true for lessons that teach ORDER BY.
+export function sqlResultsEqual(a: SqlResult, b: SqlResult, ordered = false): boolean {
+  const rows = (r: SqlResult) => (r.values ?? []).map((row) => JSON.stringify(row));
+  const ra = rows(a);
+  const rb = rows(b);
+  if (ra.length !== rb.length) return false;
+  if (ordered) return ra.every((v, i) => v === rb[i]);
+  const sa = [...ra].sort();
+  const sb = [...rb].sort();
+  return sa.every((v, i) => v === sb[i]);
+}

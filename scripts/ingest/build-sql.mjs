@@ -12,7 +12,7 @@ import { dirname, join, basename } from "node:path";
 
 const KINDS = new Set(["vocab","grammar","listening","reading","speaking","roleplay","writing","quiz","code"]);
 const SCHOOLS = new Set(["language","math","technology","business","science"]);
-const CODE_LANGS = new Set(["javascript","python"]);
+const CODE_LANGS = new Set(["javascript","python","sql","sqlite"]);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 function die(msg) { console.error(`✗ ${msg}`); process.exit(1); }
@@ -59,20 +59,28 @@ lessons.forEach((l, i) => {
     if (!b.scenario || !b.goal) die(`lesson[${i}] roleplay needs scenario+goal`);
   } else if (l.kind === "code") {
     if (typeof b.prompt !== "string" || !b.prompt.trim()) die(`lesson[${i}] code needs a prompt`);
-    if (typeof b.starter !== "string") die(`lesson[${i}] code needs a starter string`);
-    if (b.language != null && !CODE_LANGS.has(String(b.language).toLowerCase()))
-      die(`lesson[${i}] code language invalid: ${b.language} (use javascript or python)`);
-    if (b.packages != null) {
-      if (!Array.isArray(b.packages) || !b.packages.every((p) => typeof p === "string" && p.trim()))
-        die(`lesson[${i}] code packages must be an array of strings`);
-      if (String(b.language).toLowerCase() !== "python")
-        die(`lesson[${i}] code packages are only supported for python lessons`);
+    const codeLang = String(b.language ?? "javascript").toLowerCase();
+    if (b.language != null && !CODE_LANGS.has(codeLang))
+      die(`lesson[${i}] code language invalid: ${b.language} (use javascript, python, or sql)`);
+    if (codeLang === "sql") {
+      // SQL lessons grade by comparing the learner's query to a reference query
+      // run against the same seeded database.
+      if (typeof b.schema !== "string" || !b.schema.trim()) die(`lesson[${i}] sql code needs a schema (DDL + seed)`);
+      if (typeof b.solution !== "string" || !b.solution.trim()) die(`lesson[${i}] sql code needs a reference solution query`);
+    } else {
+      if (typeof b.starter !== "string") die(`lesson[${i}] code needs a starter string`);
+      if (b.packages != null) {
+        if (!Array.isArray(b.packages) || !b.packages.every((p) => typeof p === "string" && p.trim()))
+          die(`lesson[${i}] code packages must be an array of strings`);
+        if (codeLang !== "python")
+          die(`lesson[${i}] code packages are only supported for python lessons`);
+      }
+      if (!Array.isArray(b.tests) || b.tests.length === 0) die(`lesson[${i}] code needs tests[]`);
+      b.tests.forEach((t, j) => {
+        if (typeof t.label !== "string" || !t.label.trim()) die(`lesson[${i}] test${j}: label required`);
+        if (typeof t.expr !== "string" || !t.expr.trim()) die(`lesson[${i}] test${j}: expr required`);
+      });
     }
-    if (!Array.isArray(b.tests) || b.tests.length === 0) die(`lesson[${i}] code needs tests[]`);
-    b.tests.forEach((t, j) => {
-      if (typeof t.label !== "string" || !t.label.trim()) die(`lesson[${i}] test${j}: label required`);
-      if (typeof t.expr !== "string" || !t.expr.trim()) die(`lesson[${i}] test${j}: expr required`);
-    });
   } else {
     if (!Array.isArray(b.sections) || b.sections.length === 0) die(`lesson[${i}] ${l.kind} needs sections[]`);
   }

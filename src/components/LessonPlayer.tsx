@@ -9,10 +9,14 @@ import {
   createRunnerUrl,
   runInSandbox,
   createPythonRunner,
+  createSqlRunner,
+  sqlResultsEqual,
   normalizeLanguage,
   LANGUAGE_LABEL,
   type CodeTest,
   type PythonRunner,
+  type SqlRunner,
+  type SqlResult,
 } from "@/lib/code-runner";
 
 type Lesson = {
@@ -104,9 +108,12 @@ export function LessonPlayer({
   } else if (lesson.kind === "roleplay") {
     content = <RoleplayLesson body={lesson.body} title={lesson.title} courseId={courseId} />;
   } else if (lesson.kind === "code") {
-    content = (
-      <CodeLesson body={lesson.body} title={lesson.title} courseId={courseId} lessonId={lesson.id} />
-    );
+    content =
+      normalizeLanguage(lesson.body?.language) === "sql" ? (
+        <SqlLesson body={lesson.body} title={lesson.title} courseId={courseId} lessonId={lesson.id} />
+      ) : (
+        <CodeLesson body={lesson.body} title={lesson.title} courseId={courseId} lessonId={lesson.id} />
+      );
   } else if (lesson.kind === "quiz") {
     // Malformed questions (no prompt/options) are skipped rather than crashing
     // or dead-ending the quiz.
@@ -1038,6 +1045,178 @@ function CodeLesson({
       <Link href={`/learn/${courseId}`} className="block text-center text-sm text-ink-500">
         Back to course
       </Link>
+    </div>
+  );
+}
+
+// A SQL lesson (spec §12): the learner writes a query against a small in-browser
+// SQLite database seeded by `schema`. We run their query and a reference
+// `solution` query, compare result sets, and complete the lesson on a match.
+// SQLite runs entirely in the browser via sql.js — nothing is sent to a server.
+function SqlLesson({
+  body, title, courseId, lessonId,
+}: {
+  body: any;
+  title: string;
+  courseId: string;
+  lessonId: string;
+}) {
+  const prompt: string = typeof body?.prompt === "string" ? body.prompt : "";
+  const instructions: string | null =
+    typeof body?.instructions === "string" && body.instructions.trim() ? body.instructions : null;
+  const schema: string = typeof body?.schema === "string" ? body.schema : "";
+  const starter: string = typeof body?.starter === "string" ? body.starter : "SELECT ";
+  const solution: string | null =
+    typeof body?.solution === "string" && body.solution.trim() ? body.solution : null;
+  const ordered = body?.ordered === true;
+
+  const [query, setQuery] = useState(starter);
+  const [running, setRunning] = useState(false);
+  const [loadingRuntime, setLoadingRuntime] = useState(false);
+  const [result, setResult] = useState<SqlResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [pass, setPass] = useState<boolean | null>(null);
+  const [attempts, setAttempts] = useState(0);
+  const [showSolution, setShowSolution] = useState(false);
+  const [done, setDone] = useState(false);
+  const [pending, startTransition] = useTransition();
+
+  const runner = useRef<SqlRunner | null>(null);
+  useEffect(() => () => runner.current?.dispose(), []);
+
+  async function run() {
+    if (running) return;
+    setRunning(true); setError(null); setPass(null); setResult(null);
+    if (!runner.current) runner.current = createSqlRunner();
+    const out = await runner.current.run(schema, query, solution, {
+      onLoadStart: () => setLoadingRuntime(true),
+    });
+    setLoadingRuntime(false);
+    setAttempts((a) => a + 1);
+    setRunning(false);
+    if (!out.ok) { setError(out.error); return; }
+    setResult(out.actual);
+    if (out.expected) {
+      const ok = sqlResultsEqual(out.actual, out.expected, ordered);
+      setPass(ok);
+      if (ok) {
+        startTransition(async () => {
+          try { await completeLessonAction(lessonId, 100); } catch {}
+        });
+        setDone(true);
+      }
+    }
+  }
+
+  if (done) {
+    return (
+      <div className="space-y-3">
+        <Celebrate xp={XP.lessonComplete} />
+        <h1 className="text-xl font-bold">Query solved 🎉</h1>
+        <p className="text-sm text-ink-500">
+          {pending ? "Saving your progress…" : `Correct result in ${attempts} ${attempts === 1 ? "run" : "runs"}.`}
+        </p>
+        <Link href={`/learn/${courseId}`} className="btn-primary inline-block">Continue</Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <h1 className="text-xl font-bold">{title}</h1>
+        <span className="rounded-full bg-black/5 px-2.5 py-0.5 text-[11px] font-semibold text-ink-500">SQL</span>
+      </div>
+
+      <div className="card">
+        <p className="text-sm leading-relaxed text-ink-700">{prompt}</p>
+        {instructions && (
+          <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-ink-500">{instructions}</p>
+        )}
+      </div>
+
+      {schema && (
+        <details className="card">
+          <summary className="cursor-pointer text-sm font-medium">Show the database schema</summary>
+          <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg bg-[#0e1022] p-3 font-mono text-xs text-white">{schema}</pre>
+        </details>
+      )}
+
+      <textarea
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        spellCheck={false}
+        rows={8}
+        className="w-full rounded-xl border border-black/10 bg-[#0e1022] p-3 font-mono text-sm text-white"
+        aria-label="SQL editor"
+      />
+
+      <div className="flex flex-wrap items-center gap-2">
+        <button onClick={run} disabled={running} className="btn-primary px-5 py-2 text-sm">
+          {loadingRuntime ? "Loading SQL…" : running ? "Running…" : "▶ Run query"}
+        </button>
+        <button onClick={() => { setQuery(starter); setResult(null); setError(null); setPass(null); }} className="btn-ghost px-4 py-2 text-sm">
+          Reset
+        </button>
+        {solution && attempts >= 3 && pass !== true && (
+          <button onClick={() => setShowSolution((s) => !s)} className="btn-ghost px-4 py-2 text-sm">
+            {showSolution ? "Hide solution" : "Show solution"}
+          </button>
+        )}
+        {pass === true && <span className="text-sm font-semibold text-green-600">✓ Correct result!</span>}
+        {pass === false && <span className="text-sm font-semibold text-amber-600">Not the expected result yet — keep going.</span>}
+      </div>
+
+      {loadingRuntime && (
+        <div className="card border-brand-500/20 bg-brand-50 text-sm text-ink-700">
+          Loading the in-browser SQLite engine — this happens once and can take a few seconds.
+        </div>
+      )}
+
+      {error && (
+        <div className="card border border-red-300 bg-red-50 text-sm text-red-700">
+          <p className="font-semibold">SQL error</p>
+          <p className="mt-0.5 font-mono text-xs">{error}</p>
+        </div>
+      )}
+
+      {result && (
+        <div className="card space-y-1">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">
+            Result · {result.values.length} row{result.values.length === 1 ? "" : "s"}
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-[11px] uppercase tracking-wider text-ink-500">
+                  {result.columns.map((c, i) => (
+                    <th key={i} className="py-1 pr-3 font-semibold">{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {result.values.slice(0, 50).map((row, ri) => (
+                  <tr key={ri} className="border-t border-black/5">
+                    {row.map((cell, ci) => (
+                      <td key={ci} className="py-1 pr-3">{cell === null ? <span className="text-ink-500">NULL</span> : String(cell)}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {result.values.length > 50 && <p className="text-[11px] text-ink-500">Showing first 50 rows.</p>}
+        </div>
+      )}
+
+      {showSolution && solution && (
+        <details className="card" open>
+          <summary className="cursor-pointer text-sm font-medium">Reference solution</summary>
+          <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-lg bg-[#0e1022] p-3 font-mono text-xs text-white">{solution}</pre>
+        </details>
+      )}
+
+      <Link href={`/learn/${courseId}`} className="block text-center text-sm text-ink-500">Back to course</Link>
     </div>
   );
 }

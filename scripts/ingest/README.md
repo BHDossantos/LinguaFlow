@@ -69,6 +69,20 @@ the starter template does *not* already pass.
     Pyodide packages before the code runs — enables real data-science lessons.
     Provide any sample data (e.g. a DataFrame) in the `starter` so tests can call
     the learner's function against it.
+- **SQL** (`"language": "sql"`) runs real SQLite in the browser via sql.js.
+  Instead of `tests`, give a `schema` (DDL + seed) and a reference `solution`
+  query; the learner's query is graded by comparing its result set to the
+  solution's (column names ignored). Set `"ordered": true` for lessons that
+  teach ORDER BY. Example body:
+  ```json
+  {
+    "language": "sql",
+    "prompt": "Return the names of customers in Lisbon.",
+    "schema": "CREATE TABLE customers(...); INSERT INTO customers VALUES (...);",
+    "starter": "SELECT * FROM customers;",
+    "solution": "SELECT name FROM customers WHERE city = 'Lisbon';"
+  }
+  ```
 
 ## Golden rules
 

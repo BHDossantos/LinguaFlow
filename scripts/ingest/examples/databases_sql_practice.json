@@ -1,0 +1,101 @@
+{
+  "source": {
+    "id": "sqlite_docs",
+    "name": "SQLite documentation",
+    "url": "https://www.sqlite.org/lang.html",
+    "license": "Public Domain"
+  },
+  "course": {
+    "id": "bbbb0002-0000-4000-8000-000000000029",
+    "title": "Practical SQL: Query Real Data",
+    "description": "Write real SQL against a live SQLite database in your browser — SELECT, WHERE, ORDER BY, aggregates, GROUP BY, and JOINs — every query auto-checked against the correct result, no setup required. SQL dialect and structure informed by the public-domain SQLite documentation (sqlite.org).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "technology",
+    "goal_tag": "foundations",
+    "position": 29,
+    "prerequisite_ids": []
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "Which SQL clause chooses WHICH COLUMNS a query returns?", "options": ["FROM", "SELECT", "WHERE", "GROUP BY"], "answer": 1, "explanation": "SELECT lists the columns (or expressions) to return; FROM names the table, WHERE filters rows." },
+      { "prompt": "Which clause filters WHICH ROWS are returned?", "options": ["SELECT", "ORDER BY", "WHERE", "LIMIT"], "answer": 2, "explanation": "WHERE keeps only the rows matching a condition." },
+      { "prompt": "To sort results from largest to smallest by a column, you use…", "options": ["ORDER BY col ASC", "ORDER BY col DESC", "SORT col", "GROUP BY col"], "answer": 1, "explanation": "ORDER BY col DESC sorts descending; ASC (the default) sorts ascending." },
+      { "prompt": "Which function counts the number of rows in a group?", "options": ["SUM()", "COUNT(*)", "TOTAL()", "ROWS()"], "answer": 1, "explanation": "COUNT(*) counts rows; SUM() adds up a numeric column." },
+      { "prompt": "A JOIN is used to…", "options": ["combine rows from two tables by a related key", "sort a table", "delete rows", "rename a column"], "answer": 0, "explanation": "A JOIN matches rows across tables on a shared key (e.g. orders.customer_id = customers.id)." },
+      { "prompt": "GROUP BY is normally paired with…", "options": ["an aggregate like SUM or COUNT", "ORDER BY only", "a JOIN only", "DELETE"], "answer": 0, "explanation": "GROUP BY collapses rows into groups so an aggregate (SUM, COUNT, AVG) is computed per group." }
+    ] } },
+    { "position": 2, "title": "SELECT, FROM, and WHERE", "kind": "reading", "estimated_minutes": 12, "grammar_note": "Text literals go in single quotes in SQL: WHERE city = 'Lisbon'. Double quotes mean an identifier (a column/table name), not a string.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Read rows from a table, pick specific columns, and filter with a condition. Warm-up: which clause decides which rows come back — SELECT or WHERE?" },
+      { "heading": "The idea", "text": "A query has three core parts. SELECT lists the columns you want (or * for all). FROM names the table. WHERE filters to the rows that match a condition. So SELECT name FROM customers WHERE city = 'Lisbon' returns just the name column, only for customers whose city is Lisbon. Conditions use =, <>, <, >, <=, >=, and combine with AND/OR. Text is wrapped in single quotes; numbers are bare." },
+      { "heading": "Worked examples", "text": "Given a customers table (id, name, city): SELECT * FROM customers returns every column and row. SELECT name, city FROM customers returns two columns. SELECT name FROM customers WHERE city = 'Lisbon' returns only Lisbon customers' names. SELECT * FROM customers WHERE id > 2 returns rows with id 3 and up. Combine: SELECT name FROM customers WHERE city = 'Lisbon' AND id < 3." },
+      { "heading": "Your turn", "text": "For customers(id, name, city): 1) Write a query for all columns of every customer. 2) Return just the name column. 3) Return names of customers in 'Porto'. 4) Return all customers with id at least 3. Answers: 1) SELECT * FROM customers; 2) SELECT name FROM customers; 3) SELECT name FROM customers WHERE city = 'Porto'; 4) SELECT * FROM customers WHERE id >= 3;" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: using double quotes for a text value — 'Lisbon' is a string, \"Lisbon\" is read as a column name. Mistake: forgetting WHERE and returning the whole table. Exit: (a) Which clause picks columns? (b) Which clause filters rows? Answers: SELECT; WHERE." }
+    ] } },
+    { "position": 3, "title": "Code: filter with WHERE", "kind": "code", "estimated_minutes": 12, "body": {
+      "language": "sql",
+      "prompt": "Return the name of every customer who lives in Lisbon. (Return just the name column.)",
+      "instructions": "The database is seeded for you — open the schema to see the tables. Write your query and Run. The first run loads the in-browser SQLite engine once.",
+      "schema": "CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, city TEXT);\nINSERT INTO customers VALUES (1,'Ana','Lisbon'),(2,'Ben','Porto'),(3,'Cara','Lisbon'),(4,'Dan','Faro');\nCREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, product TEXT, amount INTEGER);\nINSERT INTO orders VALUES (1,1,'Book',20),(2,1,'Pen',5),(3,2,'Book',20),(4,3,'Desk',120),(5,3,'Pen',5),(6,4,'Book',20);",
+      "starter": "SELECT * FROM customers;",
+      "solution": "SELECT name FROM customers WHERE city = 'Lisbon';"
+    } },
+    { "position": 4, "title": "ORDER BY and LIMIT", "kind": "reading", "estimated_minutes": 11, "grammar_note": "ORDER BY runs after WHERE; LIMIT runs last. So the order is: filter rows, sort them, then keep the top N.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Sort query results and keep only the top rows. Warm-up: how do you sort from highest to lowest?" },
+      { "heading": "The idea", "text": "ORDER BY col sorts the result by a column, ascending by default; add DESC for descending. LIMIT n keeps only the first n rows after sorting — perfect for 'top N' questions. You can sort by multiple columns: ORDER BY city ASC, amount DESC sorts by city, breaking ties by amount." },
+      { "heading": "Worked examples", "text": "Given orders(id, customer_id, product, amount): SELECT product, amount FROM orders ORDER BY amount DESC lists the most expensive orders first. Add LIMIT 3 to keep only the three priciest. SELECT * FROM orders ORDER BY amount ASC LIMIT 1 returns the single cheapest order. Ties are broken by whatever you list next in ORDER BY." },
+      { "heading": "Your turn", "text": "For orders(id, customer_id, product, amount): 1) Sort all orders by amount ascending. 2) Return the top 2 orders by amount (highest first). 3) Return the single most expensive order's product. Answers: 1) SELECT * FROM orders ORDER BY amount; 2) SELECT * FROM orders ORDER BY amount DESC LIMIT 2; 3) SELECT product FROM orders ORDER BY amount DESC LIMIT 1;" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: expecting LIMIT to pick the 'best' rows without ORDER BY — without sorting, the rows kept are arbitrary. Mistake: writing DESC before the column. Exit: (a) What keeps only the first N rows? (b) What sorts descending? Answers: LIMIT N; ORDER BY col DESC." }
+    ] } },
+    { "position": 5, "title": "Code: sort and limit", "kind": "code", "estimated_minutes": 12, "body": {
+      "language": "sql",
+      "ordered": true,
+      "prompt": "Return the product and amount of the 3 most expensive orders, highest amount first.",
+      "instructions": "Order matters here — the rows must come back sorted from highest amount to lowest. Return the product and amount columns.",
+      "schema": "CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, city TEXT);\nINSERT INTO customers VALUES (1,'Ana','Lisbon'),(2,'Ben','Porto'),(3,'Cara','Lisbon'),(4,'Dan','Faro');\nCREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, product TEXT, amount INTEGER);\nINSERT INTO orders VALUES (1,1,'Book',20),(2,1,'Pen',5),(3,2,'Book',20),(4,3,'Desk',120),(5,3,'Pen',5),(6,4,'Book',20);",
+      "starter": "SELECT product, amount FROM orders;",
+      "solution": "SELECT product, amount FROM orders ORDER BY amount DESC LIMIT 3;"
+    } },
+    { "position": 6, "title": "Aggregates, GROUP BY, and JOIN", "kind": "reading", "estimated_minutes": 13, "grammar_note": "When you GROUP BY a column, every other column in SELECT must be either that grouping column or wrapped in an aggregate (SUM, COUNT, AVG, MIN, MAX).", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Summarize rows with aggregates, group them by a column, and combine two tables with a JOIN. Warm-up: which function adds up a numeric column?" },
+      { "heading": "The idea", "text": "Aggregates collapse many rows into one value: COUNT(*) counts rows, SUM(amount) totals a column, AVG, MIN, MAX do the rest. GROUP BY col computes an aggregate per group — SELECT city, COUNT(*) FROM customers GROUP BY city gives a count per city. A JOIN combines tables on a related key: SELECT ... FROM customers c JOIN orders o ON o.customer_id = c.id matches each order to its customer. Aliases (c, o) keep column references short and unambiguous." },
+      { "heading": "Worked examples", "text": "SELECT SUM(amount) FROM orders totals every order. SELECT customer_id, SUM(amount) FROM orders GROUP BY customer_id totals per customer. Joining for names: SELECT c.name, SUM(o.amount) FROM customers c JOIN orders o ON o.customer_id = c.id GROUP BY c.name gives each customer's total spend. SELECT c.city, COUNT(*) FROM customers c JOIN orders o ON o.customer_id = c.id GROUP BY c.city counts orders per city." },
+      { "heading": "Your turn", "text": "For customers(id,name,city) and orders(id,customer_id,product,amount): 1) Total of all order amounts. 2) Number of orders per customer_id. 3) Each customer name with their total spend (JOIN + GROUP BY). Answers: 1) SELECT SUM(amount) FROM orders; 2) SELECT customer_id, COUNT(*) FROM orders GROUP BY customer_id; 3) SELECT c.name, SUM(o.amount) FROM customers c JOIN orders o ON o.customer_id = c.id GROUP BY c.name;" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: selecting a non-aggregated column that is not in GROUP BY. Mistake: forgetting the ON condition in a JOIN, which pairs every row with every other. Exit: (a) What does GROUP BY do? (b) What connects two tables in a JOIN? Answers: computes an aggregate per group; the ON condition matching a shared key." }
+    ] } },
+    { "position": 7, "title": "Code: total spend per customer", "kind": "code", "estimated_minutes": 14, "body": {
+      "language": "sql",
+      "prompt": "Return each customer's name alongside the total amount they have spent across all their orders. Use a JOIN and GROUP BY.",
+      "instructions": "Join customers to orders on the customer id, group by the customer, and SUM the amount. Row order does not matter here.",
+      "schema": "CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, city TEXT);\nINSERT INTO customers VALUES (1,'Ana','Lisbon'),(2,'Ben','Porto'),(3,'Cara','Lisbon'),(4,'Dan','Faro');\nCREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, product TEXT, amount INTEGER);\nINSERT INTO orders VALUES (1,1,'Book',20),(2,1,'Pen',5),(3,2,'Book',20),(4,3,'Desk',120),(5,3,'Pen',5),(6,4,'Book',20);",
+      "starter": "SELECT c.name, o.amount\nFROM customers c\nJOIN orders o ON o.customer_id = c.id;",
+      "solution": "SELECT c.name, SUM(o.amount) FROM customers c JOIN orders o ON o.customer_id = c.id GROUP BY c.name;"
+    } },
+    { "position": 8, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "SELECT name FROM customers WHERE city = 'Lisbon' returns…", "options": ["all columns for Lisbon customers", "just the name column for Lisbon customers", "all customers", "an error"], "answer": 1, "explanation": "SELECT name limits to one column; WHERE limits to Lisbon rows." },
+      { "prompt": "To keep only the top 3 rows after sorting, add…", "options": ["TOP 3", "LIMIT 3", "FIRST 3", "ROWS 3"], "answer": 1, "explanation": "SQLite uses LIMIT n; ORDER BY must come first to define 'top'." },
+      { "prompt": "SELECT SUM(amount) FROM orders returns…", "options": ["one number: the total of all amounts", "one row per order", "the count of orders", "the largest amount"], "answer": 0, "explanation": "SUM aggregates the whole column into a single total." },
+      { "prompt": "In SELECT c.name, SUM(o.amount) ... GROUP BY c.name, the amount is summed…", "options": ["across the whole table", "per customer name", "per city", "per order id"], "answer": 1, "explanation": "GROUP BY c.name computes the SUM within each customer." },
+      { "prompt": "A JOIN's ON clause specifies…", "options": ["which columns to return", "how rows in the two tables are matched", "the sort order", "the row limit"], "answer": 1, "explanation": "ON gives the matching condition, e.g. o.customer_id = c.id." },
+      { "prompt": "Which is a valid string literal in SQLite?", "options": ["\"Lisbon\"", "'Lisbon'", "`Lisbon`", "[Lisbon]"], "answer": 1, "explanation": "Single quotes denote a string; double quotes/brackets denote identifiers." }
+    ] } },
+    { "position": 9, "title": "Code: orders per city", "kind": "code", "estimated_minutes": 14, "body": {
+      "language": "sql",
+      "prompt": "Return each city alongside the number of orders placed by customers in that city. Use a JOIN, GROUP BY, and COUNT.",
+      "instructions": "Join orders to their customer to know each order's city, then count orders per city. Row order does not matter.",
+      "schema": "CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, city TEXT);\nINSERT INTO customers VALUES (1,'Ana','Lisbon'),(2,'Ben','Porto'),(3,'Cara','Lisbon'),(4,'Dan','Faro');\nCREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, product TEXT, amount INTEGER);\nINSERT INTO orders VALUES (1,1,'Book',20),(2,1,'Pen',5),(3,2,'Book',20),(4,3,'Desk',120),(5,3,'Pen',5),(6,4,'Book',20);",
+      "starter": "SELECT c.city\nFROM customers c\nJOIN orders o ON o.customer_id = c.id;",
+      "solution": "SELECT c.city, COUNT(*) FROM customers c JOIN orders o ON o.customer_id = c.id GROUP BY c.city;"
+    } },
+    { "position": 10, "title": "Capstone: the top-spending city", "kind": "code", "estimated_minutes": 15, "body": {
+      "language": "sql",
+      "ordered": true,
+      "prompt": "Return the single city whose customers have spent the most in total, with its total spend. Return two columns: the city and the total.",
+      "instructions": "Combine everything: JOIN, GROUP BY city, SUM the amounts, ORDER BY the total descending, and LIMIT to 1.",
+      "schema": "CREATE TABLE customers (id INTEGER PRIMARY KEY, name TEXT, city TEXT);\nINSERT INTO customers VALUES (1,'Ana','Lisbon'),(2,'Ben','Porto'),(3,'Cara','Lisbon'),(4,'Dan','Faro');\nCREATE TABLE orders (id INTEGER PRIMARY KEY, customer_id INTEGER, product TEXT, amount INTEGER);\nINSERT INTO orders VALUES (1,1,'Book',20),(2,1,'Pen',5),(3,2,'Book',20),(4,3,'Desk',120),(5,3,'Pen',5),(6,4,'Book',20);",
+      "starter": "SELECT c.city, SUM(o.amount)\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nGROUP BY c.city;",
+      "solution": "SELECT c.city, SUM(o.amount) FROM customers c JOIN orders o ON o.customer_id = c.id GROUP BY c.city ORDER BY SUM(o.amount) DESC LIMIT 1;"
+    } }
+  ]
+}
