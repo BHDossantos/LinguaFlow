@@ -69,6 +69,10 @@ the starter template does *not* already pass.
     Pyodide packages before the code runs — enables real data-science lessons.
     Provide any sample data (e.g. a DataFrame) in the `starter` so tests can call
     the learner's function against it.
+  - Add `"matplotlib"` to `packages` to draw charts: any figure the learner's
+    top-level code produces is captured (Agg backend) and rendered inline under
+    the results. Tests still grade the returned data — put the plotting code in
+    the `starter` so the chart appears as soon as the function is correct.
 - **SQL** (`"language": "sql"`) runs real SQLite in the browser via sql.js.
   Instead of `tests`, give a `schema` (DDL + seed) and a reference `solution`
   query; the learner's query is graded by comparing its result set to the

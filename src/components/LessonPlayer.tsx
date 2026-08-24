@@ -885,6 +885,7 @@ function CodeLesson({
   const [loadingRuntime, setLoadingRuntime] = useState(false);
   const [results, setResults] = useState<(boolean | string)[] | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
+  const [image, setImage] = useState<string | null>(null);
   const [attempts, setAttempts] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
   const [done, setDone] = useState(false);
@@ -908,16 +909,17 @@ function CodeLesson({
 
   async function run() {
     if (running) return;
-    setRunning(true); setResults(null); setLogs([]);
+    setRunning(true); setResults(null); setLogs([]); setImage(null);
     let res: (boolean | string)[];
     let lg: string[];
+    let img: string | null = null;
     if (lang === "python") {
       if (!pyRunner.current) pyRunner.current = createPythonRunner();
       const out = await pyRunner.current.run(code, tests, {
         onLoadStart: () => setLoadingRuntime(true),
         packages,
       });
-      res = out.results; lg = out.logs;
+      res = out.results; lg = out.logs; img = out.image ?? null;
       setLoadingRuntime(false);
     } else {
       if (!workerUrl) { setRunning(false); return; }
@@ -926,6 +928,7 @@ function CodeLesson({
     }
     setResults(res);
     setLogs(lg);
+    setImage(img);
     setAttempts((a) => a + 1);
     setRunning(false);
     if (res.length > 0 && res.every((r) => r === true)) {
@@ -1024,6 +1027,18 @@ function CodeLesson({
               Keep going — the lesson unlocks once every test passes.
             </p>
           )}
+        </div>
+      )}
+
+      {image && (
+        <div className="card">
+          <p className="text-xs font-semibold uppercase tracking-wider text-ink-500">Plot</p>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`data:image/png;base64,${image}`}
+            alt="Plot produced by your code"
+            className="mt-2 max-w-full rounded-lg border border-black/5 bg-white"
+          />
         </div>
       )}
 

@@ -36,7 +36,11 @@ export function createRunnerUrl(): string {
   return URL.createObjectURL(new Blob([WORKER_SRC], { type: "text/javascript" }));
 }
 
-export type RunResult = { results: (boolean | string)[]; logs: string[] };
+export type RunResult = {
+  results: (boolean | string)[];
+  logs: string[];
+  image?: string | null; // base64 PNG of a matplotlib figure, if the code drew one
+};
 
 // A `code` lesson/challenge names its language; the runner picks JS (a Blob
 // worker), Python (Pyodide), or SQL (sql.js). Anything unknown falls back to JS.
@@ -99,7 +103,25 @@ const PYODIDE_BASE = `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/
 // returned as logs. A test passes only when its expression is exactly True; any
 // exception is captured (per test, or for the whole run if the code fails).
 const PY_HARNESS = `
-import sys, io, json
+import sys, io, json, base64, os
+# Force a non-interactive backend so matplotlib works in a worker (no DOM).
+os.environ.setdefault('MPLBACKEND', 'agg')
+
+def _capture_image():
+    # If the learner's code produced a matplotlib figure, return it as a base64
+    # PNG (Agg backend, no display needed). No matplotlib imported -> None.
+    try:
+        if 'matplotlib' not in sys.modules:
+            return None
+        import matplotlib.pyplot as plt
+        if not plt.get_fignums():
+            return None
+        b = io.BytesIO()
+        plt.savefig(b, format='png', bbox_inches='tight', dpi=110)
+        plt.close('all')
+        return base64.b64encode(b.getvalue()).decode('ascii')
+    except Exception:
+        return None
 
 def _run(user_code, exprs):
     ns = {}
@@ -111,7 +133,10 @@ def _run(user_code, exprs):
             exec(user_code, ns)
         except Exception as e:
             msg = type(e).__name__ + ': ' + str(e)
-            return {'results': [msg for _ in exprs], 'logs': buf.getvalue().splitlines()}
+            return {'results': [msg for _ in exprs], 'logs': buf.getvalue().splitlines(), 'image': _capture_image()}
+        # Capture the figure the learner's top-level code drew, before the test
+        # expressions run (which may create their own throwaway figures).
+        image = _capture_image()
         results = []
         for ex in exprs:
             try:
@@ -128,7 +153,7 @@ def _run(user_code, exprs):
                 results.append(True if ok else False)
             except Exception as e:
                 results.append(type(e).__name__ + ': ' + str(e))
-        return {'results': results, 'logs': buf.getvalue().splitlines()}
+        return {'results': results, 'logs': buf.getvalue().splitlines(), 'image': image}
     finally:
         sys.stdout = old
 `;
@@ -159,9 +184,9 @@ self.onmessage = async (e) => {
     py.globals.set('EXPRS_JSON', JSON.stringify(exprs));
     const outStr = py.runPython('json.dumps(_run(USER_CODE, json.loads(EXPRS_JSON)))');
     const out = JSON.parse(outStr);
-    self.postMessage({ results: out.results, logs: out.logs || [] });
+    self.postMessage({ results: out.results, logs: out.logs || [], image: out.image || null });
   } catch (err) {
-    self.postMessage({ results: exprs.map(() => String((err && err.message) || err)), logs: [] });
+    self.postMessage({ results: exprs.map(() => String((err && err.message) || err)), logs: [], image: null });
   }
 };
 `;
@@ -205,15 +230,15 @@ export function createPythonRunner() {
         if (!worker) spawn();
         const w = worker!;
         let timer: ReturnType<typeof setTimeout>;
-        const finish = (results: (boolean | string)[], logs: string[]) => {
+        const finish = (results: (boolean | string)[], logs: string[], image: string | null = null) => {
           clearTimeout(timer);
           w.onmessage = null;
           w.onerror = null;
-          resolve({ results, logs });
+          resolve({ results, logs, image });
         };
         w.onmessage = (ev: MessageEvent) => {
           loaded = true;
-          finish(ev.data.results, ev.data.logs ?? []);
+          finish(ev.data.results, ev.data.logs ?? [], ev.data.image ?? null);
         };
         w.onerror = () => {
           // A hard worker error (e.g. CDN unreachable) — reset so the next run
