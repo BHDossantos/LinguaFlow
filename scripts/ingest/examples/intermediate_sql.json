@@ -1,0 +1,99 @@
+{
+  "source": {
+    "id": "sqlite_docs",
+    "name": "SQLite documentation",
+    "url": "https://www.sqlite.org/windowfunctions.html",
+    "license": "Public Domain"
+  },
+  "course": {
+    "id": "bbbb0002-0000-4000-8000-000000000031",
+    "title": "Intermediate SQL: Subqueries and Window Functions",
+    "description": "Go beyond basic queries: filter groups with HAVING, nest logic with subqueries, and rank, partition, and compute running totals with window functions — all against a live in-browser SQLite database, every query auto-checked. Structure and dialect informed by the public-domain SQLite documentation (sqlite.org).",
+    "language": "en",
+    "dialect": null,
+    "cefr_level": null,
+    "school": "technology",
+    "goal_tag": "foundations",
+    "position": 31,
+    "prerequisite_ids": ["bbbb0002-0000-4000-8000-000000000029"]
+  },
+  "lessons": [
+    { "position": 1, "title": "Diagnostic: where are you now?", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "Which clause filters GROUPS (after aggregation), as opposed to individual rows?", "options": ["WHERE", "HAVING", "LIMIT", "ORDER BY"], "answer": 1, "explanation": "WHERE filters rows before grouping; HAVING filters the groups after an aggregate is computed." },
+      { "prompt": "A query nested inside another query is called a…", "options": ["join", "subquery", "trigger", "view"], "answer": 1, "explanation": "A subquery is a SELECT embedded in another statement, often in WHERE or FROM." },
+      { "prompt": "Which is a window function that numbers rows 1, 2, 3 within an ordering?", "options": ["COUNT()", "ROW_NUMBER()", "SUM()", "LENGTH()"], "answer": 1, "explanation": "ROW_NUMBER() OVER (ORDER BY ...) assigns a sequential number to each row." },
+      { "prompt": "In a window function, PARTITION BY does what?", "options": ["sorts the whole table", "restarts the calculation within each group", "limits the rows", "joins two tables"], "answer": 1, "explanation": "PARTITION BY splits rows into groups and computes the window separately within each." },
+      { "prompt": "Unlike GROUP BY, a window function (OVER ...) …", "options": ["removes all but one row per group", "keeps every row and adds a computed column", "requires a JOIN", "cannot use SUM"], "answer": 1, "explanation": "Window functions compute across a set of rows but return a value for every row, without collapsing them." },
+      { "prompt": "SUM(amount) OVER (ORDER BY id) computes…", "options": ["a single grand total", "a running (cumulative) total", "the average", "the row count"], "answer": 1, "explanation": "Ordering the window turns SUM into a running total up to each row." }
+    ] } },
+    { "position": 2, "title": "Filtering groups with HAVING", "kind": "reading", "estimated_minutes": 11, "grammar_note": "WHERE filters rows BEFORE grouping; HAVING filters groups AFTER aggregation. You cannot put an aggregate like SUM() in WHERE — use HAVING for that.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Aggregate rows into groups and then keep only the groups that meet a condition on the aggregate. Warm-up: could you write WHERE SUM(amount) > 100? Why not?" },
+      { "heading": "The idea", "text": "GROUP BY collapses rows into one per group and lets you aggregate (SUM, COUNT, AVG). To then filter those groups by the aggregate, use HAVING — it runs after grouping. The order is: FROM, WHERE (row filter), GROUP BY, HAVING (group filter), ORDER BY. So SELECT product, SUM(amount) FROM sales GROUP BY product HAVING SUM(amount) >= 60 returns only products whose total is at least 60." },
+      { "heading": "Worked examples", "text": "Total per product: SELECT product, SUM(amount) FROM sales GROUP BY product. Keep only busy products: add HAVING COUNT(*) >= 3 to keep products with three or more sales. Combine a row filter and a group filter: SELECT region, SUM(amount) FROM sales WHERE month <= 2 GROUP BY region HAVING SUM(amount) > 50 — first keep early-month rows, then group by region, then keep big-total regions." },
+      { "heading": "Your turn", "text": "For sales(product, region, month, amount): 1) Total amount per region. 2) Regions whose total exceeds 100. 3) Products appearing at least twice. Answers: 1) SELECT region, SUM(amount) FROM sales GROUP BY region; 2) SELECT region, SUM(amount) FROM sales GROUP BY region HAVING SUM(amount) > 100; 3) SELECT product, COUNT(*) FROM sales GROUP BY product HAVING COUNT(*) >= 2;" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: putting an aggregate in WHERE (WHERE SUM(...) > x) — that is a HAVING job. Mistake: expecting HAVING without GROUP BY to filter rows. Exit: (a) Which clause filters groups? (b) Which runs first, WHERE or HAVING? Answers: HAVING; WHERE." }
+    ] } },
+    { "position": 3, "title": "Code: filter with HAVING", "kind": "code", "estimated_minutes": 13, "body": {
+      "language": "sql",
+      "prompt": "Return each product alongside its total amount, but only for products whose total amount is 60 or more. Use GROUP BY and HAVING.",
+      "instructions": "Open the schema to see the sales table. Group by product, sum the amount, and keep only the big totals. Row order does not matter.",
+      "schema": "CREATE TABLE sales (id INTEGER PRIMARY KEY, product TEXT, region TEXT, month INTEGER, amount INTEGER);\nINSERT INTO sales VALUES (1,'Book','East',1,20),(2,'Pen','East',1,5),(3,'Book','West',1,20),(4,'Desk','East',2,120),(5,'Pen','West',2,5),(6,'Book','East',2,20),(7,'Desk','West',3,120),(8,'Pen','East',3,5),(9,'Book','West',3,40);",
+      "starter": "SELECT product, SUM(amount)\nFROM sales\nGROUP BY product;",
+      "solution": "SELECT product, SUM(amount) FROM sales GROUP BY product HAVING SUM(amount) >= 60;"
+    } },
+    { "position": 4, "title": "Subqueries", "kind": "reading", "estimated_minutes": 12, "grammar_note": "A scalar subquery returns a single value and can sit anywhere a value is allowed, e.g. WHERE amount > (SELECT AVG(amount) FROM sales). A subquery in FROM acts like a temporary table and must be given (or SQLite auto-assigns) a name.", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Use a query inside another to compare rows against an aggregate, or to build an intermediate result. Warm-up: how would you find rows whose amount beats the table's average?" },
+      { "heading": "The idea", "text": "A subquery is a SELECT wrapped in parentheses and used inside another statement. A scalar subquery returns one value: SELECT product, amount FROM sales WHERE amount > (SELECT AVG(amount) FROM sales) keeps only above-average sales — the inner query computes the average once. A subquery can also feed FROM: SELECT product FROM (SELECT product, SUM(amount) AS total FROM sales GROUP BY product) WHERE total > 60 treats the grouped result as a table you can filter further. Subqueries let you compute something, then query the result." },
+      { "heading": "Worked examples", "text": "Above-average amounts: WHERE amount > (SELECT AVG(amount) FROM sales). Rows matching the max: WHERE amount = (SELECT MAX(amount) FROM sales). Using IN with a subquery: SELECT product FROM sales WHERE region IN (SELECT region FROM sales WHERE amount > 100). From a derived table: SELECT * FROM (SELECT region, SUM(amount) AS t FROM sales GROUP BY region) WHERE t > 100." },
+      { "heading": "Your turn", "text": "For sales(product, region, month, amount): 1) All rows with the maximum amount. 2) Products with an amount above the average. 3) Regions whose total (as a derived table) exceeds 100. Answers: 1) SELECT * FROM sales WHERE amount = (SELECT MAX(amount) FROM sales); 2) SELECT product, amount FROM sales WHERE amount > (SELECT AVG(amount) FROM sales); 3) SELECT region FROM (SELECT region, SUM(amount) AS t FROM sales GROUP BY region) WHERE t > 100;" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: a scalar subquery that returns more than one row where one value is expected. Mistake: referencing a derived-table column by an alias you never defined. Exit: (a) What does a scalar subquery return? (b) Where can a subquery stand besides WHERE? Answers: a single value; in FROM (as a derived table), and in SELECT/IN." }
+    ] } },
+    { "position": 5, "title": "Code: above-average sales", "kind": "code", "estimated_minutes": 13, "body": {
+      "language": "sql",
+      "prompt": "Return the product and amount of every sale whose amount is strictly greater than the average amount across all sales. Use a subquery for the average.",
+      "instructions": "Compute the overall average with a scalar subquery and compare each row's amount to it. Row order does not matter.",
+      "schema": "CREATE TABLE sales (id INTEGER PRIMARY KEY, product TEXT, region TEXT, month INTEGER, amount INTEGER);\nINSERT INTO sales VALUES (1,'Book','East',1,20),(2,'Pen','East',1,5),(3,'Book','West',1,20),(4,'Desk','East',2,120),(5,'Pen','West',2,5),(6,'Book','East',2,20),(7,'Desk','West',3,120),(8,'Pen','East',3,5),(9,'Book','West',3,40);",
+      "starter": "SELECT product, amount\nFROM sales;",
+      "solution": "SELECT product, amount FROM sales WHERE amount > (SELECT AVG(amount) FROM sales);"
+    } },
+    { "position": 6, "title": "Window functions", "kind": "reading", "estimated_minutes": 13, "grammar_note": "A window function keeps every row (unlike GROUP BY) and adds a computed column. The OVER (...) clause defines the window: PARTITION BY groups it, ORDER BY orders it (and, for SUM/AVG, makes it cumulative).", "body": { "sections": [
+      { "heading": "What you'll be able to do", "text": "Rank rows, number them within groups, and compute running totals — without collapsing your rows. Warm-up: how is SUM(amount) OVER (ORDER BY id) different from SUM(amount)?" },
+      { "heading": "The idea", "text": "A window function computes across a set of related rows but returns a value for each row. Write it as fn(...) OVER (PARTITION BY ... ORDER BY ...). ROW_NUMBER() numbers rows 1, 2, 3; RANK() does the same but ties share a rank and leave gaps. PARTITION BY restarts the calculation per group (e.g. per region). An ORDER BY inside OVER turns SUM into a running total: SUM(amount) OVER (ORDER BY id) accumulates as it goes. Because rows are preserved, you can rank and still see every row's details." },
+      { "heading": "Worked examples", "text": "Rank all sales by amount, highest first: SELECT product, amount, RANK() OVER (ORDER BY amount DESC) AS rnk FROM sales. Number sales within each region: ROW_NUMBER() OVER (PARTITION BY region ORDER BY amount DESC). Running total over id order: SELECT id, amount, SUM(amount) OVER (ORDER BY id) AS running FROM sales. To get the top item per group, rank inside a subquery and keep rnk = 1 in the outer query." },
+      { "heading": "Your turn", "text": "For sales(id, product, region, month, amount): 1) Add a column ranking every row by amount descending. 2) Number the rows within each region by amount. 3) A running total of amount ordered by id. Answers: 1) SELECT product, amount, RANK() OVER (ORDER BY amount DESC) AS rnk FROM sales; 2) SELECT region, amount, ROW_NUMBER() OVER (PARTITION BY region ORDER BY amount DESC) AS rn FROM sales; 3) SELECT id, amount, SUM(amount) OVER (ORDER BY id) AS running FROM sales;" },
+      { "heading": "Common mistakes & exit ticket", "text": "Mistake: expecting a window function to reduce rows like GROUP BY — it does not; it annotates each row. Mistake: filtering on a window column in WHERE (it is computed too late) — wrap the query and filter in the outer SELECT. Exit: (a) Does a window function collapse rows? (b) What makes SUM a running total? Answers: no; an ORDER BY inside OVER(...)." }
+    ] } },
+    { "position": 7, "title": "Code: rank sales by amount", "kind": "code", "estimated_minutes": 14, "body": {
+      "language": "sql",
+      "prompt": "For every sale, return its product, its amount, and its rank by amount from highest to lowest across all sales (ties share a rank). Use the RANK() window function.",
+      "instructions": "RANK() OVER (ORDER BY amount DESC) gives each row its rank. Return three columns: product, amount, and the rank. Row order does not matter — the rank value is what's checked.",
+      "schema": "CREATE TABLE sales (id INTEGER PRIMARY KEY, product TEXT, region TEXT, month INTEGER, amount INTEGER);\nINSERT INTO sales VALUES (1,'Book','East',1,20),(2,'Pen','East',1,5),(3,'Book','West',1,20),(4,'Desk','East',2,120),(5,'Pen','West',2,5),(6,'Book','East',2,20),(7,'Desk','West',3,120),(8,'Pen','East',3,5),(9,'Book','West',3,40);",
+      "starter": "SELECT product, amount\nFROM sales;",
+      "solution": "SELECT product, amount, RANK() OVER (ORDER BY amount DESC) AS rnk FROM sales;"
+    } },
+    { "position": 8, "title": "Checkpoint 1", "kind": "quiz", "estimated_minutes": 8, "body": { "questions": [
+      { "prompt": "To keep only groups whose SUM(amount) exceeds 100, you write…", "options": ["WHERE SUM(amount) > 100", "HAVING SUM(amount) > 100", "LIMIT 100", "ORDER BY SUM(amount)"], "answer": 1, "explanation": "Aggregate conditions on groups go in HAVING, not WHERE." },
+      { "prompt": "WHERE amount > (SELECT AVG(amount) FROM sales) uses a…", "options": ["window function", "scalar subquery", "join", "trigger"], "answer": 1, "explanation": "The parenthesized SELECT returns a single value — a scalar subquery." },
+      { "prompt": "Compared with GROUP BY, a window function…", "options": ["collapses rows", "keeps every row and adds a value", "cannot use ORDER BY", "requires HAVING"], "answer": 1, "explanation": "Window functions annotate each row instead of collapsing groups." },
+      { "prompt": "RANK() differs from ROW_NUMBER() in that RANK()…", "options": ["never ties", "gives tied rows the same rank with gaps after", "counts rows", "sorts descending only"], "answer": 1, "explanation": "Tied rows share a RANK and the next rank skips ahead; ROW_NUMBER is always distinct." },
+      { "prompt": "SUM(amount) OVER (ORDER BY id) produces…", "options": ["one grand total", "a running total per row", "the average", "the count"], "answer": 1, "explanation": "Ordering the window accumulates the sum row by row." },
+      { "prompt": "To restart a window calculation within each region, add…", "options": ["GROUP BY region", "PARTITION BY region", "WHERE region", "HAVING region"], "answer": 1, "explanation": "PARTITION BY region computes the window separately for each region." }
+    ] } },
+    { "position": 9, "title": "Code: running total", "kind": "code", "estimated_minutes": 14, "body": {
+      "language": "sql",
+      "prompt": "Return each sale's id, its amount, and a running (cumulative) total of amount ordered by id. Use SUM() as a window function.",
+      "instructions": "SUM(amount) OVER (ORDER BY id) accumulates the amount up to each row. Return three columns: id, amount, and the running total. Row order does not matter — each row's running total is fixed by its id.",
+      "schema": "CREATE TABLE sales (id INTEGER PRIMARY KEY, product TEXT, region TEXT, month INTEGER, amount INTEGER);\nINSERT INTO sales VALUES (1,'Book','East',1,20),(2,'Pen','East',1,5),(3,'Book','West',1,20),(4,'Desk','East',2,120),(5,'Pen','West',2,5),(6,'Book','East',2,20),(7,'Desk','West',3,120),(8,'Pen','East',3,5),(9,'Book','West',3,40);",
+      "starter": "SELECT id, amount\nFROM sales;",
+      "solution": "SELECT id, amount, SUM(amount) OVER (ORDER BY id) AS running FROM sales;"
+    } },
+    { "position": 10, "title": "Capstone: top product per region", "kind": "code", "estimated_minutes": 16, "body": {
+      "language": "sql",
+      "prompt": "Return, for each region, the product with the highest total amount in that region, alongside that total. Return three columns: region, product, total.",
+      "instructions": "Total amount per (region, product), then within each region keep the top one. Hint: rank with RANK() OVER (PARTITION BY region ORDER BY SUM(amount) DESC) in a subquery and keep rank = 1 outside. Row order does not matter.",
+      "schema": "CREATE TABLE sales (id INTEGER PRIMARY KEY, product TEXT, region TEXT, month INTEGER, amount INTEGER);\nINSERT INTO sales VALUES (1,'Book','East',1,20),(2,'Pen','East',1,5),(3,'Book','West',1,20),(4,'Desk','East',2,120),(5,'Pen','West',2,5),(6,'Book','East',2,20),(7,'Desk','West',3,120),(8,'Pen','East',3,5),(9,'Book','West',3,40);",
+      "starter": "SELECT region, product, SUM(amount) AS total\nFROM sales\nGROUP BY region, product;",
+      "solution": "SELECT region, product, total FROM (SELECT region, product, SUM(amount) AS total, RANK() OVER (PARTITION BY region ORDER BY SUM(amount) DESC) AS rnk FROM sales GROUP BY region, product) WHERE rnk = 1;"
+    } }
+  ]
+}
