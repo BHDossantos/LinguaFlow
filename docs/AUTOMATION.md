@@ -1,12 +1,29 @@
 # Automated daily improvement — how it runs
 
-Noelia improves itself every day: it adds new courses via the ingestion pipeline
-and makes one safe, verified change, then commits and pushes. Two layers:
+Noelia improves itself every day: it grows the catalog via the ingestion pipeline
+and/or makes one safe, verified change, then commits and pushes. The single
+playbook both layers follow is `.claude/daily-improve.md`. Three layers, most
+autonomous first:
+
+## 0. Living agent (runs now, no go-live key) — Claude Code Remote Routine
+
+A scheduled **Routine** spawns a fresh Claude Code session in the owner's remote
+environment every day and runs the `.claude/daily-improve.md` playbook end to end
+— orient, pick a focus, author/verify, push. It runs on the owner's Claude
+account (not the app's `ANTHROPIC_API_KEY`), so it works **before** go-live.
+
+- Managed from any Claude Code session with the `list_triggers` / `update_trigger`
+  / `delete_trigger` tools (search "trigger" to load them). The Routine is named
+  **"Noelia daily improvement agent"**.
+- Change cadence or pause it there; it needs no repository secrets.
+- Each firing is a normal session on the branch, so its work shows up as commits
+  on `claude/language-learning-app-vfwbQ` like any other.
 
 ## 1. Durable (survives everything) — GitHub Actions
 
-`.github/workflows/daily-agent.yml` runs on GitHub's own schedule (every 8 hours), independent of any Claude session. It executes the playbook in
-`.claude/daily-improve.md`, verifies `tsc` + `build`, then commits & pushes.
+`.github/workflows/daily-agent.yml` runs on GitHub's own schedule (every 8 hours),
+independent of any Claude session. It executes the same playbook, verifies `tsc` +
+`build`, then commits & pushes.
 
 **It stays dormant until you flip it on at go-live** — add one repository secret:
 
