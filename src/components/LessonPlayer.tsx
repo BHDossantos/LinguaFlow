@@ -18,6 +18,7 @@ import {
   type SqlRunner,
   type SqlResult,
 } from "@/lib/code-runner";
+import { codeEditorKeyDown } from "@/lib/editor-keys";
 
 type Lesson = {
   id: string;
@@ -977,6 +978,7 @@ function CodeLesson({
       <textarea
         value={code}
         onChange={(e) => setCode(e.target.value)}
+        onKeyDown={(e) => codeEditorKeyDown(e, setCode, run)}
         spellCheck={false}
         rows={12}
         className="w-full rounded-xl border border-black/10 bg-[#0e1022] p-3 font-mono text-sm text-white"
@@ -1160,6 +1162,7 @@ function SqlLesson({
       <textarea
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => codeEditorKeyDown(e, setQuery, run)}
         spellCheck={false}
         rows={8}
         className="w-full rounded-xl border border-black/10 bg-[#0e1022] p-3 font-mono text-sm text-white"

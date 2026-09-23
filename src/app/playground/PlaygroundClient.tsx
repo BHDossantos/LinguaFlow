@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { createRunnerUrl, runInSandbox, type CodeTest } from "@/lib/code-runner";
+import { codeEditorKeyDown } from "@/lib/editor-keys";
 
 type Test = CodeTest;
 type Challenge = { id: string; title: string; prompt: string; starter: string; tests: Test[] };
@@ -111,6 +112,7 @@ export function PlaygroundClient() {
       <textarea
         value={code}
         onChange={(e) => setCode(e.target.value)}
+        onKeyDown={(e) => codeEditorKeyDown(e, setCode, run)}
         spellCheck={false}
         rows={10}
         className="w-full rounded-xl border border-black/10 bg-[#0e1022] p-3 font-mono text-sm text-white"
