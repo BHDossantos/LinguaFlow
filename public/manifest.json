@@ -1,13 +1,23 @@
 {
   "name": "Noelia",
   "short_name": "Noelia",
-  "description": "Speak fluently — adaptive lessons + on-demand human instructors.",
+  "description": "Learn anything with adaptive lessons, a Socratic coach, hands-on coding labs, and verified mastery — plus on-demand human instructors.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fafbff",
   "theme_color": "#3b6cf6",
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }
