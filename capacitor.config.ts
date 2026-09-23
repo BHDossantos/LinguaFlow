@@ -22,6 +22,11 @@ const config: CapacitorConfig = {
     androidScheme: "https",
     iosScheme: "https",
   },
+  // A UA token both the client and server can detect synchronously, so we can
+  // hide in-app purchase CTAs when running inside the native shell (required by
+  // the App Store / Play Store when subscriptions are sold on the web only).
+  ios: { appendUserAgent: "NoeliaApp" },
+  android: { appendUserAgent: "NoeliaApp" },
   backgroundColor: "#0e1022",
   plugins: {
     SplashScreen: {

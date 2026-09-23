@@ -164,3 +164,8 @@ html, body {
     .confetti-piece { opacity: 0; }
   }
 }
+
+/* Native app (Capacitor shell): hide web-only purchase CTAs. The App Store /
+   Play Store require digital subscriptions to use their billing, so the mobile
+   apps are login-only — subscriptions are managed on the web. See docs/MOBILE_APP.md. */
+.native-app .web-only { display: none !important; }

@@ -137,7 +137,7 @@ export function PricingTiers({
                   <button
                     onClick={() => subscribe(t.id)}
                     disabled={busy === t.id}
-                    className={`block w-full text-center text-sm ${t.highlighted ? "btn-gradient" : "btn-primary"}`}
+                    className={`web-only block w-full text-center text-sm ${t.highlighted ? "btn-gradient" : "btn-primary"}`}
                   >
                     {busy === t.id ? "Opening checkout…" : `Choose ${t.name}`}
                   </button>

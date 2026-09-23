@@ -57,6 +57,13 @@ function Logo() {
   );
 }
 
+// Runs before paint inside the native shell (Capacitor appends "NoeliaApp" to
+// the UA): marks <html> so CSS can hide web-only purchase CTAs. The App Store /
+// Play Store forbid selling digital subscriptions outside their billing, so the
+// mobile apps are login-only — people subscribe on the web. See docs/MOBILE_APP.md.
+const NATIVE_DETECT =
+  "try{if(/NoeliaApp/.test(navigator.userAgent)){document.documentElement.classList.add('native-app')}}catch(e){}";
+
 // Visitors get a clean marketing shell (wide pages, no app tabs); signed-in
 // users get the app shell (phone-width column + bottom navigation).
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -92,6 +99,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     return (
       <html lang={locale}>
         <body className="font-sans">
+          <script dangerouslySetInnerHTML={{ __html: NATIVE_DETECT }} />
           <a href="#main" className="skip-link">Skip to content</a>
           <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
             <Logo />
@@ -99,7 +107,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Link href="/#how" className="hidden text-ink-500 hover:text-brand-500 sm:block">
                 {t.nav.how}
               </Link>
-              <Link href="/pricing" className="text-ink-500 hover:text-brand-500">
+              <Link href="/pricing" className="web-only text-ink-500 hover:text-brand-500">
                 {t.nav.pricing}
               </Link>
               <LanguageSwitcher current={locale} />
@@ -120,6 +128,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale}>
       <body className="font-sans">
+        <script dangerouslySetInnerHTML={{ __html: NATIVE_DETECT }} />
         <a href="#main" className="skip-link">Skip to content</a>
         <SideNav
           userName={userName}
