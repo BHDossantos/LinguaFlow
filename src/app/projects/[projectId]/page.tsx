@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireOnboardedUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
 import { SubmitProject } from "./SubmitProject";
+import { InstantFeedback } from "@/components/InstantFeedback";
 
 export const dynamic = "force-dynamic";
 
@@ -77,6 +78,26 @@ export default async function ProjectPage(props: { params: Promise<{ projectId: 
           </ul>
         </div>
       )}
+
+      <section className="border-t border-black/5 pt-5">
+        <h2 className="text-lg font-bold">Get feedback before you submit</h2>
+        <p className="mb-3 text-sm text-ink-500">
+          Paste your draft, write-up, or code for detailed, real-time feedback against this brief — then polish it and submit below.
+        </p>
+        <InstantFeedback
+          initialKind="general"
+          taskLabel="The brief (from this project)"
+          initialTask={[
+            project.title,
+            project.brief,
+            (project.deliverables ?? []).length ? `Deliverables: ${(project.deliverables as string[]).join("; ")}` : "",
+            (project.rubric ?? []).length ? `Assessed on: ${(project.rubric as string[]).join("; ")}` : "",
+          ]
+            .filter(Boolean)
+            .join("\n")
+            .slice(0, 3500)}
+        />
+      </section>
 
       <SubmitProject projectId={project.id} />
     </div>

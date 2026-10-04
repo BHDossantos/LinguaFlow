@@ -19,6 +19,7 @@ import {
   type SqlResult,
 } from "@/lib/code-runner";
 import { codeEditorKeyDown } from "@/lib/editor-keys";
+import { InstantFeedback } from "@/components/InstantFeedback";
 
 type Lesson = {
   id: string;
@@ -134,7 +135,7 @@ export function LessonPlayer({
       />
     );
   } else {
-    content = (
+    const contentLesson = (
       <ContentLesson
         body={lesson.body}
         title={lesson.title}
@@ -143,6 +144,30 @@ export function LessonPlayer({
         grammar={lesson.grammar_notes_md}
       />
     );
+    if (lesson.kind === "writing") {
+      // Writing lessons ask the student to produce work — so offer instant,
+      // rubric-based feedback on their draft right here, seeded with the task.
+      const sections: Array<{ heading?: string; text: string }> = Array.isArray(lesson.body?.sections)
+        ? lesson.body.sections
+        : [];
+      const task = [lesson.title, ...sections.map((s) => (s.heading ? `${s.heading}: ` : "") + s.text)]
+        .join("\n")
+        .slice(0, 3500);
+      content = (
+        <>
+          {contentLesson}
+          <section className="mt-6 border-t border-black/5 pt-5">
+            <h2 className="text-lg font-bold">Get feedback on your draft</h2>
+            <p className="mb-3 text-sm text-ink-500">
+              Write or paste your response below for detailed, real-time feedback — then revise and mark the lesson complete.
+            </p>
+            <InstantFeedback initialTask={task} initialKind="essay" taskLabel="The task (from this lesson)" />
+          </section>
+        </>
+      );
+    } else {
+      content = contentLesson;
+    }
   }
 
   const vocabItems: VocabItem[] = Array.isArray(lesson.body?.items) ? lesson.body.items : [];

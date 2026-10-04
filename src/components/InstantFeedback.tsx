@@ -4,9 +4,18 @@ import { FEEDBACK_KINDS, KIND_LABEL, type FeedbackKind } from "@/lib/grading";
 
 // Real-time feedback: the student pastes their work, and the coach's detailed,
 // rubric-based feedback streams in live. It coaches — it does not rewrite the work.
-export function InstantFeedback() {
-  const [kind, setKind] = useState<FeedbackKind>("essay");
-  const [task, setTask] = useState("");
+// Can be seeded with a task + kind when embedded in a lesson or project.
+export function InstantFeedback({
+  initialTask = "",
+  initialKind = "essay",
+  taskLabel = "The task (optional)",
+}: {
+  initialTask?: string;
+  initialKind?: FeedbackKind;
+  taskLabel?: string;
+} = {}) {
+  const [kind, setKind] = useState<FeedbackKind>(initialKind);
+  const [task, setTask] = useState(initialTask);
   const [work, setWork] = useState("");
   const [output, setOutput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -74,7 +83,7 @@ export function InstantFeedback() {
 
       <div>
         <label className="text-xs font-semibold uppercase tracking-wider text-ink-500">
-          The task (optional)
+          {taskLabel}
         </label>
         <textarea
           value={task}
