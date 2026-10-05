@@ -11,21 +11,22 @@ const en = {
     language: "Language",
   },
   hero: {
-    eyebrow: "Languages · Math · Science · Technology · Business",
+    eyebrow: "Languages · Coding · Math · Science · Business · Humanities · Arts",
     titleLine1: "Learn anything.",
-    titleLine2: "Out loud.",
+    titleLine2: "Actually master it.",
     subtitle:
-      "Noelia began with languages you actually speak from day one — and it's now a full learning platform. Master a language, or go deep in math, science, technology, and business. One place, one path.",
+      "The learning app that proves you really learned it. Adaptive lessons, a coach that guides you to the answer instead of handing it over, hands-on practice, and credentials you can share — across languages, coding, math, science, business, and the humanities. 170+ courses, one path that adapts to you.",
     ctaPrimary: "Start learning free",
     ctaSecondary: "How it works",
+    pills: ["Languages", "Coding", "Math", "Science", "Business", "Humanities", "Arts"],
   },
   stats: {
-    courses: "150+",
+    courses: "170+",
     coursesLabel: "courses",
-    languages: "6",
-    languagesLabel: "world languages",
-    schools: "5",
-    schoolsLabel: "subject schools",
+    languages: "7",
+    languagesLabel: "subject areas",
+    schools: "6",
+    schoolsLabel: "world languages",
   },
   how: {
     title: "How Noelia works",
@@ -89,7 +90,7 @@ const en = {
     anyPhone: "Works on any phone",
   },
   marquee: {
-    eyebrow: "A few of the 150+ courses",
+    eyebrow: "A few of the 170+ courses",
   },
   sources: {
     title: "Built on world-class open courseware",

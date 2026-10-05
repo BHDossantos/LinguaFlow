@@ -8,21 +8,22 @@ const pt: Dictionary = {
     language: "Idioma",
   },
   hero: {
-    eyebrow: "Idiomas · Matemática · Ciências · Tecnologia · Negócios",
+    eyebrow: "Idiomas · Programação · Matemática · Ciências · Negócios · Humanidades · Artes",
     titleLine1: "Aprenda de tudo.",
-    titleLine2: "Em voz alta.",
+    titleLine2: "E domine de verdade.",
     subtitle:
-      "A Noelia começou com idiomas que você fala de verdade desde o primeiro dia — e hoje é uma plataforma de aprendizado completa. Domine um idioma ou mergulhe fundo em matemática, ciências, tecnologia e negócios. Um só lugar, um só caminho.",
+      "O app que comprova que você realmente aprendeu. Lições que se adaptam a você, um tutor que te guia até a resposta em vez de entregá-la, prática de verdade e certificados que você pode compartilhar — em idiomas, programação, matemática, ciências, negócios e humanidades. Mais de 170 cursos, um só caminho que se adapta a você.",
     ctaPrimary: "Comece a aprender de graça",
     ctaSecondary: "Como funciona",
+    pills: ["Idiomas", "Programação", "Matemática", "Ciências", "Negócios", "Humanidades", "Artes"],
   },
   stats: {
-    courses: "150+",
+    courses: "170+",
     coursesLabel: "cursos",
-    languages: "6",
-    languagesLabel: "idiomas do mundo",
-    schools: "5",
-    schoolsLabel: "escolas de conhecimento",
+    languages: "7",
+    languagesLabel: "áreas de estudo",
+    schools: "6",
+    schoolsLabel: "idiomas do mundo",
   },
   how: {
     title: "Como a Noelia funciona",
@@ -86,7 +87,7 @@ const pt: Dictionary = {
     anyPhone: "Em qualquer celular",
   },
   marquee: {
-    eyebrow: "Alguns dos mais de 150 cursos",
+    eyebrow: "Alguns dos mais de 170 cursos",
   },
   sources: {
     title: "Construído sobre material acadêmico aberto de primeira linha",

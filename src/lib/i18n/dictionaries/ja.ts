@@ -8,21 +8,22 @@ const ja: Dictionary = {
     language: "言語",
   },
   hero: {
-    eyebrow: "語学 · 数学 · 科学 · テクノロジー · ビジネス",
+    eyebrow: "語学 · プログラミング · 数学 · 科学 · ビジネス · 人文学 · 芸術",
     titleLine1: "学びたいことを、すべて。",
-    titleLine2: "声に出して。",
+    titleLine2: "そして本当に身につける。",
     subtitle:
-      "Noeliaは、初日から本当に話せる語学学習として始まりました。そして今では、あらゆる分野を学べる総合プラットフォームへ。語学をマスターするのも、数学・科学・テクノロジー・ビジネスを深く学ぶのも、ここひとつで。ひとつの道筋で進めます。",
+      "「本当に身についた」を証明する学習アプリ。あなたに合わせて変わるレッスン、答えを教えるのではなく導くチューター、実践的な練習、そして共有できる修了証——語学・プログラミング・数学・科学・ビジネス・人文学まで。170以上のコース、あなたに合わせて進む一本の道。",
     ctaPrimary: "無料で学びはじめる",
     ctaSecondary: "使い方を見る",
+    pills: ["語学", "プログラミング", "数学", "科学", "ビジネス", "人文学", "芸術"],
   },
   stats: {
-    courses: "150+",
+    courses: "170+",
     coursesLabel: "コース",
-    languages: "6",
-    languagesLabel: "世界の言語",
-    schools: "5",
-    schoolsLabel: "学びの分野",
+    languages: "7",
+    languagesLabel: "学びの分野",
+    schools: "6",
+    schoolsLabel: "世界の言語",
   },
   how: {
     title: "Noeliaの使い方",
@@ -86,7 +87,7 @@ const ja: Dictionary = {
     anyPhone: "どんなスマホでも",
   },
   marquee: {
-    eyebrow: "150以上のコースの一部",
+    eyebrow: "170以上のコースの一部",
   },
   sources: {
     title: "世界水準のオープン教材をベースに",

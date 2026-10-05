@@ -689,12 +689,12 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
               <span className="inline-flex items-center gap-1.5"><span className="text-green-500">✓</span> {t.trust.anyPhone}</span>
             </div>
             <div className="animate-fade-up mt-6 flex flex-wrap items-center justify-center gap-2 lg:justify-start [animation-delay:240ms]">
-              {Object.entries(LANGUAGES).map(([code, l]) => (
+              {t.hero.pills.map((label, i) => (
                 <span
-                  key={code}
+                  key={label}
                   className="rounded-full border border-black/5 bg-white/70 px-3 py-1 text-sm shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/10"
                 >
-                  <span aria-hidden>{l.flag}</span> {l.label}
+                  <span aria-hidden>{["💬", "💻", "➗", "🔬", "📈", "🏛️", "🎨"][i] ?? "•"}</span> {label}
                 </span>
               ))}
             </div>

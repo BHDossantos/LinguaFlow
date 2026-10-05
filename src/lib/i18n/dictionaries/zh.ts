@@ -8,21 +8,22 @@ const zh: Dictionary = {
     language: "语言",
   },
   hero: {
-    eyebrow: "语言 · 数学 · 科学 · 技术 · 商业",
+    eyebrow: "语言 · 编程 · 数学 · 科学 · 商业 · 人文 · 艺术",
     titleLine1: "万物皆可学。",
-    titleLine2: "大声说出来。",
+    titleLine2: "并真正掌握。",
     subtitle:
-      "Noelia 从「让你第一天就能开口说」的语言课起步，如今已成长为一个完整的学习平台。精通一门语言，或深入钻研数学、科学、技术与商业。一处入口，一条清晰路径。",
+      "能证明你真正学会了的学习应用。为你量身调整的课程、引导你得出答案而非直接给答案的导师、动手实练，以及可分享的证书——涵盖语言、编程、数学、科学、商业与人文。170+ 门课程，一条随你而变的学习路径。",
     ctaPrimary: "免费开始学习",
     ctaSecondary: "使用方法",
+    pills: ["语言", "编程", "数学", "科学", "商业", "人文", "艺术"],
   },
   stats: {
-    courses: "150+",
+    courses: "170+",
     coursesLabel: "门课程",
-    languages: "6",
-    languagesLabel: "种世界语言",
-    schools: "5",
-    schoolsLabel: "所学科学院",
+    languages: "7",
+    languagesLabel: "个学科领域",
+    schools: "6",
+    schoolsLabel: "种世界语言",
   },
   how: {
     title: "Noelia 如何运作",
@@ -86,7 +87,7 @@ const zh: Dictionary = {
     anyPhone: "任何手机都能用",
   },
   marquee: {
-    eyebrow: "150+ 门课程中的一部分",
+    eyebrow: "170+ 门课程中的一部分",
   },
   sources: {
     title: "基于世界一流的开放课程资源",
