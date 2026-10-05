@@ -3,7 +3,7 @@ import { useEffect, useState, useTransition } from "react";
 import { LANGUAGES, LANGUAGE_CODES, type LanguageCode } from "@/lib/languages";
 import { GOALS } from "@/lib/goals";
 import { PLACEMENT, scorePlacement } from "@/lib/placement";
-import { saveOnboarding } from "./actions";
+import { saveOnboarding, saveRoleOnboarding } from "./actions";
 
 const CEFR = [
   { id: "A1", label: "A1 — brand new", desc: "I know almost nothing." },
@@ -15,6 +15,7 @@ const CEFR = [
 ];
 
 export function OnboardingClient({ defaultName = "" }: { defaultName?: string }) {
+  const [role, setRole] = useState<null | "student" | "teacher" | "parent">(null);
   const [step, setStep] = useState(0);
   const [name, setName] = useState(defaultName);
   // Multi-select: learners often want more than one language. The first
@@ -97,6 +98,85 @@ export function OnboardingClient({ defaultName = "" }: { defaultName?: string })
         setError(e?.message ?? "Could not save");
       }
     });
+  }
+
+  function finishRole(r: "teacher" | "parent") {
+    setError(null);
+    start(async () => {
+      try {
+        await saveRoleOnboarding({ role: r, name: (name || defaultName).trim() });
+      } catch (e: any) {
+        setError(e?.message ?? "Could not save");
+      }
+    });
+  }
+
+  // Step 0 of everything: who are you? Students continue to the language wizard;
+  // teachers and parents go straight to their workspace.
+  if (role === null) {
+    const ROLES: { id: "student" | "teacher" | "parent"; icon: string; label: string; desc: string }[] = [
+      { id: "student", icon: "🎓", label: "I'm a student", desc: "Learn, practice, and get feedback and grades." },
+      { id: "teacher", icon: "🧑‍🏫", label: "I'm a teacher", desc: "Grade work, track classes, and guide students." },
+      { id: "parent", icon: "👨‍👩‍👧", label: "I'm a parent", desc: "Follow how my child is doing and what to focus on." },
+    ];
+    return (
+      <div className="mx-auto max-w-md space-y-5 py-6">
+        <header className="text-center">
+          <h1 className="text-2xl font-bold">Welcome to Noelia</h1>
+          <p className="mt-1 text-sm text-ink-500">First, who&apos;s using this account?</p>
+        </header>
+        <div className="space-y-2">
+          {ROLES.map((r) => (
+            <button
+              key={r.id}
+              onClick={() => setRole(r.id)}
+              className="card flex w-full items-center gap-3 text-left transition hover:ring-1 hover:ring-brand-500/40"
+            >
+              <span className="text-2xl">{r.icon}</span>
+              <span>
+                <span className="block font-semibold">{r.label}</span>
+                <span className="block text-sm text-ink-500">{r.desc}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+        <p className="text-center text-xs text-ink-500">You can change this later in settings.</p>
+      </div>
+    );
+  }
+
+  // Teachers and parents: just confirm a name, then into their workspace.
+  if (role !== "student") {
+    return (
+      <div className="mx-auto max-w-md space-y-5 py-6">
+        <button onClick={() => setRole(null)} className="text-sm text-brand-500">← Back</button>
+        <header>
+          <h1 className="text-2xl font-bold">{role === "teacher" ? "Teacher account" : "Parent account"}</h1>
+          <p className="mt-1 text-sm text-ink-500">
+            {role === "teacher"
+              ? "You'll be able to grade papers (scan, photo, or typed) and follow your students."
+              : "You'll see how your child is doing and where they need to focus. Next, you'll link your child with the invite code they share from their account."}
+          </p>
+        </header>
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-wider text-ink-500">Your name</span>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Your name"
+            className="mt-1 w-full rounded-xl border border-black/10 bg-white px-4 py-3"
+          />
+        </label>
+        <button
+          onClick={() => finishRole(role)}
+          disabled={pending || !(name || defaultName).trim()}
+          className="btn-primary w-full"
+        >
+          {pending ? "Setting up…" : "Continue"}
+        </button>
+        {error && <p className="text-sm text-red-600">{error}</p>}
+      </div>
+    );
   }
 
   return (

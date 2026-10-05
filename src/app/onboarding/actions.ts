@@ -31,6 +31,7 @@ export async function saveOnboarding(raw: unknown) {
     .from("profiles")
     .update({
       display_name: data.name,
+      role: "student",
       cefr_level: data.cefr,
       goals: data.goals,
       adult_mode: data.adultMode,
@@ -56,4 +57,26 @@ export async function saveOnboarding(raw: unknown) {
     .upsert(rows, { onConflict: "user_id,language" });
 
   redirect(`/learn?lang=${rows[0].language}`);
+}
+
+// Teacher / parent onboarding: they don't pick a learning language, so a saved
+// role (+ name) is enough to be considered onboarded. Lands them in their
+// workspace: teachers at /teach, parents at /family (to link their student).
+const RoleInput = z.object({
+  role: z.enum(["teacher", "parent"]),
+  name: z.string().trim().min(1).max(60),
+});
+
+export async function saveRoleOnboarding(raw: unknown) {
+  const data = RoleInput.parse(raw);
+  const supabase = await supabaseServer();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/sign-in");
+
+  await supabase
+    .from("profiles")
+    .update({ display_name: data.name, role: data.role })
+    .eq("id", user.id);
+
+  redirect(data.role === "teacher" ? "/teach" : "/family");
 }

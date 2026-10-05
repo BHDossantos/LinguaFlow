@@ -11,6 +11,16 @@ export async function requireUser() {
 export async function requireOnboardedUser() {
   const user = await requireUser();
   const supabase = await supabaseServer();
+  // Teachers, parents, and admins are onboarded once their role is set — they
+  // don't pick a learning language. (Falls through to the student check if the
+  // role column isn't present yet.)
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (profile?.role && profile.role !== "student") return user;
+
   const { count } = await supabase
     .from("target_languages")
     .select("*", { count: "exact", head: true })
