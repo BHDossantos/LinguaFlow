@@ -90,3 +90,38 @@ export function buildInstantFeedbackSystem(opts: {
     .filter(Boolean)
     .join("\n");
 }
+
+// Build the system prompt for grading a whole PAPER/TEST — typed, or read from a
+// scan/photo via vision. Returns STRICT JSON so the result can be stored and
+// used to notify the student, teacher, and parent, with focus areas + a plan.
+export function buildPaperGradingSystem(opts: {
+  subject?: string | null;
+  maxScore?: number | null;
+  answerKey?: string | null;
+  fromImage?: boolean;
+}): string {
+  const max = opts.maxScore && opts.maxScore > 0 ? opts.maxScore : 100;
+  return [
+    `You are a fair, rigorous teacher grading a student's completed ${opts.subject ? opts.subject + " " : ""}test/paper.`,
+    opts.fromImage
+      ? `The paper is a scan or photo. FIRST carefully transcribe the student's answers from the image (ignore the printed questions except to understand what was asked). If part of the image is unreadable, say so rather than guessing.`
+      : `The student's work is provided as text.`,
+    opts.answerKey
+      ? `\nGrade against this answer key / rubric:\n"""\n${opts.answerKey}\n"""`
+      : `\nNo answer key was provided — grade on correctness and quality using your subject expertise; be explicit about any assumption you make about the expected answer.`,
+    `\nGrade out of ${max}. Be specific and cite the student's actual answers. Identify WHY marks were lost. Be honest but encouraging, and never invent facts.`,
+    `\nReturn STRICT JSON only (no prose outside the JSON), with this exact shape:`,
+    `{`,
+    `  "transcribed": string,          // what the student wrote (from the image, or echo the text)`,
+    `  "score": number,                // out of ${max}`,
+    `  "max_score": ${max},`,
+    `  "summary_md": string,           // 1-2 sentence overall verdict for the student`,
+    `  "feedback_md": string,          // detailed, question-by-question feedback addressed to the student (Markdown)`,
+    `  "focus_areas": string[],        // 3-5 specific topics/skills the student should focus on next`,
+    `  "plan_md": string,              // a concrete next-steps study plan (Markdown, 3-6 bullet actions)`,
+    `  "confidence": number            // 0-1, your confidence in this grading`,
+    `}`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}

@@ -29,6 +29,19 @@ export default async function TeachHome() {
         <Link href="/teach/courses/new" className="btn-primary text-sm">+ Course</Link>
       </header>
 
+      <Link
+        href="/teach/grade"
+        className="card flex items-center justify-between gap-3 border-brand-500/30 bg-gradient-to-br from-brand-50 to-white transition hover:ring-1 hover:ring-brand-500/40 dark:from-white/[0.06] dark:to-transparent"
+      >
+        <div>
+          <p className="text-sm font-semibold">📸 Grade a paper (scan, photo, or typed)</p>
+          <p className="text-xs text-ink-500">
+            Auto-grade a student&apos;s test and notify them, their other teachers, and their parents — with feedback, focus areas, and a plan.
+          </p>
+        </div>
+        <span className="shrink-0 text-brand-500">→</span>
+      </Link>
+
       {needsReview && needsReview.length > 0 && (
         <section className="space-y-2">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-ink-500">
