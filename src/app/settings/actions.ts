@@ -9,6 +9,7 @@ const ProfileInput = z.object({
   displayName: z.string().min(1).max(80),
   cefr: z.enum(["A1", "A2", "B1", "B2", "C1", "C2"]),
   dailyGoalXp: z.coerce.number().int().min(10).max(1000),
+  role: z.enum(["student", "teacher", "parent"]).optional(),
 });
 
 export async function updateProfile(formData: FormData) {
@@ -20,11 +21,18 @@ export async function updateProfile(formData: FormData) {
     displayName: formData.get("displayName"),
     cefr: formData.get("cefr"),
     dailyGoalXp: formData.get("dailyGoalXp"),
+    role: formData.get("role") ?? undefined,
   });
+
+  const profileUpdate: Record<string, unknown> = {
+    display_name: data.displayName,
+    cefr_level: data.cefr,
+  };
+  if (data.role) profileUpdate.role = data.role;
 
   await supabase
     .from("profiles")
-    .update({ display_name: data.displayName, cefr_level: data.cefr })
+    .update(profileUpdate)
     .eq("id", user.id);
 
   await supabase

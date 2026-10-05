@@ -17,7 +17,7 @@ export default async function SettingsPage({
   const supabase = await supabaseServer();
 
   const [{ data: profile }, { data: stats }] = await Promise.all([
-    supabase.from("profiles").select("display_name,cefr_level").eq("id", user.id).single(),
+    supabase.from("profiles").select("display_name,cefr_level,role").eq("id", user.id).single(),
     supabase.from("user_stats").select("daily_goal_xp").eq("user_id", user.id).maybeSingle(),
   ]);
 
@@ -70,8 +70,34 @@ export default async function SettingsPage({
             />
           </label>
         </div>
+        <label className="block">
+          <span className="text-sm font-medium">I'm using Noelia as a…</span>
+          <select
+            name="role"
+            defaultValue={(profile as any)?.role ?? "student"}
+            className="mt-1 w-full rounded-xl border border-black/10 bg-white px-3 py-2 dark:bg-white/5"
+          >
+            <option value="student">Student</option>
+            <option value="teacher">Teacher / Instructor</option>
+            <option value="parent">Parent / Guardian</option>
+          </select>
+          <span className="mt-1 block text-xs text-ink-500">
+            Teachers can grade papers and follow students; parents can follow their child's progress. Your workspace links appear below.
+          </span>
+        </label>
         <button type="submit" className="btn-primary w-full">Save</button>
       </form>
+
+      <section className="card space-y-2">
+        <p className="text-sm font-medium">Workspaces</p>
+        <p className="text-xs text-ink-500">
+          Open the teacher or parent area. (Teachers: scan or photograph a paper to grade it and notify the student and their parents.)
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          <Link href="/teach" className="btn-ghost block text-center">🧑‍🏫 Teach</Link>
+          <Link href="/family" className="btn-ghost block text-center">👨‍👩‍👧 Family</Link>
+        </div>
+      </section>
 
       <section className="card space-y-2">
         <p className="text-sm font-medium">Languages</p>

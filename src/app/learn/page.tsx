@@ -6,14 +6,16 @@ import { requireOnboardedUser, getPrimaryTargetLanguage } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 
 type Scope = "mine" | "all";
-type Subject = "language" | "math" | "technology" | "business" | "science";
+type Subject = "language" | "math" | "technology" | "business" | "science" | "humanities" | "arts";
 
 const SCHOOLS: { id: Subject; icon: string; label: string; blurb: string }[] = [
   { id: "language", icon: "🌍", label: "Languages", blurb: "CEFR-aligned paths from first words to seminar level." },
   { id: "math", icon: "➗", label: "Mathematics", blurb: "Mastery-based progression from arithmetic to algebra." },
-  { id: "technology", icon: "💻", label: "Technology", blurb: "Digital literacy, Python, and the web — hands-on." },
-  { id: "business", icon: "💼", label: "Business", blurb: "How companies work — from first principles to strategy." },
   { id: "science", icon: "🔬", label: "Science", blurb: "Evidence-first foundations, structured like the open textbooks." },
+  { id: "technology", icon: "💻", label: "Technology", blurb: "Coding you run in the browser — Python, SQL, JavaScript, data." },
+  { id: "business", icon: "💼", label: "Business", blurb: "How companies work — from first principles to strategy." },
+  { id: "humanities", icon: "🏛️", label: "Humanities", blurb: "History, world cultures, philosophy, literature, Latin & more." },
+  { id: "arts", icon: "🎨", label: "Arts", blurb: "Music, theater, film, visual art, architecture & dance." },
 ];
 
 export default async function LearnPage(
@@ -27,7 +29,7 @@ export default async function LearnPage(
   const primary = await getPrimaryTargetLanguage();
   const lang = (searchParams.lang ?? primary?.language ?? "es") as LanguageCode;
   const scope: Scope = searchParams.scope === "all" ? "all" : "mine";
-  const subject: Subject = (["math", "technology", "business", "science"] as const).includes(
+  const subject: Subject = (["math", "technology", "business", "science", "humanities", "arts"] as const).includes(
     searchParams.school as any,
   )
     ? (searchParams.school as Subject)
