@@ -71,3 +71,58 @@ export async function completeLessonAction(lessonId: string, score: number) {
   });
   return award?.[0] ?? null;
 }
+
+// Record a completed online TEST (a gated checkpoint/final quiz) so the student's
+// teachers and parents are notified — with the score, the topics missed as focus
+// areas, and a concrete plan. Reuses the paper_gradings fan-out trigger (which
+// notifies student + teachers + guardians). Best-effort; needs migration 0040.
+export async function recordTestResultAction(
+  lessonId: string,
+  score: number,
+  missedTopics: string[],
+) {
+  try {
+    const supabase = await supabaseServer();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data: lesson } = await supabase
+      .from("lessons")
+      .select("title, course:courses(title)")
+      .eq("id", lessonId)
+      .single();
+    const courseTitle = (lesson as any)?.course?.title ?? null;
+    const focus = (missedTopics ?? []).map((t) => (t || "").slice(0, 120)).filter(Boolean).slice(0, 6);
+
+    const plan =
+      focus.length > 0
+        ? [
+            "- Review the lesson and the questions you missed above.",
+            "- Ask the coach to re-explain each focus-area topic in your own words.",
+            "- Retake the checkpoint to confirm you've got it.",
+            "- Then move on to the next lesson.",
+          ].join("\n")
+        : [
+            "- Strong result — keep the momentum.",
+            "- Move on to the next lesson, and let spaced review bring this back later.",
+          ].join("\n");
+
+    await supabase.from("paper_gradings").insert({
+      student_id: user.id,
+      graded_by: user.id,
+      title: (lesson as any)?.title ?? "Online test",
+      subject: courseTitle,
+      source: "typed",
+      score,
+      max_score: 100,
+      feedback_md:
+        score >= 70
+          ? `You scored ${score}% on this test.`
+          : `You scored ${score}% — below the pass mark. Focus on the topics below and retake it.`,
+      focus_areas: focus,
+      plan_md: plan,
+    });
+  } catch {
+    // paper_gradings not migrated, or notify path unavailable — ignore.
+  }
+}

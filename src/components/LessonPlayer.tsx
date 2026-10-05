@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
-import { rateCardAction, completeLessonAction, logQuizAnswer } from "@/app/learn/[courseId]/[lessonId]/actions";
+import { rateCardAction, completeLessonAction, logQuizAnswer, recordTestResultAction } from "@/app/learn/[courseId]/[lessonId]/actions";
 import { PronouncePractice } from "@/components/PronouncePractice";
 import { Celebrate } from "@/components/Celebrate";
 import { XP } from "@/lib/gamification";
@@ -1288,6 +1288,7 @@ function QuizLesson({
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
+  const [missed, setMissed] = useState<string[]>([]);
   const [done, setDone] = useState(false);
   const [pending, startTransition] = useTransition();
 
@@ -1299,12 +1300,13 @@ function QuizLesson({
     setPicked(idx);
     const isCorrect = idx === q.answer;
     if (isCorrect) setCorrectCount((c) => c + 1);
+    else setMissed((m) => [...m, (q as any).prompt ?? "a question"]);
     // Feed item analysis (fire-and-forget).
     void logQuizAnswer(lessonId, i, (q as any).prompt ?? "", isCorrect);
   }
 
   function retake() {
-    setI(0); setPicked(null); setCorrectCount(0); setDone(false);
+    setI(0); setPicked(null); setCorrectCount(0); setMissed([]); setDone(false);
   }
 
   function next() {
@@ -1316,6 +1318,15 @@ function QuizLesson({
       if (!gate || score >= QUIZ_PASS) {
         startTransition(async () => {
           try { await completeLessonAction(lessonId, score); } catch {}
+        });
+      }
+      // A gated quiz is a graded TEST: file the result (pass or fail) so the
+      // student's teachers and parents are notified with the score, the topics
+      // missed, and a plan — same fan-out as a paper grading.
+      if (gate) {
+        const missedNow = missed.slice(0, 6);
+        startTransition(async () => {
+          try { await recordTestResultAction(lessonId, score, missedNow); } catch {}
         });
       }
       setDone(true);
