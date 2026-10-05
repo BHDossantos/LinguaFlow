@@ -654,6 +654,8 @@ function LoggedOutLanding({ t }: { t: Dictionary }) {
     { emoji: "🔬", title: t.schools.scienceTitle, body: t.schools.scienceBody, bg: "bg-emerald-100 dark:bg-emerald-500/20" },
     { emoji: "💻", title: t.schools.technologyTitle, body: t.schools.technologyBody, bg: "bg-sky-100 dark:bg-sky-500/20" },
     { emoji: "📈", title: t.schools.businessTitle, body: t.schools.businessBody, bg: "bg-amber-100 dark:bg-amber-500/20" },
+    { emoji: "🏛️", title: t.schools.humanitiesTitle, body: t.schools.humanitiesBody, bg: "bg-rose-100 dark:bg-rose-500/20" },
+    { emoji: "🎨", title: t.schools.artsTitle, body: t.schools.artsBody, bg: "bg-fuchsia-100 dark:bg-fuchsia-500/20" },
   ];
   return (
     <div className="space-y-16 pb-8 pt-4 sm:space-y-24 sm:pt-8">

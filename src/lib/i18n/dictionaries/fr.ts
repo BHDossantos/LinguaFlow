@@ -38,8 +38,8 @@ const fr: Dictionary = {
       "Connectez-vous à un formateur en direct à la minute, ou apprenez au sein d'une vraie classe avec les retours des enseignants et le suivi des familles.",
   },
   schools: {
-    title: "Cinq écoles, une seule plateforme",
-    subtitle: "Commencez où vous voulez. Tout repose sur la même méthode active, guidée par la révision.",
+    title: "Sept matières, une plateforme",
+    subtitle: "Commencez où vous voulez. Tout repose sur la même méthode active, axée sur la maîtrise.",
     languagesTitle: "Langues",
     languagesBody: "Espagnol, français, italien, portugais, anglais et allemand, du A1 au C1, avec des parcours business.",
     mathTitle: "Mathématiques",
@@ -50,6 +50,10 @@ const fr: Dictionary = {
     technologyBody: "Code, données, cloud, sécurité et un parcours complet de développeur back-end.",
     businessTitle: "Business",
     businessBody: "Finance, marketing, management, droit et produit.",
+    humanitiesTitle: "Humanités",
+    humanitiesBody: "Histoire, cultures du monde, philosophie, religion, littérature, latin et linguistique.",
+    artsTitle: "Arts",
+    artsBody: "Musique, théâtre, cinéma, arts visuels, architecture et danse.",
   },
   features: {
     title: "Tout dans une seule application",

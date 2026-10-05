@@ -30,19 +30,19 @@ const en = {
   },
   how: {
     title: "How Noelia works",
-    step1Title: "Pick your path",
+    step1Title: "Start where you are",
     step1Body:
-      "A language to speak, or a subject to master — from Spanish to Calculus to System Design. Every path is a clear sequence, level by level.",
+      "Pick from 170+ courses across languages, coding, math, science, business, and the humanities. A short diagnostic places you, and your path adapts as you go.",
     step2Title: "Learn by doing",
     step2Body:
-      "Every lesson is active: say it out loud and get scored word-by-word, solve the problem, answer the quiz — then review it right before you'd forget.",
-    step3Title: "Go further with humans",
+      "Every lesson is active — speak it aloud, solve the problem, write real code, answer the quiz — with a coach that guides you to the answer instead of handing it over, and spaced review right before you'd forget.",
+    step3Title: "Master it — and prove it",
     step3Body:
-      "Connect to a live instructor by the minute, or learn inside a real classroom with teacher feedback and family visibility.",
+      "Noelia measures real mastery, not minutes, and brings skills back until they stick. Earn verifiable certificates and badges you can share — or go deeper with a live instructor.",
   },
   schools: {
-    title: "Five schools, one platform",
-    subtitle: "Start anywhere. Everything is built on the same active, review-driven method.",
+    title: "Seven subjects, one platform",
+    subtitle: "Start anywhere. Everything runs on the same active, mastery-driven method.",
     languagesTitle: "Languages",
     languagesBody: "Spanish, French, Italian, Portuguese, English & German — A1 to C1, plus business tracks.",
     mathTitle: "Mathematics",
@@ -50,9 +50,13 @@ const en = {
     scienceTitle: "Science",
     scienceBody: "Biology, Chemistry, Physics, Psychology, and dozens more.",
     technologyTitle: "Technology",
-    technologyBody: "Coding, data, cloud, security, and a full backend-developer track.",
+    technologyBody: "Coding you run in the browser — Python, SQL, JavaScript, data & more.",
     businessTitle: "Business",
     businessBody: "Finance, marketing, management, law, and product.",
+    humanitiesTitle: "Humanities",
+    humanitiesBody: "History, world cultures, philosophy, religion, literature, Latin & linguistics.",
+    artsTitle: "Arts",
+    artsBody: "Music, theater, film, visual art, architecture & dance.",
   },
   features: {
     title: "Everything in one app",

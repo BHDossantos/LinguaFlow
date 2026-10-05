@@ -38,8 +38,8 @@ const zh: Dictionary = {
       "按分钟连线真人导师，或走进真实课堂，享受老师的反馈与家长的全程关注。",
   },
   schools: {
-    title: "五所学院，一个平台",
-    subtitle: "从任何一处起步。一切都建立在同一套主动式、以复习驱动的学习方法之上。",
+    title: "七大学科，一个平台",
+    subtitle: "从任何一处起步。一切都运行在同一套主动式、以掌握为核心的学习方法之上。",
     languagesTitle: "语言",
     languagesBody: "西班牙语、法语、意大利语、葡萄牙语、英语和德语——从 A1 到 C1，另设商务专项课程。",
     mathTitle: "数学",
@@ -50,6 +50,10 @@ const zh: Dictionary = {
     technologyBody: "编程、数据、云计算、安全，以及完整的后端开发专项课程。",
     businessTitle: "商业",
     businessBody: "金融、市场营销、管理、法律与产品。",
+    humanitiesTitle: "人文",
+    humanitiesBody: "历史、世界文化、哲学、宗教、文学、拉丁语与语言学。",
+    artsTitle: "艺术",
+    artsBody: "音乐、戏剧、电影、视觉艺术、建筑与舞蹈。",
   },
   features: {
     title: "一个应用，包罗万象",

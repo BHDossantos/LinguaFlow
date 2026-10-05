@@ -38,8 +38,8 @@ const it: Dictionary = {
       "Collegati a un insegnante dal vivo al minuto oppure impara in una vera aula, con il feedback del docente e la visibilità per la famiglia.",
   },
   schools: {
-    title: "Cinque aree, una sola piattaforma",
-    subtitle: "Inizia da dove vuoi. Tutto si basa sullo stesso metodo attivo, guidato dal ripasso.",
+    title: "Sette materie, una piattaforma",
+    subtitle: "Inizia da dove vuoi. Tutto si basa sullo stesso metodo attivo, orientato alla padronanza.",
     languagesTitle: "Lingue",
     languagesBody: "Spagnolo, francese, italiano, portoghese, inglese e tedesco — dall'A1 al C1, più percorsi business.",
     mathTitle: "Matematica",
@@ -50,6 +50,10 @@ const it: Dictionary = {
     technologyBody: "Programmazione, dati, cloud, sicurezza e un percorso completo da sviluppatore backend.",
     businessTitle: "Business",
     businessBody: "Finanza, marketing, management, diritto e product.",
+    humanitiesTitle: "Materie umanistiche",
+    humanitiesBody: "Storia, culture del mondo, filosofia, religione, letteratura, latino e linguistica.",
+    artsTitle: "Arti",
+    artsBody: "Musica, teatro, cinema, arti visive, architettura e danza.",
   },
   features: {
     title: "Tutto in un'unica app",
