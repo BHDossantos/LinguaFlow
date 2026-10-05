@@ -3,32 +3,111 @@
   "title": "Noelia curriculum interchange format",
   "description": "Normalized shape a source connector must produce. build-sql.mjs turns this into an idempotent seed SQL file.",
   "type": "object",
-  "required": ["source", "course", "lessons"],
+  "required": [
+    "source",
+    "course",
+    "lessons"
+  ],
   "properties": {
     "source": {
       "type": "object",
-      "required": ["id", "name", "license"],
+      "required": [
+        "id",
+        "name",
+        "license"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-        "url": { "type": "string" },
-        "license": { "type": "string" }
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "license": {
+          "type": "string"
+        }
       }
     },
     "course": {
       "type": "object",
-      "required": ["id", "title", "description", "language", "school", "position"],
+      "required": [
+        "id",
+        "title",
+        "description",
+        "language",
+        "school",
+        "position"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
-        "title": { "type": "string" },
-        "description": { "type": "string", "description": "Must include source attribution." },
-        "language": { "type": "string", "enum": ["en", "es", "it", "pt", "fr"] },
-        "dialect": { "type": ["string", "null"] },
-        "cefr_level": { "type": ["string", "null"], "enum": ["A1", "A2", "B1", "B2", "C1", "C2", null] },
-        "school": { "type": "string", "enum": ["language", "math", "technology", "business", "science"] },
-        "goal_tag": { "type": "string" },
-        "position": { "type": "integer" },
-        "prerequisite_ids": { "type": "array", "items": { "type": "string" } }
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "description": "Must include source attribution."
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "en",
+            "es",
+            "it",
+            "pt",
+            "fr"
+          ]
+        },
+        "dialect": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cefr_level": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "A1",
+            "A2",
+            "B1",
+            "B2",
+            "C1",
+            "C2",
+            null
+          ]
+        },
+        "school": {
+          "type": "string",
+          "enum": [
+            "language",
+            "math",
+            "technology",
+            "business",
+            "science",
+            "humanities",
+            "arts"
+          ]
+        },
+        "goal_tag": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer"
+        },
+        "prerequisite_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "lessons": {
@@ -36,13 +115,42 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["position", "title", "kind", "body"],
+        "required": [
+          "position",
+          "title",
+          "kind",
+          "body"
+        ],
         "properties": {
-          "position": { "type": "integer" },
-          "title": { "type": "string" },
-          "kind": { "type": "string", "enum": ["vocab", "grammar", "listening", "reading", "speaking", "roleplay", "writing", "quiz", "code"] },
-          "estimated_minutes": { "type": "integer" },
-          "grammar_note": { "type": ["string", "null"] },
+          "position": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "vocab",
+              "grammar",
+              "listening",
+              "reading",
+              "speaking",
+              "roleplay",
+              "writing",
+              "quiz",
+              "code"
+            ]
+          },
+          "estimated_minutes": {
+            "type": "integer"
+          },
+          "grammar_note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "body": {
             "description": "vocab: {items:[{term,translation,ipa?,example}]} | quiz: {questions:[{prompt,options[4],answer,explanation}]} | roleplay: {scenario,persona,goal} | code (js/python): {prompt,starter,tests:[{label,expr}],language?:'javascript'|'python',packages?:string[] (python only),instructions?,solution?} | code (sql): {prompt,language:'sql',schema:'DDL+seed',solution:'reference query',starter?,ordered?:bool,instructions?} | reading/grammar/writing/etc: {sections:[{heading,text}]}"
           }

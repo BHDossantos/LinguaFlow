@@ -11,7 +11,7 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join, basename } from "node:path";
 
 const KINDS = new Set(["vocab","grammar","listening","reading","speaking","roleplay","writing","quiz","code"]);
-const SCHOOLS = new Set(["language","math","technology","business","science"]);
+const SCHOOLS = new Set(["language","math","technology","business","science","humanities","arts"]);
 const CODE_LANGS = new Set(["javascript","python","sql","sqlite"]);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
