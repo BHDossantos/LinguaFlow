@@ -99,29 +99,49 @@ export function buildPaperGradingSystem(opts: {
   maxScore?: number | null;
   answerKey?: string | null;
   fromImage?: boolean;
+  // Bulk mode: also read the student's name off the paper, and produce
+  // per-question marks for a printable, teacher-style graded report.
+  detectName?: boolean;
+  withAnnotations?: boolean;
 }): string {
   const max = opts.maxScore && opts.maxScore > 0 ? opts.maxScore : 100;
-  return [
+  const lines = [
     `You are a fair, rigorous teacher grading a student's completed ${opts.subject ? opts.subject + " " : ""}test/paper.`,
     opts.fromImage
       ? `The paper is a scan or photo. FIRST carefully transcribe the student's answers from the image (ignore the printed questions except to understand what was asked). If part of the image is unreadable, say so rather than guessing.`
       : `The student's work is provided as text.`,
+    opts.detectName
+      ? `The student usually writes their name at the top of the paper. Read it and return it as first_name and last_name. If you cannot find a name, return empty strings for both — do NOT guess a name.`
+      : "",
     opts.answerKey
       ? `\nGrade against this answer key / rubric:\n"""\n${opts.answerKey}\n"""`
       : `\nNo answer key was provided — grade on correctness and quality using your subject expertise; be explicit about any assumption you make about the expected answer.`,
     `\nGrade out of ${max}. Be specific and cite the student's actual answers. Identify WHY marks were lost. Be honest but encouraging, and never invent facts.`,
     `\nReturn STRICT JSON only (no prose outside the JSON), with this exact shape:`,
     `{`,
-    `  "transcribed": string,          // what the student wrote (from the image, or echo the text)`,
-    `  "score": number,                // out of ${max}`,
-    `  "max_score": ${max},`,
-    `  "summary_md": string,           // 1-2 sentence overall verdict for the student`,
-    `  "feedback_md": string,          // detailed, question-by-question feedback addressed to the student (Markdown)`,
-    `  "focus_areas": string[],        // 3-5 specific topics/skills the student should focus on next`,
-    `  "plan_md": string,              // a concrete next-steps study plan (Markdown, 3-6 bullet actions)`,
-    `  "confidence": number            // 0-1, your confidence in this grading`,
-    `}`,
-  ]
-    .filter(Boolean)
-    .join("\n");
+  ];
+  if (opts.detectName) {
+    lines.push(`  "first_name": string,           // the student's first name as written, or ""`);
+    lines.push(`  "last_name": string,            // the student's last name as written, or ""`);
+  }
+  lines.push(`  "transcribed": string,          // what the student wrote (from the image, or echo the text)`);
+  lines.push(`  "score": number,                // out of ${max}`);
+  lines.push(`  "max_score": ${max},`);
+  lines.push(`  "summary_md": string,           // 1-2 sentence overall verdict for the student`);
+  lines.push(`  "feedback_md": string,          // detailed, question-by-question feedback addressed to the student (Markdown)`);
+  lines.push(`  "focus_areas": string[],        // 3-5 specific topics/skills the student should focus on next`);
+  lines.push(`  "plan_md": string,              // a concrete next-steps study plan (Markdown, 3-6 bullet actions)`);
+  if (opts.withAnnotations) {
+    lines.push(`  "annotations": [                // one entry per question/item, in order, for a printable marked-up report`);
+    lines.push(`    {`);
+    lines.push(`      "label": string,            // e.g. "Q1" or a short name for the item`);
+    lines.push(`      "correct": boolean,         // true = correct (green check), false = wrong (red X)`);
+    lines.push(`      "detail": string,           // one short line: the student's answer and why it is right/wrong`);
+    lines.push(`      "correct_answer": string    // the expected answer (empty string if not applicable)`);
+    lines.push(`    }`);
+    lines.push(`  ],`);
+  }
+  lines.push(`  "confidence": number            // 0-1, your confidence in this grading`);
+  lines.push(`}`);
+  return lines.filter(Boolean).join("\n");
 }

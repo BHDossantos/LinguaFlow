@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireOnboardedUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
+import { PaperActions } from "./PaperActions";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Graded paper" };
@@ -16,7 +17,7 @@ export default async function PaperPage(props: { params: Promise<{ id: string }>
 
   const { data: paper } = await supabase
     .from("paper_gradings")
-    .select("id,title,subject,source,score,max_score,feedback_md,focus_areas,plan_md,created_at,student:profiles!paper_gradings_student_id_fkey(display_name)")
+    .select("id,title,subject,source,score,max_score,feedback_md,focus_areas,plan_md,created_at,student_id,student:profiles!paper_gradings_student_id_fkey(display_name)")
     .eq("id", id)
     .maybeSingle();
   if (!paper) notFound();
@@ -24,6 +25,15 @@ export default async function PaperPage(props: { params: Promise<{ id: string }>
   const pct = paper.max_score ? Math.round((Number(paper.score) / Number(paper.max_score)) * 100) : null;
   const studentName = (paper as any).student?.display_name ?? "Student";
   const focus: string[] = Array.isArray(paper.focus_areas) ? (paper.focus_areas as string[]) : [];
+
+  // Show the email/print actions only to the student themselves or a teacher who
+  // teaches them (the send endpoint enforces the same rule server-side).
+  const { data: { user } } = await supabase.auth.getUser();
+  let canShare = user?.id === (paper as any).student_id;
+  if (!canShare && user) {
+    const { data: t } = await supabase.rpc("teaches_student", { student: (paper as any).student_id });
+    canShare = !!t;
+  }
 
   return (
     <div className="mx-auto max-w-2xl space-y-5">
@@ -43,6 +53,8 @@ export default async function PaperPage(props: { params: Promise<{ id: string }>
           {pct !== null && <p className="text-xs text-ink-500">{pct}%</p>}
         </div>
       </header>
+
+      {canShare && <PaperActions paperId={paper.id as string} />}
 
       {focus.length > 0 && (
         <section className="card">
