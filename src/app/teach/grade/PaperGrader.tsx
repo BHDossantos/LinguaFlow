@@ -99,7 +99,7 @@ export function PaperGrader({ students }: { students: Student[] }) {
       </div>
 
       <div className="card space-y-3">
-        <p className="text-sm font-semibold">Scan or photograph the paper</p>
+        <p className="text-sm font-semibold">Scan or photograph the work (paper, whiteboard, even a napkin)</p>
         <input ref={fileRef} type="file" accept="image/*" capture="environment" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} className="block w-full text-sm" />
         {image && (
           <div className="flex items-center gap-3">

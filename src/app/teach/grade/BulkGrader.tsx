@@ -225,7 +225,7 @@ export function BulkGrader({ classrooms, students }: { classrooms: Classroom[]; 
               className="hidden"
               onChange={(e) => addFiles(e.target.files)}
             />
-            <p className="text-xs text-ink-400">Images, PDFs, or PowerPoint. One paper per file.</p>
+            <p className="text-xs text-ink-400">Photos (even a napkin or whiteboard), scans, PDFs, or PowerPoint. One paper per file.</p>
           </div>
 
           {items.length > 0 && (

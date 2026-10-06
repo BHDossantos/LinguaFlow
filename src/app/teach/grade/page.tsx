@@ -47,10 +47,11 @@ export default async function GradePaperPage() {
       <header>
         <h1 className="text-2xl font-bold">Grade papers</h1>
         <p className="text-sm text-ink-500">
-          Scan, photograph, or upload a test, essay, PDF, or PowerPoint — the system reads it,
-          grades it, and files the result to the student, who (with their parents and other
-          teachers) is notified with the score, feedback, focus areas, and a plan. Then email the
-          feedback in one click, or print a marked-up report.
+          Scan, photograph, or upload a test, essay, PDF, or PowerPoint — even a snapshot of work
+          on a whiteboard, scrap paper, or a napkin. The system reads the handwriting, grades it,
+          and files the result to the student, who (with their parents and other teachers) is
+          notified with the score, feedback, focus areas, and a plan. Then email the feedback in
+          one click, or print a marked-up report.
         </p>
       </header>
       <GraderTabs classrooms={classrooms} students={students} />
