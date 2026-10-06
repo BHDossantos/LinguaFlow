@@ -118,3 +118,24 @@ The current config already includes splash + status bar.
 - Apple ($99/yr) and Google ($25) developer accounts.
 - A Mac (or cloud Mac) for the iOS build.
 - Generating signing keys and doing the final upload/submit in each console.
+
+## Installable PWA (ship-now mobile app)
+
+Alongside the Capacitor shell, Noelia is a full installable PWA, so anyone can
+add it to their home screen today with no app store:
+
+- **Manifest** (`public/manifest.json`): standalone display, maskable icon,
+  app shortcuts (Learn / Coach / Practice), screenshots, categories.
+- **Service worker** (`public/sw.js`): web-push notifications + offline support
+  (network-first navigations, cached immutable assets, `/offline` fallback).
+- **In-app install prompt** (`src/components/InstallPrompt.tsx`): captures
+  `beforeinstallprompt` on Android/desktop Chrome/Edge (one-tap install) and
+  shows the Add to Home Screen hint on iOS Safari. It hides automatically when
+  already installed, inside the Capacitor shell (`NoeliaApp` UA), or once
+  dismissed.
+- **iOS standalone polish**: `appleWebApp` metadata (status bar, title) and
+  `viewport-fit=cover` + CSS `env(safe-area-inset-*)` so the bottom nav clears
+  the home indicator.
+
+The native store apps (Capacitor) remain the path for App Store / Play Store
+distribution; the PWA covers instant install everywhere else.

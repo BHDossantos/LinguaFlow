@@ -169,3 +169,14 @@ html, body {
    Play Store require digital subscriptions to use their billing, so the mobile
    apps are login-only — subscriptions are managed on the web. See docs/MOBILE_APP.md. */
 .native-app .web-only { display: none !important; }
+
+/* Safe-area handling for the installed PWA and the native shell: keep the fixed
+   bottom navigation above the home indicator / gesture bar, and let the status
+   bar (black-translucent on iOS) not overlap content. Applies when launched
+   standalone or inside the Capacitor shell. */
+@media (display-mode: standalone) {
+  nav[aria-label="Primary"] { padding-bottom: env(safe-area-inset-bottom); }
+  main { padding-top: max(1rem, env(safe-area-inset-top)); }
+}
+.native-app nav[aria-label="Primary"] { padding-bottom: env(safe-area-inset-bottom); }
+.native-app main { padding-top: max(1rem, env(safe-area-inset-top)); }

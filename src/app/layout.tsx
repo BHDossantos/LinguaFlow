@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BottomNav } from "@/components/BottomNav";
 import { SideNav } from "@/components/SideNav";
 import { PageBeacon } from "@/components/PageBeacon";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { supabaseServer } from "@/lib/supabase/server";
 import { getI18n } from "@/lib/i18n/server";
@@ -17,6 +18,13 @@ export const metadata: Metadata = {
   description:
     "The learning platform for languages and beyond — math, science, technology, and business. 150+ courses, active lessons, spoken practice, and live instructors, all in one app.",
   manifest: "/manifest.json",
+  applicationName: "Noelia",
+  appleWebApp: {
+    capable: true,
+    title: "Noelia",
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: { telephone: false },
   icons: {
     icon: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
@@ -43,6 +51,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
+  viewportFit: "cover",
   themeColor: "#3b6cf6",
 };
 
@@ -118,6 +127,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </header>
           <main id="main" className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">{children}</main>
           <PageBeacon />
+          <InstallPrompt />
         </body>
       </html>
     );
@@ -158,6 +168,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </main>
         <BottomNav labels={nav} />
         <PageBeacon />
+          <InstallPrompt />
       </body>
     </html>
   );
