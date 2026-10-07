@@ -6,7 +6,7 @@ policy: `https://learnnoelia.com/privacy` · Marketing URL: `https://learnnoelia
 ---
 
 ## App name
-**Noelia — Learn Anything**  (App Store name ≤ 30 chars: "Noelia: Learn Anything")
+**LearnNoelia — Learn Anything**  (App Store name ≤ 30 chars: "LearnNoelia: Learn Anything")
 
 ## App Store subtitle (≤ 30 chars)
 `Adaptive lessons & coaching`
@@ -24,7 +24,7 @@ policy: `https://learnnoelia.com/privacy` · Marketing URL: `https://learnnoelia
 
 ## Full description (App Store & Google Play)
 
-**Noelia is the learning app built around one promise: you don't just finish lessons — you actually remember, understand, and can apply what you learn.**
+**LearnNoelia is the learning app built around one promise: you don't just finish lessons — you actually remember, understand, and can apply what you learn.**
 
 Most apps reward you for streaks and screen time. Noelia rewards real mastery. Every lesson ends with evidence you've understood it, and skills you mastered weeks ago quietly resurface so they stick for good.
 
@@ -43,7 +43,7 @@ Most apps reward you for streaks and screen time. Noelia rewards real mastery. E
 • Verifiable certificates and Open Badges you can share.
 • On-demand human instructors when you want a live session.
 
-Learn a language, pick up coding, prepare for an exam, or master a new field — Noelia adapts to you.
+Learn a language, pick up coding, prepare for an exam, or master a new field — LearnNoelia adapts to you.
 
 *Subscriptions and plan management are handled on learnnoelia.com. Sign in with your account to access everything you've unlocked.*
 
@@ -70,7 +70,7 @@ screenshot so the value is legible as a thumbnail.
 
 ## Data safety / privacy answers (both stores)
 
-Noelia collects: account info (email/name), learning activity, and support
+LearnNoelia collects: account info (email/name), learning activity, and support
 messages. Used for: app functionality and personalization. Not sold. Users can
 export and delete their data (`/api/export`, account settings). Auth is handled
 by Supabase; payments by Stripe **on the web only**. Fill each store's data form
@@ -81,7 +81,7 @@ Educational, no objectionable content → typically **4+ (App Store)** / **Every
 (Play)**. Answer the questionnaires truthfully (no violence, gambling, etc.).
 
 ## Review notes (paste into "App Review Information")
-`Noelia is a multi-platform learning service. Subscriptions are sold only on our
+`LearnNoelia is a multi-platform learning service. Subscriptions are sold only on our
 website (learnnoelia.com); the app has no in-app purchases. To review paid
 features, use this demo account: <add a demo email + password here>.`
 Provide a working demo login — reviewers reject apps they can't get into.
