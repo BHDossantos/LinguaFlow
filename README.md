@@ -1,6 +1,6 @@
-# Noelia
+# LearnNoelia
 
-Mobile-first hybrid AI + human language-learning platform. See [PRODUCT.md](./PRODUCT.md) for the spec.
+LearnNoelia (learnnoelia.com) is a mobile-first hybrid AI + human learning platform. See [PRODUCT.md](./PRODUCT.md) for the spec.
 
 ## Stack
 - **Frontend:** Next.js 14 (App Router) + Tailwind, mobile-first PWA.
