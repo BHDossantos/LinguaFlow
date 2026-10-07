@@ -1,0 +1,50 @@
+name: LearnNoelia Native Builds
+on:
+  workflow_dispatch:
+  push:
+    branches: [brand/learnnoelia-mobile]
+    paths:
+      - 'capacitor.config.ts'
+      - 'mobile/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/learnnoelia-native.yml'
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - run: npm ci
+      - run: npx cap add android
+      - run: npx cap sync android
+      - name: Build unsigned Android bundle for validation
+        run: cd android && ./gradlew bundleRelease
+      - uses: actions/upload-artifact@v4
+        with:
+          name: learnnoelia-android-unsigned
+          path: android/app/build/outputs/bundle/release/*.aab
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx cap add ios
+      - run: npx cap sync ios
+      - name: Install CocoaPods
+        run: cd ios/App && pod install
+      - name: Compile iOS simulator app without signing
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
