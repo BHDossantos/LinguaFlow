@@ -176,10 +176,17 @@ export default async function ClassroomPage(
       <Link href={`/school/${params.orgId}`} className="text-sm text-brand-500">
         ← Organization
       </Link>
-      <header>
-        <h1 className="text-2xl font-bold">{classroom.name}</h1>
-        {classroom.grade_level && (
-          <p className="text-sm text-ink-500">{classroom.grade_level}</p>
+      <header className="flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold">{classroom.name}</h1>
+          {classroom.grade_level && (
+            <p className="text-sm text-ink-500">{classroom.grade_level}</p>
+          )}
+        </div>
+        {canManage && (
+          <Link href={`/teach/classrooms/${classroom.id}/gradebook`} className="btn-primary shrink-0 text-sm">
+            📊 Gradebook
+          </Link>
         )}
       </header>
 

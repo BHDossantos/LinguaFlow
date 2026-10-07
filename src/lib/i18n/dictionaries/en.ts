@@ -107,6 +107,7 @@ const en = {
     nav: {
       home: "Home",
       myLearning: "My Learning",
+      grades: "Grades",
       calendar: "Calendar",
       messages: "Messages",
       progress: "Progress",

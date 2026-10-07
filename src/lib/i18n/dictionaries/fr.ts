@@ -103,6 +103,7 @@ const fr: Dictionary = {
     nav: {
       home: "Accueil",
       myLearning: "Mon apprentissage",
+      grades: "Notes",
       calendar: "Calendrier",
       messages: "Messages",
       progress: "Progrès",

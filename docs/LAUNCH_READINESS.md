@@ -47,13 +47,13 @@ student + parent.
   student writes denied); grade math unit-checked (points/weighted/drop-lowest/
   letter bands/empty all correct).
 
-### A2. Teacher gradebook UI — TODO
+### A2. Teacher gradebook UI — DONE ✅
 - `/teach/classrooms/[classroomId]/gradebook`: spreadsheet grid (students × grade
   items), inline entry edit, add/edit categories & items, set weights, pick
   scheme/mode, per-student feedback, "release" (publish) grades.
 - Import scores from an assignment's submissions/AI grades into a grade item.
 
-### A3. Student grades UI — TODO
+### A3. Student grades UI — DONE ✅
 - `/grades` (and per-classroom): list grade items with points, %, letter,
   feedback, due dates, and the running **final grade** (letter + %). Optional
   class average when the teacher enables it. Parent sees the same for their child.
@@ -123,6 +123,7 @@ AI (`ANTHROPIC_API_KEY`), Stripe (`STRIPE_SECRET_KEY` + per-tier price IDs +
 ---
 
 ## Status log
-- 2026-10-07: Gradebook foundation (A1) built + verified. Full audit folded in.
-  Fixed B1 (false pricing copy) and B2 (portfolio certificates now real). Next:
-  teacher gradebook grid (A2) + student /grades (A3).
+- 2026-10-07: Gradebook foundation (A1) + teacher grid (A2) + student /grades
+  (A3) built; nav wired (sidebar + mobile + classroom 'Gradebook' button);
+  build green. Fixed B1, B2. Next: A4 integrations (assignment->grade item) and
+  Workstream C tests.

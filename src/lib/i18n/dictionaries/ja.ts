@@ -103,6 +103,7 @@ const ja: Dictionary = {
     nav: {
       home: "ホーム",
       myLearning: "学習",
+      grades: "成績",
       calendar: "カレンダー",
       messages: "メッセージ",
       progress: "進捗",

@@ -14,6 +14,7 @@ const MAIN: { href: string; key: keyof NavLabels; icon: string }[] = [
   { href: "/calendar", key: "calendar", icon: "🗓️" },
   { href: "/inbox", key: "messages", icon: "✉️" },
   { href: "/profile", key: "progress", icon: "📈" },
+  { href: "/grades", key: "grades", icon: "📊" },
   { href: "/community", key: "community", icon: "👥" },
   { href: "/learn?scope=all", key: "library", icon: "🗂️" },
 ];

@@ -103,6 +103,7 @@ const zh: Dictionary = {
     nav: {
       home: "首页",
       myLearning: "我的学习",
+      grades: "成绩",
       calendar: "日历",
       messages: "消息",
       progress: "进度",

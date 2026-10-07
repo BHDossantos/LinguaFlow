@@ -153,6 +153,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Logo />
               <div className="flex items-center gap-3 text-xs text-ink-500">
                 <Link href="/inbox" className="hover:text-brand-500">{nav.inbox}</Link>
+                <Link href="/grades" className="hover:text-brand-500">{nav.grades}</Link>
                 <Link href="/family" className="hover:text-brand-500">{nav.family}</Link>
                 <Link href="/teach" className="hover:text-brand-500">{nav.teach}</Link>
                 <Link href="/school" className="hover:text-brand-500">{nav.school}</Link>
