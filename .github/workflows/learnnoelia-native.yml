@@ -43,6 +43,8 @@ jobs:
       - run: npm ci
       - run: npx cap add ios
       - run: npx cap sync ios
+      - name: Install CocoaPods
+        run: cd ios/App && pod install
       - name: Compile iOS simulator app without signing
         run: |
           xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
