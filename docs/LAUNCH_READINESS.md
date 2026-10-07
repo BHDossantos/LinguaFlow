@@ -65,11 +65,44 @@ student + parent.
 ---
 
 ## Workstream B — Finish/verify existing features
-A full route-by-route audit is running; this section will be filled from it.
-Known-good foundations: catalog (223 courses), lessons (reading/quiz/vocab/code —
-JS/Python/SQL), mastery + retention, paper grading + bulk grading, roles,
-family/parent, PWA. Each route gets a WORKING/PARTIAL/STUB verdict and any stub
-is either finished or hidden before launch.
+
+Full route-by-route audit done (2026-10-07). Headline: nearly every route is
+real and DB-backed with RLS — very few true stubs. The real risks are prod
+config/seed, thin tests, and a few loose ends. Launch-blocking, in-code items
+ranked (env/seed items are the owner's to provision, tracked separately):
+
+- [x] **B1 — Pricing copy fixed** (`pricing/page.tsx`): footer says AI
+  coach/roleplay/scoring/grading/translate are "coming soon" though all built. **(quick)**
+- [x] **B2 — Portfolio certificates now list real earned credentials**
+  (`portfolio/page.tsx`) while `/profile` shows real certs. **(quick)**
+- [ ] **B3 — Diagnostic doesn't close the loop**: builds a learner model but
+  never sets `cefr_level`, enrolls, or builds a path. Wire to placement + enroll.
+- [ ] **B4 — Lesson edit is raw-JSON** (`…/lessons/[id]/edit`): no schema
+  validation; a typo can corrupt a lesson. Validate with the create zod union.
+- [ ] **B5 — Playground is a hardcoded JS-only toy** with no persistence while
+  `/learn` advertises Python/SQL/data. Scope the claim or back it with the
+  existing code-lesson runner.
+- [ ] **B6 — Legal pages are placeholder** (privacy/terms) — blocker for minors'
+  data + payments (owner + counsel).
+- [ ] **B7 — Tutor Stripe billing has no reconciliation** for a dropped
+  session-`end` (uncaptured manual-capture PaymentIntent). Add a cron/webhook.
+- [ ] **B8 — COPPA/FERPA review** for auto-created student accounts + guardian
+  linking (owner + counsel).
+
+Known-good foundations (verified real): catalog (223 courses), lesson player,
+mastery + retention closed loop, SRS/review, the assignment grading loop
+(submit→AI grade→integrity→teacher review→return), paper + bulk grading,
+org/classroom/roster/scheduling/attendance/announcements, parent/family
+visibility, certificates + public verification, career/portfolio, gamification,
+tutors marketplace with Stripe + LiveKit, admin + A/B, PWA. AI/Stripe/LiveKit
+routes self-disable cleanly without their env vars.
+
+### Env/seed to verify in production (owner)
+AI (`ANTHROPIC_API_KEY`), Stripe (`STRIPE_SECRET_KEY` + per-tier price IDs +
+`STRIPE_WEBHOOK_SECRET`), LiveKit (`LIVEKIT_*`, `NEXT_PUBLIC_LIVEKIT_URL`),
+`SUPABASE_SERVICE_ROLE_KEY`, web-push keys, `ADMIN_EMAILS`, optional
+`RESEND_API_KEY`. Seed: non-language course catalogs, tutors. Confirm the
+`rate_limits`/`take_rate_limit` RPC is migrated and covers all AI routes.
 
 ## Workstream C — QA & testing
 - Unit tests for pure libs (start: `gradebook.ts`, `grading.ts`) — add a runner
@@ -90,5 +123,6 @@ is either finished or hidden before launch.
 ---
 
 ## Status log
-- 2026-10-07: Gradebook foundation (A1) built + verified. Launch-readiness audit
-  started. Roadmap created.
+- 2026-10-07: Gradebook foundation (A1) built + verified. Full audit folded in.
+  Fixed B1 (false pricing copy) and B2 (portfolio certificates now real). Next:
+  teacher gradebook grid (A2) + student /grades (A3).

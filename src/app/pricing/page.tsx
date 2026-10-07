@@ -170,8 +170,9 @@ export default async function PricingPage(props: {
       </section>
 
       <p className="text-center text-xs text-ink-500">
-        Prices in USD. Assistance features (coach, roleplay, scoring, grading, translate) roll out with our
-        learning engine — until then they show as “coming soon” and are never charged.
+        Prices in USD. Every plan includes the full learning engine — the Socratic coach,
+        spoken roleplay, instant scoring and grading, and real-time translation — plus 223+
+        courses across languages, math, science, technology, business, humanities, and the arts.
       </p>
     </div>
   );
