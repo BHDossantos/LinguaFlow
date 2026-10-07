@@ -1,6 +1,6 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
-// Noelia native shell (iOS + Android) built with Capacitor.
+// LearnNoelia native shell (iOS + Android) built with Capacitor.
 //
 // The app is a live Next.js site, so the native apps load the hosted production
 // build (server.url) rather than a static export — everything (SSR, Supabase
@@ -13,7 +13,7 @@ const SERVER_URL = process.env.CAP_SERVER_URL ?? "https://learnnoelia.com";
 
 const config: CapacitorConfig = {
   appId: "com.learnnoelia.app",
-  appName: "Noelia",
+  appName: "LearnNoelia",
   // webDir must exist for `cap sync`; with server.url set it is only a fallback
   // shell (shown if the device is offline before the site loads).
   webDir: "mobile/www",
@@ -25,8 +25,8 @@ const config: CapacitorConfig = {
   // A UA token both the client and server can detect synchronously, so we can
   // hide in-app purchase CTAs when running inside the native shell (required by
   // the App Store / Play Store when subscriptions are sold on the web only).
-  ios: { appendUserAgent: "NoeliaApp" },
-  android: { appendUserAgent: "NoeliaApp" },
+  ios: { appendUserAgent: "LearnNoeliaApp" },
+  android: { appendUserAgent: "LearnNoeliaApp" },
   backgroundColor: "#0e1022",
   plugins: {
     SplashScreen: {
