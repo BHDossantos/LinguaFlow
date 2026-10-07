@@ -1,0 +1,14 @@
+name: LearnNoelia Production Builds
+jobs:
+  android:
+    name: Build LearnNoelia Android
+    type: build
+    params:
+      platform: android
+      profile: production
+  ios:
+    name: Build LearnNoelia iOS
+    type: build
+    params:
+      platform: ios
+      profile: production
