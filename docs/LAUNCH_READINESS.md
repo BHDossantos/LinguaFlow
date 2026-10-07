@@ -105,8 +105,9 @@ AI (`ANTHROPIC_API_KEY`), Stripe (`STRIPE_SECRET_KEY` + per-tier price IDs +
 `rate_limits`/`take_rate_limit` RPC is migrated and covers all AI routes.
 
 ## Workstream C — QA & testing
-- Unit tests for pure libs (start: `gradebook.ts`, `grading.ts`) — add a runner
-  (vitest).
+- [x] Unit test runner (vitest, `npm test`) + 21 unit tests for `gradebook.ts`
+  (points/weighted/drop-lowest/per-item weights/exempt/letters) and `grading.ts`.
+- [ ] Unit tests for `mastery.ts`, `srs.ts`, `pricing.ts`, `placement.ts`.
 - Expand e2e (Playwright) beyond the current 8 specs to cover the LMS flows:
   teacher creates grade item → grades student → student sees grade; assignment
   submit → grade → gradebook.
