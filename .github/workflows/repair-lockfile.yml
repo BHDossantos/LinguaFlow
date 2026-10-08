@@ -1,0 +1,30 @@
+name: Repair dependency lockfile
+on:
+  push:
+    branches: [fix/tailwind4-ci-build]
+    paths:
+      - '.github/workflows/repair-lockfile.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/tailwind4-ci-build
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --package-lock-only --ignore-scripts
+      - run: npm ci --ignore-scripts
+      - name: Commit synchronized lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: synchronize Tailwind 4 dependency lockfile"
+            git push origin HEAD:fix/tailwind4-ci-build
+          fi
