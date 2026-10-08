@@ -1,0 +1,175 @@
+name: Mobile release (Play + TestFlight)
+
+# Builds the Capacitor native apps, signs them, and uploads to the stores'
+# internal test tracks. Run manually from the Actions tab. Each job SKIPS
+# cleanly if its signing secrets are not set, so you can wire one store first.
+#
+# Required repository secrets — see docs/MOBILE_RELEASE.md for how to get each.
+#   Android: ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD,
+#            ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD, PLAY_SERVICE_ACCOUNT_JSON
+#   iOS:     IOS_DIST_CERT_P12_BASE64, IOS_DIST_CERT_PASSWORD,
+#            IOS_PROVISIONING_PROFILE_BASE64, APPSTORE_TEAM_ID,
+#            APPSTORE_API_KEY_ID, APPSTORE_API_ISSUER_ID, APPSTORE_API_PRIVATE_KEY
+# The app id must match the apps you registered: com.learnnoelia.app
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Which stores to push to
+        type: choice
+        default: both
+        options: [both, android, ios]
+
+concurrency:
+  group: mobile-release
+  cancel-in-progress: false
+
+jobs:
+  android:
+    if: ${{ inputs.platform == 'both' || inputs.platform == 'android' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Android secrets
+        id: pre
+        env:
+          KS: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          SA: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -z "$KS" ] || [ -z "$SA" ]; then
+            echo "::warning::Android signing secrets not set — skipping. See docs/MOBILE_RELEASE.md."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.pre.outputs.skip != 'true'
+        with: { node-version: 22, cache: npm }
+      - uses: actions/setup-java@v4
+        if: steps.pre.outputs.skip != 'true'
+        with: { distribution: temurin, java-version: '21' }
+      - uses: android-actions/setup-android@v3
+        if: steps.pre.outputs.skip != 'true'
+      - name: Install deps + generate the Android project
+        if: steps.pre.outputs.skip != 'true'
+        run: |
+          npm ci
+          npx cap add android || true
+          npx cap sync android
+      - name: Decode upload keystore
+        if: steps.pre.outputs.skip != 'true'
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/upload.jks"
+      - name: Build signed release bundle (.aab)
+        if: steps.pre.outputs.skip != 'true'
+        working-directory: android
+        run: |
+          ./gradlew :app:bundleRelease \
+            -Pandroid.injected.signing.store.file="$RUNNER_TEMP/upload.jks" \
+            -Pandroid.injected.signing.store.password="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+            -Pandroid.injected.signing.key.alias="${{ secrets.ANDROID_KEY_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ secrets.ANDROID_KEY_PASSWORD }}" \
+            -Pandroid.injected.version.code=${{ github.run_number }} \
+            -Pandroid.injected.version.name=1.0.${{ github.run_number }}
+      - name: Upload to Google Play (internal track)
+        if: steps.pre.outputs.skip != 'true'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.learnnoelia.app
+          releaseFiles: android/app/build/outputs/bundle/release/*.aab
+          track: internal
+          status: completed
+      - uses: actions/upload-artifact@v4
+        if: steps.pre.outputs.skip != 'true'
+        with:
+          name: learnnoelia-android-aab
+          path: android/app/build/outputs/bundle/release/*.aab
+
+  ios:
+    if: ${{ inputs.platform == 'both' || inputs.platform == 'ios' }}
+    runs-on: macos-latest
+    env:
+      BUNDLE_ID: com.learnnoelia.app
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check iOS secrets
+        id: pre
+        env:
+          CERT: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+          KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        run: |
+          if [ -z "$CERT" ] || [ -z "$KEY" ]; then
+            echo "::warning::iOS signing secrets not set — skipping. See docs/MOBILE_RELEASE.md."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.pre.outputs.skip != 'true'
+        with: { node-version: 22, cache: npm }
+      - name: Install deps + generate the iOS project
+        if: steps.pre.outputs.skip != 'true'
+        run: |
+          npm ci
+          npx cap add ios || true
+          npx cap sync ios
+          cd ios/App && pod install
+      - name: Import signing certificate into a temporary keychain
+        if: steps.pre.outputs.skip != 'true'
+        env:
+          CERT_B64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+          CERT_PW: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+        run: |
+          KEYCHAIN="$RUNNER_TEMP/build.keychain-db"
+          security create-keychain -p "ci" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "ci" "$KEYCHAIN"
+          echo "$CERT_B64" | base64 -d > "$RUNNER_TEMP/cert.p12"
+          security import "$RUNNER_TEMP/cert.p12" -P "$CERT_PW" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
+          security set-key-partition-list -S apple-tool:,apple: -k "ci" "$KEYCHAIN" >/dev/null
+      - name: Install provisioning profile
+        if: steps.pre.outputs.skip != 'true'
+        env:
+          PROFILE_B64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          echo "$PROFILE_B64" | base64 -d > "$HOME/Library/MobileDevice/Provisioning Profiles/dist.mobileprovision"
+      - name: Archive + export signed .ipa
+        if: steps.pre.outputs.skip != 'true'
+        run: |
+          cat > "$RUNNER_TEMP/export.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store</string>
+            <key>teamID</key><string>${{ secrets.APPSTORE_TEAM_ID }}</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>uploadBitcode</key><false/>
+            <key>uploadSymbols</key><true/>
+          </dict></plist>
+          PLIST
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App \
+            -configuration Release -sdk iphoneos \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" archive \
+            DEVELOPMENT_TEAM="${{ secrets.APPSTORE_TEAM_ID }}" \
+            CODE_SIGN_STYLE=Manual \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            MARKETING_VERSION=1.0.${{ github.run_number }}
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/export.plist" \
+            -exportPath "$RUNNER_TEMP/export"
+      - name: Upload to TestFlight
+        if: steps.pre.outputs.skip != 'true'
+        env:
+          KEY_ID: ${{ secrets.APPSTORE_API_KEY_ID }}
+          ISSUER: ${{ secrets.APPSTORE_API_ISSUER_ID }}
+          KEY_B64: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+        run: |
+          mkdir -p "$HOME/.appstoreconnect/private_keys"
+          echo "$KEY_B64" | base64 -d > "$HOME/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8"
+          IPA=$(ls "$RUNNER_TEMP/export/"*.ipa | head -1)
+          xcrun altool --upload-app -f "$IPA" -t ios \
+            --apiKey "$KEY_ID" --apiIssuer "$ISSUER"
+      - uses: actions/upload-artifact@v4
+        if: steps.pre.outputs.skip != 'true'
+        with:
+          name: learnnoelia-ios-ipa
+          path: ${{ runner.temp }}/export/*.ipa
