@@ -17,23 +17,13 @@ updates:
       minor-and-patch:
         update-types: ["minor", "patch"]
     ignore:
-      # Tailwind v4 is a breaking change (PostCSS plugin moved to
-      # @tailwindcss/postcss, CSS-first config). Stay on v3 until we do the
-      # migration deliberately. See docs/LAUNCH_READINESS.md.
-      - dependency-name: "tailwindcss"
-        update-types: ["version-update:semver-major"]
-      # These chained the Tailwind v4 bump; hold their majors too.
-      - dependency-name: "postcss-selector-parser"
-        update-types: ["version-update:semver-major"]
-      # Stay on React 18 until a deliberate React 19 migration. A lone react-dom
-      # or @types/react-dom major break the install (peer mismatch).
-      - dependency-name: "react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react-dom"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/react-dom"
+      # Pre-launch stability: do NOT auto-propose ANY major-version bump. Every
+      # recent build break came from a drive-by major (Tailwind v4, the split
+      # Capacitor v8, react-dom 19, and the flood of Next 16 / TS 7 / eslint 10 /
+      # zod 4 / vitest 4 PRs). Majors are adopted deliberately, by hand, with a
+      # verified build — not merged by a bot. Minor/patch (incl. security) still
+      # flow, grouped above.
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
