@@ -44,7 +44,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.6.9",
+    "@capacitor/cli": "^8.5.2",
     "@playwright/test": "^1.56.1",
     "@types/node": "^20",
     "@types/react": "^18",
