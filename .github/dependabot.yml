@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      # Batch minor/patch bumps into one PR to cut noise.
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+    ignore:
+      # Tailwind v4 is a breaking change (PostCSS plugin moved to
+      # @tailwindcss/postcss, CSS-first config). Stay on v3 until we do the
+      # migration deliberately. See docs/LAUNCH_READINESS.md.
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      # These chained the Tailwind v4 bump; hold their majors too.
+      - dependency-name: "postcss-selector-parser"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
