@@ -82,7 +82,7 @@ ranked (env/seed items are the owner's to provision, tracked separately):
 - [ ] **B5 — Playground is a hardcoded JS-only toy** with no persistence while
   `/learn` advertises Python/SQL/data. Scope the claim or back it with the
   existing code-lesson runner.
-- [ ] **B6 — Legal pages are placeholder** (privacy/terms) — blocker for minors'
+- [x] **B6 — Real Privacy Policy + Terms drafted** (privacy/terms) — blocker for minors'
   data + payments (owner + counsel).
 - [ ] **B7 — Tutor Stripe billing has no reconciliation** for a dropped
   session-`end` (uncaptured manual-capture PaymentIntent). Add a cron/webhook.
