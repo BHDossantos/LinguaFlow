@@ -96,10 +96,11 @@ jobs:
         env:
           CERT: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
           KEY: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
+          ISSUER: ${{ secrets.APPSTORE_API_ISSUER_ID }}
         run: |
-          if [ -z "$CERT" ] || [ -z "$KEY" ]; then
-            echo "::warning::iOS signing secrets not set — skipping. See docs/MOBILE_RELEASE.md."
-            echo "skip=true" >> "$GITHUB_OUTPUT"
+          if [ -z "$CERT" ] || [ -z "$KEY" ] || [ -z "$ISSUER" ]; then
+            echo "::error::Required iOS signing or App Store Connect credentials are missing. Check GitHub Actions secrets."
+            exit 1
           fi
       - uses: actions/setup-node@v4
         if: steps.pre.outputs.skip != 'true'
@@ -146,7 +147,7 @@ jobs:
             <key>uploadSymbols</key><true/>
           </dict></plist>
           PLIST
-          xcodebuild -workspace ios/App/App.xcworkspace -scheme App \
+          xcodebuild -project ios/App/App.xcodeproj -scheme App \
             -configuration Release -sdk iphoneos \
             -archivePath "$RUNNER_TEMP/App.xcarchive" archive \
             DEVELOPMENT_TEAM="${{ secrets.APPSTORE_TEAM_ID }}" \
@@ -164,7 +165,11 @@ jobs:
           KEY_B64: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
         run: |
           mkdir -p "$HOME/.appstoreconnect/private_keys"
-          echo "$KEY_B64" | base64 -d > "$HOME/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8"
+          if [[ "$KEY_B64" == *"BEGIN PRIVATE KEY"* ]]; then
+            printf "%s\n" "$KEY_B64" > "$HOME/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8"
+          else
+            printf "%s" "$KEY_B64" | base64 -d > "$HOME/.appstoreconnect/private_keys/AuthKey_${KEY_ID}.p8"
+          fi
           IPA=$(ls "$RUNNER_TEMP/export/"*.ipa | head -1)
           xcrun altool --upload-app -f "$IPA" -t ios \
             --apiKey "$KEY_ID" --apiIssuer "$ISSUER"
