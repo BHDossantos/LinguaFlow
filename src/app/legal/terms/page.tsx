@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export const metadata = { title: "Terms of Service — Noelia" };
 
-// Comprehensive terms tailored to Noelia. Fill [Operator] and [Jurisdiction],
-// and have counsel review before public launch.
+// Comprehensive terms tailored to Noelia (New Hampshire, USA; operations in
+// Rome, Italy). Have counsel review and confirm the legal entity before launch.
 export default function TermsPage() {
   return (
     <article className="mx-auto max-w-prose space-y-5 pb-10 text-sm leading-relaxed text-ink-700">
@@ -15,8 +15,8 @@ export default function TermsPage() {
 
       <p>
         These Terms of Service (“Terms”) are an agreement between you and Noelia (“Noelia”,
-        “we”, “us”), operated by [Operator], and govern your use of learnnoelia.com and our
-        mobile apps (the “Service”). By creating an account or using the Service, you agree to
+        “we”, “us”) — based in New Hampshire, United States, with operations in Rome, Italy —
+        and govern your use of learnnoelia.com and our mobile apps (the “Service”). By creating an account or using the Service, you agree to
         these Terms and to our <Link href="/legal/privacy" className="text-brand-600 underline">Privacy Policy</Link>.
         If you do not agree, do not use the Service.
       </p>
@@ -159,9 +159,12 @@ export default function TermsPage() {
       <section className="space-y-2">
         <h2 className="text-base font-semibold text-ink-900">13. Governing law &amp; disputes</h2>
         <p>
-          These Terms are governed by the laws of [Jurisdiction], without regard to conflict-of-
-          laws rules, and disputes will be resolved in the courts of [Jurisdiction], unless
-          applicable law provides otherwise.
+          These Terms are governed by the laws of the State of New Hampshire, United States,
+          without regard to conflict-of-laws rules, and disputes will be resolved in the state
+          or federal courts located in New Hampshire, unless applicable law provides otherwise.
+          If you are a consumer located in the European Union (including Italy) or elsewhere, you
+          keep the mandatory protections of the law of your country of residence, and nothing in
+          these Terms deprives you of those rights.
         </p>
       </section>
 

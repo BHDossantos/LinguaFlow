@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export const metadata = { title: "Privacy Policy — Noelia" };
 
-// Comprehensive privacy policy tailored to what Noelia actually does. Bracketed
-// items ([Operator], [Jurisdiction]) must be filled with your legal entity and
-// governing-law choice, and counsel should do a final review for your
-// jurisdiction (esp. COPPA/FERPA/GDPR specifics) before public launch.
+// Comprehensive privacy policy tailored to what Noelia actually does. Governing
+// context set to New Hampshire, USA with operations in Rome, Italy. Counsel
+// should do a final review (esp. COPPA/FERPA/GDPR) and confirm the legal entity
+// name before public launch.
 export default function PrivacyPage() {
   return (
     <article className="mx-auto max-w-prose space-y-5 pb-10 text-sm leading-relaxed text-ink-700">
@@ -16,11 +16,11 @@ export default function PrivacyPage() {
       </div>
 
       <p>
-        This Privacy Policy explains how Noelia (“Noelia”, “we”, “us”), operated by
-        [Operator], collects, uses, shares, and protects information when you use
-        learnnoelia.com and our mobile apps (together, the “Service”). By using the
-        Service you agree to this Policy. If you do not agree, please do not use the
-        Service.
+        This Privacy Policy explains how Noelia (“Noelia”, “we”, “us”) — based in New
+        Hampshire, United States, with operations in Rome, Italy — collects, uses, shares,
+        and protects information when you use learnnoelia.com and our mobile apps (together,
+        the “Service”). By using the Service you agree to this Policy. If you do not agree,
+        please do not use the Service.
       </p>
 
       <section className="space-y-2">
