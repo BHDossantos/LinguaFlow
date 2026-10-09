@@ -110,7 +110,7 @@ jobs:
           npm ci
           npx cap add ios || true
           npx cap sync ios
-          cd ios/App && pod install
+          # Capacitor 8 uses Swift Package Manager; no CocoaPods Podfile is generated.
       - name: Import signing certificate into a temporary keychain
         if: steps.pre.outputs.skip != 'true'
         env:
