@@ -131,8 +131,21 @@ jobs:
         env:
           PROFILE_B64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
         run: |
+          set -euo pipefail
           mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-          echo "$PROFILE_B64" | base64 -d > "$HOME/Library/MobileDevice/Provisioning Profiles/dist.mobileprovision"
+          printf "%s" "$PROFILE_B64" | base64 -d > "$RUNNER_TEMP/learnnoelia.mobileprovision"
+          security cms -D -i "$RUNNER_TEMP/learnnoelia.mobileprovision" > "$RUNNER_TEMP/profile.plist"
+          PROFILE_UUID=$(/usr/libexec/PlistBuddy -c 'Print :UUID' "$RUNNER_TEMP/profile.plist")
+          PROFILE_NAME=$(/usr/libexec/PlistBuddy -c 'Print :Name' "$RUNNER_TEMP/profile.plist")
+          PROFILE_APP_ID=$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:application-identifier' "$RUNNER_TEMP/profile.plist")
+          if [[ "$PROFILE_APP_ID" != *".${BUNDLE_ID}" ]]; then
+            echo "::error::Provisioning profile app identifier does not match ${BUNDLE_ID}"
+            exit 1
+          fi
+          cp "$RUNNER_TEMP/learnnoelia.mobileprovision" "$HOME/Library/MobileDevice/Provisioning Profiles/${PROFILE_UUID}.mobileprovision"
+          echo "PROFILE_UUID=${PROFILE_UUID}" >> "$GITHUB_ENV"
+          echo "PROFILE_NAME=${PROFILE_NAME}" >> "$GITHUB_ENV"
+          echo "Provisioning profile installed for ${BUNDLE_ID}"
       - name: Archive + export signed .ipa
         if: steps.pre.outputs.skip != 'true'
         run: |
@@ -143,6 +156,9 @@ jobs:
             <key>method</key><string>app-store</string>
             <key>teamID</key><string>${{ secrets.APPSTORE_TEAM_ID }}</string>
             <key>signingStyle</key><string>manual</string>
+            <key>provisioningProfiles</key><dict>
+              <key>com.learnnoelia.app</key><string>${PROFILE_UUID}</string>
+            </dict>
             <key>uploadBitcode</key><false/>
             <key>uploadSymbols</key><true/>
           </dict></plist>
@@ -152,6 +168,8 @@ jobs:
             -archivePath "$RUNNER_TEMP/App.xcarchive" archive \
             DEVELOPMENT_TEAM="${{ secrets.APPSTORE_TEAM_ID }}" \
             CODE_SIGN_STYLE=Manual \
+            PROVISIONING_PROFILE="${PROFILE_UUID}" \
+            PROVISIONING_PROFILE_SPECIFIER="${PROFILE_NAME}" \
             CURRENT_PROJECT_VERSION=${{ github.run_number }} \
             MARKETING_VERSION=1.0.${{ github.run_number }}
           xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" \
