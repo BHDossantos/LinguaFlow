@@ -170,13 +170,22 @@ html, body {
    apps are login-only — subscriptions are managed on the web. See docs/MOBILE_APP.md. */
 .native-app .web-only { display: none !important; }
 
-/* Safe-area handling for the installed PWA and the native shell: keep the fixed
-   bottom navigation above the home indicator / gesture bar, and let the status
-   bar (black-translucent on iOS) not overlap content. Applies when launched
-   standalone or inside the Capacitor shell. */
+/* Stop iOS WebView/Safari from auto-inflating text, which makes pages look
+   zoomed / oversized on phones. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+/* Safe-area handling for the installed PWA and the native shell: push everything
+   below the status bar / notch (padding the body also clears the in-flow top
+   header), and keep the fixed bottom navigation above the home indicator.
+   Applies when launched standalone or inside the Capacitor shell. */
 @media (display-mode: standalone) {
+  body { padding-top: env(safe-area-inset-top); }
   nav[aria-label="Primary"] { padding-bottom: env(safe-area-inset-bottom); }
-  main { padding-top: max(1rem, env(safe-area-inset-top)); }
 }
+.native-app body { padding-top: env(safe-area-inset-top); }
 .native-app nav[aria-label="Primary"] { padding-bottom: env(safe-area-inset-bottom); }
-.native-app main { padding-top: max(1rem, env(safe-area-inset-top)); }
+
+/* In the installed native app, scale the whole UI down a touch so it reads like
+   a native app instead of a zoomed-in web page (16px -> 15px base; every rem
+   size follows). .native-app is set on <html> by the shell-detect script. */
+.native-app { font-size: 15px; }
