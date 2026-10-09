@@ -58,7 +58,7 @@ jobs:
       - uses: actions/setup-java@v4
         if: steps.pre.outputs.skip != 'true'
         with: { distribution: temurin, java-version: '21' }
-      - uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v4
         if: steps.pre.outputs.skip != 'true'
       - name: Install deps + generate the Android project
         if: steps.pre.outputs.skip != 'true'
