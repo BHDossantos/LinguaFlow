@@ -35,12 +35,23 @@ jobs:
         id: pre
         env:
           KS: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KSPW: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KPW: ${{ secrets.ANDROID_KEY_PASSWORD }}
           SA: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
         run: |
-          if [ -z "$KS" ] || [ -z "$SA" ]; then
-            echo "::warning::Android signing secrets not set — skipping. See docs/MOBILE_RELEASE.md."
-            echo "skip=true" >> "$GITHUB_OUTPUT"
+          miss=0
+          check() { if [ -z "$2" ]; then echo "MISSING  -> $1"; miss=1; else echo "present  -> $1 (length ${#2})"; fi; }
+          check ANDROID_KEYSTORE_BASE64 "$KS"
+          check ANDROID_KEYSTORE_PASSWORD "$KSPW"
+          check ANDROID_KEY_ALIAS "$ALIAS"
+          check ANDROID_KEY_PASSWORD "$KPW"
+          check PLAY_SERVICE_ACCOUNT_JSON "$SA"
+          if [ "$miss" = 1 ]; then
+            echo "::error::One or more Android secrets are not visible to this workflow. They must be REPOSITORY Actions secrets (Settings -> Secrets and variables -> Actions -> Repository secrets) with these EXACT names - not Environment or Dependabot secrets."
+            exit 1
           fi
+          echo "All Android secrets present."
       - uses: actions/setup-node@v4
         if: steps.pre.outputs.skip != 'true'
         with: { node-version: 22, cache: npm }
